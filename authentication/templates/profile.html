@@ -1,0 +1,819 @@
+{% extends "base_dashboard.html" %}
+{% load static %}
+
+{% block content %}  
+<div class="d-flex flex-column flex-lg-row">
+    <div class="flex-column flex-lg-row-auto w-lg-250px w-xl-350px mb-10">
+        <!--begin::کارت-->
+        <div class="card mb-5 mb-xl-8">
+            <!--begin::کارت body-->
+            <div class="card-body">
+                <!--begin::خلاصه-->
+                <!--begin::کاربر Info-->
+                <div class="d-flex flex-center flex-column py-5">
+                    <!--begin::Avatar-->
+                    <div class="symbol symbol-100px symbol-circle mb-7">
+                        <img src={{user.profile.avatar.url}} alt="image" />
+                    </div>
+                    <!--end::Avatar-->
+                    <!--begin::نام-->
+                    <a href="#" class="fs-3 text-gray-800 text-hover-primary fw-bold mb-3">{{user.profile.first_name}} {{user.profile.last_name}}</a>
+                    <!--end::نام-->
+                    <!--begin::جایگاه-->
+                    <div class="mb-9">
+                        <!--begin::Badge-->
+                        <div class="badge badge-lg badge-light-primary d-inline">{{user.profile.role}}</div>
+                        <!--end::Badge-->
+                    </div>
+                    <!--end::جایگاه-->
+                    <!--begin::Info-->
+                    <!--begin::Info heading-->
+                    <div class="fw-bold mb-3"> آمار عملکرد 
+                    <span class="ms-2" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-html="true" data-bs-content="شماره کارت of support tickets assigned, closed and pending this week.">
+                        <i class="ki-duotone ki-information fs-7">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                            <span class="path3"></span>
+                        </i>
+                    </span></div>
+                    <!--end::Info heading-->
+                    <div class="d-flex flex-wrap flex-center">
+                        <!--begin::Stats-->
+                        <div class="border border-gray-300 border-dashed rounded py-3 px-3 mb-3">
+                            <div class="fs-4 fw-bold text-gray-700">
+                                <span class="w-75px">{{ user_uploaded_image|default:"0" }}</span>
+
+                            </div>
+                            <div class="fw-semibold text-muted">تصاویر آپلود شده</div>
+                        </div>
+                        <!--end::Stats-->
+                        <!--begin::Stats-->
+                        <div class="border border-gray-300 border-dashed rounded py-3 px-3 mx-4 mb-3">
+                            <div class="fs-4 fw-bold text-gray-700">
+                                <span class="w-50px">{{ user_labaled_image|default:"0" }}</span>
+
+                            </div>
+                            <div class="fw-semibold text-muted">تصاویر لیبل زده شده</div>
+                        </div>
+                        <!--end::Stats-->
+                        <!--begin::Stats-->
+                        <!--end::Stats-->
+                    </div>
+                    <!--end::Info-->
+                </div>
+                <!--end::کاربر Info-->
+                <!--end::خلاصه-->
+                
+                <!-- ========================================== -->
+                <!-- شروع: دکمه افزودن کاربر جدید (فقط برای ادمین) -->
+                <!-- ========================================== -->
+                <!-- در بخش سایدبار (سمت چپ) -->
+                {% if user.profile.role == "admin" %}
+                <div class="d-flex justify-content-center mt-4">
+                    <!-- data-bs-toggle="modal" و data-bs-target="#kt_modal_add_user" باعث باز شدن مودال می‌شوند -->
+                    <a href="#" class="btn btn-success btn-lg w-100" data-bs-toggle="modal" data-bs-target="#kt_modal_add_user">
+                        <i class="bi bi-person-plus fs-4 me-2"></i>
+                        افزودن کاربر جدید
+                    </a>
+                </div>
+                {% endif %}
+
+                {% if user.profile.is_admin %}
+                <div class="d-flex justify-content-center mt-4">
+                    <button class="btn btn-primary btn-lg w-100"
+                            data-bs-toggle="modal"
+                            data-bs-target="#kt_modal_users_table">
+                        لیست کاربران
+                    </button>
+                </div>
+                {% endif %}
+
+
+                <!-- پایان: دکمه افزودن کاربر جدید -->
+                <!-- ========================================== -->
+
+                <!--begin::جزییات toggle-->
+                <div class="d-flex flex-stack fs-4 py-3 mt-4">
+                    <div class="fw-bold rotate collapsible" data-bs-toggle="collapse" href="#kt_user_view_details" role="button" aria-expanded="false" aria-controls="kt_user_view_details">جزییات 
+                    <span class="ms-2 rotate-180">
+                        <i class="ki-duotone ki-down fs-3"></i>
+                    </span></div>
+                    <span data-bs-toggle="tooltip" data-bs-trigger="hover" title="ویرایش پروفایل">
+                        <a href="#" class="btn btn-sm btn-light-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_update_details">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                    </span>
+                </div>
+                <!--end::جزییات toggle-->
+                <div class="separator"></div>
+                <!--begin::جزییات content-->
+                <div id="kt_user_view_details" class="collapse show">
+                    <div class="pb-5 fs-6">
+                        <!--begin::جزییات item-->
+                        <div class="fw-bold mt-5"> شناسه اکانت</div>
+                        <div class="text-gray-600">شناسه-{{user.profile.id}}</div>
+                        <!--begin::جزییات item-->
+                        <!--begin::جزییات item-->
+                        <div class="fw-bold mt-5">شماره تماس</div>
+                        <div class="text-gray-600">
+                            <a href="#" class="text-gray-600 text-hover-primary">{{user.profile.phone}}</a>
+                        </div>
+                        <!--begin::جزییات item-->
+                        <!--begin::جزییات item-->
+                        <!--begin::جزییات item-->
+                        <!--begin::جزییات item-->
+                        <div class="fw-bold mt-5">زبان</div>
+                        <div class="text-gray-600">فارسی</div>
+                        <!--begin::جزییات item-->
+                        <!--begin::جزییات item-->
+                        <!--begin::جزییات item-->
+                    </div>
+                </div>
+                <!--end::جزییات content-->
+            </div>
+            <!--end::کارت body-->
+        </div>
+    </div>
+
+
+    <!--begin::Content-->
+    <div class="flex-lg-row-fluid ms-lg-15">
+        <!--begin:::Tabs-->
+        <ul class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-semibold mb-8">
+            <!--begin:::Tab item-->
+            <!--end:::Tab item-->
+            <!--begin:::Tab item-->
+            <li class="nav-item">
+                <a class="nav-link text-active-primary pb-4 active " data-kt-countup-tabs="true" data-bs-toggle="tab" href="#kt_user_view_overview_security">امنیت</a>
+            </li>
+            <!--end:::Tab item-->
+            <!--begin:::Tab item-->
+            <!--end:::Tab item-->
+            <!--begin:::Tab item-->
+            <!--end:::Tab item-->
+        </ul>
+        <!--end:::Tabs-->
+        <!--begin:::Tab content-->
+        <div class="tab-content" id="myTabContent">
+            <!--begin:::Tab pane-->
+            <!--begin:::Tab pane-->
+            <div class="tab-pane fade show active" id="kt_user_view_overview_security" role="tabpanel">
+                <!--begin::کارت-->
+                <div class="card pt-4 mb-6 mb-xl-9">
+                    <!--begin::کارت header-->
+                    <div class="card-header border-0">
+                        <!--begin::کارت title-->
+                        <div class="card-title">
+                            <h2>پروفایل</h2>
+                        </div>
+                        <!--end::کارت title-->
+                    </div>
+                    <!--end::کارت header-->
+                    <!--begin::کارت body-->
+                    <div class="card-body pt-0 pb-5">
+                        <!--begin::Table wrapper-->
+                        <div class="table-responsive">
+                            <!--begin::Table-->
+                            <table class="table align-middle table-row-dashed gy-5" id="kt_table_users_login_session">
+                                <tbody class="fs-6 fw-semibold text-gray-600">
+                                    <tr>
+                                        <td>کلمه عبور</td>
+                                        <td>******</td>
+                                        <td class="text-end">
+                                            <button type="button" class="btn btn-icon btn-active-light-primary w-30px h-30px ms-auto" data-bs-toggle="modal" data-bs-target="#kt_modal_update_password">
+                                                <i class="ki-duotone ki-pencil fs-3">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                </i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    {% if user.profile.role == "admin" %}
+
+                                    <tr>
+                                        <td>سطح دسترسی</td>
+                                        <td>{{user.profile.role}}</td>
+                                        <td class="text-end">
+                                            <button type="button" class="btn btn-icon btn-active-light-primary w-30px h-30px ms-auto" data-bs-toggle="modal" data-bs-target="#kt_modal_update_role">
+                                                <i class="ki-duotone ki-pencil fs-3">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                </i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                            <!--end::Table-->
+                        </div>
+                        <!--end::Table wrapper-->
+                    </div>
+                    <!--end::کارت body-->
+                </div>
+                <!--end::کارت-->
+                <!--begin::کارت-->
+                <!--end::کارت-->
+            </div>
+            <!--end:::Tab pane-->
+            <!--begin:::Tab pane-->
+            <!--end:::Tab pane-->
+        </div>
+        <!--end:::Tab content-->
+    </div>
+    <!--end::Content-->
+</div>
+
+<!-- ... (بقیه مودال‌ها بدون تغییر باقی می‌مانند) ... -->
+
+<!--begin::Modal - بروزرسانی user details-->
+<div class="modal fade" id="kt_modal_update_details" tabindex="-1" aria-hidden="true">
+    <!--begin::Modal dialog-->
+    <div class="modal-dialog modal-dialog-centered mw-650px">
+        <!--begin::Modal content-->
+        <div class="modal-content">
+            <!--begin::form-->
+            <form class="form" action="#" id="kt_modal_update_user_form">
+                <!--begin::Modal header-->
+                <div class="modal-header" id="kt_modal_update_user_header">
+                    <!--begin::Modal title-->
+                    <h2 class="fw-bold">ویرایش پروفایل کاربر</h2>
+                    <!--end::Modal title-->
+                    <!--begin::Close-->
+                    <div class="btn btn-icon btn-sm btn-active-icon-primary" data-kt-users-modal-action="close">
+                        <i class="ki-duotone ki-cross fs-1">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                        </i>
+                    </div>
+                    <!--end::Close-->
+                </div>
+                <!--end::Modal header-->
+                <!--begin::Modal body-->
+                <div class="modal-body py-10 px-lg-17">
+                    <!--begin::Scroll-->
+                    <div class="d-flex flex-column scroll-y me-n7 pe-7" id="kt_modal_update_user_scroll" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_modal_update_user_header" data-kt-scroll-wrappers="#kt_modal_update_user_scroll" data-kt-scroll-offset="300px">
+                        <!--begin::کاربر toggle-->
+                        <div class="fw-bolder fs-3 rotate collapsible mb-7" data-bs-toggle="collapse" href="#kt_modal_update_user_user_info" role="button" aria-expanded="false" aria-controls="kt_modal_update_user_user_info">کاربر اطلاعات 
+                        <span class="ms-2 rotate-180">
+                            <i class="ki-duotone ki-down fs-3"></i>
+                        </span></div>
+                        <!--end::کاربر toggle-->
+                        <!--begin::کاربر form-->
+                        <div id="kt_modal_update_user_user_info" class="collapse show">
+                            <!--begin::Input group-->
+                            <div class="mb-7">
+                                <!--begin::Tags-->
+                                <label class="fs-6 fw-semibold mb-2">
+                                    <span>بروزرسانی آواتار</span>
+                                    <span class="ms-1" data-bs-toggle="tooltip" title=" file types: png, jpg, jpeg.">
+                                        <i class="ki-duotone ki-information fs-7">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                            <span class="path3"></span>
+                                        </i>
+                                    </span>
+                                </label>
+                                <!--end::Tags-->
+                                <!--begin::Image input wrapper-->
+                                <div class="mt-1">
+                                    <!--begin::Image placeholder-->
+                                    <style>.image-input-placeholder { background-image: url('assets/media/svg/avatars/blank.svg'); } [data-bs-theme="dark"] .image-input-placeholder { background-image: url('assets/media/svg/avatars/blank-dark.svg'); }</style>
+                                    <!--end::Image placeholder-->
+                                    <!--begin::Image input-->
+                                    <div class="image-input image-input-outline image-input-placeholder" data-kt-image-input="true">
+                                        <!--begin::نمایش existing avatar-->
+                                        <div class="image-input-wrapper w-125px h-125px" style="background-image: url({{user.profile.avatar.url}})"></div>
+                                        <!--end::نمایش existing avatar-->
+                                        <!--begin::-->
+                                        <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="تعویض آواتار">
+                                            <i class="ki-duotone ki-pencil fs-7">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                            <!--begin::Inputs-->
+                                            <input type="file" name="avatar" accept=".png, .jpg, .jpeg" />
+                                            <input type="hidden" name="avatar_remove" />
+                                            <!--end::Inputs-->
+                                        </label>
+                                        <!--end::-->
+                                        <!--begin::انصراف-->
+                                        <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="انصراف avatar">
+                                            <i class="ki-duotone ki-cross fs-2">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                        </span>
+                                        <!--end::انصراف-->
+                                        <!--begin::حذف-->
+                                        <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="remove" data-bs-toggle="tooltip" title="حذف آواتار">
+                                            <i class="ki-duotone ki-cross fs-2">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                        </span>
+                                        <!--end::حذف-->
+                                    </div>
+                                    <!--end::Image input-->
+                                </div>
+                                <!--end::Image input wrapper-->
+                            </div>
+                            <!--end::Input group-->
+                            <!--begin::Input group-->
+                            <div class="fv-row mb-7">
+                                <!--begin::Tags-->
+                                <label class="fs-6 fw-semibold mb-2">نام</label>
+                                <!--end::Tags-->
+                                <!--begin::Input-->
+                                <input type="text" class="form-control form-control-solid" placeholder="" name="name" value="{{user.profile.first_name|default:"بدون نام"}}" />
+                                <!--end::Input-->
+                            </div>
+                            <div class="fv-row mb-7">
+                                <!--begin::Tags-->
+                                <label class="fs-6 fw-semibold mb-2">نام خانوادکی</label>
+                                <!--end::Tags-->
+                                <!--begin::Input-->
+                                <input type="text" class="form-control form-control-solid" placeholder="" name="last_name" value="{{user.profile.last_name|default:"بدون نام خانوادکی"}}" />
+                                <!--end::Input-->
+                            </div>
+                            <!--end::Input group-->
+                            <!--begin::Input group-->
+                            <div class="fv-row mb-7">
+                                <!--begin::Tags-->
+                                <label class="fs-6 fw-semibold mb-2">
+                                    <span>شماره تماس</span>
+                                </label>
+                                <!--end::Tags-->
+                                <!--begin::Input-->
+                                <input type="number" class="form-control form-control-solid" placeholder="" name="phone" value="{{user.profile.phone}}" />
+                                <!--end::Input-->
+                            </div>
+                            <!--end::Input group-->
+                            <!--begin::Input group-->
+                            <div class="fv-row mb-7">
+                                <!--begin::Tags-->
+                                <label class="fs-6 fw-semibold mb-2">توضیحات</label>
+                                <!--end::Tags-->
+                                <!--begin::Input-->
+                                <input type="text" class="form-control form-control-solid" placeholder="" name="description" />
+                                <!--end::Input-->
+                            </div>
+                            <!--end::Input group-->
+                            <!--begin::Input group-->
+                            <!--end::Input group-->
+                        </div>
+                        <!--end::کاربر form-->
+
+                    </div>
+                    <!--end::Scroll-->
+                </div>
+                <!--end::Modal body-->
+                <!--begin::Modal footer-->
+                <div class="modal-footer flex-center">
+                    <!--begin::Button-->
+                    <button type="reset" class="btn btn-light me-3" data-kt-users-modal-action="cancel">لغو</button>
+                    <!--end::Button-->
+                    <!--begin::Button-->
+                    <button type="submit" class="btn btn-primary" data-kt-users-modal-action="submit">
+                        <span class="indicator-label">ثبت</span>
+                        <span class="indicator-progress">لطفا صبر کنید... 
+                        <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                    </button>
+                    <!--end::Button-->
+                </div>
+                <!--end::Modal footer-->
+            </form>
+            <!--end::form-->
+        </div>
+    </div>
+</div>
+<!--end::Modal - بروزرسانی user details-->
+<div class="modal fade" id="kt_modal_update_password" tabindex="-1" aria-hidden="true">
+    <!--begin::Modal dialog-->
+    <div class="modal-dialog modal-dialog-centered mw-650px">
+        <!--begin::Modal content-->
+        <div class="modal-content">
+            <!--begin::Modal header-->
+            <div class="modal-header">
+                <!--begin::Modal title-->
+                <h2 class="fw-bold">بروزرسانی کلمه عبور</h2>
+                <!--end::Modal title-->
+                <!--begin::Close-->
+                <div class="btn btn-icon btn-sm btn-active-icon-primary" data-kt-users-modal-action="close">
+                    <i class="ki-duotone ki-cross fs-1">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                    </i>
+                </div>
+                <!--end::Close-->
+            </div>
+            <!--end::Modal header-->
+            <!--begin::Modal body-->
+            <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
+                <!--begin::form-->
+                <form id="kt_modal_update_password_form" class="form" action="#">
+                    <!--begin::Input group=-->
+                    <div class="fv-row mb-10">
+                        <label class="required form-label fs-6 mb-2">کلمه عبور فعلی</label>
+                        <input class="form-control form-control-lg form-control-solid" type="password" placeholder="" name="current_password" autocomplete="off" />
+                    </div>
+                    <!--end::Input group=-->
+                    <!--begin::Input group-->
+                    <div class="mb-10 fv-row" data-kt-password-meter="true">
+                        <!--begin::Wrapper-->
+                        <div class="mb-1">
+                            <!--begin::Tags-->
+                            <label class="form-label fw-semibold fs-6 mb-2">کلمه عبور جدید</label>
+                            <!--end::Tags-->
+                            <!--begin::Input wrapper-->
+                            <div class="position-relative mb-3">
+                                <input class="form-control form-control-lg form-control-solid" type="password" placeholder="" name="new_password" autocomplete="off" />
+                                <span class="btn btn-sm btn-icon position-absolute translate-middle top-50 end-0 me-n2" data-kt-password-meter-control="visibility">
+                                    <i class="ki-duotone ki-eye-slash fs-1">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                        <span class="path3"></span>
+                                        <span class="path4"></span>
+                                    </i>
+                                    <i class="ki-duotone ki-eye d-none fs-1">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                        <span class="path3"></span>
+                                    </i>
+                                </span>
+                            </div>
+                            <!--end::Input wrapper-->
+                            <!--begin::Meter-->
+                            <div class="d-flex align-items-center mb-3" data-kt-password-meter-control="highlight">
+                                <div class="flex-grow-1 bg-secondary bg-active-success rounded h-5px me-2"></div>
+                                <div class="flex-grow-1 bg-secondary bg-active-success rounded h-5px me-2"></div>
+                                <div class="flex-grow-1 bg-secondary bg-active-success rounded h-5px me-2"></div>
+                                <div class="flex-grow-1 bg-secondary bg-active-success rounded h-5px"></div>
+                            </div>
+                            <!--end::Meter-->
+                        </div>
+                        <!--end::Wrapper-->
+                        <!--begin::Hint-->
+                        <div class="text-muted">از 8 یا بیشتر کاراکتر با ترکیبی از حروف، اعداد و نمادها استفاده کنید.</div>
+                        <!--end::Hint-->
+                    </div>
+                    <!--end::Input group=-->
+                    <!--begin::Input group=-->
+                    <div class="fv-row mb-10">
+                        <label class="form-label fw-semibold fs-6 mb-2">تکرار کلمه عبور جدید</label>
+                        <input class="form-control form-control-lg form-control-solid" type="password" placeholder="" name="confirm_password" autocomplete="off" />
+                    </div>
+                    <!--end::Input group=-->
+                    <!--begin::Actions-->
+                    <div class="text-center pt-15">
+                        <button type="reset" class="btn btn-light me-3" data-kt-users-modal-action="cancel">لغو</button>
+                        <button type="submit" class="btn btn-primary" data-kt-users-modal-action="submit">
+                            <span class="indicator-label">ثبت</span>
+                            <span class="indicator-progress">لطفا صبر کنید... 
+                            <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                        </button>
+                    </div>
+                    <!--end::Actions-->
+                </form>
+                <!--end::form-->
+            </div>
+            <!--end::Modal body-->
+        </div>
+        <!--end::Modal content-->
+    </div>
+    <!--end::Modal dialog-->
+</div>
+
+
+<!--begin::Modal - بروزرسانی role-->
+<div class="modal fade" id="kt_modal_update_role" tabindex="-1" aria-hidden="true">
+    <!--begin::Modal dialog-->
+    <div class="modal-dialog modal-dialog-centered mw-650px">
+        <!--begin::Modal content-->
+        <div class="modal-content">
+
+            <!--begin::Modal header-->
+
+                <div class="modal-header">
+                    <!--begin::Modal title-->
+                    <h2 class="fw-bold">بروزرسانی سطح دسترسی</h2>
+                    <!--end::Modal title-->
+                    <!--begin::Close-->
+                    <div class="btn btn-icon btn-sm btn-active-icon-primary" data-kt-users-modal-action="close">
+                        <i class="ki-duotone ki-cross fs-1">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                        </i>
+                    </div>
+                    <!--end::Close-->
+                </div>
+            <!--end::Modal header-->
+            <!--begin::Modal body-->
+            <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
+                <!--begin::form-->
+                <form id="kt_modal_update_role_form" class="form" action="#">
+                    <!--begin::Notice-->
+                    <!--begin::Notice-->
+                    <div class="notice d-flex bg-light-primary rounded border-primary border border-dashed mb-9 p-6">
+                        <!--begin::Icon-->
+                        <i class="ki-duotone ki-information fs-2tx text-primary me-4">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                            <span class="path3"></span>
+                        </i>
+                        <!--end::Icon-->
+                        <!--begin::Wrapper-->
+                        <div class="d-flex flex-stack flex-grow-1">
+                            <!--begin::Content-->
+                            <div class="fw-semibold">
+                                <div class="fs-6 text-gray-700">لطفاً توجه داشته باشید که با کاهش رتبه نقش کاربر ، این کاربر کلیه امتیازاتی را که به نقش قبلی اختصاص داده شده بود ، از دست خواهد داد.</div>
+                            </div>
+                            <!--end::Content-->
+                        </div>
+                        <!--end::Wrapper-->
+                    </div>
+                    <!--end::Notice-->
+                    <!--end::Notice-->
+                    <!--begin::Input group-->
+                    <div class="fv-row mb-7">
+                        <!--begin::Tags-->
+                        <label class="fs-6 fw-semibold form-label mb-5">
+                            <span class="required">انتخاب نقش کاربری</span>
+                        </label>
+                        <!--end::Tags-->
+                        <!--begin::Input row-->
+                        <div class="d-flex">
+                            <!--begin::رادیو-->
+                            <div class="form-check form-check-custom form-check-solid">
+                                <!--begin::Input-->
+                                <input class="form-check-input me-3" name="user_role" type="radio" value="0" id="kt_modal_update_role_option_0"  />
+                                <!--end::Input-->
+                                <!--begin::Tags-->
+                                <label class="form-check-label" for="kt_modal_update_role_option_0">
+                                    <div class="fw-bold text-gray-800">مدیریت</div>
+                                    <div class="text-gray-600">کلیه دسترسی ها</div>
+                                </label>
+                                <!--end::Tags-->
+                            </div>
+                            <!--end::رادیو-->
+                        </div>
+                        <!--end::Input row-->
+                        <div class='separator separator-dashed my-5'></div>
+                        <!--begin::Input row-->
+                        <div class="d-flex">
+                            <!--begin::رادیو-->
+                            <div class="form-check form-check-custom form-check-solid">
+                                <!--begin::Input-->
+                                <input class="form-check-input me-3" name="user_role" type="radio" value="1" id="kt_modal_update_role_option_1" />
+                                <!--end::Input-->
+                                <!--begin::Tags-->
+                                <label class="form-check-label" for="kt_modal_update_role_option_1">
+                                    <div class="fw-bold text-gray-800">کاربر</div>
+                                    <div class="text-gray-600">قابلیت ها : افرودن و نمایش دیتاست ها - افزودن و نمایش تصویر -لیبل زدن</div>
+                                </label>
+                                <!--end::Tags-->
+                            </div>
+                            <!--end::رادیو-->
+                        </div>
+                        <!--end::Input row-->
+                        <div class='separator separator-dashed my-5'></div>
+                        <!--begin::Input row-->
+                        <!--end::Input row-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Actions-->
+                    <div class="text-center pt-15">
+                        <button type="reset" class="btn btn-light me-3" data-kt-users-modal-action="cancel">لغو</button>
+                        <button type="submit" class="btn btn-primary" data-kt-users-modal-action="submit">
+                            <span class="indicator-label">ثبت</span>
+                            <span class="indicator-progress">لطفا صبر کنید... 
+                            <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                        </button>
+                    </div>
+                    <!--end::Actions-->
+                </form>
+                <!--end::form-->
+            </div>
+            <!--end::Modal body-->
+        </div>
+        <!--end::Modal content-->
+    </div>
+    <!--end::Modal dialog-->
+</div>
+<!--end::Modal - بروزرسانی role-->
+
+
+<!--begin::Modal - افزودن کاربر جدید -->
+<div class="modal fade" id="kt_modal_add_user" tabindex="-1" aria-hidden="true">
+    <!--begin::Modal dialog-->
+    <div class="modal-dialog modal-dialog-centered mw-650px">
+        <!--begin::Modal content-->
+        <div class="modal-content">
+            <!--begin::Modal header-->
+            <div class="modal-header">
+                <!--begin::Modal title-->
+                <h2 class="fw-bold">افزودن کاربر جدید</h2>
+                <!--end::Modal title-->
+                <!--begin::Close-->
+                <div class="btn btn-icon btn-sm btn-active-icon-primary" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="ki-duotone ki-cross fs-1">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                    </i>
+                </div>
+                <!--end::Close-->
+            </div>
+            <!--end::Modal header-->
+            <!--begin::Modal body-->
+            <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
+                <!--begin::form-->
+                <!-- action را به آدرس URL مربوط به افزودن کاربر در Django تغییر دهید -->
+                <form id="kt_sign_up_form2" class="form" action="/authentication/register" method="POST">
+                    {% csrf_token %}
+                    
+                    <!--begin::Input group=-->
+                    <div class="fv-row mb-10">
+                        <label class="required form-label fs-6 mb-2">نام کاربری (شماره تماس)</label>
+                        <input class="form-control form-control-lg form-control-solid" type="text" placeholder="نام کاربری" name="phone" autocomplete="off" required />
+                    </div>
+                    <div class="fv-row mb-10">
+                        <label class="required form-label fs-6 mb-2">نام :</label>
+                        <input class="form-control form-control-lg form-control-solid" type="text" placeholder="نام " name="f_name" autocomplete="off" required />
+                    </div>
+
+                    <div class="fv-row mb-10">
+                        <label class="required form-label fs-6 mb-2">نام خانوادگی :</label>
+                        <input class="form-control form-control-lg form-control-solid" type="text" placeholder="نام " name="l_name" autocomplete="off" required />
+                    </div>
+
+                    <!--end::Input group=-->
+                    
+                    <!--begin::Input group-->
+								<div class="fv-row mb-8" data-kt-password-meter="true">
+									<!--begin::Wrapper-->
+									<div class="mb-1">
+										<!--begin::Input wrapper-->
+										<div class="position-relative mb-3">
+											<input class="form-control bg-transparent" type="password" placeholder="کلمه عبور" name="new_password2" autocomplete="off" />
+											<span class="btn btn-sm btn-icon position-absolute translate-middle top-50 end-0 me-n2" data-kt-password-meter-control="visibility">
+												<i class="ki-duotone ki-eye-slash fs-2"></i>
+												<i class="ki-duotone ki-eye fs-2 d-none"></i>
+											</span>
+										</div>
+										<!--end::Input wrapper-->
+										<!--begin::Meter-->
+										<div class="d-flex align-items-center mb-3" data-kt-password-meter-control="highlight">
+											<div class="flex-grow-1 bg-secondary bg-active-success rounded h-5px me-2"></div>
+											<div class="flex-grow-1 bg-secondary bg-active-success rounded h-5px me-2"></div>
+											<div class="flex-grow-1 bg-secondary bg-active-success rounded h-5px me-2"></div>
+											<div class="flex-grow-1 bg-secondary bg-active-success rounded h-5px"></div>
+										</div>
+										<!--end::Meter-->
+									</div>
+									<!--end::Wrapper-->
+									<!--begin::Hint-->
+									<div class="text-muted">از 8 یا بیشتر کاراکتر با ترکیبی از حروف، اعداد و نمادها استفاده کنید.</div>
+									<!--end::Hint-->
+								</div>
+								<!--end::Input group=-->
+								<!--end::Input group=-->
+								<div class="fv-row mb-8">
+									<!--begin::تکرار رمز عبور-->
+									<input placeholder="تکرار رمز عبور" name="confirm-password" type="password" autocomplete="off" class="form-control bg-transparent" />
+									<!--end::تکرار رمز عبور-->
+								</div>
+                    <!--end::Input group=-->
+
+                    <!--begin::Actions-->
+                    <div class="text-center pt-15">
+                        <button type="reset" class="btn btn-light me-3" data-bs-dismiss="modal">لغو</button>
+                        <button type="submit" class="btn btn-primary" id="kt_modal_add_user_submit">
+                            <span class="indicator-label" id="kt_sign_up_submit">ثبت کاربر</span>
+                            <span class="indicator-progress">لطفا صبر کنید... 
+                            <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                        </button>
+                    </div>
+                    <!--end::Actions-->
+                </form>
+                <!--end::form-->
+            </div>
+            <!--end::Modal body-->
+        </div>
+    </div>
+</div>
+<!--end::Modal - افزودن کاربر جدید -->
+
+
+
+
+
+
+
+
+{% if user.profile.is_admin %}
+<div class="modal fade" id="kt_modal_users_table" tabindex="-1">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h2>لیست کاربران</h2>
+                <button class="btn btn-sm btn-icon" data-bs-dismiss="modal">
+                    ✕
+                </button>
+            </div>
+
+            <div class="modal-body">
+
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>نام</th>
+                            <th>تلفن</th>
+                            <th>نقش</th>
+                            <th>عملیات</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for p in profiles %}
+                        <tr>
+                            <td>{{ p.first_name }} {{ p.last_name }}</td>
+                            <td>{{ p.phone }}</td>
+                            <td>{{ p.role }}</td>
+                            <td>
+
+                                <!-- change password -->
+                                <button class="btn btn-sm btn-warning disabled"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#pwd_{{ p.id }}">
+                                    تغییر رمز
+                                </button>
+
+                                <!-- delete -->
+                                <a href="{% url 'authentication:delete_user' p.id %}"
+                                   class="btn btn-sm btn-danger disabled"
+                                   onclick="return confirm('حذف شود؟')">
+                                    حذف
+                                </a>
+
+                            </td>
+                        </tr>
+
+                        <!-- password modal -->
+                        <div class="modal fade" id="pwd_{{ p.id }}">
+                            <div class="modal-dialog">
+                                <div class="modal-content p-4">
+
+                                    <h5>تغییر رمز برای {{ p.phone }}</h5>
+
+                                    <form method="post" action="{% url 'authentication:admin_change_password' p.id %}">
+                                        {% csrf_token %}
+                                        <input type="password"
+                                               name="password"
+                                               class="form-control"
+                                               placeholder="رمز جدید">
+
+                                        <button class="btn btn-primary mt-3">
+                                            ذخیره
+                                        </button>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endif %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--end::کارت-->
+<script>var hostUrl = "{% static '' %}" ;</script>
+<script src="{% static 'plugins/global/plugins.bundle.js' %}" ></script>
+<script src="{% static 'js/scripts.bundle.js' %}"></script>
+<script src="{% static 'js/custom/apps/user-management/users/view/update-details.js' %}"></script>
+<script src="{% static 'js/custom/apps/user-management/users/view/update-password.js' %}"></script>
+<script src="{% static 'js/custom/apps/user-management/users/view/update-role.js' %}"></script>
+<script src="{% static 'js/custom/authentication/sign-up/general.js' %}"></script>
+
+
+
+{% endblock %}

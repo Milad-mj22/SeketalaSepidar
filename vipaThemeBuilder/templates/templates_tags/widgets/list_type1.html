@@ -1,0 +1,45 @@
+<div class="card card-xl-stretch mb-5 mb-xl-8">
+    <!--begin::Header-->
+    <div class="card-header border-0">
+        <h3 class="card-title fw-bold text-gray-900">{{ title }}</h3>
+    </div>
+    <!--end::Header-->
+    <!--begin::Body-->
+    <div class="card-body pt-2">
+        <!--begin::item-->
+        {% for item in items %}
+
+            <div class="d-flex align-items-center mb-8">
+                <!--begin::Bullet-->
+                <span class="bullet bullet-vertical h-40px" style="background-color:{{item.badge_color}};"></span>
+                <!--end::Bullet-->
+                <!--begin::Checkbox-->
+                {% if selectable %}
+                    <div class="form-check form-check-custom form-check-solid mx-5">
+                        <input class="form-check-input" type="checkbox" value="">
+                    </div>
+                {% endif %}
+                
+                <div class="flex-grow-1">
+                    <a href="#" class="fs-6" 
+                       style="color:{{item.title_color}}; font-weight:{{item.title_font_weight}}"
+                        >{{ item.title }}
+                    </a>
+                    <span class="d-block"
+                       style="color:{{item.descriptione_color}}; font-weight:{{item.descriptione_font_weight}}"
+                        >
+                        {{ item.descriptione }}
+                    </span>
+                </div>
+                {% if item.tag %}
+                    <span class="badge fs-8 text-white" 
+                        style="background-color:{{item.badge_color}}; font-weight:{{item.badge_font_weight}}">
+                        {{ item.tag }}
+                    </span>
+                {% endif %}
+            </div>
+        {% endfor %}
+        
+    </div>
+    <!--end::Body-->
+</div>

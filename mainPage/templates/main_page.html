@@ -1,0 +1,52 @@
+﻿{% extends "base_dashboard.html" %}
+{% load vipaDashboardTags %} 
+{% load vipaChartWidgetTags %} 
+{% load vipaListWidgetTags %} 
+{% load vipaToolbarWidgetTags %} 
+{% load vipaTabelWidgetTags %} 
+
+
+{% block title %}  
+
+{% endblock %}  
+
+<!-- --------------------------------------- -->
+
+{% block top_menu %}  
+
+{% endblock %}  
+
+
+<!-- --------------------------------------- -->
+{% block content %}  
+	<div class="row p-5 g-5 g-xl-8">
+		{% pro_tabel None "JS:edit_func" "URL:/delete" 'JS:add_func' 'URL:filter_func' %}
+		<script>
+			function edit_func(id){
+				console.log("edit", id);
+			}
+
+			function add_func(){
+				console.log("add");
+			}
+
+			function filter_func(parms){
+				console.log(parms)
+			}
+		</script>
+	<div>
+	<div class="row p-5 g-5 g-xl-8">
+		{% render_bar_chart_widget None %}
+	</div>
+
+	<div class="row p-5 g-5 g-xl-8">
+		{% list_type1 "عیوب" %}
+	</div>
+
+	<div class="row p-5 g-5 g-xl-8">
+		<div class="col-2">
+			{% toolbar_buttons None %}
+		</div>
+	</div>
+	
+{% endblock %}  

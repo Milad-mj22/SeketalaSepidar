@@ -1,0 +1,204 @@
+<!-- templates/widgets/pie_chart.html -->
+<div class="card card-xl-stretch mb-xl-8">
+    <!--begin::Header-->
+    <div class="card-header border-0 pt-5">
+        <h3 class="card-title align-items-start flex-column">
+            <span class="card-label fw-bold fs-3 mb-1">{{ pie_chart.title }}</span>
+            <span class="text-muted fw-semibold fs-7">{{ pie_chart.description }}</span>
+        </h3>
+    </div>
+    <!--end::Header-->
+    <!--begin::Body-->
+    <div class="card-body">
+        <!-- کانتینر فلکس برای چیدمان چپ:لیست و راست:چارت -->
+        <div class="row align-items-center">
+            <!-- سمت چپ: لیست عنوان‌ها با تعداد و درصد -->
+            <div class="col-md-5">
+                <div id="{{ pie_chart.legend_id }}" class="legend-container"></div>
+            </div>
+            
+            <!-- سمت راست: نمودار پای -->
+            <div class="col-md-7">
+                <div id="{{ pie_chart.chart_id }}" class="apex-chart-wrapper"></div>
+            </div>
+        </div>
+        
+        <!-- تگ اسکریپت JSON -->
+        {{ chart_payload|json_script:pie_chart.chart_data_id }}
+    </div>
+    <!--end::Body-->
+</div>
+
+<style>
+    .apex-chart-wrapper {
+        width: 100%;
+        min-height: 300px;
+    }
+    .apex-chart-wrapper .apexcharts-canvas {
+        width: 100% !important;
+    }
+    .legend-item {
+        padding: 8px 12px;
+        margin-bottom: 8px;
+        border-radius: 6px;
+        background-color: #f8f9fa;
+        transition: background-color 0.2s;
+    }
+    .legend-item:hover {
+        background-color: #e9ecef;
+    }
+    .legend-color {
+        flex-shrink: 0;
+    }
+</style>
+
+<script>
+    "use strict";
+    
+    document.addEventListener("DOMContentLoaded", function() {
+        (function() {
+            var chartId = "{{ pie_chart.chart_id }}";
+            var legendId = "{{ pie_chart.legend_id }}";
+            var dataId = "{{ pie_chart.chart_data_id }}";
+            
+            console.log("Chart ID:", chartId);
+            console.log("Legend ID:", legendId);
+            console.log("Data ID:", dataId);
+            
+            var payloadScript = document.getElementById(dataId);
+            
+            if (!payloadScript) {
+                console.error("داده‌های JSON یافت نشدند برای ID: " + dataId);
+                return;
+            }
+            
+            var chartPayload;
+            try {
+                chartPayload = JSON.parse(payloadScript.innerHTML);
+                console.log("Chart Payload:", chartPayload);
+            } catch (e) {
+                console.error("خطا در پارس کردن JSON:", e);
+                return;
+            }
+            
+            var element = document.getElementById(chartPayload.chart_id);
+            if (!element) {
+                console.error("المنت نمودار با ID " + chartPayload.chart_id + " در صفحه پیدا نشد.");
+                return;
+            }
+            
+            // محاسبه مجموع برای درصد
+            var total = chartPayload.series.reduce(function(a, b) { return a + b; }, 0);
+            
+            // ساخت لیست داده‌ها با درصد
+            var legendData = chartPayload.labels.map(function(label, index) {
+                var value = chartPayload.series[index] || 0;
+                var percentage = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
+                return {
+                    label: label,
+                    value: value,
+                    percentage: percentage,
+                    color: chartPayload.colors[index] || '#999999'
+                };
+            });
+            
+            // رندر کردن لیست در سمت چپ
+            var legendContainer = document.getElementById(legendId);
+            if (legendContainer) {
+                var legendHTML = '<div class="d-flex flex-column gap-2">';
+                legendData.forEach(function(item) {
+                    legendHTML += 
+                        '<div class="legend-item d-flex align-items-center">' +
+                            '<span class="legend-color me-3" style="width: 14px; height: 14px; border-radius: 50%; background-color: ' + item.color + '; display: inline-block; flex-shrink: 0;"></span>' +
+                            '<div class="flex-grow-1">' +
+                                '<div class="fw-semibold" style="font-size: 14px;">' + item.label + '</div>' +
+                                '<div class="text-muted" style="font-size: 13px;">' +
+                                    '<span class="fw-bold">' + item.value + '</span> ' +
+                                    '<span class="fw-bold" >(' + item.percentage + '%)</span>' +
+                                '</div>' +
+                            '</div>' +
+                        '</div>';
+                });
+                legendHTML += '</div>';
+                legendContainer.innerHTML = legendHTML;
+            }
+            
+            // تعریف رنگ‌ها
+            var labelColor = (typeof KTUtil !== 'undefined') ? KTUtil.getCssVariableValue('--bs-gray-500') : '#6c757d';
+            
+            var options = {
+                series: chartPayload.series,
+                labels: chartPayload.labels,
+                chart: {
+                    fontFamily: 'inherit',
+                    type: 'pie',
+                    height: 350,
+                    toolbar: { show: false },
+                    animations: {
+                        enabled: true,
+                        easing: 'easeinout',
+                        speed: 800
+                    }
+                },
+                colors: chartPayload.colors,
+                legend: {
+                    show: false
+                },
+                tooltip: {
+                    enabled: true,
+                    theme: 'light',
+                    y: {
+                        formatter: function(val, opts) {
+                            // محاسبه درصد برای هر بخش
+                            var percentage = (val / total * 100).toFixed(1);
+                            return '<div style="direction: rtl; text-align: right;">' +
+                                '<div>تعداد: <span style="font-weight: bold;">' + val + '</span></div>' +
+                                '<div>درصد: <span style="font-weight: bold;">' + percentage + '%</span></div>' +
+                                '</div>';
+                        }
+                    },
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'inherit'
+                    }
+                },
+                dataLabels: {
+                    enabled: true,
+                    style: {
+                        fontSize: '12px',
+                        fontFamily: 'inherit',
+                        fontWeight: 500
+                    },
+                    dropShadow: {
+                        enabled: false
+                    }
+                },
+                stroke: {
+                    show: true,
+                    width: 2,
+                    colors: ['#ffffff']
+                },
+                plotOptions: {
+                    pie: {
+                        expandOnClick: true,
+                        donut: {
+                            show: false,
+                            size: '65%'
+                        }
+                    }
+                }
+            };
+            
+            // اطمینان از اینکه المنت آماده است
+            setTimeout(function() {
+                try {
+                    var chart = new ApexCharts(element, options);
+                    chart.render();
+                    console.log("Chart rendered successfully!");
+                } catch (e) {
+                    console.error("خطا در رندر کردن نمودار:", e);
+                }
+            }, 100);
+        })();
+    });
+</script>

@@ -1,0 +1,1149 @@
+{% extends "base_dashboard.html" %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    /* ============================================================
+       استایل‌های اصلی - ویپاتک | هوش مصنوعی پیشرو
+    ============================================================ */
+    :root {
+        --vp-primary: #009ef7;
+        --vp-secondary: #7239ea;
+        --vp-accent: #00f2fe;
+        --vp-gradient: linear-gradient(135deg, #009ef7 0%, #7239ea 100%);
+        --vp-ai-gradient: linear-gradient(135deg, #00f2fe 0%, #7239ea 50%, #f5576c 100%);
+        --vp-dark: #0a0a1a;
+        --vp-card-bg: rgba(255, 255, 255, 0.04);
+    }
+
+    .about-ai {
+        background: var(--vp-dark);
+        min-height: 100vh;
+        padding: 2rem 0;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* ============================================================
+       پس‌زمینه با افکت شبکه عصبی
+    ============================================================ */
+    .ai-bg-grid {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 0;
+        background-image: 
+            linear-gradient(rgba(0, 158, 247, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0, 158, 247, 0.03) 1px, transparent 1px);
+        background-size: 50px 50px;
+        animation: gridMove 30s linear infinite;
+    }
+    @keyframes gridMove {
+        0% { transform: translate(0, 0); }
+        100% { transform: translate(50px, 50px); }
+    }
+
+    /* نقاط نورانی مانند شبکه عصبی */
+    .ai-nodes {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 0;
+        pointer-events: none;
+    }
+    .ai-node {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: rgba(0, 158, 247, 0.3);
+        animation: nodePulse 3s ease-in-out infinite;
+    }
+    .ai-node:nth-child(1) { top: 10%; left: 5%; animation-delay: 0s; }
+    .ai-node:nth-child(2) { top: 20%; left: 15%; animation-delay: 0.5s; width: 6px; height: 6px; }
+    .ai-node:nth-child(3) { top: 30%; left: 25%; animation-delay: 1s; }
+    .ai-node:nth-child(4) { top: 40%; left: 35%; animation-delay: 1.5s; width: 8px; height: 8px; }
+    .ai-node:nth-child(5) { top: 50%; left: 45%; animation-delay: 2s; }
+    .ai-node:nth-child(6) { top: 60%; left: 55%; animation-delay: 2.5s; width: 6px; height: 6px; }
+    .ai-node:nth-child(7) { top: 70%; left: 65%; animation-delay: 0.3s; }
+    .ai-node:nth-child(8) { top: 80%; left: 75%; animation-delay: 0.8s; width: 8px; height: 8px; }
+    .ai-node:nth-child(9) { top: 90%; left: 85%; animation-delay: 1.3s; }
+    .ai-node:nth-child(10) { top: 15%; left: 95%; animation-delay: 1.8s; width: 6px; height: 6px; }
+    .ai-node:nth-child(11) { top: 85%; left: 10%; animation-delay: 2.3s; }
+    .ai-node:nth-child(12) { top: 45%; left: 85%; animation-delay: 0.7s; width: 8px; height: 8px; }
+    @keyframes nodePulse {
+        0%, 100% { opacity: 0.2; transform: scale(1); }
+        50% { opacity: 1; transform: scale(2); }
+    }
+
+    /* ============================================================
+       هدر با بج AI
+    ============================================================ */
+    .ai-badge {
+        display: inline-block;
+        background: var(--vp-ai-gradient);
+        color: #fff;
+        padding: 0.3rem 1.2rem;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        animation: badgeGlow 2s ease-in-out infinite;
+        box-shadow: 0 0 30px rgba(0, 158, 247, 0.2);
+    }
+    @keyframes badgeGlow {
+        0%, 100% { box-shadow: 0 0 20px rgba(0, 158, 247, 0.2); }
+        50% { box-shadow: 0 0 40px rgba(0, 158, 247, 0.4); }
+    }
+
+    .hero-title {
+        font-size: 4rem;
+        font-weight: 900;
+        line-height: 1.1;
+        color: #fff;
+    }
+    .hero-title .ai-highlight {
+        background: var(--vp-ai-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        background-size: 300% 300%;
+        animation: gradientMove 3s ease-in-out infinite;
+    }
+    @keyframes gradientMove {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+    }
+
+    /* ============================================================
+       تایپ‌رایتر - جلوه چت‌بات
+    ============================================================ */
+    .typing-container {
+        display: inline-block;
+        background: rgba(0, 158, 247, 0.05);
+        padding: 0.5rem 1.5rem;
+        border-radius: 50px;
+        border: 1px solid rgba(0, 158, 247, 0.1);
+        margin-top: 1rem;
+    }
+    .typing-dots {
+        display: inline-flex;
+        gap: 4px;
+        align-items: center;
+    }
+    .typing-dots span {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--vp-gradient);
+        animation: typingDot 1.4s ease-in-out infinite;
+    }
+    .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes typingDot {
+        0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+        30% { transform: translateY(-10px); opacity: 1; }
+    }
+    .typing-text {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 0.9rem;
+        margin-right: 10px;
+    }
+
+    /* ============================================================
+       کارت AI
+    ============================================================ */
+    .ai-card {
+        background: var(--vp-card-bg);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 20px;
+        padding: 2rem;
+        transition: all 0.4s ease;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+    .ai-card::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle, rgba(0, 158, 247, 0.03) 0%, transparent 70%);
+        transition: all 0.6s ease;
+    }
+    .ai-card:hover::before {
+        top: 0;
+        right: 0;
+    }
+    .ai-card:hover {
+        transform: translateY(-8px);
+        border-color: rgba(0, 158, 247, 0.2);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+    .ai-card .ai-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        margin-bottom: 1.2rem;
+        background: var(--vp-ai-gradient);
+        color: #fff;
+        transition: all 0.4s ease;
+    }
+    .ai-card:hover .ai-icon {
+        transform: rotate(-8deg) scale(1.1);
+    }
+    .ai-card h4 {
+        color: #fff;
+        font-weight: 700;
+        margin-bottom: 0.8rem;
+    }
+    .ai-card p {
+        color: rgba(255, 255, 255, 0.6);
+        line-height: 1.7;
+    }
+    .ai-card .ai-badge-sm {
+        display: inline-block;
+        background: rgba(0, 158, 247, 0.1);
+        color: #009ef7;
+        padding: 0.2rem 0.8rem;
+        border-radius: 50px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        margin-top: 0.5rem;
+    }
+
+    /* ============================================================
+       متریک‌های AI
+    ============================================================ */
+    .ai-metrics {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.5rem;
+    }
+    .metric-box {
+        text-align: center;
+        padding: 1.5rem;
+        background: var(--vp-card-bg);
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        transition: all 0.4s ease;
+        position: relative;
+    }
+    .metric-box:hover {
+        border-color: rgba(0, 158, 247, 0.2);
+        transform: translateY(-5px);
+    }
+    .metric-box .metric-number {
+        font-size: 2.8rem;
+        font-weight: 900;
+        background: var(--vp-ai-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        line-height: 1.2;
+    }
+    .metric-box .metric-label {
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 0.85rem;
+        margin-top: 0.3rem;
+    }
+    .metric-box .metric-icon {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 1.5rem;
+        opacity: 0.1;
+    }
+
+    /* ============================================================
+       نمایشگر دیتا (Data Viz)
+    ============================================================ */
+    .data-viz {
+        background: var(--vp-card-bg);
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        padding: 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+    .data-viz .viz-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+    .data-viz .viz-title {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+    .data-viz .viz-status {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #00b09b;
+        font-size: 0.8rem;
+    }
+    .data-viz .viz-status .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #00b09b;
+        animation: dotPulse 1.5s ease-in-out infinite;
+    }
+    @keyframes dotPulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.3; }
+    }
+
+    /* نوارهای پیشرفت AI */
+    .ai-progress {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+    .ai-progress .progress-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    .ai-progress .progress-label {
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 0.8rem;
+        min-width: 120px;
+    }
+    .ai-progress .progress-bar-bg {
+        flex: 1;
+        height: 6px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    .ai-progress .progress-fill {
+        height: 100%;
+        border-radius: 10px;
+        background: var(--vp-ai-gradient);
+        width: 0%;
+        animation: progressAnim 2s ease-in-out forwards;
+    }
+    @keyframes progressAnim {
+        from { width: 0%; }
+        to { width: var(--target); }
+    }
+
+    /* ============================================================
+       چت‌بات کوچک (نمایشی)
+    ============================================================ */
+    .chat-demo {
+        background: var(--vp-card-bg);
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        padding: 1.5rem;
+        max-width: 350px;
+        margin: 0 auto;
+    }
+    .chat-demo .chat-msg {
+        display: flex;
+        gap: 0.8rem;
+        margin-bottom: 1rem;
+    }
+    .chat-demo .chat-msg .avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: var(--vp-gradient);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 0.7rem;
+        font-weight: 700;
+        flex-shrink: 0;
+    }
+    .chat-demo .chat-msg .bubble {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 0.6rem 1rem;
+        border-radius: 12px;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 0.85rem;
+        line-height: 1.5;
+    }
+    .chat-demo .chat-msg.ai .bubble {
+        background: rgba(0, 158, 247, 0.1);
+        border: 1px solid rgba(0, 158, 247, 0.1);
+    }
+    .chat-demo .chat-msg.user {
+        flex-direction: row-reverse;
+    }
+    .chat-demo .chat-msg.user .bubble {
+        background: var(--vp-gradient);
+        color: #fff;
+    }
+
+    /* ============================================================
+       بقیه استایل‌ها
+    ============================================================ */
+    .section-title {
+        font-size: 2.8rem;
+        font-weight: 900;
+        color: #fff;
+        line-height: 1.2;
+    }
+    .section-title .ai-highlight {
+        background: var(--vp-ai-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    .section-sub {
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 1.1rem;
+    }
+
+    .tech-pill {
+        display: inline-block;
+        padding: 0.4rem 1.2rem;
+        background: rgba(0, 158, 247, 0.08);
+        color: #009ef7;
+        border-radius: 50px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        border: 1px solid rgba(0, 158, 247, 0.1);
+        margin: 0.2rem;
+        transition: all 0.3s ease;
+    }
+    .tech-pill:hover {
+        background: rgba(0, 158, 247, 0.15);
+        transform: translateY(-2px);
+    }
+
+    .btn-ai {
+        padding: 0.8rem 2rem;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 1rem;
+        border: none;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    .btn-ai-primary {
+        background: var(--vp-ai-gradient);
+        color: #fff;
+        box-shadow: 0 8px 30px rgba(0, 158, 247, 0.25);
+        background-size: 200% 200%;
+        animation: btnGrad 3s ease-in-out infinite;
+    }
+    @keyframes btnGrad {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+    }
+    .btn-ai-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 40px rgba(0, 158, 247, 0.35);
+        color: #fff;
+    }
+    .btn-ai-outline {
+        background: rgba(255, 255, 255, 0.05);
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .btn-ai-outline:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        transform: translateY(-3px);
+    }
+
+    /* ریسپانسیو */
+    @media (max-width: 991px) {
+        .hero-title { font-size: 3rem; }
+        .section-title { font-size: 2.2rem; }
+        .ai-metrics { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 767px) {
+        .hero-title { font-size: 2.2rem; }
+        .ai-metrics { grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .metric-box .metric-number { font-size: 2rem; }
+        .section-title { font-size: 1.8rem; }
+        .chat-demo { max-width: 100%; }
+    }
+
+    /* مودال */
+    .modal-ai .modal-content {
+        background: rgba(15, 15, 30, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 20px;
+        color: #fff;
+    }
+    .modal-ai .modal-header {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .modal-ai .modal-footer {
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .modal-ai .form-control,
+    .modal-ai .form-select {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: #fff;
+        border-radius: 12px;
+    }
+    .modal-ai .form-control:focus,
+    .modal-ai .form-select:focus {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(0, 158, 247, 0.3);
+        box-shadow: 0 0 0 3px rgba(0, 158, 247, 0.05);
+        color: #fff;
+    }
+    .modal-ai .btn-close {
+        filter: invert(1);
+        opacity: 0.5;
+    }
+    .modal-ai .btn-close:hover {
+        opacity: 1;
+    }
+</style>
+
+<!-- ============================================================
+     محتوای اصلی - صفحه درباره ما با المان‌های هوش مصنوعی
+     ============================================================ -->
+<div class="about-ai">
+
+    <!-- پس‌زمینه شبکه عصبی -->
+    <div class="ai-bg-grid"></div>
+    <div class="ai-nodes">
+        <div class="ai-node"></div>
+        <div class="ai-node"></div>
+        <div class="ai-node"></div>
+        <div class="ai-node"></div>
+        <div class="ai-node"></div>
+        <div class="ai-node"></div>
+        <div class="ai-node"></div>
+        <div class="ai-node"></div>
+        <div class="ai-node"></div>
+        <div class="ai-node"></div>
+        <div class="ai-node"></div>
+        <div class="ai-node"></div>
+    </div>
+
+    <!-- ============================================================
+       1. بخش هیرو با جلوه AI
+    ============================================================ -->
+    <section class="container-xxl" style="min-height: 80vh; display: flex; align-items: center; padding: 2rem 0;">
+        <div class="row align-items-center">
+            <div class="col-lg-7">
+                <div class="ai-badge" data-aos="fade-down">
+                    🤖 هوش مصنوعی پیشرو در صنعت
+                </div>
+                <h1 class="hero-title" data-aos="fade-up" data-aos-delay="100">
+                    تحول دیجیتال با <br>
+                    <span class="ai-highlight">هوش مصنوعی کاربردی</span>
+                </h1>
+                <p class="hero-sub" style="color: rgba(255,255,255,0.6); font-size: 1.2rem; line-height: 1.8; max-width: 550px; margin-top: 1.5rem;" data-aos="fade-up" data-aos-delay="200">
+                    شرکت ویرا پرداز اصفهان (ویپاتک)؛ پیشرو در ارائه راهکارهای بینایی ماشین و تحلیل داده‌های صنعتی با استفاده از هوش مصنوعی
+                </p>
+                
+                <!-- جلوه تایپ‌رایتر (نمایشگر چت‌بات) -->
+                <div class="typing-container" data-aos="fade-up" data-aos-delay="250">
+                    <span class="typing-text">🤖 هوش مصنوعی ویپاتک فعال است</span>
+                    <div class="typing-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+
+                <div class="mt-4" data-aos="fade-up" data-aos-delay="300">
+                    <span class="tech-pill">🧠 Deep Learning</span>
+                    <span class="tech-pill">👁️ Computer Vision</span>
+                    <span class="tech-pill">📊 Predictive Analytics</span>
+                    <span class="tech-pill">🔮 AI Forecasting</span>
+                </div>
+                <div class="mt-5 d-flex flex-wrap gap-3" data-aos="fade-up" data-aos-delay="400">
+                    <a href="#solutions" class="btn-ai btn-ai-primary">
+                        <i class="ki-duotone ki-rocket fs-4"></i>
+                        مشاهده راهکارها
+                    </a>
+                    <a href="#" class="btn-ai btn-ai-outline" data-bs-toggle="modal" data-bs-target="#demoModal">
+                        <i class="ki-duotone ki-call fs-4"></i>
+                        درخواست دمو
+                    </a>
+                    <a href="#" class="btn-ai btn-ai-outline" data-bs-toggle="modal" data-bs-target="#contactModal">
+                        <i class="ki-duotone ki-message-text-2 fs-4"></i>
+                        تماس با ما
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-5 mt-5 mt-lg-0" data-aos="zoom-in" data-aos-delay="200">
+                <div class="chat-demo">
+                    <div class="chat-msg ai">
+                        <div class="avatar">AI</div>
+                        <div class="bubble">
+                            👋 سلام! من دستیار هوشمند ویپاتک هستم. چگونه می‌توانم به شما کمک کنم؟
+                        </div>
+                    </div>
+                    <div class="chat-msg user">
+                        <div class="avatar" style="background: #7239ea;">ش</div>
+                        <div class="bubble">
+                            آیا می‌توانید عیوب خط تولید را تشخیص دهید؟
+                        </div>
+                    </div>
+                    <div class="chat-msg ai">
+                        <div class="avatar">AI</div>
+                        <div class="bubble">
+                            🎯 بله! سیستم‌های بینایی ماشین ما با دقت ۹۹.۹٪ انواع عیوب را در لحظه شناسایی می‌کنند.
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 0.5rem;">
+                        <span style="color: rgba(255,255,255,0.2); font-size: 0.7rem;">💡 گفتگوی شبیه‌سازی شده با AI</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+       2. متریک‌های AI
+    ============================================================ -->
+    <section class="container-xxl py-4">
+        <div class="ai-metrics">
+            <div class="metric-box" data-aos="fade-up">
+                <div class="metric-icon">🎯</div>
+                <div class="metric-number" data-count="99.9">99.9%</div>
+                <div class="metric-label">دقت تشخیص با AI</div>
+            </div>
+            <div class="metric-box" data-aos="fade-up" data-aos-delay="100">
+                <div class="metric-icon">⚡</div>
+                <div class="metric-number" data-count="40">40%</div>
+                <div class="metric-label">کاهش ضایعات با AI</div>
+            </div>
+            <div class="metric-box" data-aos="fade-up" data-aos-delay="200">
+                <div class="metric-icon">🧠</div>
+                <div class="metric-number" data-count="24">24/7</div>
+                <div class="metric-label">پایش هوشمند مداوم</div>
+            </div>
+            <div class="metric-box" data-aos="fade-up" data-aos-delay="300">
+                <div class="metric-icon">📊</div>
+                <div class="metric-number" data-count="100K">100K+</div>
+                <div class="metric-label">تصویر آموزش دیده</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+       3. نمایشگر داده‌های AI
+    ============================================================ -->
+    <section class="container-xxl py-4">
+        <div class="data-viz" data-aos="fade-up">
+            <div class="viz-header">
+                <span class="viz-title">🧠 وضعیت مدل‌های هوش مصنوعی</span>
+                <div class="viz-status">
+                    <span class="dot"></span>
+                    <span>سیستم فعال</span>
+                </div>
+            </div>
+            <div class="ai-progress">
+                <div class="progress-item">
+                    <span class="progress-label">تشخیص عیوب سطحی</span>
+                    <div class="progress-bar-bg">
+                        <div class="progress-fill" style="--target: 98%; width: 98%;"></div>
+                    </div>
+                    <span style="color: rgba(255,255,255,0.4); font-size: 0.7rem; min-width: 35px;">98%</span>
+                </div>
+                <div class="progress-item">
+                    <span class="progress-label">کنترل ابعادی</span>
+                    <div class="progress-bar-bg">
+                        <div class="progress-fill" style="--target: 95%; width: 95%;"></div>
+                    </div>
+                    <span style="color: rgba(255,255,255,0.4); font-size: 0.7rem; min-width: 35px;">95%</span>
+                </div>
+                <div class="progress-item">
+                    <span class="progress-label">پیش‌بینی خرابی</span>
+                    <div class="progress-bar-bg">
+                        <div class="progress-fill" style="--target: 92%; width: 92%;"></div>
+                    </div>
+                    <span style="color: rgba(255,255,255,0.4); font-size: 0.7rem; min-width: 35px;">92%</span>
+                </div>
+                <div class="progress-item">
+                    <span class="progress-label">تحلیل کیفیت</span>
+                    <div class="progress-bar-bg">
+                        <div class="progress-fill" style="--target: 96%; width: 96%;"></div>
+                    </div>
+                    <span style="color: rgba(255,255,255,0.4); font-size: 0.7rem; min-width: 35px;">96%</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+       4. بخش داستان
+    ============================================================ -->
+    <section class="container-xxl py-5" id="story">
+        <div class="row align-items-center">
+            <div class="col-lg-6" data-aos="fade-right">
+                <div class="ai-badge" style="background: rgba(0,158,247,0.1); color: #009ef7;">💡 داستان ما</div>
+                <h2 class="section-title mt-3">چرا <span class="ai-highlight">ویپاتک</span> خلق شد؟</h2>
+                <div style="color: rgba(255,255,255,0.6); line-height: 2; margin-top: 1.5rem;">
+                    <p>
+                        در قلب انقلاب صنعتی چهارم، داده‌ها ارزشمندترین دارایی هر کارخانه‌ای هستند. با این حال، ما مشاهده کردیم که در صنعت کشور، بیش از ۹۰٪ داده‌های تولید شده توسط سنسورها و دوربین‌ها، بدون تحلیل رها می‌شوند.
+                    </p>
+                    <p class="mt-3">
+                        ویپاتک متولد شد تا این داده‌های خام را به <strong style="color: #009ef7;">«هوش عملیاتی»</strong> تبدیل کند. ما با تکیه بر <strong style="color: #7239ea;">پیشرفته‌ترین الگوریتم‌های هوش مصنوعی</strong>، سیستم‌هایی پایدار و دقیق برای محیط‌های خشن صنعتی طراحی کرده‌ایم.
+                    </p>
+                </div>
+                <div class="row mt-4 g-3">
+                    <div class="col-sm-6">
+                        <div style="background: rgba(0,158,247,0.05); padding: 1rem; border-radius: 16px; border-right: 3px solid #009ef7;">
+                            <div style="color: #009ef7; font-weight: 700;">🎯 دیدگاه ما</div>
+                            <div style="color: rgba(255,255,255,0.5); font-size: 0.9rem;">پیشرو بودن در ارائه راهکارهای AI که کیفیت زندگی کاری و بهره‌وری ملی را ارتقا می‌دهد.</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div style="background: rgba(114,57,234,0.05); padding: 1rem; border-radius: 16px; border-right: 3px solid #7239ea;">
+                            <div style="color: #7239ea; font-weight: 700;">🚀 ماموریت ما</div>
+                            <div style="color: rgba(255,255,255,0.5); font-size: 0.9rem;">توسعه پلتفرم‌های بینایی ماشین که خطاهای انسانی را به صفر نزدیک کرده و هزینه‌های ضایعات را تا ۴۰٪ کاهش می‌دهد.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 mt-5 mt-lg-0" data-aos="fade-left">
+                <div class="row g-4">
+                    <div class="col-sm-6">
+                        <div class="ai-card">
+                            <div class="ai-icon">🧠</div>
+                            <h4>هوش مصنوعی پیشرفته</h4>
+                            <p>استفاده از Deep Learning و Computer Vision برای دقیق‌ترین تشخیص‌ها</p>
+                            <span class="ai-badge-sm">⚡ فعال</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="ai-card">
+                            <div class="ai-icon" style="background: linear-gradient(135deg, #00b09b, #96c93d);">📊</div>
+                            <h4>تحلیل داده‌های صنعتی</h4>
+                            <p>تبدیل داده‌های خام به بینش‌های عملی برای بهبود کیفیت</p>
+                            <span class="ai-badge-sm">📈 پیشرو</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="ai-card">
+                            <div class="ai-icon" style="background: linear-gradient(135deg, #f5576c, #f093fb);">🤝</div>
+                            <h4>همراهی هوشمند</h4>
+                            <p>پشتیبانی ۲۴ ساعته با سیستم‌های هوشمند و تیم متخصص</p>
+                            <span class="ai-badge-sm">🛡️ پایدار</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="ai-card">
+                            <div class="ai-icon" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">⚡</div>
+                            <h4>پایداری صنعتی</h4>
+                            <p>سیستم‌های مقاوم برای کارکرد در محیط‌های سخت تولیدی</p>
+                            <span class="ai-badge-sm">🔧 صنعتی</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+       5. بخش راهکارهای AI
+    ============================================================ -->
+    <section class="container-xxl py-5" id="solutions">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <div class="ai-badge" style="background: rgba(0,158,247,0.1); color: #009ef7;">⚡ راهکارهای AI</div>
+            <h2 class="section-title mt-3">راهکارهای هوشمند <span class="ai-highlight">ویپاتک</span></h2>
+            <p class="section-sub">چهار ستون اصلی هوشمندسازی صنعت با هوش مصنوعی</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="ai-card">
+                    <div class="ai-icon" style="background: linear-gradient(135deg, #009ef7, #4facfe);">👁️</div>
+                    <h4>بازرسی و تشخیص عیوب (AOI)</h4>
+                    <p>الگوریتم‌های Deep Learning برای شناسایی ترک‌ها، ناخالصی‌ها و ایرادات سطحی با سرعتی فراتر از چشم انسان</p>
+                    <span class="ai-badge-sm">🧠 دقت ۹۹.۹٪</span>
+                </div>
+            </div>
+            <div class="col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="ai-card">
+                    <div class="ai-icon" style="background: linear-gradient(135deg, #00b09b, #96c93d);">📐</div>
+                    <h4>کنترل ابعادی دقیق (Metrology)</h4>
+                    <p>اندازه‌گیری میلی‌متری و میکرونی در لحظه تولید با سیستم‌های بدون تماس و هوشمند</p>
+                    <span class="ai-badge-sm">📏 دقت میکرونی</span>
+                </div>
+            </div>
+            <div class="col-md-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="ai-card">
+                    <div class="ai-icon" style="background: linear-gradient(135deg, #f5576c, #f093fb);">📊</div>
+                    <h4>پیش‌بینی کیفیت (Quality Analytics)</h4>
+                    <p>تحلیل همبستگی متغیرهای فرآیند و هشدار قبل از تولید قطعه معیوب با استفاده از AI</p>
+                    <span class="ai-badge-sm">🔮 پیش‌بینی هوشمند</span>
+                </div>
+            </div>
+            <div class="col-md-6" data-aos="fade-up" data-aos-delay="400">
+                <div class="ai-card">
+                    <div class="ai-icon" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">🔧</div>
+                    <h4>نگهداری پیش‌گویانه (PdM)</h4>
+                    <p>تشخیص خرابی بلبرینگ‌ها و موتورها با تحلیل ارتعاشات و صدا هفته‌ها قبل از وقوع حادثه</p>
+                    <span class="ai-badge-sm">🛡️ پیشگیری از توقف</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+       6. تیم - با المان‌های AI
+    ============================================================ -->
+    <section class="container-xxl py-5" id="team">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <div class="ai-badge" style="background: rgba(0,158,247,0.1); color: #009ef7;">👥 تیم ما</div>
+            <h2 class="section-title mt-3">مدیران و رهبران <span class="ai-highlight">ویپاتک</span></h2>
+            <p class="section-sub">ترکیبی از تخصص صنعتی و دانش روز هوش مصنوعی</p>
+        </div>
+        <div class="row g-4 justify-content-center">
+            <div class="col-lg-3 col-md-6" data-aos="flip-up" data-aos-delay="100">
+                <div class="ai-card" style="text-align: center;">
+                    <div style="width: 120px; height: 120px; border-radius: 50%; margin: 0 auto 1rem; overflow: hidden; border: 3px solid rgba(0,158,247,0.1);">
+                        <img src="{% static 'team/malek.jpg' %}" style="width: 100%; height: 100%; object-fit: cover;" alt="امیرحسین ملک‌زاده">
+                    </div>
+                    <h4 style="font-size: 1.1rem;">امیرحسین ملک‌زاده</h4>
+                    <div style="color: #009ef7; font-size: 0.85rem; font-weight: 600;">مدیر عامل</div>
+                    <p style="color: rgba(255,255,255,0.5); font-size: 0.85rem; margin-top: 0.5rem;">استراتژیست تحول دیجیتال با نگاهی نو به مدیریت صنعتی</p>
+                    <span class="ai-badge-sm">🎯 استراتژی</span>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6" data-aos="flip-up" data-aos-delay="200">
+                <div class="ai-card" style="text-align: center;">
+                    <div style="width: 120px; height: 120px; border-radius: 50%; margin: 0 auto 1rem; overflow: hidden; border: 3px solid rgba(0,158,247,0.1);">
+                        <img src="{% static 'team/milad.png' %}" style="width: 100%; height: 100%; object-fit: cover;" alt="میلاد ملتجی">
+                    </div>
+                    <h4 style="font-size: 1.1rem;">میلاد ملتجی</h4>
+                    <div style="color: #009ef7; font-size: 0.85rem; font-weight: 600;">مدیر فنی</div>
+                    <p style="color: rgba(255,255,255,0.5); font-size: 0.85rem; margin-top: 0.5rem;">متخصص ارشد معماری سیستم‌های هوشمند و بینایی ماشین</p>
+                    <span class="ai-badge-sm">🧠 AI Expert</span>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6" data-aos="flip-up" data-aos-delay="300">
+                <div class="ai-card" style="text-align: center;">
+                    <div style="width: 120px; height: 120px; border-radius: 50%; margin: 0 auto 1rem; overflow: hidden; border: 3px solid rgba(0,158,247,0.1);">
+                        <img src="{% static 'team/abbasi.jpg' %}" style="width: 100%; height: 100%; object-fit: cover;" alt="زهرا عباسی">
+                    </div>
+                    <h4 style="font-size: 1.1rem;">زهرا عباسی</h4>
+                    <div style="color: #009ef7; font-size: 0.85rem; font-weight: 600;">مدیر بازرگانی</div>
+                    <p style="color: rgba(255,255,255,0.5); font-size: 0.85rem; margin-top: 0.5rem;">توسعه‌دهنده بازارهای هدف و زنجیره تامین راهکارهای تکنولوژیک</p>
+                    <span class="ai-badge-sm">📈 Business</span>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6" data-aos="flip-up" data-aos-delay="400">
+                <div class="ai-card" style="text-align: center;">
+                    <div style="width: 120px; height: 120px; border-radius: 50%; margin: 0 auto 1rem; overflow: hidden; border: 3px solid rgba(0,158,247,0.1);">
+                        <img src="{% static 'team/alireza.jpg' %}" style="width: 100%; height: 100%; object-fit: cover;" alt="علیرضا خلیلیان">
+                    </div>
+                    <h4 style="font-size: 1.1rem;">علیرضا خلیلیان</h4>
+                    <div style="color: #009ef7; font-size: 0.85rem; font-weight: 600;">مدیر تحقیق و توسعه</div>
+                    <p style="color: rgba(255,255,255,0.5); font-size: 0.85rem; margin-top: 0.5rem;">پیشگام در پژوهش‌های کاربردی لبه تکنولوژی در هوش مصنوعی</p>
+                    <span class="ai-badge-sm">🔬 R&D</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+       7. CTA با المان AI
+    ============================================================ -->
+    <section class="container-xxl py-5">
+        <div class="cta-ai" style="background: var(--vp-ai-gradient); border-radius: 24px; padding: 4rem; text-align: center; position: relative; overflow: hidden;" data-aos="zoom-in">
+            <div style="position: absolute; top: -50%; right: -20%; width: 300px; height: 300px; border-radius: 50%; background: rgba(255,255,255,0.05);"></div>
+            <div style="position: absolute; bottom: -30%; left: -10%; width: 200px; height: 200px; border-radius: 50%; background: rgba(255,255,255,0.03);"></div>
+            <div style="position: relative; z-index: 1;">
+                <div class="ai-badge" style="background: rgba(255,255,255,0.15); color: #fff; border: none;">🤖 هوش مصنوعی آماده خدمت</div>
+                <h2 style="font-size: 3rem; font-weight: 900; color: #fff; margin-top: 1rem;">آماده‌اید با AI کارخانه را متحول کنید؟</h2>
+                <p style="color: rgba(255,255,255,0.8); font-size: 1.2rem; max-width: 600px; margin: 1rem auto 2rem;">ما در ویپاتک با استفاده از پیشرفته‌ترین الگوریتم‌های هوش مصنوعی، آماده تحول صنعت شما هستیم</p>
+                <div class="d-flex flex-wrap justify-content-center gap-3">
+                    <a href="#" class="btn-ai btn-ai-primary" style="background: #fff; color: #009ef7; box-shadow: none;" data-bs-toggle="modal" data-bs-target="#demoModal">
+                        <i class="ki-duotone ki-rocket fs-4"></i>
+                        شروع تحول با AI
+                    </a>
+                    <a href="#" class="btn-ai btn-ai-outline" style="border-color: rgba(255,255,255,0.3); color: #fff;" data-bs-toggle="modal" data-bs-target="#contactModal">
+                        <i class="ki-duotone ki-call fs-4"></i>
+                        مشاوره هوشمند
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<!-- ============================================================
+     مودال‌ها
+     ============================================================ -->
+<!-- مودال تماس -->
+<div class="modal fade modal-ai" id="contactModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold"><i class="ki-duotone ki-call fs-3 text-primary me-2"></i>تماس با ویپاتک</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center py-4">
+                <div class="symbol symbol-100px symbol-circle mx-auto mb-4" style="background: rgba(0,158,247,0.1);">
+                    <i class="ki-duotone ki-call fs-3tx text-primary"></i>
+                </div>
+                <h3 class="fw-bold mb-2">شماره تماس</h3>
+                <a href="tel:09136563913" class="display-6 fw-bold text-primary text-decoration-none d-block mb-3">۰۹۱۳-۶۵۶-۳۹۱۳</a>
+                <button class="btn btn-sm mb-4" style="background: rgba(0,158,247,0.1); color: #009ef7; border: 1px solid rgba(0,158,247,0.1);" onclick="copyPhoneNumber()">
+                    <i class="ki-duotone ki-copy fs-4 me-1"></i>کپی شماره
+                </button>
+                <hr style="border-color: rgba(255,255,255,0.05);">
+                <div class="d-flex align-items-center justify-content-center gap-3">
+                    <i class="ki-duotone ki-global fs-2tx text-primary"></i>
+                    <div>
+                        <h6 class="fw-bold mb-0" style="color: rgba(255,255,255,0.6);">وبسایت</h6>
+                        <a href="https://vipatech.ir" target="_blank" class="text-primary text-decoration-none fw-semibold">vipatech.ir</a>
+                    </div>
+                </div>
+                <p class="mt-4 small" style="color: rgba(255,255,255,0.3);">کارشناسان هوش مصنوعی ما آماده پاسخگویی هستند</p>
+            </div>
+            <div class="modal-footer justify-content-center gap-3">
+                <button class="btn btn-light btn-lg px-6" data-bs-dismiss="modal">بستن</button>
+                <a href="tel:09136563913" class="btn btn-primary btn-lg px-6"><i class="ki-duotone ki-call fs-4 me-2"></i>تماس با AI</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- مودال دمو -->
+<div class="modal fade modal-ai" id="demoModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold"><i class="ki-duotone ki-rocket fs-3 text-primary me-2"></i>درخواست دموی هوش مصنوعی</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-center mb-4" style="color: rgba(255,255,255,0.5);">با تکمیل این فرم، تیم هوش مصنوعی ما برای ارائه دموی اختصاصی با شما تماس می‌گیرد</p>
+                <form id="demoRequestForm">
+                    {% csrf_token %}
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <label class="form-label">نام و نام خانوادگی <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="demoFullName" placeholder="علی محمدی" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">شماره تماس <span class="text-danger">*</span></label>
+                            <input type="tel" class="form-control" id="demoPhone" placeholder="۰۹۱۲۳۴۵۶۷۸۹" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">ایمیل</label>
+                            <input type="email" class="form-control" id="demoEmail" placeholder="example@domain.com">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">نام شرکت</label>
+                            <input type="text" class="form-control" id="demoCompany" placeholder="نام شرکت خود را وارد کنید">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">صنعت <span class="text-danger">*</span></label>
+                            <select class="form-select" id="demoIndustry" required>
+                                <option value="">انتخاب کنید...</option>
+                                <option value="automotive">خودروسازی</option>
+                                <option value="electronics">الکترونیک</option>
+                                <option value="pharmaceutical">دارویی</option>
+                                <option value="food">غذایی</option>
+                                <option value="petrochemical">پتروشیمی</option>
+                                <option value="mining">معدن و فولاد</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">راهکار مورد نظر <span class="text-danger">*</span></label>
+                            <select class="form-select" id="demoSolution" required>
+                                <option value="">انتخاب کنید...</option>
+                                <option value="aoi">تشخیص عیوب با AI</option>
+                                <option value="metrology">کنترل ابعادی هوشمند</option>
+                                <option value="quality">پیش‌بینی کیفیت</option>
+                                <option value="pdm">نگهداری پیش‌گویانه</option>
+                                <option value="custom">راهکار سفارشی AI</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">چالش صنعتی خود را توضیح دهید</label>
+                            <textarea class="form-control" id="demoDescription" rows="3" placeholder="چه مشکلی دارید که با هوش مصنوعی می‌توان حل کرد؟"></textarea>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">اولویت تماس</label>
+                            <div class="d-flex gap-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="priority" id="priorityNormal" value="normal" checked>
+                                    <label class="form-check-label" for="priorityNormal">عادی</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="priority" id="priorityUrgent" value="urgent">
+                                    <label class="form-check-label" for="priorityUrgent">فوری</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="priority" id="priorityVeryUrgent" value="very_urgent">
+                                    <label class="form-check-label" for="priorityVeryUrgent">بسیار فوری</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-light btn-lg px-6" data-bs-dismiss="modal">انصراف</button>
+                <button type="button" class="btn btn-primary btn-lg px-8" onclick="submitDemoRequest()">
+                    <i class="ki-duotone ki-send fs-4 me-2"></i>
+                    ارسال درخواست AI
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================
+     اسکریپت‌ها
+     ============================================================ -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    // ============================================================
+    //  مقداردهی اولیه
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', function() {
+        AOS.init({
+            duration: 800,
+            once: false,
+            mirror: true,
+            offset: 50
+        });
+    });
+
+    // ============================================================
+    //  کپی شماره
+    // ============================================================
+    window.copyPhoneNumber = function() {
+        const phone = '09136563913';
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(phone).then(() => {
+                showToast('✅ شماره تلفن کپی شد!', 'success');
+            }).catch(() => fallbackCopy(phone));
+        } else {
+            fallbackCopy(phone);
+        }
+    };
+
+    function fallbackCopy(text) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try {
+            document.execCommand('copy');
+            showToast('✅ شماره تلفن کپی شد!', 'success');
+        } catch (err) {
+            showToast('❌ خطا در کپی', 'error');
+        }
+        document.body.removeChild(ta);
+    }
+
+    // ============================================================
+    //  ارسال دمو
+    // ============================================================
+    window.submitDemoRequest = async function() {
+        const fullName = document.getElementById('demoFullName').value.trim();
+        const phone = document.getElementById('demoPhone').value.trim();
+        const industry = document.getElementById('demoIndustry').value;
+        const solution = document.getElementById('demoSolution').value;
+
+        if (!fullName) {
+            showToast('⚠️ لطفاً نام و نام خانوادگی را وارد کنید', 'warning');
+            document.getElementById('demoFullName').focus();
+            return;
+        }
+        if (!phone || phone.length < 10) {
+            showToast('⚠️ لطفاً شماره تماس معتبر وارد کنید', 'warning');
+            document.getElementById('demoPhone').focus();
+            return;
+        }
+        if (!industry) {
+            showToast('⚠️ لطفاً صنعت را انتخاب کنید', 'warning');
+            document.getElementById('demoIndustry').focus();
+            return;
+        }
+        if (!solution) {
+            showToast('⚠️ لطفاً راهکار مورد نظر را انتخاب کنید', 'warning');
+            document.getElementById('demoSolution').focus();
+            return;
+        }
+
+        const btn = document.querySelector('#demoModal .btn-primary');
+        const orig = btn.innerHTML;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> در حال ارسال...';
+        btn.disabled = true;
+
+        try {
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            const modal = bootstrap.Modal.getInstance(document.getElementById('demoModal'));
+            modal.hide();
+            Swal.fire({
+                icon: 'success',
+                title: '✅ درخواست AI ثبت شد!',
+                text: 'تیم هوش مصنوعی ما در اسرع وقت با شما تماس می‌گیرد.',
+                confirmButtonText: 'عالی!',
+                confirmButtonColor: '#009ef7',
+                background: 'rgba(15,15,30,0.95)',
+                backdrop: 'rgba(0,0,0,0.6)'
+            });
+            document.getElementById('demoRequestForm').reset();
+        } catch (error) {
+            showToast('❌ خطا در ارسال', 'error');
+        } finally {
+            btn.innerHTML = orig;
+            btn.disabled = false;
+        }
+    };
+
+    // ============================================================
+    //  Toast
+    // ============================================================
+    function showToast(msg, type = 'success') {
+        if (typeof Swal !== 'undefined') {
+            const icons = { success: 'success', warning: 'warning', error: 'error' };
+            Swal.fire({
+                icon: icons[type] || 'info',
+                title: msg,
+                timer: 2500,
+                showConfirmButton: false,
+                position: 'top-end',
+                toast: true,
+                timerProgressBar: true,
+                background: 'rgba(15,15,30,0.95)',
+                backdrop: 'rgba(0,0,0,0.1)'
+            });
+        } else {
+            alert(msg);
+        }
+    }
+</script>
+
+{% endblock %}
+
+

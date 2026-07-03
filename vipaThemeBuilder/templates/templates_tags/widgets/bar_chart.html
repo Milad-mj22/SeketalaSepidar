@@ -1,0 +1,128 @@
+<div class="card card-xl-stretch mb-xl-8">
+    <!--begin::Header-->
+    <div class="card-header border-0 pt-5">
+        <h3 class="card-title align-items-start flex-column">
+            <span class="card-label fw-bold fs-3 mb-1">{{ bar_chart.title }}</span>
+            <span class="text-muted fw-semibold fs-7">{{ bar_chart.description }}</span>
+        </h3>
+        <!-- ... Toolbar ... -->
+    </div>
+    <!--end::Header-->
+    <!--begin::Body-->
+    <div class="card-body">
+        <!--begin::Chart-->
+        <!-- این خط اضافه شد: دیو نگهدارنده نمودار -->
+        <div id="{{ bar_chart.chart_id }}" style="height: {{ bar_chart.height }};"></div>
+        
+        <!-- تگ اسکریپت JSON -->
+        {{ bar_chart|json_script:bar_chart.chart_data_id }}
+        <!--end::Chart-->
+    </div>
+    <!--end::Body-->
+</div>
+
+<script>
+    "use strict";
+    
+    document.addEventListener("DOMContentLoaded", function() {
+        (function() {
+            var payloadId = "{{ bar_chart.chart_data_id }}";
+            var payloadScript = document.getElementById(payloadId);
+            
+            if (!payloadScript) {
+                console.error("داده‌های JSON یافت نشدند برای ID: " + payloadId);
+                return;
+            }
+            
+            var chartPayload;
+            try {
+                chartPayload = JSON.parse(payloadScript.innerHTML);
+            } catch (e) {
+                console.error("خطا در پارس کردن JSON:", e);
+                return;
+            }
+            
+            // حالا چون دیو بالا اضافه شد، این المنت پیدا می‌شود
+            var element = document.getElementById(chartPayload.chart_id);
+            if (!element) {
+                console.error("المنت نمودار با ID " + chartPayload.chart_id + " در صفحه پیدا نشد.");
+                return;
+            }
+            
+            // تعریف رنگ‌ها
+            var labelColor = (typeof KTUtil !== 'undefined') ? KTUtil.getCssVariableValue('--bs-gray-500') : '#6c757d';
+            var borderColor = (typeof KTUtil !== 'undefined') ? KTUtil.getCssVariableValue('--bs-gray-200') : '#eff2f5';
+            var baseColor = (typeof KTUtil !== 'undefined') ? KTUtil.getCssVariableValue('--bs-primary') : '#009ef7';
+            var secondaryColor = (typeof KTUtil !== 'undefined') ? KTUtil.getCssVariableValue('--bs-gray-300') : '#f5f8fa';
+            
+            var options = {
+                series: chartPayload.series,
+                chart: {
+                    fontFamily: 'inherit',
+                    type: 'bar',
+                    height: chartPayload.height || 350,
+                    toolbar: { show: false }
+                },
+                plotOptions: {
+                    bar: {
+                        horizontal: false,
+                        columnWidth: ['30%'],
+                        borderRadius: [4]
+                    },
+                },
+                legend: { show: false },
+                dataLabels: { enabled: false },
+                stroke: {
+                    show: true,
+                    width: 2,
+                    colors: ['transparent']
+                },
+                xaxis: {
+                    categories: chartPayload.categories,
+                    axisBorder: { show: false },
+                    axisTicks: { show: false },
+                    labels: {
+                        style: {
+                            colors: labelColor,
+                            fontSize: '12px',
+                            fontFamily: 'inherit'
+                        }
+                    }
+                },
+                yaxis: {
+                    max: chartPayload.max_y || undefined,
+                    labels: {
+                        style: {
+                            colors: labelColor,
+                            fontSize: '12px',
+                            fontFamily: 'inherit'
+                        }
+                    }
+                },
+                fill: { opacity: 1 },
+                colors: chartPayload.colors || [baseColor, secondaryColor],
+                grid: {
+                    borderColor: borderColor,
+                    strokeDashArray: 4,
+                    yaxis: { lines: { show: true } },
+                    padding: { top: 0, right: 0, bottom: 0, left: 0 }
+                },
+                tooltip: {
+                    style: { fontSize: '12px' },
+                    y: {
+                        formatter: function (val) {
+                            return val + " عدد"; 
+                        }
+                    }
+                }
+            };
+            
+            try {
+                var chart = new ApexCharts(element, options);
+                chart.render();
+            } catch (e) {
+                console.error("خطا در رندر کردن نمودار:", e);
+            }
+        })();
+    });
+</script>

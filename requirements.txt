@@ -1,0 +1,13 @@
+﻿Django
+channels
+pillow
+django-colorfield
+ultralytics
+fpdf
+python-docx
+jdatetime
+cryptography
+pywin32
+django-multiselectfield  
+scikit-learn
+requests

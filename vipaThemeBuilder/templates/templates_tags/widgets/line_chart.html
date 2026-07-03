@@ -1,0 +1,96 @@
+<!-- templates_tags/widgets/line_chart.html -->
+
+
+    <div class="card-body">
+        <div id="{{ line_chart.chart_id }}" class="apex-chart-area"></div>
+    </div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var options = {
+            series: {{ line_chart.series|safe }},
+            chart: {
+                height: {{ line_chart.height }},
+                type: 'area',
+                fontFamily: 'inherit',
+                toolbar: {
+                    show: false
+                },
+                zoom: {
+                    enabled: false
+                }
+            },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                curve: '{{ line_chart.stroke_curve|default:"smooth" }}',
+                width: 3
+            },
+            xaxis: {
+                categories: {{ line_chart.categories|safe }},
+                axisBorder: {
+                    show: false
+                },
+                axisTicks: {
+                    show: false
+                },
+                labels: {
+                    style: {
+                        colors: '#99a1b7',
+                        fontSize: '12px'
+                    }
+                }
+            },
+            yaxis: {
+                labels: {
+                    style: {
+                        colors: '#99a1b7',
+                        fontSize: '12px'
+                    }
+                }
+            },
+            colors: {{ line_chart.gradient_colors|safe }},
+            fill: {
+                type: 'gradient',
+                gradient: {
+                    shadeIntensity: 1,
+                    opacityFrom: 0.4,
+                    opacityTo: 0.1,
+                    stops: [0, 90, 100]
+                }
+            },
+            grid: {
+                borderColor: '#dbdfe9',
+                strokeDashArray: 4,
+                yaxis: {
+                    lines: {
+                        show: true
+                    }
+                }
+            },
+            legend: {
+                show: {{ line_chart.show_legend|yesno:"true,false" }},
+                position: 'top',
+                horizontalAlign: 'right',
+                floating: true,
+                offsetY: -10,
+                labels: {
+                    colors: '#99a1b7'
+                }
+            },
+            tooltip: {
+                theme: 'light',
+                y: {
+                    formatter: function (val) {
+                        return val
+                    }
+                }
+            }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#{{ line_chart.chart_id }}"), options);
+        chart.render();
+    });
+</script>

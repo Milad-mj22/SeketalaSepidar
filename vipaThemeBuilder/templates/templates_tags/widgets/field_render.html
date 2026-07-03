@@ -1,0 +1,36 @@
+
+<div class="col-sm-6 col-md-4">
+    <div class="d-flex flex-column mb-8 fv-row">
+        <!--begin::Label-->
+        <label class="d-flex align-items-center fs-6 fw-semibold mb-2" {% if is_checkbox %}style="cursor: pointer;"{% endif %}>
+            <span class="">{{ label }}</span>
+            {% if help_text %}
+            <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" 
+                title="{{ help_text }}">
+                <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                    <span class="path1"></span>
+                    <span class="path2"></span>
+                    <span class="path3"></span>
+                </i>
+            </span>
+            {% endif %}
+        </label>
+        <!--end::Label-->
+        
+        {% if field.errors %}
+        <div class="alert alert-danger py-2 px-3 mb-0">
+            {% for error in field.errors %}
+            <small>{{ error }}</small>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        {% if is_checkbox %}
+            <div class="form-check form-switch form-check-custom form-check-solid">
+                {{ field }}
+            </div>
+        {% else %}
+            {{ field }}
+        {% endif %}
+    </div>
+</div>

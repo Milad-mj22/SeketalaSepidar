@@ -1,0 +1,87 @@
+/* ========== آیکون Play ========== */
+.ki-duotone.ki-play {
+    display: inline-flex;
+    position: relative;
+    width: 20px;
+    height: 20px;
+}
+
+.ki-duotone.ki-play .path1:before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: currentColor;
+    opacity: 0.2;
+    border-radius: 50%;
+}
+
+.ki-duotone.ki-play .path2:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 55%;
+    transform: translate(-50%, -50%);
+    width: 0;
+    height: 0;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-left: 9px solid currentColor;
+}
+
+.ki-duotone.ki-play .path3:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 55%;
+    transform: translate(-50%, -50%);
+    width: 0;
+    height: 0;
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    border-left: 12px solid currentColor;
+    opacity: 0.5;
+}
+
+/* ========== آیکون Stop ========== */
+.ki-duotone.ki-stop {
+    display: inline-flex;
+    position: relative;
+    width: 20px;
+    height: 20px;
+}
+
+.ki-duotone.ki-stop .path1:before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: currentColor;
+    opacity: 0.2;
+    border-radius: 50%;
+}
+
+.ki-duotone.ki-stop .path2:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px;
+    height: 8px;
+    background: currentColor;
+    border-radius: 2px;
+}
+
+.ki-duotone.ki-stop .path3:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 12px;
+    height: 12px;
+    background: currentColor;
+    border-radius: 2px;
+    opacity: 0.5;
+}

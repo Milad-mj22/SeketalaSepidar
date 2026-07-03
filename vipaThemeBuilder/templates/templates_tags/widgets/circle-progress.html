@@ -1,0 +1,52 @@
+
+
+<div id="{{ id }}" class="position-relative mx-auto mb-3" style="width: 150px; height: 150px;" id="progress-widget">
+    <svg viewBox="0 0 36 36" class="w-100 h-100 circular-progress" style="transform: rotate(-90deg);">
+        <!-- پس‌زمینه خاکی -->
+        <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" 
+                fill="none" stroke="#e9ecef" stroke-width="3"/>
+        <!-- پر شده -->
+        <path class="progress-path" 
+                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" 
+                fill="none" stroke="#0d6efd" stroke-width="3" 
+                stroke-dasharray="0, 100" stroke-linecap="round"
+                style="transition: stroke-dasharray 0.5s ease;"/>
+    </svg>
+
+    <!-- متن وسط -->
+    <div class="position-absolute top-50 start-50 translate-middle text-center">
+        <span class="fs-3 fw-bold progress-percent">{{ percent }}%</span>
+        <div class="small text-muted progress-label">{{ label }}</div>
+    </div>
+</div>
+
+<script>
+    function vipaUpdateProgress(percent, label, id, color='') {
+        // آپدیت SVG
+        percent = parseFloat(percent.toFixed(1));
+
+        wgt = document.getElementById(id);
+        const progressPath = wgt.querySelector('.progress-path');
+        if (progressPath) {
+            progressPath.style.strokeDasharray = `${percent}, 100`;
+        }
+        
+        // آپدیت متن درصد
+        const percentText = wgt.querySelector('.progress-percent');
+        if (percentText) {
+            percentText.textContent = `${percent}%`;
+        }
+        
+        // آپدیت لیبل
+        const labelText = wgt.querySelector('.progress-label');
+        if (labelText) {
+            labelText.textContent = label;
+        }
+        
+        // تغییر رنگ در صورت تکمیل
+        if (color){
+            progressPath.style.stroke = color;
+        }
+ 
+    }
+</script>

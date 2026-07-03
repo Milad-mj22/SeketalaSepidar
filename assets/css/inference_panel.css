@@ -1,0 +1,109 @@
+.inference-layout-flow {
+    direction: ltr;
+}
+
+.inference-layout-flow > [class*="col-"] {
+    direction: rtl;
+}
+
+.inference-preview-area {
+    min-height: 220px;
+    background: var(--bs-gray-100);
+    position: relative;
+}
+
+#preview-placeholder {
+    min-height: 180px;
+}
+
+.inference-preview-image {
+    max-height: 180px;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.inference-image-list-body {
+    max-height: 420px;
+    overflow-y: auto;
+}
+
+.inference-selected-model {
+    border: 1px solid var(--bs-gray-300);
+    background: var(--bs-gray-100);
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.inference-action-button {
+    min-height: 42px;
+    padding-top: 0.55rem !important;
+    padding-bottom: 0.55rem !important;
+}
+
+.inference-step-number {
+    margin-left: 14px !important;
+}
+
+.inference-title-icon {
+    margin-left: 12px !important;
+}
+
+.inference-count-badge {
+    margin-right: 12px !important;
+}
+
+.inference-image-size-input {
+    max-width: 160px;
+}
+
+.inference-stage-fieldset[disabled] {
+    opacity: 0.55;
+}
+
+.inference-stage-fieldset[disabled] .inference-selected-model {
+    background: var(--bs-gray-200);
+}
+
+@media (max-width: 1199.98px) {
+    .inference-layout-flow {
+        direction: rtl;
+    }
+}
+
+/* Load-project modal actions */
+.lp-item {
+    position: relative;
+}
+
+.lp-project-options-btn {
+    width: 34px;
+    height: 34px;
+}
+
+.lp-project-actions .dropdown-menu {
+    text-align: right;
+}
+
+.lp-project-actions .dropdown-item {
+    border: 0;
+    background: transparent;
+}
+
+/* Bottom-right Farsi toast notifications */
+#inference-toast-container {
+    max-width: min(380px, calc(100vw - 2rem));
+}
+
+.inference-toast {
+    direction: rtl;
+    text-align: right;
+    border-radius: 0.9rem;
+    overflow: hidden;
+}
+
+.inference-toast .toast-body {
+    line-height: 1.7;
+}

@@ -1,0 +1,1242 @@
+{% extends "base_dashboard.html" %}
+{% load static %}
+
+{% block content %}
+<!-- ============================================================
+     طراحی فوق‌العاده مدرن صفحه درباره ما - ویپاتک
+     با انیمیشن‌های پارالکس، گرادیان‌های زنده و افکت‌های سه‌بعدی
+     ============================================================ -->
+
+<style>
+    /* ============================================================
+       1. متغیرهای پیشرفته و پالت رنگی
+    ============================================================ */
+    :root {
+        --vp-primary: #009ef7;
+        --vp-primary-dark: #0070b3;
+        --vp-secondary: #7239ea;
+        --vp-secondary-light: #9b6df5;
+        --vp-accent: #00f2fe;
+        --vp-gradient-main: linear-gradient(135deg, #009ef7 0%, #7239ea 100%);
+        --vp-gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        --vp-gradient-accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        --vp-shadow-glow: 0 8px 40px rgba(0, 158, 247, 0.35);
+        --vp-shadow-float: 0 20px 60px rgba(0, 0, 0, 0.12);
+        --vp-radius-xl: 28px;
+        --vp-radius-lg: 20px;
+        --vp-radius-md: 14px;
+    }
+
+    /* ============================================================
+       2. پس‌زمینه داینامیک با ذرات
+    ============================================================ */
+    .about-wrapper {
+        position: relative;
+        background: #f8fafc;
+        overflow: hidden;
+        padding: 0;
+    }
+    
+    [data-bs-theme="dark"] .about-wrapper {
+        background: #0a0a1a;
+    }
+
+    /* ذرات معلق سه‌بعدی */
+    .particles-3d {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 0;
+        pointer-events: none;
+        overflow: hidden;
+    }
+    .particle-3d {
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(0, 158, 247, 0.4), transparent);
+        animation: floatParticle3d 25s infinite linear;
+    }
+    .particle-3d:nth-child(1) { left: 5%; animation-delay: 0s; width: 8px; height: 8px; }
+    .particle-3d:nth-child(2) { left: 15%; animation-delay: 3s; width: 4px; height: 4px; }
+    .particle-3d:nth-child(3) { left: 25%; animation-delay: 6s; width: 10px; height: 10px; }
+    .particle-3d:nth-child(4) { left: 35%; animation-delay: 2s; width: 5px; height: 5px; }
+    .particle-3d:nth-child(5) { left: 45%; animation-delay: 8s; width: 7px; height: 7px; }
+    .particle-3d:nth-child(6) { left: 55%; animation-delay: 4s; width: 9px; height: 9px; }
+    .particle-3d:nth-child(7) { left: 65%; animation-delay: 10s; width: 4px; height: 4px; }
+    .particle-3d:nth-child(8) { left: 75%; animation-delay: 5s; width: 11px; height: 11px; }
+    .particle-3d:nth-child(9) { left: 85%; animation-delay: 7s; width: 6px; height: 6px; }
+    .particle-3d:nth-child(10) { left: 95%; animation-delay: 9s; width: 8px; height: 8px; }
+
+    @keyframes floatParticle3d {
+        0% { transform: translateY(100vh) rotate(0deg) scale(0); opacity: 0; }
+        10% { opacity: 1; transform: translateY(90vh) rotate(36deg) scale(1); }
+        90% { opacity: 1; }
+        100% { transform: translateY(-10vh) rotate(360deg) scale(0); opacity: 0; }
+    }
+
+    /* ============================================================
+       3. هدر با گرادیان و انیمیشن شاتر
+    ============================================================ */
+    .hero-section {
+        position: relative;
+        padding: 5rem 0 3rem;
+        z-index: 1;
+    }
+    
+    .hero-badge {
+        display: inline-block;
+        background: rgba(0, 158, 247, 0.1);
+        color: var(--vp-primary);
+        padding: 0.4rem 1.2rem;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 0.85rem;
+        border: 1px solid rgba(0, 158, 247, 0.15);
+        margin-bottom: 1.5rem;
+        animation: pulse-badge 2s ease-in-out infinite;
+    }
+    @keyframes pulse-badge {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.03); }
+    }
+
+    .hero-title {
+        font-size: 3.8rem;
+        font-weight: 900;
+        line-height: 1.1;
+        letter-spacing: -0.03em;
+    }
+    .hero-title .highlight {
+        background: var(--vp-gradient-main);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        position: relative;
+    }
+    .hero-title .highlight::after {
+        content: '';
+        position: absolute;
+        bottom: 4px;
+        left: 0;
+        right: 0;
+        height: 8px;
+        background: var(--vp-gradient-main);
+        opacity: 0.2;
+        border-radius: 10px;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+        font-size: 1.2rem;
+        color: #64748b;
+        max-width: 600px;
+        line-height: 1.8;
+    }
+    [data-bs-theme="dark"] .hero-subtitle {
+        color: #94a3b8;
+    }
+
+    /* ============================================================
+       4. کارت‌های شیشه‌ای با افکت سه‌بعدی
+    ============================================================ */
+    .glass-3d {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: var(--vp-radius-xl);
+        box-shadow: var(--vp-shadow-float);
+        transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        position: relative;
+        overflow: hidden;
+    }
+    [data-bs-theme="dark"] .glass-3d {
+        background: rgba(30, 30, 50, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .glass-3d::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle at 30% 40%, rgba(255, 255, 255, 0.1) 0%, transparent 60%);
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+    }
+    .glass-3d:hover::before {
+        opacity: 1;
+    }
+    .glass-3d:hover {
+        transform: translateY(-12px) scale(1.01);
+        box-shadow: var(--vp-shadow-glow);
+        border-color: rgba(0, 158, 247, 0.2);
+    }
+    .glass-3d .glow-edge {
+        position: absolute;
+        inset: -2px;
+        border-radius: inherit;
+        padding: 2px;
+        background: var(--vp-gradient-main);
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+    }
+    .glass-3d:hover .glow-edge {
+        opacity: 1;
+    }
+
+    /* ============================================================
+       5. کارت‌های آمار با افکت شمارنده
+    ============================================================ */
+    .stat-card {
+        background: rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: var(--vp-radius-lg);
+        padding: 2rem 1.5rem;
+        text-align: center;
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    [data-bs-theme="dark"] .stat-card {
+        background: rgba(30, 30, 50, 0.5);
+        border-color: rgba(255, 255, 255, 0.05);
+    }
+    .stat-card .stat-number {
+        font-size: 3.5rem;
+        font-weight: 900;
+        background: var(--vp-gradient-main);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        line-height: 1.2;
+    }
+    .stat-card .stat-label {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #1e293b;
+        margin-top: 0.3rem;
+    }
+    [data-bs-theme="dark"] .stat-card .stat-label {
+        color: #e2e8f0;
+    }
+    .stat-card .stat-icon {
+        position: absolute;
+        top: -20px;
+        right: -20px;
+        font-size: 5rem;
+        opacity: 0.05;
+        transform: rotate(15deg);
+    }
+    .stat-card:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--vp-shadow-glow);
+        border-color: rgba(0, 158, 247, 0.2);
+    }
+
+    /* ============================================================
+       6. تایم‌لاین پیشرفته
+    ============================================================ */
+    .timeline-advanced {
+        position: relative;
+        padding-right: 2rem;
+    }
+    .timeline-advanced::before {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: var(--vp-gradient-main);
+        border-radius: 10px;
+    }
+    .timeline-advanced .tl-item {
+        position: relative;
+        padding-right: 2rem;
+        margin-bottom: 2.5rem;
+    }
+    .timeline-advanced .tl-item::before {
+        content: '';
+        position: absolute;
+        right: -8px;
+        top: 8px;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: var(--vp-gradient-main);
+        box-shadow: 0 0 0 4px rgba(0, 158, 247, 0.15);
+        z-index: 1;
+        animation: tl-pulse 2s ease-in-out infinite;
+    }
+    @keyframes tl-pulse {
+        0%, 100% { box-shadow: 0 0 0 4px rgba(0, 158, 247, 0.15); }
+        50% { box-shadow: 0 0 0 12px rgba(0, 158, 247, 0.05); }
+    }
+    .timeline-advanced .tl-item:last-child {
+        margin-bottom: 0;
+    }
+    .timeline-advanced .tl-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--vp-primary);
+        margin-bottom: 0.3rem;
+    }
+    .timeline-advanced .tl-desc {
+        color: #64748b;
+        line-height: 1.7;
+    }
+    [data-bs-theme="dark"] .timeline-advanced .tl-desc {
+        color: #94a3b8;
+    }
+
+    /* ============================================================
+       7. کارت‌های راهکارها با افکت هولوگرافیک
+    ============================================================ */
+    .solution-card {
+        background: rgba(255, 255, 255, 0.5);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: var(--vp-radius-lg);
+        padding: 2rem;
+        transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        position: relative;
+        overflow: hidden;
+        height: 100%;
+    }
+    [data-bs-theme="dark"] .solution-card {
+        background: rgba(30, 30, 50, 0.4);
+        border-color: rgba(255, 255, 255, 0.04);
+    }
+    .solution-card .icon-wrapper {
+        width: 70px;
+        height: 70px;
+        border-radius: var(--vp-radius-md);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        margin-bottom: 1.2rem;
+        background: var(--vp-gradient-main);
+        color: #fff;
+        box-shadow: 0 8px 24px rgba(0, 158, 247, 0.25);
+        transition: all 0.4s ease;
+    }
+    .solution-card:hover .icon-wrapper {
+        transform: rotate(-8deg) scale(1.05);
+        box-shadow: 0 12px 32px rgba(0, 158, 247, 0.35);
+    }
+    .solution-card .solution-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 0.8rem;
+    }
+    [data-bs-theme="dark"] .solution-card .solution-title {
+        color: #e2e8f0;
+    }
+    .solution-card .solution-desc {
+        color: #64748b;
+        line-height: 1.7;
+        font-size: 0.95rem;
+    }
+    [data-bs-theme="dark"] .solution-card .solution-desc {
+        color: #94a3b8;
+    }
+    .solution-card .hover-glow {
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle, rgba(0, 158, 247, 0.05) 0%, transparent 70%);
+        opacity: 0;
+        transition: opacity 0.6s ease;
+        pointer-events: none;
+    }
+    .solution-card:hover .hover-glow {
+        opacity: 1;
+    }
+    .solution-card:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--vp-shadow-glow);
+        border-color: rgba(0, 158, 247, 0.15);
+    }
+
+    /* ============================================================
+       8. کارت‌های تیم با افکت چرخش
+    ============================================================ */
+    .team-card {
+        background: rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: var(--vp-radius-lg);
+        padding: 1.5rem;
+        text-align: center;
+        transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        position: relative;
+        overflow: hidden;
+    }
+    [data-bs-theme="dark"] .team-card {
+        background: rgba(30, 30, 50, 0.4);
+        border-color: rgba(255, 255, 255, 0.04);
+    }
+    .team-card .avatar-wrapper {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        margin: 0 auto 1rem;
+        position: relative;
+        overflow: hidden;
+        border: 3px solid rgba(0, 158, 247, 0.1);
+        transition: all 0.4s ease;
+    }
+    .team-card .avatar-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .team-card .avatar-wrapper .ring {
+        position: absolute;
+        inset: -4px;
+        border-radius: 50%;
+        border: 3px solid transparent;
+        border-top-color: var(--vp-primary);
+        border-right-color: var(--vp-secondary);
+        animation: spin-ring 3s linear infinite;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+    }
+    @keyframes spin-ring {
+        to { transform: rotate(360deg); }
+    }
+    .team-card:hover .avatar-wrapper .ring {
+        opacity: 1;
+    }
+    .team-card:hover .avatar-wrapper {
+        transform: scale(1.05);
+        border-color: var(--vp-primary);
+        box-shadow: 0 0 30px rgba(0, 158, 247, 0.2);
+    }
+    .team-card .team-name {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #1e293b;
+    }
+    [data-bs-theme="dark"] .team-card .team-name {
+        color: #e2e8f0;
+    }
+    .team-card .team-role {
+        font-size: 0.85rem;
+        color: var(--vp-primary);
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+    .team-card .team-bio {
+        font-size: 0.85rem;
+        color: #64748b;
+        line-height: 1.6;
+    }
+    [data-bs-theme="dark"] .team-card .team-bio {
+        color: #94a3b8;
+    }
+    .team-card:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--vp-shadow-glow);
+    }
+
+    /* ============================================================
+       9. CTA با افکت موج
+    ============================================================ */
+    .cta-advanced {
+        background: var(--vp-gradient-main);
+        border-radius: var(--vp-radius-xl);
+        padding: 4rem;
+        position: relative;
+        overflow: hidden;
+    }
+    .cta-advanced .wave-bg {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 100%;
+        opacity: 0.08;
+        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23ffffff' fill-opacity='1' d='M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,213.3C672,224,768,224,864,197.3C960,171,1056,117,1152,112C1248,107,1344,149,1392,170.7L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'/%3E%3C/svg%3E");
+        background-size: cover;
+        background-position: bottom;
+        animation: wave-move 8s ease-in-out infinite alternate;
+    }
+    @keyframes wave-move {
+        0% { transform: translateX(0) scale(1); }
+        100% { transform: translateX(-50px) scale(1.02); }
+    }
+    .cta-advanced .cta-content {
+        position: relative;
+        z-index: 1;
+    }
+    .cta-advanced .cta-title {
+        font-size: 2.8rem;
+        font-weight: 900;
+        color: #fff;
+        margin-bottom: 1rem;
+    }
+    .cta-advanced .cta-subtitle {
+        font-size: 1.2rem;
+        color: rgba(255, 255, 255, 0.8);
+        max-width: 600px;
+        margin: 0 auto 2rem;
+    }
+    .btn-white-glow {
+        background: #fff;
+        color: var(--vp-primary);
+        padding: 0.8rem 2.5rem;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        border: none;
+        transition: all 0.4s ease;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    }
+    .btn-white-glow:hover {
+        transform: translateY(-4px) scale(1.02);
+        box-shadow: 0 12px 48px rgba(0, 0, 0, 0.25);
+        color: var(--vp-secondary);
+    }
+
+    /* ============================================================
+       10. مودال‌های پیشرفته
+    ============================================================ */
+    .modal-advanced .modal-content {
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(32px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: var(--vp-radius-xl);
+        box-shadow: 0 32px 80px rgba(0, 0, 0, 0.2);
+    }
+    [data-bs-theme="dark"] .modal-advanced .modal-content {
+        background: rgba(20, 20, 40, 0.92);
+        border-color: rgba(255, 255, 255, 0.05);
+    }
+    .modal-advanced .modal-header {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        padding: 1.5rem 2rem;
+    }
+    [data-bs-theme="dark"] .modal-advanced .modal-header {
+        border-color: rgba(255, 255, 255, 0.05);
+    }
+    .modal-advanced .modal-body {
+        padding: 2rem;
+    }
+    .modal-advanced .modal-footer {
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
+        padding: 1.5rem 2rem;
+    }
+    [data-bs-theme="dark"] .modal-advanced .modal-footer {
+        border-color: rgba(255, 255, 255, 0.05);
+    }
+
+    /* ============================================================
+       11. ریسپانسیو
+    ============================================================ */
+    @media (max-width: 991px) {
+        .hero-title {
+            font-size: 2.8rem;
+        }
+        .stat-card .stat-number {
+            font-size: 2.8rem;
+        }
+        .cta-advanced .cta-title {
+            font-size: 2.2rem;
+        }
+        .cta-advanced {
+            padding: 3rem 1.5rem;
+        }
+    }
+    @media (max-width: 767px) {
+        .hero-title {
+            font-size: 2.2rem;
+        }
+        .hero-subtitle {
+            font-size: 1rem;
+        }
+        .stat-card {
+            padding: 1.5rem 1rem;
+        }
+        .stat-card .stat-number {
+            font-size: 2.2rem;
+        }
+        .cta-advanced .cta-title {
+            font-size: 1.8rem;
+        }
+        .team-card .avatar-wrapper {
+            width: 90px;
+            height: 90px;
+        }
+        .modal-advanced .modal-body {
+            padding: 1.5rem;
+        }
+    }
+
+    /* ============================================================
+       12. کلاس‌های کمکی انیمیشن
+    ============================================================ */
+    .animate-on-scroll {
+        opacity: 0;
+        transform: translateY(40px);
+        transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .animate-on-scroll.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    .animate-on-scroll.delay-1 { transition-delay: 0.1s; }
+    .animate-on-scroll.delay-2 { transition-delay: 0.2s; }
+    .animate-on-scroll.delay-3 { transition-delay: 0.3s; }
+    .animate-on-scroll.delay-4 { transition-delay: 0.4s; }
+    .animate-on-scroll.delay-5 { transition-delay: 0.5s; }
+</style>
+
+<!-- ============================================================
+     بدنه اصلی با ذرات
+     ============================================================ -->
+<div class="about-wrapper">
+
+    <!-- ذرات سه‌بعدی -->
+    <div class="particles-3d">
+        <div class="particle-3d"></div>
+        <div class="particle-3d"></div>
+        <div class="particle-3d"></div>
+        <div class="particle-3d"></div>
+        <div class="particle-3d"></div>
+        <div class="particle-3d"></div>
+        <div class="particle-3d"></div>
+        <div class="particle-3d"></div>
+        <div class="particle-3d"></div>
+        <div class="particle-3d"></div>
+    </div>
+
+    <!-- ============================================================
+       1. بخش هیرو
+    ============================================================ -->
+    <section class="hero-section container-xxl">
+        <div class="row align-items-center">
+            <div class="col-lg-7">
+                <div class="hero-badge">
+                     پیشرو در هوشمندسازی صنعت
+                </div>
+                <h1 class="hero-title">
+                    تحول دیجیتال صنعت با <br>
+                    <span class="highlight">هوش مصنوعی کاربردی</span>
+                </h1>
+                <p class="hero-subtitle mt-4">
+                    شرکت ویرا پرداز اصفهان (ویپاتک)؛ معمار راهکارهای بینایی ماشین و تحلیل داده‌های صنعتی در صنایع برتر کشور
+                </p>
+                <div class="d-flex flex-wrap gap-3 mt-4">
+                    <span class="tech-pill">Deep Learning</span>
+                    <span class="tech-pill">Computer Vision</span>
+                    <span class="tech-pill">Predictive Maintenance</span>
+                    <span class="tech-pill">Industrial IoT</span>
+                </div>
+                <div class="d-flex flex-wrap gap-3 mt-5">
+                    <a href="#solutions" class="btn btn-primary btn-lg px-6 fw-bold shadow-sm">
+                        <i class="ki-duotone ki-rocket fs-4 me-2"></i>
+                        مشاهده راهکارها
+                    </a>
+                    <a href="#" class="btn btn-outline-primary btn-lg px-6 fw-bold" 
+                       data-bs-toggle="modal" data-bs-target="#demoModal">
+                        <i class="ki-duotone ki-call fs-4 me-2"></i>
+                        درخواست دمو
+                    </a>
+                    <a href="#" class="btn btn-light btn-lg px-6 fw-bold" 
+                       data-bs-toggle="modal" data-bs-target="#contactModal">
+                        <i class="ki-duotone ki-message-text-2 fs-4 me-2"></i>
+                        تماس با ما
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-5 mt-5 mt-lg-0">
+                <div class="glass-3d p-4">
+                    <div class="glow-edge"></div>
+                    <img src="{% static 'logo/logo_official-row.png' %}" class="img-fluid rounded-3" alt="ویپاتک">
+                    <div class="mt-4 d-flex align-items-center justify-content-between">
+                        <div>
+                            <div class="fw-bold fs-6"> دقت ۹۹.۹٪</div>
+                            <div class="text-muted fs-7">در تشخیص عیوب خطوط تولید</div>
+                        </div>
+                        <div class="text-end">
+                            <div class="fw-bold fs-6"> ۲۴/۷</div>
+                            <div class="text-muted fs-7">پشتیبانی هوشمند</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+       2. بخش آمار
+    ============================================================ -->
+    <section class="container-xxl py-5">
+        <div class="row g-4">
+            <div class="col-md-3 col-6">
+                <div class="stat-card animate-on-scroll">
+                    <div class="stat-icon">🏢</div>
+                    <div class="stat-number" data-target="1401">1401</div>
+                    <div class="stat-label">سال تأسیس</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="stat-card animate-on-scroll delay-1">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-number" data-target="4">0</div>
+                    <div class="stat-label">حوزه تخصصی</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="stat-card animate-on-scroll delay-2">
+                    <div class="stat-icon">📁</div>
+                    <div class="stat-number" data-target="100">0</div>
+                    <div class="stat-label">پایگاه داده قوی</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="stat-card animate-on-scroll delay-3">
+                    <div class="stat-icon">🛡️</div>
+                    <div class="stat-number" data-target="24">0</div>
+                    <div class="stat-label">پشتیبانی هوشمند</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+       3. بخش داستان و چشم‌انداز
+    ============================================================ -->
+    <section id="story" class="container-xxl py-5">
+        <div class="row align-items-center">
+            <div class="col-lg-6 animate-on-scroll">
+                <h2 class="display-5 fw-bold mt-3">چرا <span class="text-primary">ویپاتک</span> خلق شد؟</h2>
+                <div class="mt-4 fs-6 text-muted lh-lg">
+                    <p>
+                        در قلب انقلاب صنعتی چهارم، داده‌ها ارزشمندترین دارایی هر کارخانه‌ای هستند. با این حال، ما مشاهده کردیم که در صنعت کشور، بیش از ۹۰٪ داده‌های تولید شده توسط سنسورها و دوربین‌ها، بدون تحلیل رها می‌شوند.
+                    </p>
+                    <p>
+                        ویپاتک متولد شد تا این داده‌های خام را به <strong class="text-primary">«هوش عملیاتی»</strong> تبدیل کند. ما با تجربه سال‌ها فعالیت در خطوط تولید، متوجه شدیم که صنعت به ابزارهای فانتزی نیاز ندارد؛ بلکه به سیستم‌های پایداری نیاز دارد که در شرایط سخت محیطی (دما، گرد و غبار، لرزش) با دقت بالا کار کنند.
+                    </p>
+                </div>
+                
+                <div class="timeline-advanced mt-5">
+                    <div class="tl-item">
+                        <div class="tl-title">🎯 دیدگاه ما</div>
+                        <div class="tl-desc">پیشرو بودن در ارائه راهکارهای AI که کیفیت زندگی کاری و بهره‌وری ملی را ارتقا می‌دهد.</div>
+                    </div>
+                    <div class="tl-item">
+                        <div class="tl-title">🚀 ماموریت ما</div>
+                        <div class="tl-desc">توسعه پلتفرم‌های بینایی ماشین که خطاهای انسانی را به صفر نزدیک کرده و هزینه‌های ضایعات را تا ۴۰٪ کاهش می‌دهد.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 mt-5 mt-lg-0">
+                <div class="row g-4">
+                    <div class="col-sm-6 animate-on-scroll delay-1">
+                        <div class="card p-5 bg-light-primary border-0 h-100" style="border-radius: var(--vp-radius-md);">
+                            <h5 class="fw-bold">نوآوری عملگرا</h5>
+                            <p class="text-muted small">ما تکنولوژی را برای حل مسئله می‌خواهیم، نه صرفاً برای زیبایی.</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 animate-on-scroll delay-2">
+                        <div class="card p-5 bg-light-success border-0 h-100" style="border-radius: var(--vp-radius-md);">
+                            <h5 class="fw-bold">دقت بی‌قید و شرط</h5>
+                            <p class="text-muted small">در سیستم‌های کنترل کیفی، «تقریباً» برای ما معنایی ندارد.</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 animate-on-scroll delay-3">
+                        <div class="card p-5 bg-light-warning border-0 h-100" style="border-radius: var(--vp-radius-md);">
+                            <h5 class="fw-bold">همراهی مستمر</h5>
+                            <p class="text-muted small">نصب سیستم آغاز تعهد ماست، نه پایان کار.</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 animate-on-scroll delay-4">
+                        <div class="card p-5 bg-light-info border-0 h-100" style="border-radius: var(--vp-radius-md);">
+                            <h5 class="fw-bold">پایداری سیستم</h5>
+                            <p class="text-muted small">سیستم‌های ما برای کارکرد ۲۴ ساعته در محیط‌های خشن صنعتی بهینه شده‌اند.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+       4. بخش راهکارها
+    ============================================================ -->
+    <section id="solutions" class="container-xxl py-5">
+        <div class="text-center mb-5 animate-on-scroll">
+            <span class="hero-badge"> راهکارها</span>
+            <h2 class="display-4 fw-bold mt-3">راهکارهای تخصصی <span class="text-primary">ویپاتک</span></h2>
+            <p class="text-muted fs-5">تمرکز ما بر چهار ستون اصلی هوشمندسازی صنعت</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6 animate-on-scroll delay-1">
+                <div class="solution-card">
+                    <div class="hover-glow"></div>
+                    <div class="icon-wrapper">👁️</div>
+                    <h4 class="solution-title">بازرسی و تشخیص عیوب (AOI)</h4>
+                    <p class="solution-desc">
+                        استفاده از الگوریتم‌های Deep Learning برای شناسایی ترک‌ها، ناخالصی‌ها، تغییر رنگ و ایرادات سطحی در قطعات تولیدی با سرعتی فراتر از چشم انسان.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-6 animate-on-scroll delay-2">
+                <div class="solution-card">
+                    <div class="hover-glow"></div>
+                    <div class="icon-wrapper" style="background: linear-gradient(135deg, #00b09b, #96c93d);">📐</div>
+                    <h4 class="solution-title">کنترل ابعادی دقیق (Metrology)</h4>
+                    <p class="solution-desc">
+                        اندازه‌گیری میلی‌متری و میکرونی قطعات در لحظه تولید. سیستم‌های ما بدون تماس با قطعه، تلرانس‌های ابعادی را چک کرده و قطعات خارج از رنج را خارج می‌کنند.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-6 animate-on-scroll delay-3">
+                <div class="solution-card">
+                    <div class="hover-glow"></div>
+                    <div class="icon-wrapper" style="background: linear-gradient(135deg, #f093fb, #f5576c);">📊</div>
+                    <h4 class="solution-title">پیش‌بینی کیفیت (Quality Analytics)</h4>
+                    <p class="solution-desc">
+                        با تحلیل همبستگی بین متغیرهای فرآیند (دما و فشار) و خروجی نهایی، سیستم می‌تواند قبل از تولید قطعه معیوب، به اپراتور هشدار دهد.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-6 animate-on-scroll delay-4">
+                <div class="solution-card">
+                    <div class="hover-glow"></div>
+                    <div class="icon-wrapper" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">🔧</div>
+                    <h4 class="solution-title">نگهداری پیش‌گویانه (PdM)</h4>
+                    <p class="solution-desc">
+                        گوش دادن به صدای ماشین‌آلات و تحلیل ارتعاشات برای تشخیص خرابی بلبرینگ‌ها یا موتورها هفته‌ها قبل از وقوع حادثه.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+       5. بخش تیم
+    ============================================================ -->
+    <section id="team" class="container-xxl py-5">
+        <div class="text-center mb-5 animate-on-scroll">
+            <span class="hero-badge"> تیم ما</span>
+            <h2 class="display-4 fw-bold mt-3">مدیران و رهبران <span class="text-primary">ویپاتک</span></h2>
+            <p class="text-muted fs-5">ترکیبی از تجربه صنعتی و دانش روز هوش مصنوعی</p>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+            <div class="col-lg-3 col-md-6 animate-on-scroll delay-1">
+                <div class="team-card">
+                    <div class="avatar-wrapper">
+                        <div class="ring"></div>
+                        <img src="{% static 'team/malek.jpg' %}" alt="امیرحسین ملک‌زاده">
+                    </div>
+                    <h5 class="team-name">امیرحسین ملک‌زاده</h5>
+                    <div class="team-role">مدیر عامل</div>
+                    <p class="team-bio">استراتژیست تحول دیجیتال با نگاهی نو به مدیریت صنعتی.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 animate-on-scroll delay-2">
+                <div class="team-card">
+                    <div class="avatar-wrapper">
+                        <div class="ring"></div>
+                        <img src="{% static 'team/milad.png' %}" alt="میلاد ملتجی">
+                    </div>
+                    <h5 class="team-name">میلاد ملتجی</h5>
+                    <div class="team-role">مدیر فنی</div>
+                    <p class="team-bio">متخصص ارشد معماری سیستم‌های هوشمند و بینایی ماشین.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 animate-on-scroll delay-3">
+                <div class="team-card">
+                    <div class="avatar-wrapper">
+                        <div class="ring"></div>
+                        <img src="{% static 'team/abbasi.jpg' %}" alt="زهرا عباسی">
+                    </div>
+                    <h5 class="team-name">زهرا عباسی</h5>
+                    <div class="team-role">مدیر بازرگانی</div>
+                    <p class="team-bio">توسعه‌دهنده بازارهای هدف و زنجیره تامین راهکارهای تکنولوژیک.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 animate-on-scroll delay-4">
+                <div class="team-card">
+                    <div class="avatar-wrapper">
+                        <div class="ring"></div>
+                        <img src="{% static 'team/alireza.jpg' %}" alt="علیرضا خلیلیان">
+                    </div>
+                    <h5 class="team-name">علیرضا خلیلیان</h5>
+                    <div class="team-role">مدیر تحقیق و توسعه</div>
+                    <p class="team-bio">پیشگام در پژوهش‌های کاربردی لبه تکنولوژی در هوش مصنوعی.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+       6. بخش CTA
+    ============================================================ -->
+    <section class="container-xxl py-5">
+        <div class="cta-advanced animate-on-scroll">
+            <div class="wave-bg"></div>
+            <div class="cta-content text-center">
+                <h2 class="cta-title">آماده‌اید کارخانه خود را هوشمند کنید؟</h2>
+                <p class="cta-subtitle">ما در ویپاتک مشتاقانه آماده شنیدن چالش‌های صنعتی شما و ارائه راهکار هستیم.</p>
+                <div class="d-flex flex-wrap justify-content-center gap-3">
+                    <a href="#" class="btn-white-glow" data-bs-toggle="modal" data-bs-target="#demoModal">
+                        <i class="ki-duotone ki-rocket fs-4 me-2"></i>
+                        همین امروز شروع کنید
+                    </a>
+                    <a href="#" class="btn btn-outline-light btn-lg px-6 fw-bold" 
+                       data-bs-toggle="modal" data-bs-target="#contactModal">
+                        <i class="ki-duotone ki-call fs-4 me-2"></i>
+                        تماس با ما
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<!-- ============================================================
+     مودال تماس با ما
+     ============================================================ -->
+<div class="modal fade modal-advanced" id="contactModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold">
+                    <i class="ki-duotone ki-call fs-3 text-primary me-2"></i>
+                    تماس با ویپاتک
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center py-4">
+                <div class="symbol symbol-100px symbol-circle bg-light-primary mx-auto mb-4">
+                    <i class="ki-duotone ki-call fs-3tx text-primary"></i>
+                </div>
+                <h3 class="fw-bold mb-2">شماره تماس</h3>
+                <a href="tel:09136563913" class="display-6 fw-bold text-primary text-decoration-none d-block mb-3">
+                    ۰۹۱۳-۶۵۶-۳۹۱۳
+                </a>
+                <button class="btn btn-light-primary btn-sm mb-4" onclick="copyPhoneNumber()">
+                    <i class="ki-duotone ki-copy fs-4 me-1"></i>
+                    کپی شماره
+                </button>
+                <hr>
+                <div class="d-flex align-items-center justify-content-center gap-3">
+                    <i class="ki-duotone ki-global fs-2tx text-primary"></i>
+                    <div>
+                        <h6 class="fw-bold mb-0">وبسایت</h6>
+                        <a href="https://vipatech.ir" target="_blank" class="text-primary text-decoration-none fw-semibold">
+                            vipatech.ir
+                        </a>
+                    </div>
+                </div>
+                <p class="text-muted mt-4 small">کارشناسان ما آماده پاسخگویی به سوالات شما هستند.</p>
+            </div>
+            <div class="modal-footer justify-content-center gap-3">
+                <button class="btn btn-light btn-lg px-6" data-bs-dismiss="modal">بستن</button>
+                <a href="tel:09136563913" class="btn btn-primary btn-lg px-6">
+                    <i class="ki-duotone ki-call fs-4 me-2"></i>
+                    تماس بگیرید
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================
+     مودال درخواست دمو
+     ============================================================ -->
+<div class="modal fade modal-advanced" id="demoModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold">
+                    <i class="ki-duotone ki-rocket fs-3 text-primary me-2"></i>
+                    درخواست دمو
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-muted text-center mb-4">فرم زیر را تکمیل کنید تا کارشناسان ما در اسرع وقت با شما تماس بگیرند.</p>
+                <form id="demoRequestForm">
+                    {% csrf_token %}
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">نام و نام خانوادگی <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control form-control-lg" id="demoFullName" placeholder="علی محمدی" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">شماره تماس <span class="text-danger">*</span></label>
+                            <input type="tel" class="form-control form-control-lg" id="demoPhone" placeholder="۰۹۱۲۳۴۵۶۷۸۹" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">ایمیل</label>
+                            <input type="email" class="form-control form-control-lg" id="demoEmail" placeholder="example@domain.com">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">نام شرکت</label>
+                            <input type="text" class="form-control form-control-lg" id="demoCompany" placeholder="نام شرکت خود را وارد کنید">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">صنعت / حوزه فعالیت <span class="text-danger">*</span></label>
+                            <select class="form-select form-select-lg" id="demoIndustry" required>
+                                <option value="">انتخاب کنید...</option>
+                                <option value="automotive">صنایع خودروسازی</option>
+                                <option value="electronics">صنایع الکترونیک</option>
+                                <option value="pharmaceutical">صنایع دارویی</option>
+                                <option value="food">صنایع غذایی</option>
+                                <option value="petrochemical">پتروشیمی</option>
+                                <option value="mining">معدن و فولاد</option>
+                                <option value="textile">نساجی</option>
+                                <option value="other">سایر</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">نوع راهکار مورد نظر <span class="text-danger">*</span></label>
+                            <select class="form-select form-select-lg" id="demoSolution" required>
+                                <option value="">انتخاب کنید...</option>
+                                <option value="aoi">بازرسی و تشخیص عیوب (AOI)</option>
+                                <option value="metrology">کنترل ابعادی دقیق (Metrology)</option>
+                                <option value="quality">پیش‌بینی کیفیت (Quality Analytics)</option>
+                                <option value="pdm">نگهداری پیش‌گویانه (PdM)</option>
+                                <option value="custom">راهکار سفارشی</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-bold">توضیحات تکمیلی</label>
+                            <textarea class="form-control" id="demoDescription" rows="3" placeholder="نیازها و چالش‌های خود را توضیح دهید..."></textarea>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-bold">اولویت تماس</label>
+                            <div class="d-flex gap-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="priority" id="priorityNormal" value="normal" checked>
+                                    <label class="form-check-label" for="priorityNormal">عادی</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="priority" id="priorityUrgent" value="urgent">
+                                    <label class="form-check-label" for="priorityUrgent">فوری</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="priority" id="priorityVeryUrgent" value="very_urgent">
+                                    <label class="form-check-label" for="priorityVeryUrgent">بسیار فوری</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-light btn-lg px-6" data-bs-dismiss="modal">انصراف</button>
+                <button type="button" class="btn btn-primary btn-lg px-8" onclick="submitDemoRequest()">
+                    <i class="ki-duotone ki-send fs-4 me-2"></i>
+                    ارسال درخواست
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================
+     اسکریپت‌ها
+     ============================================================ -->
+<script>
+    // ============================================================
+    //  انیمیشن اسکرول با Intersection Observer
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', function() {
+        const animateElements = document.querySelectorAll('.animate-on-scroll');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+        
+        animateElements.forEach(el => observer.observe(el));
+    });
+
+    // ============================================================
+    //  انیمیشن شمارنده
+    // ============================================================
+    const counters = document.querySelectorAll('[data-target]');
+    const counterObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const target = parseInt(entry.target.getAttribute('data-target'));
+                if (isNaN(target)) return;
+                
+                let current = 0;
+                const duration = 2000;
+                const step = Math.max(1, Math.floor(target / (duration / 16)));
+                
+                const updateCounter = () => {
+                    current += step;
+                    if (current >= target) {
+                        entry.target.textContent = target;
+                        return;
+                    }
+                    entry.target.textContent = current;
+                    requestAnimationFrame(updateCounter);
+                };
+                
+                updateCounter();
+                counterObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.3 });
+    
+    counters.forEach(c => counterObserver.observe(c));
+
+    // ============================================================
+    //  کپی شماره تلفن
+    // ============================================================
+    function copyPhoneNumber() {
+        const phoneNumber = '09136563913';
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(phoneNumber).then(() => {
+                showToast('✅ شماره تلفن کپی شد!', 'success');
+            }).catch(() => {
+                fallbackCopy(phoneNumber);
+            });
+        } else {
+            fallbackCopy(phoneNumber);
+        }
+    }
+
+    function fallbackCopy(text) {
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        textArea.style.position = 'fixed';
+        textArea.style.opacity = '0';
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+            document.execCommand('copy');
+            showToast('✅ شماره تلفن کپی شد!', 'success');
+        } catch (err) {
+            showToast('❌ خطا در کپی شماره', 'error');
+        }
+        document.body.removeChild(textArea);
+    }
+
+    // ============================================================
+    //  ارسال درخواست دمو
+    // ============================================================
+    async function submitDemoRequest() {
+        const fullName = document.getElementById('demoFullName').value.trim();
+        const phone = document.getElementById('demoPhone').value.trim();
+        const email = document.getElementById('demoEmail').value.trim();
+        const company = document.getElementById('demoCompany').value.trim();
+        const industry = document.getElementById('demoIndustry').value;
+        const solution = document.getElementById('demoSolution').value;
+        const description = document.getElementById('demoDescription').value.trim();
+        const priority = document.querySelector('input[name="priority"]:checked')?.value || 'normal';
+
+        if (!fullName) {
+            showToast('⚠️ لطفاً نام و نام خانوادگی را وارد کنید', 'warning');
+            document.getElementById('demoFullName').focus();
+            return;
+        }
+        if (!phone || phone.length < 10) {
+            showToast('⚠️ لطفاً شماره تماس معتبر وارد کنید', 'warning');
+            document.getElementById('demoPhone').focus();
+            return;
+        }
+        if (!industry) {
+            showToast('⚠️ لطفاً حوزه فعالیت را انتخاب کنید', 'warning');
+            document.getElementById('demoIndustry').focus();
+            return;
+        }
+        if (!solution) {
+            showToast('⚠️ لطفاً نوع راهکار را انتخاب کنید', 'warning');
+            document.getElementById('demoSolution').focus();
+            return;
+        }
+
+        const submitBtn = document.querySelector('#demoModal .btn-primary');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> در حال ارسال...';
+        submitBtn.disabled = true;
+
+        try {
+            // شبیه‌سازی ارسال
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            
+            const modal = bootstrap.Modal.getInstance(document.getElementById('demoModal'));
+            modal.hide();
+            
+            Swal.fire({
+                icon: 'success',
+                title: '✅ درخواست شما ثبت شد!',
+                text: 'کارشناسان ما در اسرع وقت با شما تماس می‌گیرند.',
+                confirmButtonText: 'بسیار خوب',
+                confirmButtonColor: '#009ef7'
+            });
+            
+            document.getElementById('demoRequestForm').reset();
+            
+        } catch (error) {
+            showToast('❌ خطا در ارسال درخواست', 'error');
+        } finally {
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        }
+    }
+
+    // ============================================================
+    //  نمایش Toast
+    // ============================================================
+    function showToast(message, type = 'success') {
+        if (typeof Swal !== 'undefined') {
+            Swal.fire({
+                icon: type,
+                title: message,
+                timer: 2500,
+                showConfirmButton: false,
+                position: 'top-end',
+                toast: true,
+                timerProgressBar: true
+            });
+        } else {
+            alert(message);
+        }
+    }
+
+    // ============================================================
+    //  دریافت CSRF Token
+    // ============================================================
+    function getCSRFToken() {
+        const csrfInput = document.querySelector('input[name="csrfmiddlewaretoken"]');
+        return csrfInput ? csrfInput.value : '';
+    }
+</script>
+
+{% endblock %}

@@ -1,0 +1,142 @@
+<style>
+.btn-scale {
+    transition: transform 0.2s ease-in-out; /* برای نرم شدن حرکت */
+}
+
+.btn-scale:hover {
+    transform: scale(1.05); /* بزرگ شدن به اندازه ۵ درصد */
+}
+
+
+</style>
+    <div class="card gap-1" style="background-color: {{toolbar.bg_color}};">
+
+    <!--begin::Header-->
+    {% if toolbar.title %}
+        <div class=" border-0 pt-4 text-center">
+            <h3 class="card-title align-items-start flex-column">
+                <span class="card-label fw-bold text-gray-900">{{ toolbar.title }}</span>
+            </h3>
+        </div>
+    {% endif %}
+    <!--end::Header-->
+    <!--begin::Body-->
+    {% if toolbar.direction == 'v' %}
+        <div class="card-body gap-{{toolbar.buttons_gap}} p-{{toolbar.padding}} d-flex flex-column">
+    {% else %}
+        <div class="card-body gap-{{toolbar.buttons_gap}} p-{{toolbar.padding}} d-flex flex-row">
+    {% endif %}
+    
+        
+        <!--begin::item-->
+        {% for btn in buttons %}
+            
+            {% if btn.action.type == 'url' %}
+                <a href="{{btn.action.url}}" class="btn-scale border-0 rounded-1 p-{{btn.padding}}" style="background-color: {{btn.bg_color}};">
+            {% elif btn.action.type == 'js' %}
+                <button onclick="{{btn.action.func_name}}({{btn.name}})" class="btn-scale border-0 rounded-1 p-{{btn.padding}}" style="background-color: {{btn.bg_color}};">
+            {% elif btn.action.type == 'post' %}
+                <button name="{{btn.name}}" send="{{btn.action.url}}" class="btn-scale border-0 rounded-1 p-{{btn.padding}}" style="background-color: {{btn.bg_color}};">            
+            {% endif %}
+
+                {% if btn.label_pos == 'bottom' %}
+                    <div class="d-flex gap-2 flex-column align-items-center">
+                {% elif btn.label_pos == 'top' %}
+                    <div class="d-flex gap-2 flex-column-reverse align-items-center">            
+                
+                {% elif btn.label_pos == 'right' %}
+                    <div class="d-flex gap-2 flex-row-reverse align-items-center"> 
+                {% else %}
+                    <div class="d-flex gap-2 flex-row align-items-center">
+                {% endif %}
+                    <!--begin::Symbol-->
+                    {% if btn.icon %}
+                        <div class="symbol symbol-{{btn.icon_size}}px ">
+                            <span class="symbol-label" style="background-color: {{btn.badge_color}};">
+                                {{ btn.icon|safe }}
+                            </span>
+                        </div>
+                    {% endif %}
+                    <!--end::Symbol-->
+                    <!--begin::Text-->
+                    {% if btn.label %}
+                        <span class="text-gray-900 fs-6" style="font-weight: {{btn.font_weight}};">{{btn.label}}</span>
+                    {% endif %}
+                </div>
+            </button>
+            {% if btn.action.type == 'url' %}
+                </a>
+            {% elif btn.action.type == 'js' %}
+                </button>
+            {% elif btn.action.type == 'post' %}
+                </button>
+            {% endif %}
+                <!--end::Text-->
+        {% endfor %}
+        
+    </div>
+    <!--end::Body-->
+</div>
+
+
+<!-- <script id="config-script" data-response-url="{{ response_url }}" type="application/json">
+</script> -->
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // دریافت آدرس response_url از تگ اسکریپت
+        const configScript = document.getElementById('config-script');
+
+        // انتخاب تمام دکمه‌هایی که دارای ویژگی name هستند
+        const buttons = document.querySelectorAll('button[name]');
+
+        buttons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                const btnName = this.getAttribute('name');
+                const sendURL = this.getAttribute('send');
+
+
+                // ایجاد آبجکت داده برای ارسال
+                const data = {
+                    button_name: btnName
+                };
+
+                // ارسال درخواست به سرور
+                fetch(sendURL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken') // برای جنگو الزامی است
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => {
+                    if (response.ok) {
+                        console.log('دکمه با موفقیت ارسال شد.');
+                    } else {
+                        console.error('خطا در ارسال اطلاعات.');
+                    }
+                })
+                .catch(error => {
+                    console.error('خطای شبکه:', error);
+                });
+            });
+        });
+    
+        // تابع کمکی برای دریافت کوکی CSRF در جنگو
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    });
+</script>

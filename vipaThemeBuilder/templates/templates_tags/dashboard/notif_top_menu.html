@@ -1,0 +1,76 @@
+{% load static %}
+    
+    <!--begin::Menu- wrapper-->
+    <div class="btn btn-icon btn-custom btn-icon-muted btn-active-light btn-active-color-primary w-35px h-35px" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end" id="kt_menu_item_wow">
+        <i class="ki-duotone ki-notification-status fs-2">
+            <span class="path1"></span>
+            <span class="path2"></span>
+            <span class="path3"></span>
+            <span class="path4"></span>
+        </i>
+    </div>
+    <!--begin::Menu-->
+    <div class="menu menu-sub menu-sub-dropdown menu-column w-350px w-lg-375px" data-kt-menu="true" id="kt_menu_notifications">
+        <!--begin::Heading-->
+        <div class="d-flex flex-column bgi-no-repeat rounded-top" id="myDiv" style="background-image:none;">
+            <!--begin::Title-->
+            <h3 class="text-white fw-semibold px-9 mt-10 mb-6">اعلان ها 
+            <span class="fs-8 opacity-75 ps-3">{{notification_number}}</span></h3>
+            <!--end::Title-->
+            <!--begin::Tabs-->
+            <ul class="nav nav-line-tabs nav-line-tabs-2x nav-stretch fw-semibold px-9">
+                <li class="nav-item">
+                    <a class="nav-link text-white opacity-75 opacity-state-100 pb-4" data-bs-toggle="tab" href="#kt_topbar_notifications_1">هشدارها</a>
+                </li>
+
+            </ul>
+            <!--end::Tabs-->
+        </div>
+        <!--end::Heading-->
+        <!--begin::Tab content-->
+        <div class="tab-content">
+            <!--begin::Tab panel-->
+                
+            <!--begin::Tab panel-->
+            <div class="tab-pane fade show active" id="kt_topbar_notifications_2" role="tabpanel">
+                <!--begin::Wrapper-->
+                <div class="d-flex flex-column px-9">
+                    <!--begin::Section-->
+                    <div class="pt-10 pb-0">
+                        <!--begin::Title-->
+                        <h3 class="text-gray-900 text-center fw-bold">دسترسی حرفه ای را دریافت کنید</h3>
+                        <!--end::Title-->
+                        <!--begin::Text-->
+                        <!--end::Text-->
+                        <!--begin::Actions-->
+                        <div class="text-center mt-5 mb-9">
+                            <a href="#" class="btn btn-sm btn-primary px-6" data-bs-toggle="modal" data-bs-target="#kt_modal_upgrade_plan">ارتقا دهید</a>
+                        </div>
+                        <!--end::Actions-->
+                    </div>
+                    <!--end::Section-->
+                    <!--begin::Illustration-->
+                    <div class="text-center px-4">
+                        <img class="mw-100 mh-200px" alt="image" src="{% static 'media/illustrations/sketchy-1/1.png' %}" />
+                    </div>
+                    <!--end::Illustration-->
+                </div>
+                <!--end::Wrapper-->
+            </div>
+            <!--end::Tab panel-->
+
+        </div>
+        <!--end::Tab content-->
+    </div>
+    <!--end::Menu-->
+    <!--end::Menu wrapper-->
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const myDiv = document.getElementById('myDiv');
+    const imagePath = "{% static 'media/misc/menu-header-bg.jpg' %}"; // Get the path from Django
+
+    myDiv.style.backgroundImage = `url('${imagePath}')`;
+  });
+</script>

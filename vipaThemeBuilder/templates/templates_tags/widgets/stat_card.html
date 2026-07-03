@@ -1,0 +1,183 @@
+<!-- templates/widgets/stat_card.html -->
+
+<div class="card card-flush h-md-50 mb-xl-10">
+    <!--begin::Header-->
+    <div class="card-header pt-5">
+        <!--begin::Title-->
+        <div class="card-title d-flex flex-column">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center">
+                <!--begin::واحد پول-->
+                {% if stat_card.prefix %}
+                <span class="fs-4 fw-semibold text-gray-500 me-1 align-self-start">{{ stat_card.prefix }}</span>
+                {% endif %}
+                <!--end::واحد پول-->
+                <!--begin::مقدار-->
+                <span class="fs-2hx fw-bold text-gray-900 me-2 lh-1 ls-n2">{{ stat_card.value|default:"0"|stringformat:",d" }}</span>
+                <!--end::مقدار-->
+                <!--begin::Badge-->
+                {% if stat_card.change %}
+                <span class="badge badge-light-{{ stat_card.change_type }} fs-base">
+                    {% if stat_card.change_type == 'success' %}
+                    <i class="ki-duotone ki-arrow-up fs-5 text-success ms-n1">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                    </i>
+                    {% else %}
+                    <i class="ki-duotone ki-arrow-down fs-5 text-danger ms-n1">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                    </i>
+                    {% endif %}
+                    {{ stat_card.change }}%
+                </span>
+                {% endif %}
+                <!--end::Badge-->
+            </div>
+            <!--end::Info-->
+            <!--begin::Subtitle-->
+            <span class="text-gray-500 pt-1 fw-semibold fs-6">{{ stat_card.title }}</span>
+            <!--end::Subtitle-->
+        </div>
+        <!--end::Title-->
+    </div>
+    <!--end::Header-->
+    <!--begin::کارت body-->
+    <div class="card-body pt-2 pb-4 d-flex flex-wrap align-items-center">
+        <!--begin::Chart-->
+        <div class="d-flex flex-center me-5 pt-2">
+            <div id="{{ stat_card.chart_id }}" style="min-width: {{ stat_card.size }}px; min-height: {{ stat_card.size }}px" data-kt-size="{{ stat_card.size }}" data-kt-line="{{ stat_card.line }}"></div>
+        </div>
+        <!--end::Chart-->
+        <!--begin::برچسبs-->
+        <div class="d-flex flex-column content-justify-center flex-row-fluid">
+            {% for item in stat_card.chart_data %}
+            <!--begin::Tags-->
+            <div class="d-flex fw-semibold align-items-center{% if not forloop.last %} my-3{% endif %}">
+                <!--begin::Bullet-->
+                <!--end::Bullet-->
+                <!--begin::Tags-->
+                <div class="text-gray-500 flex-grow-1 me-4">{{ item.label }}</div>
+                <!--end::Tags-->
+                <!--begin::Stats-->
+                <div class="fw-bolder text-gray-700 text-xxl-end">
+                    {% if stat_card.prefix %}{{ stat_card.prefix }}{% endif %}{{ item.value|stringformat:",d" }}{% if stat_card.suffix %}{{ stat_card.suffix }}{% endif %}
+                </div>
+                <!--end::Stats-->
+            </div>
+            <!--end::Tags-->
+            {% endfor %}
+        </div>
+        <!--end::برچسبs-->
+    </div>
+    <!--end::کارت body-->
+</div>
+
+<!-- تگ اسکریپت JSON -->
+{{ chart_payload|json_script:stat_card.chart_data_id }}
+
+<script>
+    "use strict";
+    
+    document.addEventListener("DOMContentLoaded", function() {
+        (function() {
+            var chartId = "{{ stat_card.chart_id }}";
+            var dataId = "{{ stat_card.chart_data_id }}";
+            
+            console.log("Chart ID:", chartId);
+            console.log("Data ID:", dataId);
+            
+            var payloadScript = document.getElementById(dataId);
+            if (!payloadScript) {
+                console.error("داده‌های JSON یافت نشدند برای ID:", dataId);
+                return;
+            }
+            
+            var chartPayload;
+            try {
+                chartPayload = JSON.parse(payloadScript.innerHTML);
+                console.log("Chart Payload:", chartPayload);
+            } catch (e) {
+                console.error("خطا در پارس کردن JSON:", e);
+                return;
+            }
+            
+            var element = document.getElementById(chartPayload.chart_id);
+            if (!element) {
+                console.error("المنت نمودار پیدا نشد:", chartPayload.chart_id);
+                return;
+            }
+            
+            console.log("Element found, rendering chart...");
+            
+            var size = parseInt(element.getAttribute('data-kt-size')) || 70;
+            var line = parseInt(element.getAttribute('data-kt-line')) || 11;
+            
+            var options = {
+                series: chartPayload.series,
+                chart: {
+                    fontFamily: 'inherit',
+                    type: 'donut',
+                    width: size,
+                    height: size,
+                    sparkline: {
+                        enabled: false
+                    }
+                },
+                labels: chartPayload.labels || [],
+                colors: chartPayload.colors,
+                legend: {
+                    show: false
+                },
+                tooltip: {
+                    enabled: true,
+                    theme: 'light',
+                    y: {
+                        formatter: function (val) {
+                            return val;
+                        }
+                    }
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    show: true,
+                    width: line,
+                    colors: ['#ffffff']
+                },
+                plotOptions: {
+                    pie: {
+                        donut: {
+                            show: true,
+                            size: '75%',
+                            labels: {
+                                show: false
+                            }
+                        }
+                    }
+                },
+                states: {
+                    hover: {
+                        filter: {
+                            type: 'none'
+                        }
+                    },
+                    active: {
+                        filter: {
+                            type: 'none'
+                        }
+                    }
+                }
+            };
+            
+            try {
+                var chart = new ApexCharts(element, options);
+                chart.render();
+                console.log("Chart rendered successfully!");
+            } catch (e) {
+                console.error("خطا در رندر کردن نمودار:", e);
+            }
+        })();
+    });
+</script>

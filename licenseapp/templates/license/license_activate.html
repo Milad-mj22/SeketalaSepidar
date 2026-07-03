@@ -1,0 +1,239 @@
+{% load static %}
+<!DOCTYPE html>
+<html direction="rtl" dir="rtl">
+<head>
+    <title>فعال‌سازی لایسنس</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <link href="{% static 'plugins/global/plugins.bundle.rtl.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/style.bundle.rtl.css' %}" rel="stylesheet"/>
+</head>
+
+<body class="app-blank bgi-size-cover bgi-attachment-fixed bgi-position-center">
+
+<style>
+body{
+    background-image: url("{% static 'media/auth/bg2-dark.jpg' %}");
+}
+
+.hwid-box{
+    font-family: monospace;
+    font-size: 15px;
+    letter-spacing:1px;
+}
+
+.spinner{
+    display:none;
+}
+</style>
+
+<div class="d-flex flex-column flex-root" id="kt_app_root">
+
+<div class="d-flex flex-column-fluid justify-content-center p-10">
+
+<div class="bg-body rounded-4 shadow-sm w-md-600px p-10">
+
+<!-- Header -->
+<div class="text-center mb-10">
+    {% if logo %}
+    <img alt="Logo" src="{{ logo.url }}" style="width:180px" class="mb-5"/>
+    {% endif %}
+    <h1 class="fw-bold text-gray-900 mb-3">فعال‌سازی لایسنس</h1>
+    <div class="text-gray-500 fs-6">
+        می‌توانید لایسنس را به صورت آنلاین دریافت کنید یا کد را به صورت دستی وارد نمایید
+    </div>
+</div>
+
+{% if error_message %}
+<div class="alert alert-danger text-center mb-7">
+    {{ error_message }}
+</div>
+{% endif %}
+
+<!-- HWID -->
+<div class="mb-7">
+
+<label class="form-label fw-semibold">
+کد سخت‌افزاری سیستم (HWID)
+</label>
+
+<div class="input-group">
+
+<div id="hwid_box"
+     class="form-control form-control-solid hwid-box text-center fw-bold">
+{{ hwid }}
+</div>
+
+<button type="button"
+        id="copy_hwid"
+        class="btn btn-light-primary">
+
+<i class="ki-outline ki-copy fs-2"></i>
+کپی
+</button>
+
+</div>
+
+<div class="text-muted fs-7 mt-2">
+این کد را برای دریافت لایسنس در اختیار فروشنده قرار دهید
+</div>
+
+</div>
+
+<!-- Form -->
+<form id="license_form" method="post">
+{% csrf_token %}
+
+<div class="mb-7">
+<label class="form-label fw-semibold">کد لایسنس</label>
+
+<textarea id="license_input"
+          name="license_key"
+          class="form-control form-control-solid"
+          rows="4"
+          placeholder="کد لایسنس را اینجا وارد کنید..."
+          required></textarea>
+
+</div>
+
+<div class="d-flex flex-column flex-md-row gap-4">
+
+<button id="online_btn"
+        type="button"
+        class="btn btn-success flex-grow-1">
+
+<span class="indicator-label">
+دریافت لایسنس آنلاین
+</span>
+
+<span class="spinner spinner-border spinner-border-sm ms-2"></span>
+
+</button>
+
+<button type="submit"
+        class="btn btn-primary flex-grow-1">
+
+تأیید و فعال‌سازی
+
+</button>
+
+</div>
+
+</form>
+
+<div id="result_box" class="mt-6"></div>
+
+</div>
+</div>
+</div>
+
+<script src="{% static 'plugins/global/plugins.bundle.js' %}"></script>
+<script src="{% static 'js/scripts.bundle.js' %}"></script>
+
+<script>
+
+const onlineBtn = document.getElementById("online_btn");
+const licenseInput = document.getElementById("license_input");
+const hwidBox = document.getElementById("hwid_box");
+const resultBox = document.getElementById("result_box");
+const spinner = onlineBtn.querySelector(".spinner");
+const copyBtn = document.getElementById("copy_hwid");
+
+
+// copy hwid
+copyBtn.addEventListener("click", async function(){
+
+    const hwid = hwidBox.innerText.trim();
+
+    try{
+
+        await navigator.clipboard.writeText(hwid);
+
+        resultBox.innerHTML =
+        `<div class="alert alert-success text-center">
+        کد HWID با موفقیت کپی شد ✅
+        </div>`;
+
+    }catch(e){
+
+        resultBox.innerHTML =
+        `<div class="alert alert-danger text-center">
+        امکان کپی وجود ندارد
+        </div>`;
+
+    }
+
+});
+
+
+// get online license
+onlineBtn.addEventListener("click", function(){
+
+    const hwid = hwidBox.innerText.trim();
+
+    spinner.style.display = "inline-block";
+    onlineBtn.disabled = true;
+
+    resultBox.innerHTML = "";
+
+    fetch("/api/get-online-license/", {
+
+        method:"POST",
+
+        headers:{
+            "Content-Type":"application/json",
+            "X-CSRFToken":"{{ csrf_token }}"
+        },
+
+        body:JSON.stringify({
+            hwid:hwid
+        })
+
+    })
+
+    .then(res => res.json())
+
+    .then(data => {
+
+        spinner.style.display="none";
+        onlineBtn.disabled=false;
+
+        if(data.status === "success" && data.license_key){
+
+            licenseInput.value = data.license_key;
+
+            resultBox.innerHTML =
+            `<div class="alert alert-success text-center">
+            ✅ لایسنس آنلاین دریافت شد و در فرم قرار گرفت
+            </div>`;
+
+        }else{
+
+            resultBox.innerHTML =
+            `<div class="alert alert-danger text-center">
+            ❌ ${data.message || "دریافت لایسنس موفق نبود"}
+            </div>`;
+
+        }
+
+    })
+
+    .catch(err => {
+
+        spinner.style.display="none";
+        onlineBtn.disabled=false;
+
+        resultBox.innerHTML =
+        `<div class="alert alert-danger text-center">
+        ارتباط با سرور فروشنده برقرار نشد
+        </div>`;
+
+    });
+
+});
+
+</script>
+
+</body>
+</html>
