@@ -1,0 +1,902 @@
+{% extends "base_dashboard.html" %}
+{% load static %}
+
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لیست فرمول‌ها</title>
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            padding: 20px 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .header h1 {
+            color: #1a237e;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .stats {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            flex: 1;
+        }
+        
+        .stat-box {
+            background: #e8eaf6;
+            padding: 10px 20px;
+            border-radius: 8px;
+            border-right: 4px solid #1a237e;
+        }
+        
+        .stat-box .label {
+            font-size: 12px;
+            color: #666;
+            font-weight: bold;
+        }
+        
+        .stat-box .value {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1a237e;
+            margin-top: 3px;
+        }
+        
+        .stat-box.active .value {
+            color: #2e7d32;
+        }
+        
+        .stat-box.inactive .value {
+            color: #c62828;
+        }
+        
+        .btn-submit-all {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #4caf50, #45a049);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+        }
+        
+        .btn-submit-all:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+        }
+        
+        .btn-submit-all:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .btn-submit-all.loading {
+            background: #ff9800;
+        }
+        
+        .btn-clear-all {
+            padding: 12px 25px;
+            background: #f44336;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(244, 67, 54, 0.3);
+        }
+        
+        .btn-clear-all:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(244, 67, 54, 0.4);
+        }
+        
+        .search-box {
+            display: flex;
+            gap: 10px;
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .search-box input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            border-color: #1a237e;
+        }
+        
+        .search-box button {
+            padding: 10px 30px;
+            background: #1a237e;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        
+        .search-box button:hover {
+            background: #0d1442;
+        }
+        
+        .formula-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+        
+        .formula-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        
+        .formula-header {
+            background: linear-gradient(135deg, #1a237e, #283593);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .formula-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .formula-code {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .formula-title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .formula-meta {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .badge-active {
+            background: #4caf50;
+            color: white;
+        }
+        
+        .badge-inactive {
+            background: #f44336;
+            color: white;
+        }
+        
+        .badge-items {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+        
+        .formula-details {
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .detail-item {
+            display: flex;
+            gap: 5px;
+            font-size: 14px;
+        }
+        
+        .detail-item .label {
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .detail-item .value {
+            color: #1a237e;
+            font-weight: bold;
+        }
+        
+        /* استایل بخش ثبت مقدار */
+        .value-input-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: white;
+            padding: 5px 15px;
+            border-radius: 8px;
+            border: 2px solid #1a237e;
+            margin-right: auto;
+        }
+        
+        .value-input-section label {
+            color: #1a237e;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .value-input-section input {
+            width: 120px;
+            padding: 6px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            text-align: center;
+            direction: ltr;
+        }
+        
+        .value-input-section input:focus {
+            outline: none;
+            border-color: #1a237e;
+            box-shadow: 0 0 5px rgba(26, 35, 126, 0.3);
+        }
+        
+        .value-input-section input.has-value {
+            border-color: #4caf50;
+            background: #f1f8e9;
+        }
+        
+        .table-container {
+            padding: 15px 20px 20px;
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        
+        th {
+            background: #e8eaf6;
+            padding: 12px;
+            text-align: right;
+            border: 1px solid #dee2e6;
+            font-weight: bold;
+            color: #1a237e;
+        }
+        
+        td {
+            padding: 10px 12px;
+            border: 1px solid #dee2e6;
+        }
+        
+        tr:nth-child(even) {
+            background: #fafafa;
+        }
+        
+        tr:hover {
+            background: #e3f2fd;
+        }
+        
+        .no-items {
+            text-align: center;
+            color: #999;
+            padding: 30px;
+            font-style: italic;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+        }
+        
+        .empty-state .icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        
+        /* SweetAlert2 custom styles */
+        .swal2-popup .swal2-content {
+            text-align: right !important;
+        }
+        
+        .swal2-popup .swal2-confirm {
+            background: #4caf50 !important;
+        }
+        
+        @media (max-width: 768px) {
+            .formula-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .formula-meta {
+                justify-content: flex-start;
+            }
+            
+            .stats {
+                flex-direction: column;
+            }
+            
+            .search-box {
+                flex-direction: column;
+            }
+            
+            .value-input-section {
+                flex-wrap: wrap;
+                margin-right: 0;
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .value-input-section input {
+                width: 100px;
+            }
+            
+            .header-actions {
+                flex-direction: column;
+            }
+            
+            .btn-submit-all, .btn-clear-all {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📋 لیست فرمول‌های محصولات</h1>
+            
+            <div class="header-actions">
+                <div class="stats">
+                    <div class="stat-box">
+                        <div class="label">کل فرمول‌ها</div>
+                        <div class="value">{{ total_formulas }}</div>
+                    </div>
+                    <div class="stat-box active">
+                        <div class="label">فرمول‌های فعال</div>
+                        <div class="value">{{ active_formulas }}</div>
+                    </div>
+                    <div class="stat-box inactive">
+                        <div class="label">فرمول‌های غیرفعال</div>
+                        <div class="value">{{ inactive_formulas }}</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="label">کل آیتم‌ها</div>
+                        <div class="value">{{ total_items }}</div>
+                    </div>
+                </div>
+                
+                <button class="btn-submit-all" onclick="submitAllValues()">
+                    💾 ثبت تمام مقادیر
+                </button>
+                <button class="btn-clear-all" onclick="clearAllValues()">
+                    🗑️ پاک کردن همه
+                </button>
+            </div>
+            
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="جستجوی فرمول بر اساس کد یا عنوان..." />
+                <button onclick="searchFormulas()">جستجو</button>
+            </div>
+        </div>
+
+        <div id="results">
+            {% if formulas %}
+                {% for formula in formulas %}
+                <div class="formula-card" data-formula-id="{{ formula.id }}">
+                    <div class="formula-header">
+                        <div class="formula-info">
+                            <span class="formula-code">{{ formula.code }}</span>
+                            <span class="formula-title">{{ formula.title }}</span>
+                            {% if formula.product_name %}
+                            <span style="background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 4px; font-size: 14px; display: inline-flex; align-items: center; gap: 5px;">
+                                📦 {{ formula.product_name }}
+                                {% if formula.product_code %}
+                                <span style="font-size: 11px; opacity: 0.8; background: rgba(255,255,255,0.1); padding: 1px 8px; border-radius: 3px;">
+                                    {{ formula.product_code }}
+                                </span>
+                                {% endif %}
+                            </span>
+                            {% endif %}
+                        </div>
+                        <div class="formula-meta">
+                            <span class="badge {% if formula.is_active %}badge-active{% else %}badge-inactive{% endif %}">
+                                {% if formula.is_active %}فعال{% else %}غیرفعال{% endif %}
+                            </span>
+                            <span class="badge badge-items">
+                                {{ formula.items|length }} آیتم
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="formula-details">
+                        {% if formula.item_ref %}
+                        <div class="detail-item">
+                            <span class="label">مرجع کالا:</span>
+                            <span class="value">{{ formula.item_ref }}</span>
+                        </div>
+                        {% endif %}
+                        
+                        {% if formula.quantity %}
+                        <div class="detail-item">
+                            <span class="label">مقدار:</span>
+                            <span class="value">{{ formula.quantity|floatformat:2 }}</span>
+                        </div>
+                        {% endif %}
+                        
+                        {% if formula.estimated_labour %}
+                        <div class="detail-item">
+                            <span class="label">نیروی کار تخمینی:</span>
+                            <span class="value">{{ formula.estimated_labour|floatformat:2 }}</span>
+                        </div>
+                        {% endif %}
+                        
+                        {% if formula.estimated_overhead %}
+                        <div class="detail-item">
+                            <span class="label">سربار تخمینی:</span>
+                            <span class="value">{{ formula.estimated_overhead|floatformat:2 }}</span>
+                        </div>
+                        {% endif %}
+                        
+                        {% if formula.tracing_title %}
+                        <div class="detail-item">
+                            <span class="label">ردیابی:</span>
+                            <span class="value">{{ formula.tracing_title }}</span>
+                        </div>
+                        {% endif %}
+
+                        <!-- بخش ورودی مقدار -->
+                        <div class="value-input-section">
+                            <label for="value_{{ formula.id }}">مقدار:</label>
+                            <input type="number" 
+                                   id="value_{{ formula.id }}" 
+                                   class="formula-value-input"
+                                   step="0.01" 
+                                   min="0" 
+                                   max="999999.99"
+                                   placeholder="0.00"
+                                   data-formula-id="{{ formula.id }}"
+                                   data-formula-code="{{ formula.code }}"
+                                   data-formula-title="{{ formula.title }}">
+                        </div>
+                    </div>
+                    
+                    <div class="table-container">
+                        {% if formula.description %}
+                        <div style="margin-bottom: 15px; color: #666; font-size: 14px;">
+                            <strong>توضیحات:</strong> {{ formula.description }}
+                        </div>
+                        {% endif %}
+                        
+                        {% if formula.items %}
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 50px;">#</th>
+                                    <th>مرجع آیتم</th>
+                                    <th>نام آیتم</th>
+                                    <th>مقدار</th>
+                                    <th>مقدار ثانویه</th>
+                                    <th>مرجع ردیابی</th>
+                                    <th>توضیحات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in formula.items %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td><strong>{{ item.item_ref }}</strong></td>
+                                    <td><strong>{{ item.item_name }}</strong></td>
+                                    <td>{{ item.quantity|floatformat:2 }}</td>
+                                    <td>{{ item.secondary_quantity|floatformat:2 }}</td>
+                                    <td>{{ item.tracing_ref|default:"-" }}</td>
+                                    <td>{{ item.description|default:"-" }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% else %}
+                        <div class="no-items">❌ این فرمول هیچ آیتمی ندارد</div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">
+                    <div class="icon">📭</div>
+                    <h2>هیچ فرمولی یافت نشد</h2>
+                    <p>هیچ فرمولی در پایگاه داده وجود ندارد.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        // دریافت CSRF Token
+        function getCSRFToken() {
+            return document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        }
+
+        // اعتبارسنجی ورودی
+        function validateDecimalInput(input) {
+            const value = input.value;
+            if (value && value.includes('.')) {
+                const parts = value.split('.');
+                if (parts[1] && parts[1].length > 2) {
+                    input.value = parseFloat(value).toFixed(2);
+                }
+            }
+            // نشان دادن اینکه مقدار وارد شده
+            if (input.value && parseFloat(input.value) > 0) {
+                input.classList.add('has-value');
+            } else {
+                input.classList.remove('has-value');
+            }
+        }
+
+        // محدود کردن ورودی به ۲ رقم اعشار
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputs = document.querySelectorAll('.formula-value-input');
+            inputs.forEach(input => {
+                input.addEventListener('blur', function() {
+                    if (this.value) {
+                        const num = parseFloat(this.value);
+                        if (!isNaN(num)) {
+                            this.value = num.toFixed(2);
+                            if (num > 0) {
+                                this.classList.add('has-value');
+                            }
+                        }
+                    }
+                });
+                
+                input.addEventListener('input', function() {
+                    validateDecimalInput(this);
+                });
+            });
+        });
+
+        // جمع‌آوری تمام مقادیر
+        function getAllValues() {
+            const inputs = document.querySelectorAll('.formula-value-input');
+            const values = [];
+            let hasValue = false;
+            
+            inputs.forEach(input => {
+                const value = parseFloat(input.value);
+                const formulaId = parseInt(input.getAttribute('data-formula-id'));
+                const formulaCode = input.getAttribute('data-formula-code');
+                const formulaTitle = input.getAttribute('data-formula-title');
+                
+                if (!isNaN(value) && value >= 0) {
+                    hasValue = true;
+                    values.push({
+                        formula_id: formulaId,
+                        formula_code: formulaCode,
+                        formula_title: formulaTitle,
+                        value: parseFloat(value.toFixed(2))
+                    });
+                }
+            });
+            
+            return { values, hasValue };
+        }
+
+        // نمایش پیش‌نمایش در SweetAlert2
+        function showPreviewAndSubmit(values) {
+            // ساخت جدول برای نمایش مقادیر
+            let tableHtml = `
+                <div style="direction: rtl; text-align: right; max-height: 400px; overflow-y: auto;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                        <thead>
+                            <tr style="background: #1a237e; color: white;">
+                                <th style="padding: 8px; border: 1px solid #ddd;">ردیف</th>
+                                <th style="padding: 8px; border: 1px solid #ddd;">کد فرمول</th>
+                                <th style="padding: 8px; border: 1px solid #ddd;">عنوان فرمول</th>
+                                <th style="padding: 8px; border: 1px solid #ddd;">مقدار</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+            
+            values.forEach((item, index) => {
+                tableHtml += `
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">${index + 1}</td>
+                        <td style="padding: 8px; border: 1px solid #ddd;">${item.formula_code}</td>
+                        <td style="padding: 8px; border: 1px solid #ddd;">${item.formula_title}</td>
+                        <td style="padding: 8px; border: 1px solid #ddd; color: #2e7d32; font-weight: bold; text-align: center;">${item.value.toFixed(2)}</td>
+                    </tr>
+                `;
+            });
+            
+            tableHtml += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            
+            // نمایش SweetAlert2
+            Swal.fire({
+                title: '📋 تایید ثبت مقادیر',
+                html: `
+                    <div style="text-align: right;">
+                        <p style="font-size: 16px; margin-bottom: 15px;">
+                            <strong>${values.length}</strong> فرمول با مقادیر زیر ثبت خواهند شد:
+                        </p>
+                        ${tableHtml}
+                    </div>
+                `,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#4caf50',
+                cancelButtonColor: '#f44336',
+                confirmButtonText: '✅ تایید و ثبت',
+                cancelButtonText: '❌ انصراف',
+                width: 800,
+                padding: '20px',
+                customClass: {
+                    popup: 'swal2-rtl'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    submitAllValuesToServer(values);
+                }
+            });
+        }
+
+        // ارسال تمام مقادیر به سرور
+function submitAllValuesToServer(values) {
+    const submitButton = document.querySelector('.btn-submit-all');
+    
+    // غیرفعال کردن دکمه
+    submitButton.disabled = true;
+    submitButton.classList.add('loading');
+    submitButton.innerHTML = '⏳ در حال ارسال...';
+
+    // ارسال درخواست
+    fetch('/api/submit-all-formula-values/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCSRFToken()
+        },
+        body: JSON.stringify({ values: values })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // نمایش پیام موفقیت
+            Swal.fire({
+                title: '✅ موفقیت',
+                text: `${data.saved_count} مقدار با موفقیت ثبت شد`,
+                icon: 'success',
+                confirmButtonText: 'باشه',
+                confirmButtonColor: '#4caf50'
+            }).then((result) => {
+                // این کد بعد از بسته شدن SweetAlert اجرا می‌شود
+                if (result.isConfirmed) {
+                    // پاک کردن مقادیر پس از ثبت موفق
+                    clearAllValuesWithoutConfirm();
+                }
+            });
+        } else {
+            Swal.fire({
+                title: '❌ خطا',
+                text: data.error || 'خطا در ثبت مقادیر',
+                icon: 'error',
+                confirmButtonText: 'باشه',
+                confirmButtonColor: '#f44336'
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        Swal.fire({
+            title: '❌ خطا',
+            text: 'خطا در ارتباط با سرور',
+            icon: 'error',
+            confirmButtonText: 'باشه',
+            confirmButtonColor: '#f44336'
+        });
+    })
+    .finally(() => {
+        // فعال کردن مجدد دکمه
+        submitButton.disabled = false;
+        submitButton.classList.remove('loading');
+        submitButton.innerHTML = '💾 ثبت تمام مقادیر';
+    });
+}
+
+// تابع پاک کردن همه مقادیر بدون تایید (برای استفاده بعد از ثبت موفق)
+function clearAllValuesWithoutConfirm() {
+    const inputs = document.querySelectorAll('.formula-value-input');
+    inputs.forEach(input => {
+        input.value = '';
+        input.classList.remove('has-value');
+    });
+}
+
+// تابع پاک کردن همه مقادیر با تایید (برای دکمه پاک کردن)
+function clearAllValues() {
+    Swal.fire({
+        title: '⚠️ تایید پاک کردن',
+        text: 'آیا از پاک کردن تمام مقادیر وارد شده مطمئن هستید؟',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#f44336',
+        cancelButtonColor: '#999',
+        confirmButtonText: '🗑️ بله، پاک کن',
+        cancelButtonText: 'انصراف'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            clearAllValuesWithoutConfirm();
+            
+            Swal.fire({
+                title: '✅ پاک شد',
+                text: 'تمام مقادیر پاک شدند',
+                icon: 'success',
+                timer: 1500,
+                showConfirmButton: false
+            });
+        }
+    });
+}
+        // تابع ثبت تمام مقادیر
+        function submitAllValues() {
+            const { values, hasValue } = getAllValues();
+            
+            if (!hasValue) {
+                Swal.fire({
+                    title: '⚠️ توجه',
+                    text: 'هیچ مقداری وارد نشده است',
+                    icon: 'warning',
+                    confirmButtonText: 'باشه',
+                    confirmButtonColor: '#ff9800'
+                });
+                return;
+            }
+            
+            // نمایش پیش‌نمایش
+            showPreviewAndSubmit(values);
+        }
+
+        // تابع پاک کردن همه مقادیر
+        function clearAllValues() {
+            Swal.fire({
+                title: '⚠️ تایید پاک کردن',
+                text: 'آیا از پاک کردن تمام مقادیر وارد شده مطمئن هستید؟',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#f44336',
+                cancelButtonColor: '#999',
+                confirmButtonText: '🗑️ بله، پاک کن',
+                cancelButtonText: 'انصراف'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const inputs = document.querySelectorAll('.formula-value-input');
+                    inputs.forEach(input => {
+                        input.value = '';
+                        input.classList.remove('has-value');
+                    });
+                    
+                    Swal.fire({
+                        title: '✅ پاک شد',
+                        text: 'تمام مقادیر پاک شدند',
+                        icon: 'success',
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                }
+            });
+        }
+
+        // تابع جستجو
+        function searchFormulas() {
+            const searchTerm = document.getElementById('searchInput').value.trim();
+            if (!searchTerm) {
+                location.reload();
+                return;
+            }
+            
+            fetch(`/api/search-formulas/?q=${encodeURIComponent(searchTerm)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const resultsDiv = document.getElementById('results');
+                        if (data.data.length === 0) {
+                            resultsDiv.innerHTML = `
+                                <div class="empty-state">
+                                    <div class="icon">🔍</div>
+                                    <h2>نتیجه‌ای یافت نشد</h2>
+                                    <p>هیچ فرمولی با عبارت "${searchTerm}" پیدا نشد.</p>
+                                </div>
+                            `;
+                            return;
+                        }
+                        window.location.href = `?search=${searchTerm}`;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+        
+        // Enter key for search
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchFormulas();
+            }
+        });
+    </script>
+</body>
+{% endblock %}

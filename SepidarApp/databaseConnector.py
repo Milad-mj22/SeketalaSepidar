@@ -193,5 +193,162 @@ class DatabaseConnection:
         self.close()
         return self.connect()
 
+
+
+
+    def get_formulas_with_items(self, formula_id=None):
+        """
+        Get all formulas with their boom items from ProductFormula and FormulaBomItem
+        """
+        if formula_id:
+            # Get specific formula with its items
+            query = """
+                SELECT 
+                    pf.ProductFormulaID,
+                    pf.Code,
+                    pf.Title,
+                    pf.ItemRef,
+                    pf.ItemUnitRef,
+                    pf.Quantity as FormulaQuantity,
+                    pf.IsActive,
+                    pf.EstimatedLabour,
+                    pf.EstimatedOverhead,
+                    pf.Description as FormulaDescription,
+                    pf.TracingTitle,
+                    fbi.FormulaBomItemID,
+                    fbi.ItemRef as BomItemRef,
+                    fbi.Quantity as BomQuantity,
+                    fbi.SecondaryQuantity,
+                    fbi.Description as ItemDescription,
+                    fbi.ItemTracingRef,
+                    -- نام و کد محصول از جدول Item
+                    itm.ItemName as ProductName,
+                    itm.ItemCode as ProductCode,
+                    -- نام و کد آیتم‌های Bom
+                    bomItem.ItemName as BomItemName,
+                    bomItem.ItemCode as BomItemCode
+                FROM [Sepidar01].[WKO].[ProductFormula] pf
+                LEFT JOIN [Sepidar01].[WKO].[FormulaBomItem] fbi 
+                    ON pf.ProductFormulaID = fbi.ProductFormulaRef
+                LEFT JOIN [Sepidar01].[INV].[Item] itm
+                    ON pf.ItemRef = itm.ItemID  -- برای نام محصول اصلی
+                LEFT JOIN [Sepidar01].[INV].[Item] bomItem
+                    ON fbi.ItemRef = bomItem.ItemID  -- برای نام آیتم‌های Bom
+                WHERE pf.ProductFormulaID = ?
+                ORDER BY pf.ProductFormulaID, fbi.FormulaBomItemID
+            """
+            return self.execute_query(query, [formula_id])
+        else:
+            # Get all formulas with their items
+            query = """
+                SELECT 
+                    pf.ProductFormulaID,
+                    pf.Code,
+                    pf.Title,
+                    pf.ItemRef,
+                    pf.ItemUnitRef,
+                    pf.Quantity as FormulaQuantity,
+                    pf.IsActive,
+                    pf.EstimatedLabour,
+                    pf.EstimatedOverhead,
+                    pf.Description as FormulaDescription,
+                    pf.TracingTitle,
+                    fbi.FormulaBomItemID,
+                    fbi.ItemRef as BomItemRef,
+                    fbi.Quantity as BomQuantity,
+                    fbi.SecondaryQuantity,
+                    fbi.Description as ItemDescription,
+                    fbi.ItemTracingRef,
+                    -- نام و کد محصول از جدول Item
+                    itm.Title as ProductName,
+                    itm.Code as ProductCode,
+                    bomItem.Title as BomItemName,
+                    bomItem.Code as BomItemCode
+                   
+                FROM [Sepidar01].[WKO].[ProductFormula] pf
+                LEFT JOIN [Sepidar01].[WKO].[FormulaBomItem] fbi 
+                    ON pf.ProductFormulaID = fbi.ProductFormulaRef
+                LEFT JOIN [Sepidar01].[INV].[Item] itm
+                    ON pf.ItemRef = itm.ItemID  -- برای نام محصول اصلی
+                LEFT JOIN [Sepidar01].[INV].[Item] bomItem
+                    ON fbi.ItemRef = bomItem.ItemID  -- برای نام آیتم‌های Bom
+                ORDER BY pf.ProductFormulaID, fbi.FormulaBomItemID
+            """
+            return self.execute_query(query)
+
+
+    def get_active_formulas_with_items(self):
+        """
+        Get only active formulas with their items
+        """
+        query = """
+            SELECT 
+                pf.ProductFormulaID,
+                pf.Code,
+                pf.Title,
+                pf.ItemRef,
+                pf.ItemUnitRef,
+                pf.Quantity as FormulaQuantity,
+                pf.IsActive,
+                pf.EstimatedLabour,
+                pf.EstimatedOverhead,
+                pf.Description as FormulaDescription,
+                pf.TracingTitle,
+                fbi.FormulaBomItemID,
+                fbi.ItemRef as BomItemRef,
+                fbi.Quantity as BomQuantity,
+                fbi.SecondaryQuantity,
+                fbi.Description as ItemDescription,
+                fbi.ItemTracingRef
+            FROM [Sepidar01].[WKO].[ProductFormula] pf
+            LEFT JOIN [Sepidar01].[WKO].[FormulaBomItem] fbi 
+                ON pf.ProductFormulaID = fbi.ProductFormulaRef
+            WHERE pf.IsActive = 1
+            ORDER BY pf.ProductFormulaID, fbi.FormulaBomItemID
+        """
+        return self.execute_query(query)
+
+    def get_formula_summary(self):
+        """
+        Get summary of formulas with item count
+        """
+        query = """
+            SELECT 
+                pf.ProductFormulaID,
+                pf.Code,
+                pf.Title,
+                pf.IsActive,
+                COUNT(fbi.FormulaBomItemID) as ItemCount,
+                ISNULL(SUM(fbi.Quantity), 0) as TotalBomQuantity
+            FROM [Sepidar01].[WKO].[ProductFormula] pf
+            LEFT JOIN [Sepidar01].[WKO].[FormulaBomItem] fbi 
+                ON pf.ProductFormulaID = fbi.ProductFormulaRef
+            GROUP BY pf.ProductFormulaID, pf.Code, pf.Title, pf.IsActive
+            ORDER BY pf.Code
+        """
+        return self.execute_query(query)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # ایجاد یک نمونه سراسری از اتصال
 db = DatabaseConnection()

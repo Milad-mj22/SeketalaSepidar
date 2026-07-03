@@ -202,8 +202,8 @@ SQL_SERVER_CONNECTION_STRING = (
 
 # روش دوم: استفاده از تنظیمات جداگانه (اختیاری)
 SQL_USE_CONNECTION_STRING = False  # اگر True باشد از string بالا استفاده می‌کند
-SQL_SERVER = 'WIN-1SSE4CQ9LKP\\AMINDB'
-SQL_DATABASE = 'AminDB1404_606876541'
+SQL_SERVER = 'DESKTOP-JKDSDCN\SEPIDAR'
+SQL_DATABASE = 'Sepidar01'
 SQL_DRIVER = '{ODBC Driver 17 for SQL Server}'
 SQL_TRUSTED_CONNECTION = 'yes'
 
