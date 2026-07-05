@@ -202,7 +202,9 @@ SQL_SERVER_CONNECTION_STRING = (
 
 # روش دوم: استفاده از تنظیمات جداگانه (اختیاری)
 SQL_USE_CONNECTION_STRING = False  # اگر True باشد از string بالا استفاده می‌کند
-SQL_SERVER = 'DESKTOP-JKDSDCN\SEPIDAR'
+# SQL_SERVER = 'DESKTOP-JKDSDCN\SEPIDAR'
+SQL_SERVER = "DESKTOP-OCIN559"
+
 SQL_DATABASE = 'Sepidar01'
 SQL_DRIVER = '{ODBC Driver 17 for SQL Server}'
 SQL_TRUSTED_CONNECTION = 'yes'
@@ -211,3 +213,9 @@ SQL_TRUSTED_CONNECTION = 'yes'
 # SQL_USERNAME = 'your_username'
 # SQL_PASSWORD = 'your_password'
 # SQL_TRUSTED_CONNECTION = 'no'
+
+# نوع دیتابیس: 'sqlserver' یا 'sqlite'
+# DATABASE_TYPE = 'sqlite'  # تغییر به 'sqlserver' برای استفاده از SQL Server
+
+# تنظیمات SQLite
+SQLITE_DB_PATH = 'my_database_copy.db'  # مسیر فایل SQLite
