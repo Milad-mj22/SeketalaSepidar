@@ -467,6 +467,29 @@
                                 {% endif %}
                             </span>
                             {% endif %}
+
+               
+    {% if formula.main_item_stock > 0 %}
+    <div class="detail-item">
+        <span class="label">📦 موجودی:</span>
+        <span class="value" style="color: #2e7d32; font-weight: bold;">
+            {{ formula.main_item_stock|floatformat }}
+            {% if formula.main_item_stock_unit %}
+            {{ formula.main_item_stock_unit }}
+            {% endif %}
+        </span>
+    </div>
+    {% else %}
+    <div class="detail-item">
+        <span class="value" style="color: #e93333;">بدون موجودی : </span>
+      {{ formula.main_item_stock|floatformat }}
+            {% if formula.main_item_stock_unit %}
+            {{ formula.main_item_stock_unit }}
+            {% endif %}
+    </div>
+    {% endif %}
+
+
                         </div>
                         <div class="formula-meta">
                             <span class="badge {% if formula.is_active %}badge-active{% else %}badge-inactive{% endif %}">
@@ -546,6 +569,7 @@
                                     <th>نام آیتم</th>
                                     <th>مقدار</th>
                                     <th>مقدار ثانویه</th>
+                                    <th>موجودی</th>
                                     <th>مرجع ردیابی</th>
                                     <th>توضیحات</th>
                                 </tr>
@@ -558,6 +582,20 @@
                                     <td><strong>{{ item.item_name }}</strong></td>
                                     <td>{{ item.quantity|floatformat:2 }}</td>
                                     <td>{{ item.secondary_quantity|floatformat:2 }}</td>
+
+                                                <td>
+                {% if item.stock_quantity > 0 %}
+                <span style="color: #2e7d32; font-weight: bold;">
+                    {{ item.stock_quantity|floatformat:2 }}
+                    {% if item.stock_unit %}
+                    {{ item.stock_unit }}
+                    {% endif %}
+                </span>
+                {% else %}
+                <span style="color: #999;">بدون موجودی</span>
+                {% endif %}
+            </td>
+
                                     <td>{{ item.tracing_ref|default:"-" }}</td>
                                     <td>{{ item.description|default:"-" }}</td>
                                 </tr>

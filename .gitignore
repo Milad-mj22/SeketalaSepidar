@@ -15,6 +15,7 @@ media/temp_exports/
 db.sqlite3
 /media/
 
+my_database_copy.db
 
 private.pem
 public.pem

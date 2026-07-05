@@ -194,11 +194,10 @@ class DatabaseConnection:
         return self.connect()
 
 
-
-
     def get_formulas_with_items(self, formula_id=None):
         """
         Get all formulas with their boom items from ProductFormula and FormulaBomItem
+        with stock information
         """
         if formula_id:
             # Get specific formula with its items
@@ -222,18 +221,46 @@ class DatabaseConnection:
                     fbi.Description as ItemDescription,
                     fbi.ItemTracingRef,
                     -- نام و کد محصول از جدول Item
-                    itm.ItemName as ProductName,
-                    itm.ItemCode as ProductCode,
+                    itm.Title as ProductName,
+                    itm.Code as ProductCode,
                     -- نام و کد آیتم‌های Bom
-                    bomItem.ItemName as BomItemName,
-                    bomItem.ItemCode as BomItemCode
+                    bomItem.Title as BomItemName,
+                    bomItem.Code as BomItemCode,
+                    -- اطلاعات موجودی برای آیتم‌های Bom
+                    ISNULL(stock.TotalQuantity, 0) as StockQuantity,
+                    stock.UnitRef as StockUnitRef,
+                    unit.Title as StockUnitName,
+                    -- اطلاعات موجودی برای آیتم اصلی (ProductFormula)
+                    ISNULL(main_stock.TotalQuantity, 0) as MainItemStockQuantity,
+                    main_stock.UnitRef as MainItemStockUnitRef,
+                    main_unit.Title as MainItemStockUnitName
                 FROM [Sepidar01].[WKO].[ProductFormula] pf
                 LEFT JOIN [Sepidar01].[WKO].[FormulaBomItem] fbi 
                     ON pf.ProductFormulaID = fbi.ProductFormulaRef
                 LEFT JOIN [Sepidar01].[INV].[Item] itm
-                    ON pf.ItemRef = itm.ItemID  -- برای نام محصول اصلی
+                    ON pf.ItemRef = itm.ItemID
                 LEFT JOIN [Sepidar01].[INV].[Item] bomItem
-                    ON fbi.ItemRef = bomItem.ItemID  -- برای نام آیتم‌های Bom
+                    ON fbi.ItemRef = bomItem.ItemID
+                LEFT JOIN (
+                    SELECT 
+                        ItemRef,
+                        UnitRef,
+                        SUM(Quantity) as TotalQuantity
+                    FROM [Sepidar01].[INV].[InventoryItem]
+                    GROUP BY ItemRef, UnitRef
+                ) stock ON fbi.ItemRef = stock.ItemRef AND fbi.UnitRef = stock.UnitRef
+                LEFT JOIN [Sepidar01].[INV].[Unit] unit
+                    ON stock.UnitRef = unit.UnitID
+                LEFT JOIN (
+                    SELECT 
+                        ItemRef,
+                        UnitRef,
+                        SUM(Quantity) as TotalQuantity
+                    FROM [Sepidar01].[INV].[InventoryItem]
+                    GROUP BY ItemRef, UnitRef
+                ) main_stock ON pf.ItemRef = main_stock.ItemRef AND pf.ItemUnitRef = main_stock.UnitRef
+                LEFT JOIN [Sepidar01].[INV].[Unit] main_unit
+                    ON main_stock.UnitRef = main_unit.UnitID
                 WHERE pf.ProductFormulaID = ?
                 ORDER BY pf.ProductFormulaID, fbi.FormulaBomItemID
             """
@@ -262,21 +289,48 @@ class DatabaseConnection:
                     -- نام و کد محصول از جدول Item
                     itm.Title as ProductName,
                     itm.Code as ProductCode,
+                    -- نام و کد آیتم‌های Bom
                     bomItem.Title as BomItemName,
-                    bomItem.Code as BomItemCode
-                   
+                    bomItem.Code as BomItemCode,
+                    -- اطلاعات موجودی برای آیتم‌های Bom
+                    ISNULL(stock.TotalQuantity, 0) as StockQuantity,
+                    stock.UnitRef as StockUnitRef,
+                    unit.Title as StockUnitName,
+                    -- اطلاعات موجودی برای آیتم اصلی (ProductFormula)
+                    ISNULL(main_stock.TotalQuantity, 0) as MainItemStockQuantity,
+                    main_stock.UnitRef as MainItemStockUnitRef,
+                    main_unit.Title as MainItemStockUnitName
                 FROM [Sepidar01].[WKO].[ProductFormula] pf
                 LEFT JOIN [Sepidar01].[WKO].[FormulaBomItem] fbi 
                     ON pf.ProductFormulaID = fbi.ProductFormulaRef
                 LEFT JOIN [Sepidar01].[INV].[Item] itm
-                    ON pf.ItemRef = itm.ItemID  -- برای نام محصول اصلی
+                    ON pf.ItemRef = itm.ItemID
                 LEFT JOIN [Sepidar01].[INV].[Item] bomItem
-                    ON fbi.ItemRef = bomItem.ItemID  -- برای نام آیتم‌های Bom
+                    ON fbi.ItemRef = bomItem.ItemID
+                LEFT JOIN (
+                    SELECT 
+                        ItemRef,
+                        UnitRef,
+                        SUM(Quantity) as TotalQuantity
+                    FROM [Sepidar01].[INV].[ItemStockSummary]
+                    GROUP BY ItemRef, UnitRef
+                ) stock ON fbi.ItemRef = stock.ItemRef 
+                LEFT JOIN [Sepidar01].[INV].[Unit] unit
+                    ON stock.UnitRef = unit.UnitID
+                LEFT JOIN (
+                    SELECT 
+                        ItemRef,
+                        UnitRef,
+                        SUM(Quantity) as TotalQuantity
+                    FROM [Sepidar01].[INV].[ItemStockSummary]
+                    GROUP BY ItemRef, UnitRef
+                ) main_stock ON pf.ItemRef = main_stock.ItemRef 
+                LEFT JOIN [Sepidar01].[INV].[Unit] main_unit
+                    ON main_stock.UnitRef = main_unit.UnitID
                 ORDER BY pf.ProductFormulaID, fbi.FormulaBomItemID
             """
             return self.execute_query(query)
-
-
+    
     def get_active_formulas_with_items(self):
         """
         Get only active formulas with their items
@@ -340,7 +394,114 @@ class DatabaseConnection:
 
 
 
+    def get_item_stock_summary(self, item_ref=None, unit_ref=None):
+        """
+        دریافت خلاصه موجودی هر آیتم با مجموع مقدار بر اساس واحد
+        """
+        # ابتدا باید نام جدول موجودی را پیدا کنید
+        # فرض می‌کنیم جدول [Sepidar01].[INV].[InventoryItem] وجود دارد
+        # با فیلدهای: ItemRef, UnitRef, Quantity
+        
+        if item_ref and unit_ref:
+            # دریافت موجودی برای یک آیتم خاص و واحد خاص
+            query = """
+                SELECT 
+                    ItemRef,
+                    UnitRef,
+                    SUM(Quantity) as TotalQuantity,
+                    COUNT(*) as RecordCount
+                FROM [Sepidar01].[INV].[InventoryItem]
+                WHERE ItemRef = ? AND UnitRef = ?
+                GROUP BY ItemRef, UnitRef
+            """
+            return self.execute_query(query, [item_ref, unit_ref])
+        
+        elif item_ref:
+            # دریافت موجودی برای یک آیتم خاص با تمام واحدها
+            query = """
+                SELECT 
+                    ItemRef,
+                    UnitRef,
+                    SUM(Quantity) as TotalQuantity,
+                    COUNT(*) as RecordCount
+                FROM [Sepidar01].[INV].[InventoryItem]
+                WHERE ItemRef = ?
+                GROUP BY ItemRef, UnitRef
+                ORDER BY UnitRef
+            """
+            return self.execute_query(query, [item_ref])
+        
+        else:
+            # دریافت موجودی همه آیتم‌ها
+            query = """
+                SELECT 
+                    ItemRef,
+                    UnitRef,
+                    SUM(Quantity) as TotalQuantity,
+                    COUNT(*) as RecordCount
+                FROM [Sepidar01].[INV].[InventoryItem]
+                GROUP BY ItemRef, UnitRef
+                ORDER BY ItemRef, UnitRef
+            """
+            return self.execute_query(query)
 
+    def get_item_stock_summary_with_details(self, item_ref=None):
+        """
+        دریافت خلاصه موجودی با اطلاعات کامل آیتم
+        """
+        if item_ref:
+            query = """
+                SELECT 
+                    inv.ItemRef,
+                    inv.UnitRef,
+                    SUM(inv.Quantity) as TotalQuantity,
+                    COUNT(inv.ItemRef) as RecordCount,
+                    itm.Title as ItemName,
+                    itm.Code as ItemCode,
+                    unt.Title as UnitName,
+                    unt.Code as UnitCode
+                FROM [Sepidar01].[INV].[InventoryItem] inv
+                LEFT JOIN [Sepidar01].[INV].[Item] itm
+                    ON inv.ItemRef = itm.ItemID
+                LEFT JOIN [Sepidar01].[INV].[Unit] unt
+                    ON inv.UnitRef = unt.UnitID
+                WHERE inv.ItemRef = ?
+                GROUP BY 
+                    inv.ItemRef, 
+                    inv.UnitRef, 
+                    itm.Title, 
+                    itm.Code,
+                    unt.Title,
+                    unt.Code
+                ORDER BY inv.UnitRef
+            """
+            return self.execute_query(query, [item_ref])
+        else:
+            query = """
+                SELECT 
+                    inv.ItemRef,
+                    inv.UnitRef,
+                    SUM(inv.Quantity) as TotalQuantity,
+                    COUNT(inv.ItemRef) as RecordCount,
+                    itm.Title as ItemName,
+                    itm.Code as ItemCode,
+                    unt.Title as UnitName,
+                    unt.Code as UnitCode
+                FROM [Sepidar01].[INV].[InventoryItem] inv
+                LEFT JOIN [Sepidar01].[INV].[Item] itm
+                    ON inv.ItemRef = itm.ItemID
+                LEFT JOIN [Sepidar01].[INV].[Unit] unt
+                    ON inv.UnitRef = unt.UnitID
+                GROUP BY 
+                    inv.ItemRef, 
+                    inv.UnitRef, 
+                    itm.Title, 
+                    itm.Code,
+                    unt.Title,
+                    unt.Code
+                ORDER BY inv.ItemRef, inv.UnitRef
+            """
+            return self.execute_query(query)
 
 
 

@@ -59,6 +59,8 @@ def formula_list(request):
                     'estimated_overhead': float(row.EstimatedOverhead) if row.EstimatedOverhead else 0,
                     'description': row.FormulaDescription,
                     'tracing_title': row.TracingTitle,
+                    'main_item_stock': float(row.MainItemStockQuantity) if hasattr(row, 'MainItemStockQuantity') and row.MainItemStockQuantity else 0,
+                    'main_item_stock_unit': row.MainItemStockUnitName if hasattr(row, 'MainItemStockUnitName') else None,
                     'items': []
                 }
             
@@ -72,7 +74,9 @@ def formula_list(request):
                     'quantity': float(row.BomQuantity) if row.BomQuantity else 0,
                     'secondary_quantity': float(row.SecondaryQuantity) if row.SecondaryQuantity else 0,
                     'description': row.ItemDescription,
-                    'tracing_ref': row.ItemTracingRef
+                    'tracing_ref': row.ItemTracingRef,
+                    'stock_quantity': float(row.StockQuantity) if hasattr(row, 'StockQuantity') and row.StockQuantity else 0,
+                    'stock_unit': row.StockUnitName if hasattr(row, 'StockUnitName') else None,
                 })
         
         # Convert to list for template
@@ -135,7 +139,9 @@ def formula_detail(request, formula_id):
                     'quantity': float(row.BomQuantity) if row.BomQuantity else 0,
                     'secondary_quantity': float(row.SecondaryQuantity) if row.SecondaryQuantity else 0,
                     'description': row.ItemDescription,
-                    'tracing_ref': row.ItemTracingRef
+                    'tracing_ref': row.ItemTracingRef,
+                    'stock_quantity': float(row.StockQuantity) if hasattr(row, 'StockQuantity') and row.StockQuantity else 0,
+                    'stock_unit': row.StockUnitName if hasattr(row, 'StockUnitName') else None,
                 })
         
         return render(request, 'formula_detail.html', {'formula': formula})
