@@ -255,10 +255,20 @@ def search_formulas(request):
 
 from django.views.decorators.http import require_http_methods
 
+import json
+import logging
+from django.http import JsonResponse
+from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import csrf_exempt
+from collections import defaultdict
+
+logger = logging.getLogger(__name__)
+
+@csrf_exempt
 @require_http_methods(["POST"])
 def submit_all_formula_values(request):
     """
-    دریافت تمام مقادیر فرمول‌ها به صورت یکجا
+    دریافت تمام مقادیر فرمول‌ها و محاسبه مواد اولیه مورد نیاز
     """
     try:
         # دریافت داده از درخواست
@@ -294,61 +304,82 @@ def submit_all_formula_values(request):
                     'error': f'مقدار فرمول {formula_id} نمی‌تواند منفی باشد'
                 }, status=400)
         
-        # ذخیره در دیتابیس
-        saved_count = 0
-        errors = []
+        # اتصال به دیتابیس
+        db.connect()
         
-        try:
-            db.connect()
-            cursor = db.get_cursor()
+        # دیکشنری برای جمع‌آوری مواد اولیه مورد نیاز
+        required_materials = defaultdict(float)
+        formula_details = []
+        
+        # برای هر فرمول، مواد اولیه را محاسبه کن
+        for item in values:
+            formula_id = item.get('formula_id')
+            requested_quantity = item.get('value')
             
-            for item in values:
-                formula_id = item.get('formula_id')
-                value = item.get('value')
+            # دریافت مواد اولیه فرمول از دیتابیس
+            recipe_items = get_formula_recipe(db, formula_id)
+            
+            if not recipe_items:
+                logger.warning(f"No recipe found for formula {formula_id}")
+                continue
+            
+            # محاسبه مقدار مورد نیاز برای هر ماده
+            formula_materials = []
+            for recipe in recipe_items:
+                item_ref = recipe.get('ItemRef')
+                item_name = recipe.get('ItemName')
+                unit_ref = recipe.get('UnitRef')
+                unit_name = recipe.get('UnitName')
+                quantity_per_unit = recipe.get('Quantity', 0)
                 
-                try:
-                    # ذخیره مقدار در دیتابیس
-                    # اینجا می‌توانید هر عملیات ذخیره‌سازی که نیاز دارید انجام دهید
-                    # query = """
-                    #     INSERT INTO [Sepidar01].[WKO].[FormulaValues] 
-                    #     (ProductFormulaRef, Value, CreationDate)
-                    #     VALUES (?, ?, GETDATE())
-                    # """
-                    # cursor.execute(query, [formula_id, value])
-                    saved_count += 1
-                    
-                except pyodbc.Error as e:
-                    errors.append(f"فرمول {formula_id}: {str(e)}")
-                    continue
-            
-            cursor.commit()
-            cursor.close()
-            db.close()
-            
-            if errors:
-                return JsonResponse({
-                    'success': True,
-                    'saved_count': saved_count,
-                    'errors': errors,
-                    'message': f'{saved_count} مقدار ثبت شد و {len(errors)} خطا رخ داد'
+                # محاسبه مقدار مورد نیاز = مقدار درخواستی * مقدار در هر واحد
+                required_quantity = requested_quantity * quantity_per_unit
+                
+                formula_materials.append({
+                    'item_ref': item_ref,
+                    'item_name': item_name,
+                    'unit_ref': unit_ref,
+                    'unit_name': unit_name,
+                    'quantity_per_unit': quantity_per_unit,
+                    'required_quantity': required_quantity
                 })
+                
+                # جمع‌آوری در دیکشنری اصلی
+                key = f"{item_ref}_{unit_ref}"
+                required_materials[key] += required_quantity
             
-            logger.info(f"{saved_count} values saved successfully")
-            
-            return JsonResponse({
-                'success': True,
-                'saved_count': saved_count,
-                'message': f'{saved_count} مقدار با موفقیت ثبت شد'
+            formula_details.append({
+                'formula_id': formula_id,
+                'requested_quantity': requested_quantity,
+                'materials': formula_materials
             })
-            
-        except pyodbc.Error as e:
-            logger.error(f"Database error: {e}")
-            db.close()
-            return JsonResponse({
-                'success': False,
-                'error': f'خطای دیتابیس: {str(e)}'
-            }, status=500)
-            
+        
+        # بررسی موجودی مواد اولیه
+        stock_status = check_materials_stock(db, required_materials)
+        
+        # بستن اتصال دیتابیس
+        db.close()
+        
+        # ذخیره مقادیر در دیتابیس (اگر نیاز دارید)
+        saved_count = save_formula_values(values)
+        
+        # برگرداندن نتیجه
+        return JsonResponse({
+            'success': True,
+            'saved_count': saved_count,
+            'message': f'{saved_count} مقدار با موفقیت ثبت شد',
+            'data': {
+                'formula_details': formula_details,
+                'required_materials': dict(required_materials),
+                'stock_status': stock_status,
+                'summary': {
+                    'total_materials': len(required_materials),
+                    'available_materials': sum(1 for s in stock_status.values() if s['available']),
+                    'unavailable_materials': sum(1 for s in stock_status.values() if not s['available'])
+                }
+            }
+        })
+        
     except json.JSONDecodeError:
         return JsonResponse({
             'success': False,
@@ -356,7 +387,235 @@ def submit_all_formula_values(request):
         }, status=400)
     except Exception as e:
         logger.error(f"Error in submit_all_formula_values: {e}")
+        db.close()
         return JsonResponse({
             'success': False,
             'error': str(e)
         }, status=500)
+
+
+def get_formula_recipe(db, formula_id):
+    """
+    دریافت مواد اولیه یک فرمول از دیتابیس
+    """
+    try:
+        query = """
+            SELECT 
+                fbi.ItemRef,
+                fbi.Quantity,
+                fbi.UnitRef,
+                fbi.SecondaryQuantity,
+                fbi.Description,
+                itm.Title as ItemName,
+                itm.Code as ItemCode,
+                unt.Title as UnitName,
+                unt.Code as UnitCode
+            FROM [Sepidar01].[WKO].[FormulaBomItem] fbi
+            LEFT JOIN [Sepidar01].[INV].[Item] itm
+                ON fbi.ItemRef = itm.ItemID
+            LEFT JOIN [Sepidar01].[INV].[Unit] unt
+                ON fbi.UnitRef = unt.UnitID
+            WHERE fbi.ProductFormulaRef = ?
+            ORDER BY fbi.FormulaBomItemID
+        """
+        results = db.execute_query(query, [formula_id])
+        
+        recipe = []
+        for row in results:
+            recipe.append({
+                'ItemRef': row.ItemRef,
+                'Quantity': float(row.Quantity) if row.Quantity else 0,
+                'UnitRef': row.UnitRef,
+                'SecondaryQuantity': float(row.SecondaryQuantity) if row.SecondaryQuantity else 0,
+                'Description': row.Description,
+                'ItemName': row.ItemName,
+                'ItemCode': row.ItemCode,
+                'UnitName': row.UnitName,
+                'UnitCode': row.UnitCode
+            })
+        
+        return recipe
+        
+    except Exception as e:
+        logger.error(f"Error getting recipe for formula {formula_id}: {e}")
+        return []
+
+
+def check_materials_stock(db, required_materials):
+    """
+    بررسی موجودی مواد اولیه در انبار
+    """
+    stock_status = {}
+    
+    try:
+        for key, required_qty in required_materials.items():
+            # جداسازی ItemRef و UnitRef
+            parts = key.split('_')
+            if len(parts) == 2:
+                item_ref = parts[0]
+                unit_ref = parts[1]
+            else:
+                continue
+            
+            # دریافت موجودی از دیتابیس
+            query = """
+                SELECT 
+                    ItemRef,
+                    UnitRef,
+                    SUM(Quantity) as TotalStock
+                FROM [Sepidar01].[INV].[InventoryItem]
+                WHERE ItemRef = ? AND UnitRef = ?
+                GROUP BY ItemRef, UnitRef
+            """
+            results = db.execute_query(query, [item_ref, unit_ref])
+            
+            available_stock = 0
+            if results and len(results) > 0:
+                available_stock = float(results[0].TotalStock) if results[0].TotalStock else 0
+            
+            stock_status[key] = {
+                'item_ref': item_ref,
+                'unit_ref': unit_ref,
+                'required_quantity': required_qty,
+                'available_stock': available_stock,
+                'available': available_stock >= required_qty,
+                'shortage': max(0, required_qty - available_stock),
+                'status': 'موجود' if available_stock >= required_qty else 'کمبود'
+            }
+        
+        return stock_status
+        
+    except Exception as e:
+        logger.error(f"Error checking stock: {e}")
+        return {}
+
+
+def get_formula_recipe_with_stock(db, formula_id):
+    """
+    دریافت مواد اولیه فرمول با اطلاعات موجودی
+    """
+    try:
+        query = """
+            SELECT 
+                fbi.ItemRef,
+                fbi.Quantity,
+                fbi.UnitRef,
+                fbi.SecondaryQuantity,
+                fbi.Description,
+                itm.Title as ItemName,
+                itm.Code as ItemCode,
+                unt.Title as UnitName,
+                unt.Code as UnitCode,
+                ISNULL(stock.TotalStock, 0) as AvailableStock
+            FROM [Sepidar01].[WKO].[FormulaBomItem] fbi
+            LEFT JOIN [Sepidar01].[INV].[Item] itm
+                ON fbi.ItemRef = itm.ItemID
+            LEFT JOIN [Sepidar01].[INV].[Unit] unt
+                ON fbi.UnitRef = unt.UnitID
+            LEFT JOIN (
+                SELECT 
+                    ItemRef,
+                    UnitRef,
+                    SUM(Quantity) as TotalStock
+                FROM [Sepidar01].[INV].[InventoryItem]
+                GROUP BY ItemRef, UnitRef
+            ) stock ON fbi.ItemRef = stock.ItemRef 
+            WHERE fbi.ProductFormulaRef = ?
+            ORDER BY fbi.FormulaBomItemID
+        """
+        results = db.execute_query(query, [formula_id])
+        
+        recipe = []
+        for row in results:
+            recipe.append({
+                'ItemRef': row.ItemRef,
+                'Quantity': float(row.Quantity) if row.Quantity else 0,
+                'UnitRef': row.UnitRef,
+                'SecondaryQuantity': float(row.SecondaryQuantity) if row.SecondaryQuantity else 0,
+                'Description': row.Description,
+                'ItemName': row.ItemName,
+                'ItemCode': row.ItemCode,
+                'UnitName': row.UnitName,
+                'UnitCode': row.UnitCode,
+                'AvailableStock': float(row.AvailableStock) if row.AvailableStock else 0
+            })
+        
+        return recipe
+        
+    except Exception as e:
+        logger.error(f"Error getting recipe with stock for formula {formula_id}: {e}")
+        return []
+
+
+def save_formula_values(values):
+    """
+    ذخیره مقادیر فرمول در دیتابیس
+    """
+    saved_count = 0
+    errors = []
+    return 0
+    
+    try:
+        db.connect()
+        cursor = db.get_cursor()
+        
+        for item in values:
+            formula_id = item.get('formula_id')
+            value = item.get('value')
+            
+            try:
+                # ذخیره در جدول FormulaValues
+                query = """
+                    INSERT INTO [Sepidar01].[WKO].[FormulaValues] 
+                    (ProductFormulaRef, Value, CreationDate)
+                    VALUES (?, ?, GETDATE())
+                """
+                cursor.execute(query, [formula_id, value])
+                saved_count += 1
+                
+            except Exception as e:
+                errors.append(f"فرمول {formula_id}: {str(e)}")
+                continue
+        
+        cursor.commit()
+        cursor.close()
+        db.close()
+        
+        if errors:
+            logger.warning(f"Saved {saved_count} values with {len(errors)} errors")
+        
+        return saved_count
+        
+    except Exception as e:
+        logger.error(f"Error saving formula values: {e}")
+        db.close()
+        return 0
+
+
+def get_formula_recipe_summary(db, formula_id):
+    """
+    دریافت خلاصه مواد اولیه یک فرمول
+    """
+    try:
+        query = """
+            SELECT 
+                COUNT(*) as TotalItems,
+                SUM(fbi.Quantity) as TotalQuantity,
+                COUNT(DISTINCT fbi.ItemRef) as UniqueItems
+            FROM [Sepidar01].[WKO].[FormulaBomItem] fbi
+            WHERE fbi.ProductFormulaRef = ?
+        """
+        results = db.execute_query(query, [formula_id])
+        
+        if results and len(results) > 0:
+            return {
+                'total_items': results[0].TotalItems if results[0].TotalItems else 0,
+                'total_quantity': float(results[0].TotalQuantity) if results[0].TotalQuantity else 0,
+                'unique_items': results[0].UniqueItems if results[0].UniqueItems else 0
+            }
+        
+        return None
+        
+    except Exception as e:
+        logger.error(f"Error getting recipe summary for formula {formula_id}: {e}")
+        return None
