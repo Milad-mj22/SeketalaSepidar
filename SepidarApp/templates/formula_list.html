@@ -8,602 +8,961 @@
     <title>لیست فرمول‌ها</title>
     <meta name="csrf-token" content="{{ csrf_token }}">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        /* ===== CSS Variables ===== */
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --primary-light: #818cf8;
+            --success: #22c55e;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            --shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f0f2f5;
+            background: var(--gray-50);
             padding: 20px;
+            direction: rtl;
         }
         
         .container {
-            max-width: 1400px;
+            max-width: 1440px;
             margin: 0 auto;
         }
-        
+
+        /* ===== Header ===== */
         .header {
             background: white;
-            padding: 20px 25px;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
+            padding: 24px 30px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 24px;
+            border: 1px solid var(--gray-200);
         }
         
-        .header h1 {
-            color: #1a237e;
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-        
-        .header-actions {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-            flex-wrap: wrap;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid #e0e0e0;
-        }
-        
-        .stats {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            flex: 1;
-        }
-        
-        .stat-box {
-            background: #e8eaf6;
-            padding: 10px 20px;
-            border-radius: 8px;
-            border-right: 4px solid #1a237e;
-        }
-        
-        .stat-box .label {
-            font-size: 12px;
-            color: #666;
-            font-weight: bold;
-        }
-        
-        .stat-box .value {
-            font-size: 20px;
-            font-weight: bold;
-            color: #1a237e;
-            margin-top: 3px;
-        }
-        
-        .stat-box.active .value {
-            color: #2e7d32;
-        }
-        
-        .stat-box.inactive .value {
-            color: #c62828;
-        }
-        
-        .btn-submit-all {
-            padding: 12px 30px;
-            background: linear-gradient(135deg, #4caf50, #45a049);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 16px;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
-        }
-        
-        .btn-submit-all:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
-        }
-        
-        .btn-submit-all:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-        
-        .btn-submit-all.loading {
-            background: #ff9800;
-        }
-        
-        .btn-clear-all {
-            padding: 12px 25px;
-            background: #f44336;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 16px;
-            transition: all 0.3s;
-            box-shadow: 0 2px 8px rgba(244, 67, 54, 0.3);
-        }
-        
-        .btn-clear-all:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(244, 67, 54, 0.4);
-        }
-        
-        .search-box {
-            display: flex;
-            gap: 10px;
-            flex: 1;
-            min-width: 250px;
-        }
-        
-        .search-box input {
-            flex: 1;
-            padding: 10px 15px;
-            border: 2px solid #ddd;
-            border-radius: 6px;
-            font-size: 14px;
-            transition: border-color 0.3s;
-        }
-        
-        .search-box input:focus {
-            outline: none;
-            border-color: #1a237e;
-        }
-        
-        .search-box button {
-            padding: 10px 30px;
-            background: #1a237e;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background 0.3s;
-        }
-        
-        .search-box button:hover {
-            background: #0d1442;
-        }
-        
-        .formula-card {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-            overflow: hidden;
-            transition: transform 0.2s;
-        }
-        
-        .formula-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-        }
-        
-        .formula-header {
-            background: linear-gradient(135deg, #1a237e, #283593);
-            color: white;
-            padding: 15px 20px;
+        .header-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .header-title h1 {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin: 0;
+        }
+        
+        .header-title .icon {
+            font-size: 28px;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        /* ===== Stats ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-card {
+            background: var(--gray-50);
+            padding: 14px 18px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--gray-200);
+            transition: var(--transition);
+            cursor: default;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+        
+        .stat-card .label {
+            font-size: 12px;
+            color: var(--gray-500);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .stat-card .value {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-top: 4px;
+        }
+        
+        .stat-card .value.active { color: var(--success); }
+        .stat-card .value.inactive { color: var(--danger); }
+        .stat-card .value.primary { color: var(--primary); }
+        .stat-card .value.warning { color: var(--warning); }
+
+        /* ===== Buttons ===== */
+        .btn {
+            padding: 10px 24px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            font-family: inherit;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+        }
+        
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+        .btn-success:hover {
+            background: #16a34a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+        }
+        
+        .btn-info {
+            background: var(--info);
+            color: white;
+        }
+        .btn-info:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        
+        .btn-loading {
+            background: var(--warning) !important;
+            pointer-events: none;
+        }
+
+        /* ===== Search ===== */
+        .search-wrapper {
+            display: flex;
+            gap: 12px;
+            flex: 1;
+            min-width: 250px;
+            max-width: 500px;
+        }
+        
+        .search-wrapper input {
+            flex: 1;
+            padding: 10px 16px;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            transition: var(--transition);
+            background: var(--gray-50);
+        }
+        
+        .search-wrapper input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+            background: white;
+        }
+        
+        .search-wrapper input::placeholder {
+            color: var(--gray-400);
+        }
+
+        /* ===== Formula Card ===== */
+        .formula-card {
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 16px;
+            overflow: hidden;
+            border: 1px solid var(--gray-200);
+            transition: var(--transition);
+        }
+        
+        .formula-card:hover {
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .formula-card.expanded {
+            border-color: var(--primary-light);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* ===== Formula Header (Clickable) ===== */
+        .formula-header {
+            background: linear-gradient(135deg, var(--gray-800), var(--gray-900));
+            padding: 14px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            user-select: none;
+            position: relative;
+        }
+        
+        .formula-header:hover {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+        }
+        
+        .formula-header .toggle-icon {
+            color: rgba(255,255,255,0.5);
+            transition: var(--transition);
+            font-size: 14px;
+            margin-right: 8px;
+        }
+        
+        .formula-header .toggle-icon.rotated {
+            transform: rotate(180deg);
         }
         
         .formula-info {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
             flex-wrap: wrap;
+            flex: 1;
         }
         
         .formula-code {
-            background: rgba(255,255,255,0.2);
-            padding: 4px 12px;
-            border-radius: 4px;
-            font-size: 14px;
-            font-weight: bold;
+            background: rgba(255,255,255,0.15);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            color: white;
+            letter-spacing: 0.5px;
         }
         
         .formula-title {
-            font-size: 18px;
-            font-weight: bold;
+            font-size: 17px;
+            font-weight: 700;
+            color: white;
         }
         
-        .formula-meta {
+        /* ===== Value Input in Header ===== */
+        .value-input-inline {
             display: flex;
-            gap: 15px;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.1);
+            padding: 4px 12px 4px 8px;
+            border-radius: var(--radius-sm);
+            border: 2px solid transparent;
+            transition: var(--transition);
+        }
+        
+        .value-input-inline:focus-within {
+            border-color: var(--success);
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .value-input-inline label {
+            color: rgba(255,255,255,0.8);
+            font-weight: 600;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+        
+        .value-input-inline input {
+            width: 90px;
+            padding: 6px 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+            direction: ltr;
+            background: rgba(255,255,255,0.9);
+            transition: var(--transition);
+        }
+        
+        .value-input-inline input:focus {
+            outline: none;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2);
+        }
+        
+        .value-input-inline input.has-value {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+        
+        .value-input-inline .input-icon {
+            color: rgba(255,255,255,0.4);
+            font-size: 14px;
+        }
+
+        /* ===== Badges ===== */
+        .formula-badges {
+            display: flex;
+            gap: 8px;
             align-items: center;
             flex-wrap: wrap;
         }
         
         .badge {
-            padding: 4px 12px;
+            padding: 4px 14px;
             border-radius: 20px;
             font-size: 12px;
-            font-weight: bold;
+            font-weight: 600;
+            white-space: nowrap;
         }
         
         .badge-active {
-            background: #4caf50;
+            background: var(--success);
             color: white;
         }
         
         .badge-inactive {
-            background: #f44336;
+            background: var(--danger);
             color: white;
         }
         
         .badge-items {
-            background: rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.15);
             color: white;
         }
         
+        .badge-stock {
+            background: rgba(255,255,255,0.1);
+            color: #a5f3fc;
+        }
+        
+        .badge-stock-low {
+            background: rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
+        }
+        
+        .badge-stock-good {
+            background: rgba(34, 197, 94, 0.3);
+            color: #86efac;
+        }
+
+        /* ===== Formula Body (Collapsible) ===== */
+        .formula-body {
+            display: none;
+            animation: slideDown 0.3s ease-out;
+        }
+        
+        .formula-body.expanded {
+            display: block;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== Formula Details ===== */
         .formula-details {
-            padding: 15px 20px;
-            background: #f8f9fa;
-            border-bottom: 1px solid #e0e0e0;
+            padding: 12px 20px;
+            background: var(--gray-50);
+            border-bottom: 1px solid var(--gray-200);
             display: flex;
-            gap: 20px;
+            gap: 16px;
             flex-wrap: wrap;
             align-items: center;
         }
         
         .detail-item {
             display: flex;
-            gap: 5px;
-            font-size: 14px;
+            align-items: center;
+            gap: 4px;
+            font-size: 13px;
+            color: var(--gray-600);
         }
         
         .detail-item .label {
-            color: #666;
             font-weight: 500;
         }
         
         .detail-item .value {
-            color: #1a237e;
-            font-weight: bold;
+            color: var(--gray-800);
+            font-weight: 600;
+        }
+
+        /* ===== Table ===== */
+        .table-container {
+            padding: 16px 20px 20px;
+            overflow-x: auto;
         }
         
-        /* استایل بخش ثبت مقدار */
-        .value-input-section {
+        .table-container .table-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gray-500);
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
-            gap: 10px;
-            background: white;
-            padding: 5px 15px;
-            border-radius: 8px;
-            border: 2px solid #1a237e;
-            margin-right: auto;
-        }
-        
-        .value-input-section label {
-            color: #1a237e;
-            font-weight: bold;
-            font-size: 14px;
-        }
-        
-        .value-input-section input {
-            width: 120px;
-            padding: 6px 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-            text-align: center;
-            direction: ltr;
-        }
-        
-        .value-input-section input:focus {
-            outline: none;
-            border-color: #1a237e;
-            box-shadow: 0 0 5px rgba(26, 35, 126, 0.3);
-        }
-        
-        .value-input-section input.has-value {
-            border-color: #4caf50;
-            background: #f1f8e9;
-        }
-        
-        .table-container {
-            padding: 15px 20px 20px;
-            overflow-x: auto;
+            gap: 8px;
         }
         
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 14px;
+            font-size: 13px;
         }
         
         th {
-            background: #e8eaf6;
-            padding: 12px;
+            background: var(--gray-100);
+            padding: 10px 14px;
             text-align: right;
-            border: 1px solid #dee2e6;
-            font-weight: bold;
-            color: #1a237e;
+            border: 1px solid var(--gray-200);
+            font-weight: 600;
+            color: var(--gray-700);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
         }
         
         td {
-            padding: 10px 12px;
-            border: 1px solid #dee2e6;
+            padding: 10px 14px;
+            border: 1px solid var(--gray-200);
+            color: var(--gray-700);
         }
         
         tr:nth-child(even) {
-            background: #fafafa;
+            background: var(--gray-50);
         }
         
         tr:hover {
-            background: #e3f2fd;
+            background: #eef2ff;
+        }
+        
+        .stock-positive {
+            color: var(--success);
+            font-weight: 600;
+        }
+        
+        .stock-zero {
+            color: var(--gray-400);
         }
         
         .no-items {
             text-align: center;
-            color: #999;
+            color: var(--gray-400);
             padding: 30px;
             font-style: italic;
         }
-        
+
+        /* ===== Empty State ===== */
         .empty-state {
             text-align: center;
-            padding: 50px;
-            color: #666;
+            padding: 60px 20px;
+            color: var(--gray-500);
         }
         
         .empty-state .icon {
-            font-size: 48px;
-            margin-bottom: 15px;
+            font-size: 64px;
+            margin-bottom: 16px;
+            opacity: 0.5;
         }
         
-        /* SweetAlert2 custom styles */
-        .swal2-popup .swal2-content {
-            text-align: right !important;
+        .empty-state h2 {
+            font-size: 22px;
+            color: var(--gray-700);
+            margin-bottom: 8px;
         }
         
-        .swal2-popup .swal2-confirm {
-            background: #4caf50 !important;
+        .empty-state p {
+            color: var(--gray-400);
+        }
+
+        /* ===== Floating Summary - Enhanced ===== */
+        .floating-summary {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            right: 30px;
+            background: white;
+            padding: 16px 24px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            z-index: 1000;
+            transition: var(--transition);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .floating-summary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+        }
+        
+        .floating-summary .summary-section {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        
+        .floating-summary .summary-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--gray-600);
+        }
+        
+        .floating-summary .summary-item .num {
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--primary);
+        }
+        
+        .floating-summary .summary-item .num.success { color: var(--success); }
+        .floating-summary .summary-item .num.danger { color: var(--danger); }
+        .floating-summary .summary-item .num.warning { color: var(--warning); }
+        
+        .floating-summary .divider {
+            width: 1px;
+            height: 30px;
+            background: var(--gray-200);
+        }
+        
+        .floating-summary .summary-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        
+        .floating-summary .summary-actions .btn {
+            padding: 6px 16px;
+            font-size: 12px;
+        }
+        
+        /* Progress bar in summary */
+        .summary-progress {
+            width: 100%;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid var(--gray-200);
+        }
+        
+        .summary-progress .progress-bar {
+            height: 6px;
+            background: var(--gray-200);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .summary-progress .progress-bar .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success), var(--primary));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+        
+        .summary-progress .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--gray-500);
+            margin-top: 4px;
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 1024px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
         
         @media (max-width: 768px) {
+            body { padding: 12px; }
+            
+            .header { padding: 16px; }
+            .header-top { flex-direction: column; align-items: stretch; }
+            .header-title h1 { font-size: 20px; }
+            
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+            .stat-card { padding: 10px 14px; }
+            .stat-card .value { font-size: 18px; }
+            
+            .search-wrapper {
+                max-width: 100%;
+                min-width: auto;
+            }
+            
             .formula-header {
                 flex-direction: column;
                 align-items: stretch;
+                padding: 12px 16px;
             }
+            .formula-info { flex-wrap: wrap; }
+            .formula-title { font-size: 16px; }
             
-            .formula-meta {
-                justify-content: flex-start;
-            }
-            
-            .stats {
-                flex-direction: column;
-            }
-            
-            .search-box {
-                flex-direction: column;
-            }
-            
-            .value-input-section {
-                flex-wrap: wrap;
-                margin-right: 0;
+            .value-input-inline {
                 width: 100%;
                 justify-content: center;
             }
+            .value-input-inline input { width: 100px; }
             
-            .value-input-section input {
-                width: 100px;
+            .floating-summary {
+                bottom: 12px;
+                left: 12px;
+                right: 12px;
+                padding: 12px 16px;
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .floating-summary .summary-section {
+                justify-content: center;
+            }
+            .floating-summary .divider { display: none; }
+            .floating-summary .summary-actions {
+                justify-content: center;
             }
             
             .header-actions {
                 flex-direction: column;
+                width: 100%;
             }
-            
-            .btn-submit-all, .btn-clear-all {
+            .header-actions .btn {
                 width: 100%;
                 justify-content: center;
             }
+            
+            .formula-badges {
+                justify-content: flex-start;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .floating-summary .summary-section {
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+
+        /* ===== Scrollbar ===== */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--gray-100);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--gray-300);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--gray-400);
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- ===== HEADER ===== -->
         <div class="header">
-            <h1>📋 لیست فرمول‌های محصولات</h1>
-            
-            <div class="header-actions">
-                <div class="stats">
-                    <div class="stat-box">
-                        <div class="label">کل فرمول‌ها</div>
-                        <div class="value">{{ total_formulas }}</div>
-                    </div>
-                    <div class="stat-box active">
-                        <div class="label">فرمول‌های فعال</div>
-                        <div class="value">{{ active_formulas }}</div>
-                    </div>
-                    <div class="stat-box inactive">
-                        <div class="label">فرمول‌های غیرفعال</div>
-                        <div class="value">{{ inactive_formulas }}</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="label">کل آیتم‌ها</div>
-                        <div class="value">{{ total_items }}</div>
-                    </div>
+            <div class="header-top">
+                <div class="header-title">
+                    <span class="icon">📋</span>
+                    <h1>فرمول‌های محصولات</h1>
                 </div>
-                
-                <button class="btn-submit-all" onclick="submitAllValues()">
-                    💾 ثبت تمام مقادیر
-                </button>
-                <button class="btn-clear-all" onclick="clearAllValues()">
-                    🗑️ پاک کردن همه
-                </button>
+                <div class="header-actions">
+                    <button class="btn btn-success" id="submit-all-btn">
+                        <i class="fas fa-save"></i> ثبت تمام مقادیر
+                    </button>
+                    <button class="btn btn-danger" onclick="clearAllValues()">
+                        <i class="fas fa-eraser"></i> پاک کردن همه
+                    </button>
+                    <button class="btn btn-info" onclick="expandAll()">
+                        <i class="fas fa-expand-alt"></i> باز کردن همه
+                    </button>
+                    <button class="btn btn-info" onclick="collapseAll()">
+                        <i class="fas fa-compress-alt"></i> بستن همه
+                    </button>
+                </div>
             </div>
             
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="جستجوی فرمول بر اساس کد یا عنوان..." />
-                <button onclick="searchFormulas()">جستجو</button>
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="label">📊 کل فرمول‌ها</div>
+                    <div class="value primary">{{ total_formulas }}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">✅ فرمول‌های فعال</div>
+                    <div class="value active">{{ active_formulas }}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">❌ فرمول‌های غیرفعال</div>
+                    <div class="value inactive">{{ inactive_formulas }}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">📦 کل آیتم‌ها</div>
+                    <div class="value primary">{{ total_items }}</div>
+                </div>
+            </div>
+            
+            <!-- Search -->
+            <div class="search-wrapper">
+                <input type="text" id="searchInput" placeholder="🔍 جستجوی فرمول بر اساس کد یا عنوان..." />
+                <button class="btn btn-primary" onclick="searchFormulas()">
+                    <i class="fas fa-search"></i>
+                </button>
             </div>
         </div>
 
+        <!-- ===== RESULTS ===== -->
         <div id="results">
             {% if formulas %}
                 {% for formula in formulas %}
                 <div class="formula-card" data-formula-id="{{ formula.id }}">
-                    <div class="formula-header">
+                    <!-- ===== HEADER (Clickable) ===== -->
+                    <div class="formula-header" onclick="toggleFormula(this)">
                         <div class="formula-info">
+                            <span class="toggle-icon" id="toggle-icon-{{ formula.id }}">
+                                <i class="fas fa-chevron-down"></i>
+                            </span>
                             <span class="formula-code">{{ formula.code }}</span>
                             <span class="formula-title">{{ formula.title }}</span>
+                            
                             {% if formula.product_name %}
-                            <span style="background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 4px; font-size: 14px; display: inline-flex; align-items: center; gap: 5px;">
-                                📦 {{ formula.product_name }}
+                            <span style="background: rgba(255,255,255,0.1); padding: 4px 12px; border-radius: 4px; font-size: 13px; display: inline-flex; align-items: center; gap: 6px; color: #e2e8f0;">
+                                <i class="fas fa-box"></i> {{ formula.product_name }}
                                 {% if formula.product_code %}
-                                <span style="font-size: 11px; opacity: 0.8; background: rgba(255,255,255,0.1); padding: 1px 8px; border-radius: 3px;">
+                                <span style="font-size: 11px; opacity: 0.7; background: rgba(255,255,255,0.1); padding: 1px 8px; border-radius: 3px;">
                                     {{ formula.product_code }}
                                 </span>
                                 {% endif %}
                             </span>
                             {% endif %}
-
-               
-    {% if formula.main_item_stock > 0 %}
-    <div class="detail-item">
-        <span class="label">📦 موجودی:</span>
-        <span class="value" style="color: #2e7d32; font-weight: bold;">
-            {{ formula.main_item_stock|floatformat }}
-            {% if formula.main_item_stock_unit %}
-            {{ formula.main_item_stock_unit }}
-            {% endif %}
-        </span>
-    </div>
-    {% else %}
-    <div class="detail-item">
-        <span class="value" style="color: #e93333;">بدون موجودی : </span>
-      {{ formula.main_item_stock|floatformat }}
-            {% if formula.main_item_stock_unit %}
-            {{ formula.main_item_stock_unit }}
-            {% endif %}
-    </div>
-    {% endif %}
-
-
+                            
+                            <!-- Stock Badge -->
+                            {% if formula.main_item_stock > 0 %}
+                            <span class="badge badge-stock-good">
+                                <i class="fas fa-warehouse"></i> {{ formula.main_item_stock|floatformat }}
+                                {% if formula.main_item_stock_unit %}{{ formula.main_item_stock_unit }}{% endif %}
+                            </span>
+                            {% else %}
+                            <span class="badge badge-stock-low">
+                                <i class="fas fa-exclamation-triangle"></i> بدون موجودی
+                            </span>
+                            {% endif %}
+                            
+                            <!-- ===== VALUE INPUT IN HEADER ===== -->
+                            <div class="value-input-inline" onclick="event.stopPropagation();">
+                                <i class="fas fa-pen input-icon"></i>
+                                <label for="value_{{ formula.id }}">مقدار:</label>
+                                <input type="number" 
+                                       id="value_{{ formula.id }}" 
+                                       class="formula-value-input"
+                                       step="0.01" 
+                                       min="0" 
+                                       max="999999.99"
+                                       placeholder="0.00"
+                                       data-formula-id="{{ formula.id }}"
+                                       data-formula-code="{{ formula.code }}"
+                                       data-formula-title="{{ formula.title }}"
+                                       onclick="event.stopPropagation();">
+                            </div>
                         </div>
-                        <div class="formula-meta">
+                        
+                        <div class="formula-badges">
                             <span class="badge {% if formula.is_active %}badge-active{% else %}badge-inactive{% endif %}">
                                 {% if formula.is_active %}فعال{% else %}غیرفعال{% endif %}
                             </span>
                             <span class="badge badge-items">
-                                {{ formula.items|length }} آیتم
+                                <i class="fas fa-list"></i> {{ formula.items|length }} آیتم
                             </span>
                         </div>
                     </div>
                     
-                    <div class="formula-details">
-                        {% if formula.item_ref %}
-                        <div class="detail-item">
-                            <span class="label">مرجع کالا:</span>
-                            <span class="value">{{ formula.item_ref }}</span>
+                    <!-- ===== BODY (Collapsible) ===== -->
+                    <div class="formula-body" id="body-{{ formula.id }}">
+                        <!-- Details -->
+                        <div class="formula-details">
+                            {% if formula.item_ref %}
+                            <div class="detail-item">
+                                <span class="label">مرجع کالا:</span>
+                                <span class="value">{{ formula.item_ref }}</span>
+                            </div>
+                            {% endif %}
+                            
+                            {% if formula.quantity %}
+                            <div class="detail-item">
+                                <span class="label">مقدار:</span>
+                                <span class="value">{{ formula.quantity|floatformat:2 }}</span>
+                            </div>
+                            {% endif %}
+                            
+                            {% if formula.estimated_labour %}
+                            <div class="detail-item">
+                                <span class="label">نیروی کار:</span>
+                                <span class="value">{{ formula.estimated_labour|floatformat:2 }}</span>
+                            </div>
+                            {% endif %}
+                            
+                            {% if formula.estimated_overhead %}
+                            <div class="detail-item">
+                                <span class="label">سربار:</span>
+                                <span class="value">{{ formula.estimated_overhead|floatformat:2 }}</span>
+                            </div>
+                            {% endif %}
+                            
+                            {% if formula.tracing_title %}
+                            <div class="detail-item">
+                                <span class="label">ردیابی:</span>
+                                <span class="value">{{ formula.tracing_title }}</span>
+                            </div>
+                            {% endif %}
                         </div>
-                        {% endif %}
                         
-                        {% if formula.quantity %}
-                        <div class="detail-item">
-                            <span class="label">مقدار:</span>
-                            <span class="value">{{ formula.quantity|floatformat:2 }}</span>
+                        <!-- Table -->
+                        <div class="table-container">
+                            {% if formula.description %}
+                            <div style="margin-bottom: 12px; color: var(--gray-500); font-size: 13px; display: flex; align-items: center; gap: 8px;">
+                                <i class="fas fa-align-right"></i>
+                                <strong>توضیحات:</strong> {{ formula.description }}
+                            </div>
+                            {% endif %}
+                            
+                            {% if formula.items %}
+                            <div class="table-title">
+                                <i class="fas fa-table"></i> لیست آیتم‌ها
+                            </div>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th style="width: 50px;">#</th>
+                                        <th>مرجع</th>
+                                        <th>نام آیتم</th>
+                                        <th>مقدار</th>
+                                        <th>مقدار ثانویه</th>
+                                        <th>موجودی</th>
+                                        <th>ردیابی</th>
+                                        <th>توضیحات</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in formula.items %}
+                                    <tr>
+                                        <td style="text-align: center;">{{ forloop.counter }}</td>
+                                        <td><strong>{{ item.item_ref }}</strong></td>
+                                        <td><strong>{{ item.item_name }}</strong></td>
+                                        <td>{{ item.quantity|floatformat:2 }}</td>
+                                        <td>{{ item.secondary_quantity|floatformat:2 }}</td>
+                                        <td>
+                                            {% if item.stock_quantity > 0 %}
+                                            <span class="stock-positive">
+                                                <i class="fas fa-check-circle"></i>
+                                                {{ item.stock_quantity|floatformat:2 }}
+                                                {% if item.stock_unit %}{{ item.stock_unit }}{% endif %}
+                                            </span>
+                                            {% else %}
+                                            <span class="stock-zero">
+                                                <i class="fas fa-times-circle"></i> بدون موجودی
+                                            </span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ item.tracing_ref|default:"-" }}</td>
+                                        <td style="max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                            {{ item.description|default:"-" }}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            {% else %}
+                            <div class="no-items">
+                                <i class="fas fa-inbox"></i> این فرمول هیچ آیتمی ندارد
+                            </div>
+                            {% endif %}
                         </div>
-                        {% endif %}
-                        
-                        {% if formula.estimated_labour %}
-                        <div class="detail-item">
-                            <span class="label">نیروی کار تخمینی:</span>
-                            <span class="value">{{ formula.estimated_labour|floatformat:2 }}</span>
-                        </div>
-                        {% endif %}
-                        
-                        {% if formula.estimated_overhead %}
-                        <div class="detail-item">
-                            <span class="label">سربار تخمینی:</span>
-                            <span class="value">{{ formula.estimated_overhead|floatformat:2 }}</span>
-                        </div>
-                        {% endif %}
-                        
-                        {% if formula.tracing_title %}
-                        <div class="detail-item">
-                            <span class="label">ردیابی:</span>
-                            <span class="value">{{ formula.tracing_title }}</span>
-                        </div>
-                        {% endif %}
-
-                        <!-- بخش ورودی مقدار -->
-                        <div class="value-input-section">
-                            <label for="value_{{ formula.id }}">مقدار:</label>
-                            <input type="number" 
-                                   id="value_{{ formula.id }}" 
-                                   class="formula-value-input"
-                                   step="0.01" 
-                                   min="0" 
-                                   max="999999.99"
-                                   placeholder="0.00"
-                                   data-formula-id="{{ formula.id }}"
-                                   data-formula-code="{{ formula.code }}"
-                                   data-formula-title="{{ formula.title }}">
-                        </div>
-                    </div>
-                    
-                    <div class="table-container">
-                        {% if formula.description %}
-                        <div style="margin-bottom: 15px; color: #666; font-size: 14px;">
-                            <strong>توضیحات:</strong> {{ formula.description }}
-                        </div>
-                        {% endif %}
-                        
-                        {% if formula.items %}
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th style="width: 50px;">#</th>
-                                    <th>مرجع آیتم</th>
-                                    <th>نام آیتم</th>
-                                    <th>مقدار</th>
-                                    <th>مقدار ثانویه</th>
-                                    <th>موجودی</th>
-                                    <th>مرجع ردیابی</th>
-                                    <th>توضیحات</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for item in formula.items %}
-                                <tr>
-                                    <td>{{ forloop.counter }}</td>
-                                    <td><strong>{{ item.item_ref }}</strong></td>
-                                    <td><strong>{{ item.item_name }}</strong></td>
-                                    <td>{{ item.quantity|floatformat:2 }}</td>
-                                    <td>{{ item.secondary_quantity|floatformat:2 }}</td>
-
-                                                <td>
-                {% if item.stock_quantity > 0 %}
-                <span style="color: #2e7d32; font-weight: bold;">
-                    {{ item.stock_quantity|floatformat:2 }}
-                    {% if item.stock_unit %}
-                    {{ item.stock_unit }}
-                    {% endif %}
-                </span>
-                {% else %}
-                <span style="color: #999;">بدون موجودی</span>
-                {% endif %}
-            </td>
-
-                                    <td>{{ item.tracing_ref|default:"-" }}</td>
-                                    <td>{{ item.description|default:"-" }}</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                        {% else %}
-                        <div class="no-items">❌ این فرمول هیچ آیتمی ندارد</div>
-                        {% endif %}
                     </div>
                 </div>
                 {% endfor %}
@@ -617,70 +976,230 @@
         </div>
     </div>
 
+    <!-- ===== FLOATING SUMMARY - ENHANCED ===== -->
+    <div class="floating-summary" id="floatingSummary">
+        <div class="summary-section">
+            <div class="summary-item">
+                <i class="fas fa-pen" style="color: var(--primary);"></i>
+                <span>مقادیر وارد شده:</span>
+                <span class="num" id="filledCount">0</span>
+                <span style="font-size: 12px; color: var(--gray-400);">از <span id="totalCount">{{ total_formulas }}</span></span>
+            </div>
+            <div class="divider"></div>
+            <div class="summary-item">
+                <i class="fas fa-calculator" style="color: var(--success);"></i>
+                <span>جمع کل:</span>
+                <span class="num success" id="totalSum">0</span>
+            </div>
+            <div class="divider"></div>
+            <div class="summary-item">
+                <i class="fas fa-check-circle" style="color: var(--success);"></i>
+                <span>تکمیل شده:</span>
+                <span class="num success" id="completedCount">0</span>
+                <span style="font-size: 12px; color: var(--gray-400);">%</span>
+            </div>
+        </div>
+        
+        <div class="summary-actions">
+            <button class="btn btn-success" onclick="submitAllValues()" style="padding: 6px 16px; font-size: 12px;">
+                <i class="fas fa-save"></i> ثبت
+            </button>
+            <button class="btn btn-danger" onclick="clearAllValues()" style="padding: 6px 16px; font-size: 12px;">
+                <i class="fas fa-eraser"></i>
+            </button>
+        </div>
+        
+        <!-- Progress Bar -->
+        <div class="summary-progress">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-label">
+                <span id="progressText">0% تکمیل شده</span>
+                <span id="progressStatus">در انتظار ورود مقادیر</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== SCRIPTS ===== -->
     <script>
-        // دریافت CSRF Token
+        // ========================================
+        // CSRF TOKEN
+        // ========================================
         function getCSRFToken() {
             return document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         }
 
-        // اعتبارسنجی ورودی
-        function validateDecimalInput(input) {
-            const value = input.value;
-            if (value && value.includes('.')) {
-                const parts = value.split('.');
-                if (parts[1] && parts[1].length > 2) {
-                    input.value = parseFloat(value).toFixed(2);
+        // ========================================
+        // TOGGLE FORMULA (Expand/Collapse)
+        // ========================================
+        function toggleFormula(headerElement) {
+            const card = headerElement.closest('.formula-card');
+            const body = card.querySelector('.formula-body');
+            const icon = headerElement.querySelector('.toggle-icon');
+            
+            body.classList.toggle('expanded');
+            card.classList.toggle('expanded');
+            icon.classList.toggle('rotated');
+            
+            // Save state
+            const formulaId = card.dataset.formulaId;
+            const isExpanded = body.classList.contains('expanded');
+            localStorage.setItem(`formula_expanded_${formulaId}`, isExpanded);
+        }
+
+        // ========================================
+        // EXPAND / COLLAPSE ALL
+        // ========================================
+        function expandAll() {
+            document.querySelectorAll('.formula-body').forEach(body => {
+                body.classList.add('expanded');
+                const card = body.closest('.formula-card');
+                if (card) card.classList.add('expanded');
+                const icon = card?.querySelector('.toggle-icon');
+                if (icon) icon.classList.add('rotated');
+            });
+        }
+        
+        function collapseAll() {
+            document.querySelectorAll('.formula-body').forEach(body => {
+                body.classList.remove('expanded');
+                const card = body.closest('.formula-card');
+                if (card) card.classList.remove('expanded');
+                const icon = card?.querySelector('.toggle-icon');
+                if (icon) icon.classList.remove('rotated');
+            });
+        }
+
+        // ========================================
+        // UPDATE FLOATING SUMMARY (Enhanced)
+        // ========================================
+        function updateSummary() {
+            const inputs = document.querySelectorAll('.formula-value-input');
+            const total = inputs.length;
+            let filled = 0;
+            let totalSum = 0;
+            
+            inputs.forEach(input => {
+                const val = parseFloat(input.value);
+                if (!isNaN(val) && val > 0) {
+                    filled++;
+                    totalSum += val;
                 }
+            });
+            
+            const completedPercent = total > 0 ? Math.round((filled / total) * 100) : 0;
+            
+            document.getElementById('filledCount').textContent = filled;
+            document.getElementById('totalSum').textContent = totalSum.toFixed(2);
+            document.getElementById('completedCount').textContent = completedPercent;
+            
+            // Update progress bar
+            document.getElementById('progressFill').style.width = completedPercent + '%';
+            document.getElementById('progressText').textContent = `${completedPercent}% تکمیل شده`;
+            
+            // Status message
+            const statusEl = document.getElementById('progressStatus');
+            if (completedPercent === 0) {
+                statusEl.textContent = '⏳ در انتظار ورود مقادیر';
+                statusEl.style.color = 'var(--gray-400)';
+            } else if (completedPercent === 100) {
+                statusEl.textContent = '✅ همه مقادیر وارد شده‌اند!';
+                statusEl.style.color = 'var(--success)';
+            } else if (completedPercent > 70) {
+                statusEl.textContent = '🟢 اکثر مقادیر وارد شده‌اند';
+                statusEl.style.color = 'var(--success)';
+            } else if (completedPercent > 40) {
+                statusEl.textContent = '🟡 حدود نیمی از مقادیر وارد شده‌اند';
+                statusEl.style.color = 'var(--warning)';
+            } else {
+                statusEl.textContent = '🔴 تعداد کمی از مقادیر وارد شده‌اند';
+                statusEl.style.color = 'var(--danger)';
             }
-            // نشان دادن اینکه مقدار وارد شده
-            if (input.value && parseFloat(input.value) > 0) {
+        }
+
+        // ========================================
+        // VALIDATE INPUT
+        // ========================================
+        function validateInput(input) {
+            const val = parseFloat(input.value);
+            if (!isNaN(val) && val > 0) {
                 input.classList.add('has-value');
             } else {
                 input.classList.remove('has-value');
             }
+            updateSummary();
         }
 
-        // محدود کردن ورودی به ۲ رقم اعشار
+        // ========================================
+        // DOM READY
+        // ========================================
         document.addEventListener('DOMContentLoaded', function() {
+            // Input events
             const inputs = document.querySelectorAll('.formula-value-input');
             inputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    validateInput(this);
+                });
                 input.addEventListener('blur', function() {
                     if (this.value) {
                         const num = parseFloat(this.value);
                         if (!isNaN(num)) {
                             this.value = num.toFixed(2);
-                            if (num > 0) {
-                                this.classList.add('has-value');
-                            }
+                            validateInput(this);
                         }
                     }
                 });
-                
-                input.addEventListener('input', function() {
-                    validateDecimalInput(this);
-                });
+            });
+            
+            // Submit button
+            const submitBtn = document.getElementById('submit-all-btn');
+            if (submitBtn) {
+                submitBtn.addEventListener('click', submitAllValues);
+            }
+            
+            // Restore expanded states
+            document.querySelectorAll('.formula-card').forEach(card => {
+                const formulaId = card.dataset.formulaId;
+                const isExpanded = localStorage.getItem(`formula_expanded_${formulaId}`) === 'true';
+                if (isExpanded) {
+                    const body = card.querySelector('.formula-body');
+                    const icon = card.querySelector('.toggle-icon');
+                    if (body) body.classList.add('expanded');
+                    if (icon) icon.classList.add('rotated');
+                    card.classList.add('expanded');
+                }
+            });
+            
+            // Initial summary
+            updateSummary();
+            
+            // Keyboard shortcut: Ctrl+Enter to submit
+            document.addEventListener('keydown', function(e) {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                    e.preventDefault();
+                    submitAllValues();
+                }
             });
         });
 
-        // جمع‌آوری تمام مقادیر
+        // ========================================
+        // GET ALL VALUES
+        // ========================================
         function getAllValues() {
             const inputs = document.querySelectorAll('.formula-value-input');
             const values = [];
             let hasValue = false;
             
             inputs.forEach(input => {
-                const value = parseFloat(input.value);
-                const formulaId = parseInt(input.getAttribute('data-formula-id'));
-                const formulaCode = input.getAttribute('data-formula-code');
-                const formulaTitle = input.getAttribute('data-formula-title');
-                
-                if (!isNaN(value) && value >= 0) {
+                const val = parseFloat(input.value);
+                if (!isNaN(val) && val > 0) {
                     hasValue = true;
                     values.push({
-                        formula_id: formulaId,
-                        formula_code: formulaCode,
-                        formula_title: formulaTitle,
-                        value: parseFloat(value.toFixed(2))
+                        formula_id: parseInt(input.dataset.formulaId),
+                        formula_code: input.dataset.formulaCode,
+                        formula_title: input.dataset.formulaTitle,
+                        value: parseFloat(val.toFixed(2))
                     });
                 }
             });
@@ -688,167 +1207,9 @@
             return { values, hasValue };
         }
 
-        // نمایش پیش‌نمایش در SweetAlert2
-        function showPreviewAndSubmit(values) {
-            // ساخت جدول برای نمایش مقادیر
-            let tableHtml = `
-                <div style="direction: rtl; text-align: right; max-height: 400px; overflow-y: auto;">
-                    <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                        <thead>
-                            <tr style="background: #1a237e; color: white;">
-                                <th style="padding: 8px; border: 1px solid #ddd;">ردیف</th>
-                                <th style="padding: 8px; border: 1px solid #ddd;">کد فرمول</th>
-                                <th style="padding: 8px; border: 1px solid #ddd;">عنوان فرمول</th>
-                                <th style="padding: 8px; border: 1px solid #ddd;">مقدار</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-            `;
-            
-            values.forEach((item, index) => {
-                tableHtml += `
-                    <tr>
-                        <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">${index + 1}</td>
-                        <td style="padding: 8px; border: 1px solid #ddd;">${item.formula_code}</td>
-                        <td style="padding: 8px; border: 1px solid #ddd;">${item.formula_title}</td>
-                        <td style="padding: 8px; border: 1px solid #ddd; color: #2e7d32; font-weight: bold; text-align: center;">${item.value.toFixed(2)}</td>
-                    </tr>
-                `;
-            });
-            
-            tableHtml += `
-                        </tbody>
-                    </table>
-                </div>
-            `;
-            
-            // نمایش SweetAlert2
-            Swal.fire({
-                title: '📋 تایید ثبت مقادیر',
-                html: `
-                    <div style="text-align: right;">
-                        <p style="font-size: 16px; margin-bottom: 15px;">
-                            <strong>${values.length}</strong> فرمول با مقادیر زیر ثبت خواهند شد:
-                        </p>
-                        ${tableHtml}
-                    </div>
-                `,
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#4caf50',
-                cancelButtonColor: '#f44336',
-                confirmButtonText: '✅ تایید و ثبت',
-                cancelButtonText: '❌ انصراف',
-                width: 800,
-                padding: '20px',
-                customClass: {
-                    popup: 'swal2-rtl'
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    submitAllValuesToServer(values);
-                }
-            });
-        }
-
-        // ارسال تمام مقادیر به سرور
-function submitAllValuesToServer(values) {
-    const submitButton = document.querySelector('.btn-submit-all');
-    
-    // غیرفعال کردن دکمه
-    submitButton.disabled = true;
-    submitButton.classList.add('loading');
-    submitButton.innerHTML = '⏳ در حال ارسال...';
-
-    // ارسال درخواست
-    fetch('/api/submit-all-formula-values/', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': getCSRFToken()
-        },
-        body: JSON.stringify({ values: values })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // نمایش پیام موفقیت
-            Swal.fire({
-                title: '✅ موفقیت',
-                text: `${data.saved_count} مقدار با موفقیت ثبت شد`,
-                icon: 'success',
-                confirmButtonText: 'باشه',
-                confirmButtonColor: '#4caf50'
-            }).then((result) => {
-                // این کد بعد از بسته شدن SweetAlert اجرا می‌شود
-                if (result.isConfirmed) {
-                    // پاک کردن مقادیر پس از ثبت موفق
-                    clearAllValuesWithoutConfirm();
-                }
-            });
-        } else {
-            Swal.fire({
-                title: '❌ خطا',
-                text: data.error || 'خطا در ثبت مقادیر',
-                icon: 'error',
-                confirmButtonText: 'باشه',
-                confirmButtonColor: '#f44336'
-            });
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        Swal.fire({
-            title: '❌ خطا',
-            text: 'خطا در ارتباط با سرور',
-            icon: 'error',
-            confirmButtonText: 'باشه',
-            confirmButtonColor: '#f44336'
-        });
-    })
-    .finally(() => {
-        // فعال کردن مجدد دکمه
-        submitButton.disabled = false;
-        submitButton.classList.remove('loading');
-        submitButton.innerHTML = '💾 ثبت تمام مقادیر';
-    });
-}
-
-// تابع پاک کردن همه مقادیر بدون تایید (برای استفاده بعد از ثبت موفق)
-function clearAllValuesWithoutConfirm() {
-    const inputs = document.querySelectorAll('.formula-value-input');
-    inputs.forEach(input => {
-        input.value = '';
-        input.classList.remove('has-value');
-    });
-}
-
-// تابع پاک کردن همه مقادیر با تایید (برای دکمه پاک کردن)
-function clearAllValues() {
-    Swal.fire({
-        title: '⚠️ تایید پاک کردن',
-        text: 'آیا از پاک کردن تمام مقادیر وارد شده مطمئن هستید؟',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#f44336',
-        cancelButtonColor: '#999',
-        confirmButtonText: '🗑️ بله، پاک کن',
-        cancelButtonText: 'انصراف'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            clearAllValuesWithoutConfirm();
-            
-            Swal.fire({
-                title: '✅ پاک شد',
-                text: 'تمام مقادیر پاک شدند',
-                icon: 'success',
-                timer: 1500,
-                showConfirmButton: false
-            });
-        }
-    });
-}
-        // تابع ثبت تمام مقادیر
+        // ========================================
+        // SUBMIT ALL VALUES
+        // ========================================
         function submitAllValues() {
             const { values, hasValue } = getAllValues();
             
@@ -858,34 +1219,211 @@ function clearAllValues() {
                     text: 'هیچ مقداری وارد نشده است',
                     icon: 'warning',
                     confirmButtonText: 'باشه',
-                    confirmButtonColor: '#ff9800'
+                    confirmButtonColor: '#f59e0b'
                 });
                 return;
             }
             
-            // نمایش پیش‌نمایش
-            showPreviewAndSubmit(values);
+            // Preview
+            let tableHtml = `
+                <div style="direction: rtl; text-align: right; max-height: 400px; overflow-y: auto;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                        <thead>
+                            <tr style="background: #1e293b; color: white;">
+                                <th style="padding: 8px; border: 1px solid #e2e8f0;">#</th>
+                                <th style="padding: 8px; border: 1px solid #e2e8f0;">کد</th>
+                                <th style="padding: 8px; border: 1px solid #e2e8f0;">عنوان</th>
+                                <th style="padding: 8px; border: 1px solid #e2e8f0;">مقدار</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+            
+            values.forEach((item, index) => {
+                tableHtml += `
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid #e2e8f0; text-align: center;">${index + 1}</td>
+                        <td style="padding: 8px; border: 1px solid #e2e8f0;">${item.formula_code}</td>
+                        <td style="padding: 8px; border: 1px solid #e2e8f0;">${item.formula_title}</td>
+                        <td style="padding: 8px; border: 1px solid #e2e8f0; color: #22c55e; font-weight: 700; text-align: center;">${item.value.toFixed(2)}</td>
+                    </tr>
+                `;
+            });
+            
+            tableHtml += `</tbody></table></div>`;
+            
+            Swal.fire({
+                title: '📋 تایید ثبت',
+                html: `
+                    <div style="text-align: right;">
+                        <p style="font-size: 15px; margin-bottom: 12px;">
+                            <strong>${values.length}</strong> فرمول با مقادیر زیر ثبت خواهند شد:
+                        </p>
+                        ${tableHtml}
+                    </div>
+                `,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#22c55e',
+                cancelButtonColor: '#ef4444',
+                confirmButtonText: '✅ تایید و ثبت',
+                cancelButtonText: '❌ انصراف',
+                width: 750,
+                padding: '20px'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    sendToServer(values);
+                }
+            });
         }
 
-        // تابع پاک کردن همه مقادیر
+        // ========================================
+        // SEND TO SERVER
+        // ========================================
+        function sendToServer(values) {
+            const submitBtn = document.getElementById('submit-all-btn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> در حال ارسال...';
+            submitBtn.classList.add('btn-loading');
+
+            fetch('/api/submit-all-formula-values/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken()
+                },
+                body: JSON.stringify({ values: values })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        title: '✅ موفقیت',
+                        text: `${data.saved_count || values.length} مقدار با موفقیت ثبت شد`,
+                        icon: 'success',
+                        confirmButtonText: 'باشه',
+                        confirmButtonColor: '#22c55e'
+                    }).then(() => {
+                        clearAllValuesWithoutConfirm();
+                    });
+                } else {
+                    if (data.data?.unavailable_materials?.length > 0) {
+                        showUnavailableError(data);
+                    } else {
+                        Swal.fire({
+                            title: '❌ خطا',
+                            text: data.error || data.message || 'خطا در ثبت مقادیر',
+                            icon: 'error',
+                            confirmButtonText: 'باشه',
+                            confirmButtonColor: '#ef4444'
+                        });
+                    }
+                }
+            })
+            .catch(error => {
+                Swal.fire({
+                    title: '❌ خطا',
+                    text: 'خطا در ارتباط با سرور',
+                    icon: 'error',
+                    confirmButtonText: 'باشه',
+                    confirmButtonColor: '#ef4444'
+                });
+            })
+            .finally(() => {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-save"></i> ثبت تمام مقادیر';
+                submitBtn.classList.remove('btn-loading');
+            });
+        }
+
+        // ========================================
+        // SHOW UNAVAILABLE MATERIALS
+        // ========================================
+        function showUnavailableError(data) {
+            const items = data.data.unavailable_materials || [];
+            const summary = data.data.summary || {};
+            
+            let html = `
+                <div style="direction: rtl; text-align: right; max-height: 400px; overflow-y: auto;">
+                    <div style="margin-bottom: 12px; padding: 10px; background: #fef3c7; border-radius: 6px; border: 1px solid #f59e0b;">
+                        <strong>⚠️ هشدار:</strong> مواد زیر در انبار موجود نیستند
+                    </div>
+                    <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                        <thead style="background: #dc2626; color: white; position: sticky; top: 0;">
+                            <tr>
+                                <th style="padding: 6px 10px; border: 1px solid #e2e8f0;">#</th>
+                                <th style="padding: 6px 10px; border: 1px solid #e2e8f0;">نام</th>
+                                <th style="padding: 6px 10px; border: 1px solid #e2e8f0;">نیاز</th>
+                                <th style="padding: 6px 10px; border: 1px solid #e2e8f0;">موجودی</th>
+                                <th style="padding: 6px 10px; border: 1px solid #e2e8f0;">کمبود</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+            
+            let totalShortage = 0;
+            items.forEach((item, i) => {
+                totalShortage += (item.shortage || 0);
+                html += `
+                    <tr style="background: #fef2f2;">
+                        <td style="padding: 6px 10px; border: 1px solid #e2e8f0; text-align: center;">${i + 1}</td>
+                        <td style="padding: 6px 10px; border: 1px solid #e2e8f0;">${item.material_name || 'نامشخص'}</td>
+                        <td style="padding: 6px 10px; border: 1px solid #e2e8f0; color: #dc2626; font-weight: 700;">${item.required_quantity || 0}</td>
+                        <td style="padding: 6px 10px; border: 1px solid #e2e8f0; color: #2563eb;">${item.available_quantity || 0}</td>
+                        <td style="padding: 6px 10px; border: 1px solid #e2e8f0; color: #dc2626; font-weight: 700;">${item.shortage || 0}</td>
+                    </tr>
+                `;
+            });
+            
+            html += `
+                        </tbody>
+                    </table>
+                    <div style="margin-top: 12px; padding: 10px; background: #dbeafe; border-radius: 6px;">
+                        <strong>📊 خلاصه:</strong>
+                        <span style="margin-left: 12px;">کل: ${summary.total_materials || 0}</span>
+                        <span style="margin-left: 12px; color: #22c55e;">موجود: ${summary.available_materials || 0}</span>
+                        <span style="margin-left: 12px; color: #dc2626;">ناموجود: ${summary.unavailable_materials || 0}</span>
+                        <span style="margin-left: 12px; color: #dc2626; font-weight: 700;">کمبود: ${totalShortage}</span>
+                    </div>
+                </div>
+            `;
+            
+            Swal.fire({
+                title: '❌ کمبود کالا',
+                html: html,
+                icon: 'error',
+                confirmButtonText: 'باشه',
+                confirmButtonColor: '#ef4444',
+                width: 750,
+                showCancelButton: true,
+                cancelButtonText: 'بستن'
+            });
+        }
+
+        // ========================================
+        // CLEAR VALUES
+        // ========================================
+        function clearAllValuesWithoutConfirm() {
+            document.querySelectorAll('.formula-value-input').forEach(input => {
+                input.value = '';
+                input.classList.remove('has-value');
+            });
+            updateSummary();
+        }
+
         function clearAllValues() {
             Swal.fire({
                 title: '⚠️ تایید پاک کردن',
-                text: 'آیا از پاک کردن تمام مقادیر وارد شده مطمئن هستید؟',
+                text: 'آیا از پاک کردن تمام مقادیر مطمئن هستید؟',
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#f44336',
-                cancelButtonColor: '#999',
+                confirmButtonColor: '#ef4444',
+                cancelButtonColor: '#94a3b8',
                 confirmButtonText: '🗑️ بله، پاک کن',
                 cancelButtonText: 'انصراف'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    const inputs = document.querySelectorAll('.formula-value-input');
-                    inputs.forEach(input => {
-                        input.value = '';
-                        input.classList.remove('has-value');
-                    });
-                    
+                    clearAllValuesWithoutConfirm();
                     Swal.fire({
                         title: '✅ پاک شد',
                         text: 'تمام مقادیر پاک شدند',
@@ -897,41 +1435,50 @@ function clearAllValues() {
             });
         }
 
-        // تابع جستجو
+        // ========================================
+        // SEARCH
+        // ========================================
         function searchFormulas() {
-            const searchTerm = document.getElementById('searchInput').value.trim();
-            if (!searchTerm) {
-                location.reload();
-                return;
-            }
+            const term = document.getElementById('searchInput').value.trim();
+            if (!term) { location.reload(); return; }
             
-            fetch(`/api/search-formulas/?q=${encodeURIComponent(searchTerm)}`)
-                .then(response => response.json())
+            fetch(`/api/search-formulas/?q=${encodeURIComponent(term)}`)
+                .then(r => r.json())
                 .then(data => {
                     if (data.success) {
-                        const resultsDiv = document.getElementById('results');
                         if (data.data.length === 0) {
-                            resultsDiv.innerHTML = `
+                            document.getElementById('results').innerHTML = `
                                 <div class="empty-state">
                                     <div class="icon">🔍</div>
                                     <h2>نتیجه‌ای یافت نشد</h2>
-                                    <p>هیچ فرمولی با عبارت "${searchTerm}" پیدا نشد.</p>
+                                    <p>هیچ فرمولی با عبارت "${term}" پیدا نشد.</p>
                                 </div>
                             `;
-                            return;
+                        } else {
+                            window.location.href = `?search=${term}`;
                         }
-                        window.location.href = `?search=${searchTerm}`;
                     }
                 })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+                .catch(console.error);
         }
-        
-        // Enter key for search
+
         document.getElementById('searchInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                searchFormulas();
+            if (e.key === 'Enter') searchFormulas();
+        });
+
+        // ========================================
+        // KEYBOARD SHORTCUTS
+        // ========================================
+        document.addEventListener('keydown', function(e) {
+            // Ctrl+Shift+E = Expand All
+            if (e.ctrlKey && e.shiftKey && e.key === 'E') {
+                e.preventDefault();
+                expandAll();
+            }
+            // Ctrl+Shift+C = Collapse All
+            if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+                e.preventDefault();
+                collapseAll();
             }
         });
     </script>

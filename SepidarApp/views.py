@@ -355,30 +355,68 @@ def submit_all_formula_values(request):
             })
         
         # بررسی موجودی مواد اولیه
-        stock_status = check_materials_stock(db, required_materials)
+        all_exist , stock_status = check_materials_stock(db, required_materials)
         
         # بستن اتصال دیتابیس
         db.close()
-        
+        if all_exist:
         # ذخیره مقادیر در دیتابیس (اگر نیاز دارید)
-        saved_count = save_formula_values(values)
+            saved_count = save_formula_values(values)
         
         # برگرداندن نتیجه
-        return JsonResponse({
-            'success': True,
-            'saved_count': saved_count,
-            'message': f'{saved_count} مقدار با موفقیت ثبت شد',
-            'data': {
-                'formula_details': formula_details,
-                'required_materials': dict(required_materials),
-                'stock_status': stock_status,
-                'summary': {
-                    'total_materials': len(required_materials),
-                    'available_materials': sum(1 for s in stock_status.values() if s['available']),
-                    'unavailable_materials': sum(1 for s in stock_status.values() if not s['available'])
+            return JsonResponse({
+                'success': True,
+                'saved_count': saved_count,
+                'message': f'{saved_count} مقدار با موفقیت ثبت شد',
+                'data': {
+                    'formula_details': formula_details,
+                    'required_materials': dict(required_materials),
+                    'stock_status': stock_status,
+                    'summary': {
+                        'total_materials': len(required_materials),
+                        'available_materials': sum(1 for s in stock_status.values() if s['available']),
+                        'unavailable_materials': sum(1 for s in stock_status.values() if not s['available'])
+                    }
                 }
-            }
-        })
+            })
+        
+        else:
+            # استخراج مواد ناموجود با جزئیات کامل
+            unavailable_materials = []
+            for key, status in stock_status.items():
+                if not status['available']:
+                    unavailable_materials.append({
+                        'material_name': status.get('material_name', key),
+                        'material_code': status.get('material_code', ''),
+                        'required_quantity': status.get('required_quantity', 0),
+                        'available_quantity': status.get('available_quantity', 0),
+                        'shortage': status.get('required_quantity', 0) - status.get('available_quantity', 0),
+                        'unit': status.get('unit', ''),
+                        'bom_item_id': status.get('bom_item_id'),
+                        'item_ref': status.get('item_ref')
+                    })
+            
+            # ساخت پیام خطای دقیق
+            error_message = 'کمبود کالا در انبار:\n'
+            for item in unavailable_materials:
+                error_message += f"• {item['material_name']}: نیاز {item['required_quantity']} {item['unit']} - موجودی {item['available_quantity']} {item['unit']} (کمبود: {item['shortage']} {item['unit']})\n"
+            
+            return JsonResponse({
+                'success': False,
+                'message': 'کمبود کالا در انبار',
+                'error': error_message,
+                'data': {
+                    'formula_details': formula_details,
+                    'required_materials': dict(required_materials),
+                    'stock_status': stock_status,
+                    'unavailable_materials': unavailable_materials,  # لیست دقیق مواد ناموجود
+                    'summary': {
+                        'total_materials': len(required_materials),
+                        'available_materials': sum(1 for s in stock_status.values() if s['available']),
+                        'unavailable_materials': sum(1 for s in stock_status.values() if not s['available'])
+                    }
+                }
+            })
         
     except json.JSONDecodeError:
         return JsonResponse({
@@ -393,7 +431,6 @@ def submit_all_formula_values(request):
             'error': str(e)
         }, status=500)
 
-
 def get_formula_recipe(db, formula_id):
     """
     دریافت مواد اولیه یک فرمول از دیتابیس
@@ -401,20 +438,18 @@ def get_formula_recipe(db, formula_id):
     try:
         query = """
             SELECT 
+                fbi.FormulaBomItemID,
                 fbi.ItemRef,
                 fbi.Quantity,
-                fbi.UnitRef,
                 fbi.SecondaryQuantity,
                 fbi.Description,
+                fbi.ItemTracingRef,
                 itm.Title as ItemName,
                 itm.Code as ItemCode,
-                unt.Title as UnitName,
-                unt.Code as UnitCode
+                itm.UnitRef as ItemUnitRef  -- استفاده از UnitRef از جدول Item
             FROM [Sepidar01].[WKO].[FormulaBomItem] fbi
             LEFT JOIN [Sepidar01].[INV].[Item] itm
                 ON fbi.ItemRef = itm.ItemID
-            LEFT JOIN [Sepidar01].[INV].[Unit] unt
-                ON fbi.UnitRef = unt.UnitID
             WHERE fbi.ProductFormulaRef = ?
             ORDER BY fbi.FormulaBomItemID
         """
@@ -423,15 +458,15 @@ def get_formula_recipe(db, formula_id):
         recipe = []
         for row in results:
             recipe.append({
+                'FormulaBomItemID': row.FormulaBomItemID,
                 'ItemRef': row.ItemRef,
                 'Quantity': float(row.Quantity) if row.Quantity else 0,
-                'UnitRef': row.UnitRef,
                 'SecondaryQuantity': float(row.SecondaryQuantity) if row.SecondaryQuantity else 0,
                 'Description': row.Description,
+                'ItemTracingRef': row.ItemTracingRef,
                 'ItemName': row.ItemName,
                 'ItemCode': row.ItemCode,
-                'UnitName': row.UnitName,
-                'UnitCode': row.UnitCode
+                'UnitRef': row.ItemUnitRef  # استفاده از UnitRef از جدول Item
             })
         
         return recipe
@@ -440,12 +475,13 @@ def get_formula_recipe(db, formula_id):
         logger.error(f"Error getting recipe for formula {formula_id}: {e}")
         return []
 
-
 def check_materials_stock(db, required_materials):
     """
     بررسی موجودی مواد اولیه در انبار
     """
     stock_status = {}
+
+    all_exist = True
     
     try:
         for key, required_qty in required_materials.items():
@@ -463,7 +499,7 @@ def check_materials_stock(db, required_materials):
                     ItemRef,
                     UnitRef,
                     SUM(Quantity) as TotalStock
-                FROM [Sepidar01].[INV].[InventoryItem]
+                FROM [Sepidar01].[INV].[ItemStockSummary]
                 WHERE ItemRef = ? AND UnitRef = ?
                 GROUP BY ItemRef, UnitRef
             """
@@ -483,7 +519,11 @@ def check_materials_stock(db, required_materials):
                 'status': 'موجود' if available_stock >= required_qty else 'کمبود'
             }
         
-        return stock_status
+            if available_stock < required_qty :
+                all_exist = False
+
+
+        return all_exist , stock_status
         
     except Exception as e:
         logger.error(f"Error checking stock: {e}")

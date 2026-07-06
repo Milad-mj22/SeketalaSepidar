@@ -193,14 +193,11 @@ class DatabaseConnection:
         self.close()
         return self.connect()
 
-
     def get_formulas_with_items(self, formula_id=None):
         """
-        Get all formulas with their boom items from ProductFormula and FormulaBomItem
-        with stock information
+        Get all formulas with their boom items - Showing stock in main unit
         """
         if formula_id:
-            # Get specific formula with its items
             query = """
                 SELECT 
                     pf.ProductFormulaID,
@@ -220,20 +217,15 @@ class DatabaseConnection:
                     fbi.SecondaryQuantity,
                     fbi.Description as ItemDescription,
                     fbi.ItemTracingRef,
-                    -- نام و کد محصول از جدول Item
                     itm.Title as ProductName,
                     itm.Code as ProductCode,
-                    -- نام و کد آیتم‌های Bom
                     bomItem.Title as BomItemName,
                     bomItem.Code as BomItemCode,
-                    -- اطلاعات موجودی برای آیتم‌های Bom
+                    -- موجودی کل بدون توجه به واحد
                     ISNULL(stock.TotalQuantity, 0) as StockQuantity,
-                    stock.UnitRef as StockUnitRef,
-                    unit.Title as StockUnitName,
-                    -- اطلاعات موجودی برای آیتم اصلی (ProductFormula)
+                    -- موجودی بر اساس واحد اصلی فرمول
                     ISNULL(main_stock.TotalQuantity, 0) as MainItemStockQuantity,
-                    main_stock.UnitRef as MainItemStockUnitRef,
-                    main_unit.Title as MainItemStockUnitName
+                    unit.Title as MainItemStockUnitName
                 FROM [Sepidar01].[WKO].[ProductFormula] pf
                 LEFT JOIN [Sepidar01].[WKO].[FormulaBomItem] fbi 
                     ON pf.ProductFormulaID = fbi.ProductFormulaRef
@@ -244,13 +236,10 @@ class DatabaseConnection:
                 LEFT JOIN (
                     SELECT 
                         ItemRef,
-                        UnitRef,
                         SUM(Quantity) as TotalQuantity
                     FROM [Sepidar01].[INV].[InventoryItem]
-                    GROUP BY ItemRef, UnitRef
-                ) stock ON fbi.ItemRef = stock.ItemRef AND fbi.UnitRef = stock.UnitRef
-                LEFT JOIN [Sepidar01].[INV].[Unit] unit
-                    ON stock.UnitRef = unit.UnitID
+                    GROUP BY ItemRef
+                ) stock ON fbi.ItemRef = stock.ItemRef
                 LEFT JOIN (
                     SELECT 
                         ItemRef,
@@ -258,15 +247,40 @@ class DatabaseConnection:
                         SUM(Quantity) as TotalQuantity
                     FROM [Sepidar01].[INV].[InventoryItem]
                     GROUP BY ItemRef, UnitRef
-                ) main_stock ON pf.ItemRef = main_stock.ItemRef AND pf.ItemUnitRef = main_stock.UnitRef
-                LEFT JOIN [Sepidar01].[INV].[Unit] main_unit
-                    ON main_stock.UnitRef = main_unit.UnitID
+                ) main_stock ON pf.ItemRef = main_stock.ItemRef 
+                    AND pf.ItemUnitRef = main_stock.UnitRef
+                LEFT JOIN [Sepidar01].[INV].[Unit] unit
+                    ON main_stock.UnitRef = unit.UnitID
                 WHERE pf.ProductFormulaID = ?
+                GROUP BY 
+                    pf.ProductFormulaID,
+                    pf.Code,
+                    pf.Title,
+                    pf.ItemRef,
+                    pf.ItemUnitRef,
+                    pf.Quantity,
+                    pf.IsActive,
+                    pf.EstimatedLabour,
+                    pf.EstimatedOverhead,
+                    pf.Description,
+                    pf.TracingTitle,
+                    fbi.FormulaBomItemID,
+                    fbi.ItemRef,
+                    fbi.Quantity,
+                    fbi.SecondaryQuantity,
+                    fbi.Description,
+                    fbi.ItemTracingRef,
+                    itm.Title,
+                    itm.Code,
+                    bomItem.Title,
+                    bomItem.Code,
+                    stock.TotalQuantity,
+                    main_stock.TotalQuantity,
+                    unit.Title
                 ORDER BY pf.ProductFormulaID, fbi.FormulaBomItemID
             """
             return self.execute_query(query, [formula_id])
         else:
-            # Get all formulas with their items
             query = """
                 SELECT 
                     pf.ProductFormulaID,
@@ -286,20 +300,13 @@ class DatabaseConnection:
                     fbi.SecondaryQuantity,
                     fbi.Description as ItemDescription,
                     fbi.ItemTracingRef,
-                    -- نام و کد محصول از جدول Item
                     itm.Title as ProductName,
                     itm.Code as ProductCode,
-                    -- نام و کد آیتم‌های Bom
                     bomItem.Title as BomItemName,
                     bomItem.Code as BomItemCode,
-                    -- اطلاعات موجودی برای آیتم‌های Bom
                     ISNULL(stock.TotalQuantity, 0) as StockQuantity,
-                    stock.UnitRef as StockUnitRef,
-                    unit.Title as StockUnitName,
-                    -- اطلاعات موجودی برای آیتم اصلی (ProductFormula)
                     ISNULL(main_stock.TotalQuantity, 0) as MainItemStockQuantity,
-                    main_stock.UnitRef as MainItemStockUnitRef,
-                    main_unit.Title as MainItemStockUnitName
+                    unit.Title as MainItemStockUnitName
                 FROM [Sepidar01].[WKO].[ProductFormula] pf
                 LEFT JOIN [Sepidar01].[WKO].[FormulaBomItem] fbi 
                     ON pf.ProductFormulaID = fbi.ProductFormulaRef
@@ -310,13 +317,10 @@ class DatabaseConnection:
                 LEFT JOIN (
                     SELECT 
                         ItemRef,
-                        UnitRef,
                         SUM(Quantity) as TotalQuantity
                     FROM [Sepidar01].[INV].[ItemStockSummary]
-                    GROUP BY ItemRef, UnitRef
-                ) stock ON fbi.ItemRef = stock.ItemRef 
-                LEFT JOIN [Sepidar01].[INV].[Unit] unit
-                    ON stock.UnitRef = unit.UnitID
+                    GROUP BY ItemRef
+                ) stock ON fbi.ItemRef = stock.ItemRef
                 LEFT JOIN (
                     SELECT 
                         ItemRef,
@@ -325,12 +329,38 @@ class DatabaseConnection:
                     FROM [Sepidar01].[INV].[ItemStockSummary]
                     GROUP BY ItemRef, UnitRef
                 ) main_stock ON pf.ItemRef = main_stock.ItemRef 
-                LEFT JOIN [Sepidar01].[INV].[Unit] main_unit
-                    ON main_stock.UnitRef = main_unit.UnitID
+                    AND pf.ItemUnitRef = main_stock.UnitRef
+                LEFT JOIN [Sepidar01].[INV].[Unit] unit
+                    ON main_stock.UnitRef = unit.UnitID
+                GROUP BY 
+                    pf.ProductFormulaID,
+                    pf.Code,
+                    pf.Title,
+                    pf.ItemRef,
+                    pf.ItemUnitRef,
+                    pf.Quantity,
+                    pf.IsActive,
+                    pf.EstimatedLabour,
+                    pf.EstimatedOverhead,
+                    pf.Description,
+                    pf.TracingTitle,
+                    fbi.FormulaBomItemID,
+                    fbi.ItemRef,
+                    fbi.Quantity,
+                    fbi.SecondaryQuantity,
+                    fbi.Description,
+                    fbi.ItemTracingRef,
+                    itm.Title,
+                    itm.Code,
+                    bomItem.Title,
+                    bomItem.Code,
+                    stock.TotalQuantity,
+                    main_stock.TotalQuantity,
+                    unit.Title
                 ORDER BY pf.ProductFormulaID, fbi.FormulaBomItemID
             """
             return self.execute_query(query)
-    
+        
     def get_active_formulas_with_items(self):
         """
         Get only active formulas with their items
