@@ -38,9 +38,10 @@ def parse_table_counts(file_path):
 # =====================
 file1 = "اولیه.txt"  # Replace with actual file name
 file2 = "ثبت درخواست خروج_2.txt"  # Replace with actual file name
+file3 = "خروج از انبار_3.txt"  # Replace with actual file name
 
-d1 = parse_table_counts(file1)
-d2 = parse_table_counts(file2)
+d1 = parse_table_counts(file2)
+d2 = parse_table_counts(file3)
 
 tables1 = set(d1.keys())
 tables2 = set(d2.keys())
