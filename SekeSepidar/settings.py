@@ -193,17 +193,12 @@ PUBLIC_KEY_FILE = 'public.pem'
 # ============================================
 
 # روش اول: استفاده از Connection String کامل
-SQL_SERVER_CONNECTION_STRING = (
-    "DRIVER={ODBC Driver 17 for SQL Server};"
-    "SERVER=WIN-1SSE4CQ9LKP\\AMINDB;"
-    "DATABASE=AminDB1404_606876541;"
-    "Trusted_Connection=yes;"
-)
+
 
 # روش دوم: استفاده از تنظیمات جداگانه (اختیاری)
 SQL_USE_CONNECTION_STRING = False  # اگر True باشد از string بالا استفاده می‌کند
-# SQL_SERVER = 'DESKTOP-JKDSDCN\SEPIDAR'
-SQL_SERVER = "DESKTOP-OCIN559"
+SQL_SERVER = 'DESKTOP-JKDSDCN\SEPIDAR'
+# SQL_SERVER = "DESKTOP-OCIN559"
 
 SQL_DATABASE = 'Sepidar01'
 SQL_DRIVER = '{ODBC Driver 17 for SQL Server}'
