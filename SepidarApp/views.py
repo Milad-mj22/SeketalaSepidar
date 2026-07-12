@@ -5,6 +5,8 @@ from django.shortcuts import render
 # Create your views here.
 from django.contrib.auth.decorators import login_required
 
+from SepidarApp.Steps.save_order import save_multiple_product_orders
+
 @login_required(login_url='authentication:sign-in')
 def first_page(request):
     context = {
@@ -269,22 +271,23 @@ logger = logging.getLogger(__name__)
 def submit_all_formula_values(request):
     """
     دریافت تمام مقادیر فرمول‌ها و محاسبه مواد اولیه مورد نیاز
+    شامل: product_id, product_unit, consumption_value و withdrawal_items
     """
     try:
         # دریافت داده از درخواست
         data = json.loads(request.body)
-        values = data.get('values', [])
+        formulas = data.get('formulas', [])
         
-        if not values:
+        if not formulas:
             return JsonResponse({
                 'success': False,
                 'error': 'هیچ مقداری برای ثبت وجود ندارد'
             }, status=400)
         
         # اعتبارسنجی مقادیر
-        for item in values:
+        for item in formulas:
             formula_id = item.get('formula_id')
-            value = item.get('value')
+            consumption_value = item.get('consumption_value') or item.get('value')  # پشتیبانی از هر دو نام
             
             if not formula_id:
                 return JsonResponse({
@@ -292,29 +295,51 @@ def submit_all_formula_values(request):
                     'error': 'شناسه فرمول الزامی است'
                 }, status=400)
             
-            if value is None or not isinstance(value, (int, float)):
+            if consumption_value is None or not isinstance(consumption_value, (int, float)):
                 return JsonResponse({
                     'success': False,
-                    'error': f'مقدار فرمول {formula_id} نامعتبر است'
+                    'error': f'مقدار مصرفی فرمول {formula_id} نامعتبر است'
                 }, status=400)
             
-            if value < 0:
+            if consumption_value < 0:
                 return JsonResponse({
                     'success': False,
-                    'error': f'مقدار فرمول {formula_id} نمی‌تواند منفی باشد'
+                    'error': f'مقدار مصرفی فرمول {formula_id} نمی‌تواند منفی باشد'
                 }, status=400)
+            
+            # اعتبارسنجی آیتم‌های برداشتی
+            withdrawal_items = item.get('withdrawal_items', [])
+            for w_item in withdrawal_items:
+                withdrawal_amount = w_item.get('withdrawal_amount', 0)
+                if withdrawal_amount < 0:
+                    return JsonResponse({
+                        'success': False,
+                        'error': f'میزان برداشتی برای فرمول {formula_id} نمی‌تواند منفی باشد'
+                    }, status=400)
         
         # اتصال به دیتابیس
         db.connect()
         
         # دیکشنری برای جمع‌آوری مواد اولیه مورد نیاز
-        required_materials = defaultdict(float)
+        required_materials = defaultdict(lambda: {
+            'total_required': 0,
+            'item_name': '',
+            'unit_name': '',
+            'item_ref': '',
+            'bom_item_id': None
+        })
+        
         formula_details = []
+        all_withdrawal_details = []
         
         # برای هر فرمول، مواد اولیه را محاسبه کن
-        for item in values:
+        for item in formulas:
             formula_id = item.get('formula_id')
-            requested_quantity = item.get('value')
+            consumption_value = item.get('consumption_value') or item.get('value', 0)
+            product_id = item.get('product_id')
+            product_unit = item.get('product_unit', '')
+            withdrawal_items = item.get('withdrawal_items', [])
+            total_withdrawal = item.get('total_withdrawal', 0)
             
             # دریافت مواد اولیه فرمول از دیتابیس
             recipe_items = get_formula_recipe(db, formula_id)
@@ -332,8 +357,8 @@ def submit_all_formula_values(request):
                 unit_name = recipe.get('UnitName')
                 quantity_per_unit = recipe.get('Quantity', 0)
                 
-                # محاسبه مقدار مورد نیاز = مقدار درخواستی * مقدار در هر واحد
-                required_quantity = requested_quantity * quantity_per_unit
+                # محاسبه مقدار مورد نیاز = مقدار مصرفی * مقدار در هر واحد
+                required_quantity = consumption_value * quantity_per_unit
                 
                 formula_materials.append({
                     'item_ref': item_ref,
@@ -341,50 +366,104 @@ def submit_all_formula_values(request):
                     'unit_ref': unit_ref,
                     'unit_name': unit_name,
                     'quantity_per_unit': quantity_per_unit,
-                    'required_quantity': required_quantity
+                    'required_quantity': required_quantity,
+                    'withdrawal_amount': next(
+                        (w.get('withdrawal_amount', 0) for w in withdrawal_items if w.get('item_ref') == item_ref),
+                        0
+                    )
                 })
                 
                 # جمع‌آوری در دیکشنری اصلی
                 key = f"{item_ref}_{unit_ref}"
-                required_materials[key] += required_quantity
+                required_materials[key]['total_required'] += required_quantity
+                required_materials[key]['item_name'] = item_name
+                required_materials[key]['unit_name'] = unit_name
+                required_materials[key]['item_ref'] = item_ref
+                required_materials[key]['bom_item_id'] = recipe.get('BOMItemID')
             
+            # ذخیره جزئیات فرمول
             formula_details.append({
                 'formula_id': formula_id,
-                'requested_quantity': requested_quantity,
+                'product_id': product_id,
+                'product_unit': product_unit,
+                'consumption_value': consumption_value,
+                'total_withdrawal': total_withdrawal,
+                'withdrawal_items': withdrawal_items,
                 'materials': formula_materials
             })
+            
+            # جمع‌آوری جزئیات برداشت
+            if withdrawal_items:
+                for w_item in withdrawal_items:
+                    all_withdrawal_details.append({
+                        'formula_id': formula_id,
+                        'product_id': product_id,
+                        'product_unit': product_unit,
+                        'item_ref': w_item.get('item_ref'),
+                        'item_name': w_item.get('item_name'),
+                        'quantity': w_item.get('quantity', 0),
+                        'withdrawal_amount': w_item.get('withdrawal_amount', 0),
+                        'is_manually_edited': w_item.get('is_manually_edited', False)
+                    })
         
         # بررسی موجودی مواد اولیه
-        all_exist , stock_status = check_materials_stock(db, required_materials)
+        all_exist, stock_status = check_materials_stock(db, required_materials)
+        
+
+
+
+        # ذخیره مقادیر در دیتابیس
+        saved_formulas = []
+        if all_exist:
+            pass
+
+            # for item in formulas:
+            save_multiple_product_orders(db,formulas)
+
+
+            saved_count = 1
+            # saved_count = save_formula_values_with_details(
+            #     db, 
+            #     formulas, 
+            #     required_materials, 
+            #     all_withdrawal_details
+            # )
+            
+            # # ثبت عملیات برداشت
+            # withdrawal_records = save_withdrawal_records(db, all_withdrawal_details)
+            withdrawal_records = True
+        else:
+            saved_count = 0
+            withdrawal_records = []
         
         # بستن اتصال دیتابیس
         db.close()
-        if all_exist:
-        # ذخیره مقادیر در دیتابیس (اگر نیاز دارید)
-            saved_count = save_formula_values(values)
         
-        # برگرداندن نتیجه
+        if all_exist:
             return JsonResponse({
                 'success': True,
                 'saved_count': saved_count,
-                'message': f'{saved_count} مقدار با موفقیت ثبت شد',
+                'message': f'{saved_count} فرمول با موفقیت ثبت شد',
                 'data': {
                     'formula_details': formula_details,
                     'required_materials': dict(required_materials),
                     'stock_status': stock_status,
+                    'withdrawal_records': withdrawal_records,
                     'summary': {
+                        'total_formulas': len(formulas),
+                        'saved_formulas': saved_count,
                         'total_materials': len(required_materials),
                         'available_materials': sum(1 for s in stock_status.values() if s['available']),
-                        'unavailable_materials': sum(1 for s in stock_status.values() if not s['available'])
+                        'unavailable_materials': sum(1 for s in stock_status.values() if not s['available']),
+                        'total_withdrawal_items': len(all_withdrawal_details)
                     }
                 }
             })
-        
         else:
             # استخراج مواد ناموجود با جزئیات کامل
             unavailable_materials = []
             for key, status in stock_status.items():
-                if not status['available']:
+                if not status.get('available', False):
                     unavailable_materials.append({
                         'material_name': status.get('material_name', key),
                         'material_code': status.get('material_code', ''),
@@ -398,8 +477,11 @@ def submit_all_formula_values(request):
             
             # ساخت پیام خطای دقیق
             error_message = 'کمبود کالا در انبار:\n'
-            for item in unavailable_materials:
-                error_message += f"• {item['material_name']}: نیاز {item['required_quantity']} {item['unit']} - موجودی {item['available_quantity']} {item['unit']} (کمبود: {item['shortage']} {item['unit']})\n"
+            for item in unavailable_materials[:5]:  # فقط ۵ مورد اول
+                error_message += f"• {item['material_name']}: نیاز {item['required_quantity']:.2f} {item['unit']} - موجودی {item['available_quantity']:.2f} {item['unit']} (کمبود: {item['shortage']:.2f} {item['unit']})\n"
+            
+            if len(unavailable_materials) > 5:
+                error_message += f"\nو {len(unavailable_materials) - 5} مورد دیگر..."
             
             return JsonResponse({
                 'success': False,
@@ -409,11 +491,18 @@ def submit_all_formula_values(request):
                     'formula_details': formula_details,
                     'required_materials': dict(required_materials),
                     'stock_status': stock_status,
-                    'unavailable_materials': unavailable_materials,  # لیست دقیق مواد ناموجود
+                    'unavailable_materials': unavailable_materials,
+                    'withdrawal_records': withdrawal_records,
                     'summary': {
+                        'total_formulas': len(formulas),
                         'total_materials': len(required_materials),
                         'available_materials': sum(1 for s in stock_status.values() if s['available']),
-                        'unavailable_materials': sum(1 for s in stock_status.values() if not s['available'])
+                        'unavailable_materials': sum(1 for s in stock_status.values() if not s['available']),
+                        'total_shortage': sum(
+                            status.get('required_quantity', 0) - status.get('available_quantity', 0)
+                            for status in stock_status.values()
+                            if not status.get('available', False)
+                        )
                     }
                 }
             })
@@ -425,11 +514,14 @@ def submit_all_formula_values(request):
         }, status=400)
     except Exception as e:
         logger.error(f"Error in submit_all_formula_values: {e}")
-        db.close()
+        if 'db' in locals():
+            db.close()
         return JsonResponse({
             'success': False,
             'error': str(e)
         }, status=500)
+    
+
 
 def get_formula_recipe(db, formula_id):
     """
@@ -512,14 +604,14 @@ def check_materials_stock(db, required_materials):
             stock_status[key] = {
                 'item_ref': item_ref,
                 'unit_ref': unit_ref,
-                'required_quantity': required_qty,
+                'required_quantity': required_qty['total_required'],
                 'available_stock': available_stock,
-                'available': available_stock >= required_qty,
-                'shortage': max(0, required_qty - available_stock),
-                'status': 'موجود' if available_stock >= required_qty else 'کمبود'
+                'available': available_stock >= required_qty['total_required'],
+                'shortage': max(0, required_qty['total_required'] - available_stock),
+                'status': 'موجود' if available_stock >= required_qty['total_required'] else 'کمبود'
             }
         
-            if available_stock < required_qty :
+            if available_stock < required_qty['total_required'] :
                 all_exist = False
 
 
