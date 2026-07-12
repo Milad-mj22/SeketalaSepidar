@@ -422,6 +422,7 @@ def submit_all_formula_values(request):
 
             saved_results = save_results.get('results', [])
             saved_count = save_results.get('saved', 0)
+            
 
 
             # saved_count = save_formula_values_with_details(

@@ -214,3 +214,5 @@ SQL_TRUSTED_CONNECTION = 'yes'
 
 # تنظیمات SQLite
 SQLITE_DB_PATH = 'my_database_copy.db'  # مسیر فایل SQLite
+
+CREATOR_SEPIDAR = 16  ## ایدی شخص ایجاد کننده در Sepidar

@@ -3,6 +3,8 @@ from datetime import datetime
 from decimal import Decimal
 import logging
 
+from SekeSepidar.settings import CREATOR_SEPIDAR
+from SepidarApp.Steps.delivery_order import save_inventory_delivery_db
 from SepidarApp.databaseConnector import DatabaseConnection
 
 logger = logging.getLogger(__name__)
@@ -43,7 +45,7 @@ def save_product_order_db(db_connection:DatabaseConnection, formula_id, product_
         else:
             new_id = 1
             new_number = 1
-        
+        product_order_ref = new_id
         # 2. دریافت اطلاعات فرمول و محصول از دیتابیس
         cursor.execute("""
             SELECT 
@@ -176,9 +178,9 @@ def save_product_order_db(db_connection:DatabaseConnection, formula_id, product_
             'FiscalYearRef': 1,
             'CanTransferNextPeriod': 0,
             'IsInitial': 0,
-            'Creator': 15,  # یا کاربر فعلی
+            'Creator': CREATOR_SEPIDAR,  # یا کاربر فعلی
             'CreationDate': now,
-            'LastModifier': 15,
+            'LastModifier': CREATOR_SEPIDAR,
             'LastModificationDate': now,
             'Version': 1,
             # 'ProductFormulaEstimatedLabour': estimated_labour,
@@ -244,6 +246,20 @@ def save_product_order_db(db_connection:DatabaseConnection, formula_id, product_
 
 
 
+        ############### STEP2 ############# CREATE INVENTORY DELIVERY RECORD
+        delivery =  save_inventory_delivery_db(db_connection=db_connection,product_order_ref=product_order_ref, stock_ref=10, receiver_dl_ref=5, total_price=0, is_return=0, type=1, destination_stock_ref=None, creator=15, description=None,items=material_details)
+        if not delivery['success']:
+            logger.warning(f"خطا در ذخیره InventoryDelivery: {delivery.get('error')}")
+            conn.rollback()
+            return {
+                'success': False,
+                'error': f"خطا در ذخیره InventoryDelivery: {delivery.get('error')}"
+            }
+        
+        
+        
+
+
         
 
 
@@ -304,7 +320,6 @@ def save_multiple_product_orders(conn, orders_data):
     
 
     
-
 
 
     return {

@@ -1,0 +1,2 @@
+InventoryDeliveryID	IsReturn	Type	StockRef	ReceiverDLRef	Number	Date	TotalPrice	AccountingVoucherRef	FiscalYearRef	DestinationStockRef	CreatorForm	Creator	CreationDate	LastModifier	LastModificationDate	Version	Description
+28720	0	2	10	5	2235	2026-07-12 13:18:54.300	0.0000	NULL	1	NULL	1	16	2026-07-12 14:40:42.000	16	2026-07-12 14:40:42.000	1	NULL
