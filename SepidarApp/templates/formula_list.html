@@ -1475,13 +1475,12 @@ function getAllValues() {
         // SEND TO SERVER
         // ========================================
 
-        function sendToServer(values) {
+function sendToServer(values) {
     const submitBtn = document.getElementById('submit-all-btn');
     submitBtn.disabled = true;
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> در حال ارسال...';
     submitBtn.classList.add('btn-loading');
 
-    // آماده‌سازی داده‌ها برای ارسال
     const payload = {
         formulas: values.map(item => ({
             formula_id: item.formula_id,
@@ -1510,16 +1509,11 @@ function getAllValues() {
     })
     .then(response => response.json())
     .then(data => {
+        console.log('Full response from server:', data);
+        console.log('Response structure:', Object.keys(data));
         if (data.success) {
-            Swal.fire({
-                title: '✅ موفقیت',
-                text: `${data.saved_count || values.length} فرمول با موفقیت ثبت شد`,
-                icon: 'success',
-                confirmButtonText: 'باشه',
-                confirmButtonColor: '#22c55e'
-            }).then(() => {
-                clearAllValuesWithoutConfirm();
-            });
+            // Show detailed success modal
+            showSuccessModal(data);
         } else {
             if (data.data?.unavailable_materials?.length > 0) {
                 showUnavailableError(data);
@@ -1549,7 +1543,375 @@ function getAllValues() {
         submitBtn.classList.remove('btn-loading');
     });
 }
-        // ========================================
+
+function showSuccessModal(data) {
+    console.log('Full data received:', data);
+    
+    // Try to get results from different possible locations
+    let results = [];
+    let savedCount = data.saved_count || 0;
+    
+    // Check 1: Direct 'results' property (added by backend)
+    if (data.results && Array.isArray(data.results)) {
+        results = data.results;
+        console.log('Found results in data.results');
+    }
+    // Check 2: Inside data.data
+    else if (data.data) {
+        // If data.data has 'results'
+        if (data.data.results && Array.isArray(data.data.results)) {
+            results = data.data.results;
+            console.log('Found results in data.data.results');
+        }
+        // If data.data is an array
+        else if (Array.isArray(data.data)) {
+            // Check if it contains items with 'success' property
+            if (data.data.length > 0 && data.data.some(item => item.hasOwnProperty('success'))) {
+                results = data.data;
+                console.log('Found results in data.data (array)');
+            }
+        }
+        // Check for other possible keys in data.data
+        else if (typeof data.data === 'object') {
+            const possibleKeys = ['formula_details', 'items', 'list', 'saved_items'];
+            for (const key of possibleKeys) {
+                if (data.data[key] && Array.isArray(data.data[key])) {
+                    // Check if this array has items with 'success' or 'product_name'
+                    if (data.data[key].length > 0 && 
+                        (data.data[key].some(item => item.hasOwnProperty('success')) ||
+                         data.data[key].some(item => item.hasOwnProperty('product_name')))) {
+                        results = data.data[key];
+                        console.log(`Found results in data.data.${key}`);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    
+    // If still no results, try to construct from data
+    if (results.length === 0 && savedCount > 0) {
+        // Try to get from formula_details
+        if (data.data && data.data.formula_details && Array.isArray(data.data.formula_details)) {
+            const formulaDetails = data.data.formula_details;
+            results = formulaDetails.map(f => ({
+                success: true,
+                product_name: f.product_name || f.formula_title || 'نامشخص',
+                number: f.product_order_id || f.number || f.formula_id || '-',
+                product_order_id: f.product_order_id || f.formula_id,
+                data: f
+            }));
+            console.log('Constructed results from formula_details');
+        }
+    }
+    
+    console.log('Extracted results:', results);
+    console.log('Results length:', results.length);
+    
+    // Filter successful and failed
+    const successful = results.filter(r => r.success === true);
+    const failed = results.filter(r => r.success === false);
+    const successCount = successful.length || savedCount;
+    const failedCount = failed.length;
+    const totalCount = data.total || results.length || successCount + failedCount || savedCount;
+    
+    console.log(`Success: ${successCount}, Failed: ${failedCount}, Total: ${totalCount}`);
+    
+    // If no results found but we have a saved_count, show simple success
+    if (results.length === 0 && savedCount > 0) {
+        Swal.fire({
+            title: `✅ ${savedCount} فرمول با موفقیت ثبت شد`,
+            html: `
+                <div style="text-align: right; direction: rtl; padding: 10px;">
+                    <div style="font-size: 48px; text-align: center; margin: 10px 0;">
+                        ✅
+                    </div>
+                    <div style="font-size: 18px; font-weight: 600; color: #16a34a; text-align: center; margin: 10px 0;">
+                        ${savedCount} فرمول با موفقیت ثبت شد
+                    </div>
+                    <div style="font-size: 14px; color: #6b7280; text-align: center;">
+                        ${data.message || 'عملیات با موفقیت انجام شد'}
+                    </div>
+                    ${data.data && data.data.summary ? `
+                        <div style="margin-top: 12px; padding: 10px; background: #f3f4f6; border-radius: 6px; font-size: 13px;">
+                            <div style="display: flex; justify-content: space-around; flex-wrap: wrap;">
+                                <span>📊 کل فرمول‌ها: ${data.data.summary.total_formulas || savedCount}</span>
+                                <span>✅ ثبت شده: ${data.data.summary.saved_formulas || savedCount}</span>
+                            </div>
+                        </div>
+                    ` : ''}
+                    <div style="margin-top: 16px; padding: 8px 12px; background: #f8fafc; border-radius: 6px; border: 1px solid #e2e8f0; font-size: 12px; color: #6b7280; display: flex; justify-content: space-between; align-items: center;">
+                        <span><i class="fas fa-check-circle" style="color: #22c55e;"></i> ثبت موفق</span>
+                        <span><i class="fas fa-calendar"></i> ${new Date().toLocaleDateString('fa-IR')}</span>
+                    </div>
+                </div>
+            `,
+            icon: 'success',
+            confirmButtonText: '✅ ادامه',
+            confirmButtonColor: '#22c55e',
+            width: 600,
+            padding: '20px',
+            showCloseButton: true,
+            backdrop: `rgba(0,0,0,0.4)`,
+            allowOutsideClick: false
+        }).then(() => {
+            clearAllValuesWithoutConfirm();
+        });
+        return;
+    }
+    
+    // If still no results at all
+    if (results.length === 0) {
+        Swal.fire({
+            title: 'ℹ️ اطلاعات',
+            html: `
+                <div style="text-align: right; direction: rtl;">
+                    <p>عملیات با موفقیت انجام شد اما جزئیاتی برای نمایش وجود ندارد.</p>
+                    ${data.message ? `<p style="color: #16a34a; font-weight: 500;">${data.message}</p>` : ''}
+                    ${savedCount > 0 ? `<p style="color: #16a34a; font-weight: 500;">${savedCount} فرمول ثبت شد</p>` : ''}
+                </div>
+            `,
+            icon: 'info',
+            confirmButtonText: 'باشه',
+            confirmButtonColor: '#3b82f6'
+        }).then(() => {
+            clearAllValuesWithoutConfirm();
+        });
+        return;
+    }
+    
+    // If all items are successful, show success modal with details
+    if (successCount > 0) {
+        // Create HTML for successful items
+        let itemsHtml = '';
+        if (successful.length > 0) {
+            itemsHtml = `
+                <div style="max-height: 300px; overflow-y: auto; margin-top: 12px; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                        <thead style="background: linear-gradient(135deg, #22c55e, #16a34a); color: white; position: sticky; top: 0;">
+                            <tr>
+                                <th style="padding: 10px 14px; border: 1px solid #e2e8f0; text-align: center; width: 50px;">#</th>
+                                <th style="padding: 10px 14px; border: 1px solid #e2e8f0; text-align: right;">نام محصول</th>
+                                <th style="padding: 10px 14px; border: 1px solid #e2e8f0; text-align: center;">شماره</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+            
+            successful.forEach((item, index) => {
+                const productName = item.product_name || 'نامشخص';
+                const number = item.number || '-';
+                
+                itemsHtml += `
+                    <tr style="border-bottom: 1px solid #e2e8f0; transition: background 0.2s;" 
+                        onmouseover="this.style.background='#f0fdf4'" 
+                        onmouseout="this.style.background=''">
+                        <td style="padding: 8px 14px; border: 1px solid #e2e8f0; text-align: center; color: #4b5563; font-weight: 500;">${index + 1}</td>
+                        <td style="padding: 8px 14px; border: 1px solid #e2e8f0; text-align: right; font-weight: 500; color: #1e293b;">
+                            <i class="fas fa-check-circle" style="color: #22c55e; margin-left: 8px;"></i>
+                            ${productName}
+                        </td>
+                        <td style="padding: 8px 14px; border: 1px solid #e2e8f0; text-align: center; font-weight: 600; color: #2563eb;">
+                            ${number}
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            itemsHtml += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+        
+        // Create summary statistics
+        let statusHtml = `
+            <div style="display: flex; gap: 16px; justify-content: center; margin: 16px 0; flex-wrap: wrap;">
+                <div style="background: linear-gradient(135deg, #dcfce7, #bbf7d0); padding: 12px 24px; border-radius: 12px; text-align: center; min-width: 100px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                    <div style="font-size: 28px; font-weight: 700; color: #16a34a;">${successCount}</div>
+                    <div style="font-size: 13px; color: #4b5563; margin-top: 2px;">✅ موفق</div>
+                </div>
+        `;
+        
+        if (failedCount > 0) {
+            statusHtml += `
+                <div style="background: linear-gradient(135deg, #fee2e2, #fecaca); padding: 12px 24px; border-radius: 12px; text-align: center; min-width: 100px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                    <div style="font-size: 28px; font-weight: 700; color: #dc2626;">${failedCount}</div>
+                    <div style="font-size: 13px; color: #4b5563; margin-top: 2px;">❌ ناموفق</div>
+                </div>
+            `;
+        }
+        
+        statusHtml += `
+                <div style="background: linear-gradient(135deg, #dbeafe, #bfdbfe); padding: 12px 24px; border-radius: 12px; text-align: center; min-width: 100px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                    <div style="font-size: 28px; font-weight: 700; color: #2563eb;">${totalCount}</div>
+                    <div style="font-size: 13px; color: #4b5563; margin-top: 2px;">📊 کل</div>
+                </div>
+            </div>
+        `;
+        
+        const allSuccess = failedCount === 0 && successCount > 0;
+        const titleText = allSuccess 
+            ? `✅ ${successCount} فرمول با موفقیت ثبت شد` 
+            : `✅ ${successCount} فرمول با موفقیت ثبت شد ${failedCount > 0 ? `و ${failedCount} فرمول با خطا مواجه شد` : ''}`;
+        
+        // Show the modal
+        Swal.fire({
+            title: titleText,
+            html: `
+                <div style="text-align: right; direction: rtl;">
+                    ${statusHtml}
+                    ${successful.length > 0 ? `
+                        <div style="margin-top: 16px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <strong style="color: #16a34a; font-size: 15px;">
+                                    <i class="fas fa-list"></i> لیست محصولات ثبت شده (${successCount} مورد)
+                                </strong>
+                                <span style="font-size: 12px; color: #6b7280; background: #f3f4f6; padding: 2px 12px; border-radius: 12px;">
+                                    <i class="far fa-clock"></i> ${new Date().toLocaleTimeString('fa-IR')}
+                                </span>
+                            </div>
+                            ${itemsHtml}
+                        </div>
+                    ` : `
+                        <div style="text-align: center; padding: 20px; color: #6b7280;">
+                            <i class="fas fa-inbox" style="font-size: 32px; opacity: 0.5;"></i>
+                            <p style="margin-top: 8px;">هیچ محصولی ثبت نشد</p>
+                        </div>
+                    `}
+                    ${failedCount > 0 ? `
+                        <div style="margin-top: 16px; padding: 12px 16px; background: #fef2f2; border-radius: 8px; border: 1px solid #fca5a5;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <i class="fas fa-exclamation-triangle" style="color: #dc2626;"></i>
+                                <strong style="color: #dc2626;">${failedCount} فرمول با خطا مواجه شد</strong>
+                            </div>
+                            <div style="font-size: 13px; color: #6b7280; margin-top: 4px; padding-right: 28px;">
+                                لطفاً خطاها را بررسی کنید و دوباره تلاش کنید.
+                            </div>
+                        </div>
+                    ` : ''}
+                    <div style="margin-top: 16px; padding: 8px 12px; background: #f8fafc; border-radius: 6px; border: 1px solid #e2e8f0; font-size: 12px; color: #6b7280; display: flex; justify-content: space-between; align-items: center;">
+                        <span><i class="fas fa-check-circle" style="color: #22c55e;"></i> ثبت موفق</span>
+                        <span><i class="fas fa-calendar"></i> ${new Date().toLocaleDateString('fa-IR')}</span>
+                    </div>
+                </div>
+            `,
+            icon: allSuccess ? 'success' : 'warning',
+            confirmButtonText: allSuccess ? '✅ ادامه' : '✅ بستن',
+            confirmButtonColor: allSuccess ? '#22c55e' : '#f59e0b',
+            width: 750,
+            padding: '20px',
+            showCloseButton: true,
+            showCancelButton: failedCount > 0,
+            cancelButtonText: '📋 مشاهده خطاها',
+            cancelButtonColor: '#ef4444',
+            backdrop: `rgba(0,0,0,0.4)`,
+            allowOutsideClick: false
+        }).then((result) => {
+            if (result.dismiss === Swal.DismissReason.cancel && failedCount > 0) {
+                showErrorDetails(data);
+            }
+            
+            if (allSuccess) {
+                clearAllValuesWithoutConfirm();
+            }
+        });
+    } else {
+        // No successful items
+        Swal.fire({
+            title: '❌ خطا',
+            text: 'هیچ فرمولی با موفقیت ثبت نشد',
+            icon: 'error',
+            confirmButtonText: 'باشه',
+            confirmButtonColor: '#ef4444'
+        });
+    }
+}
+function showErrorDetails(data) {
+    // Try to get results similar to above
+    let results = [];
+    
+    if (Array.isArray(data)) {
+        results = data;
+    } else if (data.results && Array.isArray(data.results)) {
+        results = data.results;
+    } else if (data.data && Array.isArray(data.data)) {
+        results = data.data;
+    } else if (typeof data === 'object' && data !== null) {
+        const keys = Object.keys(data).filter(k => !isNaN(k));
+        if (keys.length > 0) {
+            results = keys.map(k => data[k]);
+        }
+    }
+    
+    const failed = results.filter(r => r.success === false);
+    
+    if (failed.length === 0) {
+        Swal.fire({
+            title: 'ℹ️ اطلاعات',
+            text: 'هیچ خطایی وجود ندارد',
+            icon: 'info',
+            confirmButtonText: 'باشه'
+        });
+        return;
+    }
+    
+    let errorHtml = `
+        <div style="max-height: 400px; overflow-y: auto; direction: rtl; text-align: right;">
+            <div style="margin-bottom: 12px; padding: 10px; background: #fef3c7; border-radius: 6px; border: 1px solid #f59e0b;">
+                <i class="fas fa-info-circle" style="color: #f59e0b;"></i>
+                <strong style="color: #92400e;"> ${failed.length} فرمول با خطا مواجه شد</strong>
+            </div>
+            <table style="width: 100%; border-collapse: collapse; font-size: 13px; border-radius: 8px; overflow: hidden;">
+                <thead style="background: #dc2626; color: white; position: sticky; top: 0;">
+                    <tr>
+                        <th style="padding: 8px 12px; border: 1px solid #e2e8f0; text-align: center; width: 50px;">#</th>
+                        <th style="padding: 8px 12px; border: 1px solid #e2e8f0; text-align: right;">نام محصول</th>
+                        <th style="padding: 8px 12px; border: 1px solid #e2e8f0; text-align: center;">شماره</th>
+                        <th style="padding: 8px 12px; border: 1px solid #e2e8f0; text-align: right;">خطا</th>
+                    </tr>
+                </thead>
+                <tbody>
+    `;
+    
+    failed.forEach((item, index) => {
+        const productName = item.product_name || 'نامشخص';
+        const number = item.number || '-';
+        const errorMsg = item.error || item.message || 'خطای ناشناخته';
+        
+        errorHtml += `
+            <tr style="border-bottom: 1px solid #e2e8f0; background: #fef2f2;">
+                <td style="padding: 8px 12px; border: 1px solid #e2e8f0; text-align: center; color: #4b5563;">${index + 1}</td>
+                <td style="padding: 8px 12px; border: 1px solid #e2e8f0; text-align: right;">
+                    <i class="fas fa-times-circle" style="color: #dc2626; margin-left: 8px;"></i>
+                    ${productName}
+                </td>
+                <td style="padding: 8px 12px; border: 1px solid #e2e8f0; text-align: center; color: #6b7280;">${number}</td>
+                <td style="padding: 8px 12px; border: 1px solid #e2e8f0; color: #dc2626; font-weight: 600; font-size: 12px;">${errorMsg}</td>
+            </tr>
+        `;
+    });
+    
+    errorHtml += `
+                </tbody>
+            </table>
+        </div>
+    `;
+    
+    Swal.fire({
+        title: '❌ خطاهای ثبت',
+        html: errorHtml,
+        icon: 'error',
+        confirmButtonText: 'باشه',
+        confirmButtonColor: '#ef4444',
+        width: 750,
+        padding: '20px',
+        showCloseButton: true
+    });
+}
+
+// ========================================
         // SHOW UNAVAILABLE MATERIALS
         // ========================================
         function showUnavailableError(data) {

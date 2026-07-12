@@ -227,6 +227,7 @@ def save_product_order_db(db_connection:DatabaseConnection, formula_id, product_
             material_result = save_material_of_order_db(
                 db_connection=db_connection,
                 product_order_id=new_id,
+                formula_id = formula_id,
                 material_details=material_details
             )
             
@@ -249,6 +250,7 @@ def save_product_order_db(db_connection:DatabaseConnection, formula_id, product_
         return {
             'success': True,
             'product_order_id': new_id,
+            'product_name' : product_data[2] if product_data else None,
             'number': new_number,
             'data': new_record
         }
@@ -300,12 +302,18 @@ def save_multiple_product_orders(conn, orders_data):
         if not result['success']:
             all_success = False
     
+
+    
+
+
+
     return {
         'success': all_success,
         'results': results,
         'total': len(orders_data),
         'saved': sum(1 for r in results if r['success']),
-        'failed': sum(1 for r in results if not r['success'])
+        'failed': sum(1 for r in results if not r['success']),
+        
     }
 
 
@@ -402,7 +410,7 @@ def get_formula_details_by_id(conn, formula_id):
     
 
 
-def save_material_of_order_db(db_connection: DatabaseConnection, product_order_id: int, material_details: list):
+def save_material_of_order_db(db_connection: DatabaseConnection, product_order_id: int,formula_id:int, material_details: list):
     """
     ذخیره مواد اولیه یک سفارش در جدول ProductOrderBOMItem
     
@@ -495,6 +503,32 @@ def save_material_of_order_db(db_connection: DatabaseConnection, product_order_i
             # RemainingConsumptionQuantity = standard_quantity - actual_quantity
             remaining_quantity = None
             
+
+
+
+            # دریافت اطلاعات کامل آیتم از دیتابیس
+            cursor.execute("""
+                SELECT 
+                    i.FormulaBomItemID
+                FROM [Sepidar01].[WKO].[FormulaBomItem] i
+                WHERE i.ProductFormulaRef = ? AND i.ItemRef = ?
+            """, (formula_id,item_data[0],))
+            
+            formul_item_ref = cursor.fetchone()
+            
+            if not formul_item_ref:
+                logger.warning(f"آیتم با شناسه {formul_item_ref} یافت نشد")
+                continue
+            
+
+
+
+
+
+
+
+
+
             # ایجاد رکورد جدید
             new_record = {
                 'ProductOrderBOMItemID': next_id + idx,
@@ -511,18 +545,19 @@ def save_material_of_order_db(db_connection: DatabaseConnection, product_order_i
                 # 'ItemTracingCategoryRef': item_data[7],
                 # 'ItemSecondaryUnitRef': item_data[8],
                 # 'ItemSerialTracking': item_data[9] or 0,
-                'FormulaBOMItemRef': None,  # اگر نیاز دارید می‌توانید تنظیم کنید
+                'FormulaBOMItemRef': formul_item_ref[0],  # اگر نیاز دارید می‌توانید تنظیم کنید
                 # 'ActualConsumptionQuantity': actual_quantity,
-                # 'StandardConsumptionQuantity': standard_quantity,
+                'StandardConsumptionQuantity': standard_quantity,
                 'RemainingConsumptionQuantity': remaining_quantity,
                 'Description': None,
-                'FomulaBOMItemQuantity': quantity_per_unit,
-                'RemainingBOMCost': None,
+                # 'FomulaBOMItemQuantity': quantity_per_unit,
+                # 'RemainingBOMCost': None,
+                # 'ItemTracingTitle': None,
+                'TransferedQuantity': None,
                 'ItemTracingRef': None,
-                'ItemTracingTitle': None,
-                'TransferedQuantity': 0,
-                'RemainingRequestedQuantity': 0,
-                'RegisteredRequestedQuantity': 0
+
+                # 'RemainingRequestedQuantity': 0,
+                # 'RegisteredRequestedQuantity': 0
             }
             
             # ساخت کوئری INSERT
@@ -530,7 +565,7 @@ def save_material_of_order_db(db_connection: DatabaseConnection, product_order_i
             placeholders = ', '.join(['?' for _ in new_record.keys()])
             
             query = f"""
-                INSERT INTO [Sepidar01].[WKO].[vwProductOrderBOMItem] ({columns})
+                INSERT INTO [Sepidar01].[WKO].[ProductOrderBOMItem] ({columns})
                 VALUES ({placeholders})
             """
             

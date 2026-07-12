@@ -418,10 +418,12 @@ def submit_all_formula_values(request):
             pass
 
             # for item in formulas:
-            save_multiple_product_orders(db,formulas)
+            save_results  = save_multiple_product_orders(db,formulas)
+
+            saved_results = save_results.get('results', [])
+            saved_count = save_results.get('saved', 0)
 
 
-            saved_count = 1
             # saved_count = save_formula_values_with_details(
             #     db, 
             #     formulas, 
@@ -434,6 +436,7 @@ def submit_all_formula_values(request):
             withdrawal_records = True
         else:
             saved_count = 0
+            saved_results = []
             withdrawal_records = []
         
         # بستن اتصال دیتابیس
@@ -444,6 +447,7 @@ def submit_all_formula_values(request):
                 'success': True,
                 'saved_count': saved_count,
                 'message': f'{saved_count} فرمول با موفقیت ثبت شد',
+                'results': saved_results,  # ADD THIS LINE - pass the results
                 'data': {
                     'formula_details': formula_details,
                     'required_materials': dict(required_materials),

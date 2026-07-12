@@ -11,3 +11,4 @@ pywin32
 django-multiselectfield  
 scikit-learn
 requests
+pyodbc
