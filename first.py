@@ -19,7 +19,7 @@ connection_string = (
 
 print('first')
 
-output_file = "database_tables_record_count_4.txt"
+output_file = "second.txt"
 
 try:
     # Connect to SQL Server
