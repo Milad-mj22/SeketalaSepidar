@@ -180,7 +180,7 @@ def save_inventory_delivery_item_db(
     sl_account_ref: int = None,
     fee: float = None,
     is_return: int = 0,
-    parity_check: int = 1,
+    parity_check: int = None,
     version: int = 1
 ):
     """

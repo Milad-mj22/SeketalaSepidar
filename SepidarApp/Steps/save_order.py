@@ -5,6 +5,7 @@ import logging
 
 from SekeSepidar.settings import CREATOR_SEPIDAR
 from SepidarApp.Steps.delivery_order import save_inventory_delivery_db
+from SepidarApp.Steps.recepi_order import save_inventory_receipt_db
 from SepidarApp.databaseConnector import DatabaseConnection
 
 logger = logging.getLogger(__name__)
@@ -199,7 +200,8 @@ def save_product_order_db(db_connection:DatabaseConnection, formula_id, product_
             'ProductFormulaUnitRef': formula_data[3],
 
         }
-        
+
+
         # 6. ساخت کوئری INSERT
         columns = ', '.join(new_record.keys())
         placeholders = ', '.join(['?' for _ in new_record.keys()])
@@ -258,7 +260,10 @@ def save_product_order_db(db_connection:DatabaseConnection, formula_id, product_
         
         
         
-
+        ############### STEP3 ########### CREATE RECEPI ORDER
+        # TEMP_STOCK_REF = 10
+        # TEMP_DELIVERER_REF = 5
+        # save_inventory_receipt_db(db_connection=db_connection,stock_ref=TEMP_STOCK_REF,deliverer_dl_ref=TEMP_DELIVERER_REF)
 
         
 
