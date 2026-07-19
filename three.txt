@@ -144,7 +144,7 @@ GNR.vwDebitCreditNoteItem                | 26
 ACC.vwOpeningOperation                   | 1
 POM.vwItemRequestItem                    | 0
 GNR.vwDevice                             | 0
-ACC.vwOtherDL                            | 16
+ACC.vwOtherDL                            | 15
 POM.vwPerforma                           | 0
 GNR.vwDeviceUserParty                    | 0
 ACC.vwVoucher                            | 800
@@ -257,7 +257,7 @@ RPA.vwPartyAccountSettlementDebitItem    | 0
 INV.vwInventoryDelivery                  | 19908
 AST.vwUnuseable                          | 0
 RPA.vwPartySettlement                    | 0
-INV.vwInventoryDeliveryItem              | 58808
+INV.vwInventoryDeliveryItem              | 58807
 AST.vwUnuseableItem                      | 0
 RPA.vwPartySettlementItem                | 0
 INV.vwInventoryDeliveryItemSerial        | 0
@@ -284,11 +284,11 @@ RPA.vwPaymentHeader                      | 1328
 INV.vwInventoryPurchaseInvoiceReceivedQuantities | 46
 CNT.vwContractEmployerMaterialsItem      | 0
 RPA.vwPettyCash                          | 0
-INV.vwInventoryReceipt                   | 2885
+INV.vwInventoryReceipt                   | 2884
 CNT.vwContractGuarantee                  | 0
 GNR.vwMarketingDisketteCurrency          | 142
 RPA.vwPettyCashBill                      | 0
-INV.vwInventoryReceiptItem               | 4891
+INV.vwInventoryReceiptItem               | 4887
 CNT.vwContractHistory                    | 0
 GNR.vwMarketingDisketteCurrencyMapper    | 5
 RPA.vwPettyCashBillItem                  | 0
@@ -361,7 +361,7 @@ SLS.vwCommission                         | 0
 MRP.vwInventoryDeliveryVersion           | 19908
 CNT.vwStatusItem                         | 0
 SLS.vwCommissionArea                     | 0
-MRP.vwInventoryReceiptVersion            | 2896
+MRP.vwInventoryReceiptVersion            | 2895
 CNT.vwTender                             | 0
 SLS.vwCommissionBroker                   | 0
 MRP.vwItemVersion                        | 388

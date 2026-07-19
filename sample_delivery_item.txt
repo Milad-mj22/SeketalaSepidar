@@ -1,0 +1,2 @@
+InventoryDeliveryItemID	InventoryDeliveryRef	IsReturn	RowNumber	BaseInvoiceItem	BaseInventoryDeliveryItem	BaseReturnedInvoiceItem	ItemRef	TracingRef	Quantity	SecondaryQuantity	RemainingQuantity	RemainingSecondaryQuantity	SLAccountRef	Price	Description	Description_En	Version	ParityCheck	QuotationItemRef	ProductOrderRef	WeighingRef	ItemRequestItemRef	ItemDescription	Fee
+94876	28720	0	1	NULL	NULL	NULL	1958	NULL	1.5000	NULL	0.0000	NULL	786	NULL	مربوط به سفارش توليد محصول شماره 2171	NULL	1	NULL	NULL	2286	NULL	NULL	NULL	NULL
