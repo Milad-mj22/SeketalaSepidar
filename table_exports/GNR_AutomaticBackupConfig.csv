@@ -1,0 +1,2 @@
+﻿AutomaticBackupConfigID,IsActive,BackupPath,Filename,BackupPeriod,BackupFrequency,BackupStartDateTime,LastBackupDate,IsPasswordProtected,Password,DeleteOldFiles,NumberOfFiles,Version,Creator,CreationDate,LastModifier,LastModificationDate,UploadToAbramad
+1,True,E:\ARIA TARAZ FARDAD\sepidar backup khodkar,,1,4,2018-11-19 08:00:00,2026-07-05 21:44:19.407000,False,,True,60,305,1,2018-11-19 13:34:30,16,2026-07-05 21:44:19,False

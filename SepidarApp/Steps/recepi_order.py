@@ -31,7 +31,8 @@ def save_inventory_receipt_db(
     base_purchase_invoice_ref: int = None,
     base_inventory_delivery_ref: int = None,
     base_import_purchase_invoice_ref: int = None,
-    items: dict = None               # optional items for detail insertion
+    items: dict = None,               # optional items for detail insertion,
+    number_product_order_ref=None
 ):
     """
     Create a new receipt record in the InventoryReceipt table.
@@ -156,7 +157,8 @@ def save_inventory_receipt_db(
                 db_connection=db_connection,
                 inventory_receipt_ref=new_id,
                 items=items,
-                product_order_ref = product_order_ref
+                product_order_ref = product_order_ref,
+                number_product_order_ref=number_product_order_ref
 
                 # you may also pass other needed parameters (e.g., product_order_ref)
             )
@@ -192,8 +194,6 @@ def save_inventory_receipt_db(
 
 
 
-
-
 def save_inventory_receipt_items_batch(
     db_connection: DatabaseConnection,
     inventory_receipt_ref: int,
@@ -202,7 +202,8 @@ def save_inventory_receipt_items_batch(
     is_return: int = 0,
     currency_ref: int = 1,  # Default currency (e.g., IRR)
     currency_rate: float = 1.0,
-    version: int = 1
+    version: int = 1,
+    number_product_order_ref:int=-1
 ):
     """
     Insert multiple items into InventoryReceiptItem table in batch
@@ -212,16 +213,22 @@ def save_inventory_receipt_items_batch(
     - inventory_receipt_ref: Reference to the parent InventoryReceipt
     - items: List of dictionaries, each containing item data:
         {
-            'item_ref': int,           # ItemRef (required)
-            'quantity': float,         # Quantity (required)
-            'price': float,            # Unit price (required)
-            'secondary_quantity': float, # Optional
-            'tax': float,              # Optional
-            'duty': float,             # Optional
-            'transport_price': float,  # Optional
-            'description': str,        # Optional
+            'item_ref': int,              # ItemRef (required)
+            'quantity': float,            # Quantity (required)
+            'price': float,               # Unit price (required)
+            'item_title': str,            # Item description/title
+            'secondary_quantity': float,  # Optional
+            'tracing_ref': int,           # Optional
+            'tax': float,                 # Optional
+            'duty': float,                # Optional
+            'transport_price': float,     # Optional
+            'description': str,           # Optional
             'base_purchase_invoice_item_ref': int, # Optional
             'inventory_delivery_item_ref': int, # Optional
+            'returned_price': float,      # Optional
+            'fee': float,                 # Optional
+            'parity_check': int,          # Optional
+            'weighing_ref': int,          # Optional
             # Any other fields as needed
         }
     - product_order_ref: Reference to product order (optional)
@@ -254,65 +261,21 @@ def save_inventory_receipt_items_batch(
         max_id = result[0] if result else 0
         
         inserted_items = []
-        now = datetime.now()
-        
-        # Prepare query
-        query = """
-            INSERT INTO [Sepidar01].[INV].[InventoryReceiptItem] (
-                InventoryReceiptItemID,
-                InventoryReceiptRef,
-                IsReturn,
-                RowNumber,
-                Base,
-                ReturnBase,
-                ItemRef,
-                TracingRef,
-                Quantity,
-                SecondaryQuantity,
-                RemainingQuantity,
-                RemainingSecondaryQuantity,
-                CurrencyRef,
-                CurrencyRate,
-                CurrencyValue,
-                Price,
-                Tax,
-                Duty,
-                TransportPrice,
-                TransportTax,
-                TransportDuty,
-                TransportDescription,
-                Description,
-                Description_En,
-                Version,
-                BasePurchaseInvoiceItemRef,
-                ParityCheck,
-                ProductOrderRef,
-                InventoryDeliveryItemRef,
-                WeighingRef,
-                TaxCurrencyValue,
-                DutyCurrencyValue,
-                ReturnedPrice,
-                Fee,
-                ReturnedFee,
-                OtherCostsAmount,
-                ServiceInventoryPurchaseInvoiceRef,
-                ImportOrderFinalFee,
-                BaseImportPurchaseInvoiceItemRef,
-                AllotmenedOtherCostInBaseCurrency,
-                NetPrice,
-                ReturnedNetPrice
-            ) VALUES (
-                ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
-            )
-        """
         
         # Process each item
         for idx, item in enumerate(items):
-            item_id = max_id + idx + 1
+            new_item_id = max_id + idx + 1
+            row_number = idx + 1
             
-            # Calculate derived values
+            # Get item data with defaults
+            item_ref = item.get('item_ref')
             quantity = item.get('quantity', 0)
             price = item.get('price', 0)
+            secondary_quantity = item.get('secondary_quantity', 0)
+            tracing_ref = item.get('tracing_ref')
+            item_title = item.get('item_title')
+            
+            # Calculate derived values
             tax = item.get('tax', 0)
             duty = item.get('duty', 0)
             transport_price = item.get('transport_price', 0)
@@ -322,78 +285,81 @@ def save_inventory_receipt_items_batch(
             
             # Calculate remaining quantities (usually same as initial)
             remaining_quantity = item.get('remaining_quantity', quantity)
-            remaining_secondary_quantity = item.get('remaining_secondary_quantity', 
-                                                     item.get('secondary_quantity', 0))
-            
-            # Base values (for returns)
-            base = item.get('base', 0)
-            return_base = item.get('return_base', 0)
+            remaining_secondary_quantity = item.get('remaining_secondary_quantity', secondary_quantity)
             
             # Currency values
             currency_value = price * currency_rate if price else 0
-            
-            # Other calculated fields
             tax_currency_value = tax * currency_rate if tax else 0
             duty_currency_value = duty * currency_rate if duty else 0
-            returned_price = item.get('returned_price', 0)
-            returned_net_price = item.get('returned_net_price', 0)
-            fee = item.get('fee', 0)
-            returned_fee = item.get('returned_fee', 0)
-            other_costs_amount = item.get('other_costs_amount', 0)
-            import_order_final_fee = item.get('import_order_final_fee', 0)
-            allotmened_other_cost_in_base_currency = item.get('allotmened_other_cost_in_base_currency', 0)
             
-            # Values to insert
-            values = (
-                item_id,                                    # InventoryReceiptItemID
-                inventory_receipt_ref,                     # InventoryReceiptRef
-                is_return,                                 # IsReturn
-                idx + 1,                                   # RowNumber
-                base,                                      # Base
-                return_base,                               # ReturnBase
-                item.get('item_ref'),                      # ItemRef
-                item.get('tracing_ref'),                   # TracingRef
-                quantity,                                  # Quantity
-                item.get('secondary_quantity', 0),         # SecondaryQuantity
-                remaining_quantity,                        # RemainingQuantity
-                remaining_secondary_quantity,              # RemainingSecondaryQuantity
-                currency_ref,                              # CurrencyRef
-                currency_rate,                             # CurrencyRate
-                currency_value,                            # CurrencyValue
-                price,                                     # Price
-                tax,                                       # Tax
-                duty,                                      # Duty
-                transport_price,                           # TransportPrice
-                item.get('transport_tax', 0),              # TransportTax
-                item.get('transport_duty', 0),             # TransportDuty
-                item.get('transport_description'),         # TransportDescription
-                item.get('description'),                   # Description
-                item.get('description_en'),                # Description_En
-                version,                                   # Version
-                item.get('base_purchase_invoice_item_ref'), # BasePurchaseInvoiceItemRef
-                item.get('parity_check'),                  # ParityCheck
-                product_order_ref,                         # ProductOrderRef
-                item.get('inventory_delivery_item_ref'),   # InventoryDeliveryItemRef
-                item.get('weighing_ref'),                  # WeighingRef
-                tax_currency_value,                        # TaxCurrencyValue
-                duty_currency_value,                       # DutyCurrencyValue
-                returned_price,                            # ReturnedPrice
-                fee,                                       # Fee
-                returned_fee,                              # ReturnedFee
-                other_costs_amount,                        # OtherCostsAmount
-                item.get('service_inventory_purchase_invoice_ref'), # ServiceInventoryPurchaseInvoiceRef
-                import_order_final_fee,                    # ImportOrderFinalFee
-                item.get('base_import_purchase_invoice_item_ref'), # BaseImportPurchaseInvoiceItemRef
-                allotmened_other_cost_in_base_currency,    # AllotmenedOtherCostInBaseCurrency
-                net_price,                                 # NetPrice
-                returned_net_price                         # ReturnedNetPrice
-            )
+
+            description = f'مربوط به سفارش توليد محصول شماره {number_product_order_ref}'
+
+
+            # Build new record dictionary (matching the pattern from InventoryDeliveryItem)
+            new_record = {
+                'InventoryReceiptItemID': new_item_id,
+                'InventoryReceiptRef': inventory_receipt_ref,
+                'IsReturn': is_return,
+                'RowNumber': row_number,
+                # 'Base': item.get('base', 0),
+                # 'ReturnBase': item.get('return_base', 0),
+                'ItemRef': item_ref,
+                # 'TracingRef': tracing_ref,
+                'Quantity': quantity,
+                # 'SecondaryQuantity': secondary_quantity,
+                # 'RemainingQuantity': remaining_quantity,
+                # 'RemainingSecondaryQuantity': remaining_secondary_quantity,
+                # 'CurrencyRef': currency_ref,
+                # 'CurrencyRate': currency_rate,
+                # 'CurrencyValue': currency_value,
+                # 'Price': price,
+                # 'Tax': tax,
+                # 'Duty': duty,
+                # 'TransportPrice': transport_price,
+                # 'TransportTax': item.get('transport_tax', 0),
+                # 'TransportDuty': item.get('transport_duty', 0),
+                # 'TransportDescription': item.get('transport_description'),
+                'Description': description,
+                'Description_En': item.get('description_en'),
+                'Version': version,
+                'BasePurchaseInvoiceItemRef': item.get('base_purchase_invoice_item_ref'),
+                'ParityCheck': item.get('parity_check'),
+                'ProductOrderRef': product_order_ref,
+                'InventoryDeliveryItemRef': item.get('inventory_delivery_item_ref'),
+                'WeighingRef': item.get('weighing_ref'),
+                'TaxCurrencyValue': tax_currency_value,
+                'DutyCurrencyValue': duty_currency_value,
+                'ReturnedPrice': item.get('returned_price', 0),
+                # 'Fee': item.get('fee', 0),
+                # 'ReturnedFee': item.get('returned_fee', 0),
+                'OtherCostsAmount': item.get('other_costs_amount', 0),
+                'ServiceInventoryPurchaseInvoiceRef': item.get('service_inventory_purchase_invoice_ref'),
+                'ImportOrderFinalFee': item.get('import_order_final_fee', 0),
+                'BaseImportPurchaseInvoiceItemRef': item.get('base_import_purchase_invoice_item_ref'),
+                'AllotmenedOtherCostInBaseCurrency': item.get('allotmened_other_cost_in_base_currency', 0),
+                # 'NetPrice': net_price,
+                # 'ReturnedNetPrice': item.get('returned_net_price', 0)
+            }
             
-            cursor.execute(query, values)
+            # Remove None values (optional - you can keep them if you want)
+            # new_record = {k: v for k, v in new_record.items() if v is not None}
+            
+            # Build and execute INSERT query
+            columns = ', '.join(new_record.keys())
+            placeholders = ', '.join(['?' for _ in new_record.keys()])
+            
+            query = f"""
+                INSERT INTO [Sepidar01].[INV].[InventoryReceiptItem] ({columns})
+                VALUES ({placeholders})
+            """
+            
+            cursor.execute(query, list(new_record.values()))
+            
             inserted_items.append({
-                'inventory_receipt_item_id': item_id,
-                'row_number': idx + 1,
-                'item_ref': item.get('item_ref'),
+                'inventory_receipt_item_id': new_item_id,
+                'row_number': row_number,
+                'item_ref': item_ref,
                 'quantity': quantity,
                 'price': price,
                 'net_price': net_price

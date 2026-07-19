@@ -1,0 +1,1 @@
+﻿TaxPayerBillSubmitLogId,TaxPayerBillRef,SubmitType,RequestType,Endpoint,Request,ResponseHttpStatusCode,Response,Exception,ResultMessage,ResultState,DateTime,TaxPayerBillId,RelatedVoucherType,RelatedVoucherId,TaxId

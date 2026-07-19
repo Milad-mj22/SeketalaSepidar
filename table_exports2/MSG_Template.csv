@@ -1,0 +1,42 @@
+﻿TemplateID,TemplateGUID,IsSystemTemplate,TemplateVersion,Title,Body,ShowOutgoingMessage,MessageParameterInfoFullName,FilterMedianOperator,Version,Creator,CreationDate,LastModifier,LastModificationDate
+1,4908D648-BECF-4B7F-8B29-AAD27772AB7F,True,2,ويرايش سند حسابداري,"سند حسابداري شماره [Number] در تاريخ [Date] توسط [CreatorName] ويرايش گرديد.
+",True,Accounting.VoucherManagement.Voucher,1,1,1,2018-03-31 08:57:21,1,2018-03-31 08:57:21
+2,A8001DB3-304C-49AF-AFB9-DA36D9C0A494,True,1,مانده حساب مشتري,"[FullName] گرامي مانده حساب شما به شرح زير مي باشد:
+مانده حساب مشتري: [CustomerRemainder]
+مانده حساب تامين كننده: [VendorRemainder]
+با تشكر [CompanyName]",True,General.PartyManagement.Party,1,1,1,2018-03-31 08:57:21,1,2018-03-31 08:57:21
+3,32635A02-4E84-4822-AE81-6DE6950A1A48,True,7,خروج كالاي مشتري از انبار,"[DelivererNames]  گرامي
+كالاي شما جهت ارسال از انبار خارج شد.
+[CompanyName]",True,Inventory.InventoryOperations.InventoryDelivery,1,1,1,2018-03-31 08:57:22,1,2018-03-31 08:57:22
+4,1720F4E1-15CA-44D3-9693-F851ADFED6A1,True,1,ثبت رسيد خريد,"[DelivererNames] گرامي
+رسيد شماره [Number] در تاريخ [Date] ثبت شد.
+مبلغ خالص رسيد: [TotalNetPrice]
+[CompanyName]",True,Inventory.InventoryOperations.InventoryReceipt,1,1,1,2018-03-31 08:57:22,1,2018-03-31 08:57:22
+5,22081C1C-45F8-4C7B-A323-8256BF41088A,True,1,حقوق ماهانه,"[PersonnelTitle] گرامي
+مبلغ خالص دريافتي جنابعالي در ماه [Month] سال [Year] برابر با [NetPay] مي باشد.
+",True,Payroll.PayrollOperation.MonthlyCalculationCrossDataset,1,1,1,2018-03-31 08:57:22,1,2018-03-31 08:57:22
+6,F0CF926A-2B02-45AD-86C9-0975C0F9DAE2,True,1,تاريخ اعتبار پيش فاكتور (دو روز مانده به اتمام تاريخ),"[CustomerNames] گرامي زمان باقيمانده از اعتبار پيش فاكتور شماره [Number] شما دو روز مي باشد.
+[CompanyName]",True,Sales.InvoiceManagement.Quotation,1,1,1,2018-03-31 08:57:22,1,2018-03-31 08:57:22
+7,3405450F-F583-4B49-AFC4-D828DE83478B,True,1,سر رسيد چك دريافتي (دو روز قبل از سر رسيد),[DLNames] گرامي تاريخ سر رسيد چك شما [Date] است، مبلغ چك: [Amount]، با تشكر [CompanyName],True,ReceiptAndPayment.PaymentManagement.ReceiptChequeMessageParameterInfo,1,1,1,2018-03-31 08:57:23,1,2018-03-31 08:57:23
+8,6D03473C-24BC-426D-B516-A3CBB27558DD,True,1,ثبت فاكتور برگشتي,"[CustomerNames] گرامي
+فاكتور شماره [Number] شما به مبلغ خالص: [NetPrice] برگشت شد.
+[CompanyName]",True,Sales.InvoiceManagement.ReturnedInvoice,1,1,1,2018-03-31 08:57:23,1,2018-03-31 08:57:23
+9,33024AF6-67DB-45FA-BEEA-1A3360BB345A,True,2,ثبت فاكتور فروش,"[CustomerNames] گرامي
+خريد شما به مبلغ  [NetPrice] در تاريخ [Date] انجام شد.
+[CompanyName]",True,Sales.InvoiceManagement.Invoice,1,1,1,2018-03-31 08:57:23,1,2018-03-31 08:57:23
+10,691635FA-D178-43DF-ADAE-1152AB933335,True,4,ثبت سفارش توليد,"
+      سفارش با شماره [Number] براي محصول [ProductTitle] به مقدار [Quantity] تكميل و توليد شد.
+      درصد مواد مصرفي :  [BOMPercent]
+      ميزان سربار برآوردي : [EstimatedOverheadCost]
+      ميزان دستمزد برآوردي : [EstimatedLabourCost]
+    ",True,WorkOrder.WorkOrderOperations.ProductOrder,1,1,1,2018-03-31 08:57:23,1,2018-03-31 08:57:23
+11,F49EF423-8810-44F6-A7F8-BC9244AA5F45,True,1,ثبت صورت وضعيت,"
+      [ContractorFullName] گرامي،
+
+      صورت وضعيت شماره [Number]
+      براي قرارداد [ContractTitle]
+      به شماره[ContractNumber]
+      با مبلغ [ContractFinalCost]
+
+      ارسال/تاييد شد.
+    ",True,Contract.ContractOperation.Status,1,1,1,2019-04-30 03:18:04,1,2019-04-30 03:18:04

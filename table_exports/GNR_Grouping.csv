@@ -1,0 +1,38 @@
+﻿GroupingID,EntityType,Code,Title,Title_En,Version,Creator,CreationDate,LastModifier,LastModificationDate,CalculationFormulaRef,ParentGroupRef,MaximumCredit,HasCredit,CreditCheckingType,FullCode,MaximumQuantityCredit,HasQuantityCredit,QuantityCreditCheckingType
+1,SG.General.PartyManagement.Common.PartyCustomerGroup,1,مشتريان ممتاز,مشتريان ممتاز,1,1,2018-05-08 14:00:01,1,2018-05-08 14:00:01,,,,False,3,1,,False,3
+2,SG.General.PartyManagement.Common.PartyCustomerGroup,2,مشتريان متوسط,مشتريان متوسط,1,1,2018-05-08 14:00:08,1,2018-05-08 14:00:08,,,,False,3,2,,False,3
+3,SG.General.PartyManagement.Common.PartyCustomerGroup,3,مشتريان ضعيف,مشتريان ضعيف,1,1,2018-05-08 14:00:16,1,2018-05-08 14:00:16,,,,False,3,3,,False,3
+7,SG.Inventory.ItemManagement.Common.ItemCodingGroup,4,دارايي هاي ثابت,دارايي هاي ثابت,1,1,2018-08-06 01:08:17,1,2018-08-06 01:08:17,,,,False,3,4,,False,3
+8,SG.Inventory.ItemManagement.Common.ItemCodingGroup,9,خدمات,خدمات,1,1,2018-08-06 01:08:27,1,2018-08-06 01:08:27,,,,False,3,9,,False,3
+9,SG.Inventory.ItemManagement.Common.ItemCodingGroup,1,خريد خدمات,خريد خدمات,4,1,2018-08-06 01:08:57,1,2021-01-19 16:13:15,,8,,False,3,91,,False,3
+10,SG.Inventory.ItemManagement.Common.ItemCodingGroup,2,فروش خدمات,فروش خدمات,2,1,2018-08-06 01:09:06,1,2021-01-19 16:13:24,,8,,False,3,92,,False,3
+61,SG.General.PartyManagement.Common.PartyVendorGroup,1,تامين كنندگان مواد اوليه,تامين كنندگان مواد اوليه,1,1,2021-01-19 16:15:25,1,2021-01-19 16:15:25,,,,False,3,1,,False,3
+62,SG.General.PartyManagement.Common.PartyVendorGroup,2,تامين كنندگان مواد بسته بندي,تامين كنندگان مواد بسته بندي,1,1,2021-01-19 16:15:33,1,2021-01-19 16:15:33,,,,False,3,2,,False,3
+63,SG.General.PartyManagement.Common.PartyVendorGroup,3,تامين كنندگان خدمات,تامين كنندگان خدمات,1,1,2021-01-19 16:15:41,1,2021-01-19 16:15:41,,,,False,3,3,,False,3
+67,SG.Inventory.ItemManagement.Common.ItemCodingGroup,1,موجودي مواد و كالا,موجودي مواد و كالا,1,1,2024-03-04 10:24:15,1,2024-03-04 10:24:15,,,,False,3,1,,False,3
+68,SG.Inventory.ItemManagement.Common.ItemCodingGroup,2,مواد اوليه,مواد اوليه,1,1,2025-09-21 15:06:45,1,2025-09-21 15:06:45,,,,False,3,2,,False,3
+69,SG.Inventory.ItemManagement.Common.ItemCodingGroup,1, روغن و سس ها, روغن و سس ها,1,1,2025-09-21 15:07:42,1,2025-09-21 15:07:42,,68,,False,3,21,,False,3
+70,SG.Inventory.ItemManagement.Common.ItemCodingGroup,2,ادويجات,ادويجات,1,1,2025-09-21 15:07:52,1,2025-09-21 15:07:52,,68,,False,3,22,,False,3
+72,SG.Inventory.ItemManagement.Common.ItemCodingGroup,3,پروتئين ها,پروتئين ها,1,1,2025-09-21 16:35:22,1,2025-09-21 16:35:22,,68,,False,3,23,,False,3
+73,SG.Inventory.ItemManagement.Common.ItemCodingGroup,4,سبزيجات,سبزيجات,1,1,2025-09-21 16:35:30,1,2025-09-21 16:35:30,,68,,False,3,24,,False,3
+74,SG.Inventory.ItemManagement.Common.ItemCodingGroup,5,شوينده و ظروف,شوينده و ظروف,1,1,2025-09-21 16:35:39,1,2025-09-21 16:35:39,,68,,False,3,25,,False,3
+75,SG.Inventory.ItemManagement.Common.ItemCodingGroup,6,لبينات و ترشيجات,لبينات و ترشيجات,1,1,2025-09-21 16:35:56,1,2025-09-21 16:35:56,,68,,False,3,26,,False,3
+76,SG.Inventory.ItemManagement.Common.ItemCodingGroup,7,نان ها,نان ها,1,1,2025-09-21 16:36:02,1,2025-09-21 16:36:02,,68,,False,3,27,,False,3
+77,SG.Inventory.ItemManagement.Common.ItemCodingGroup,8,نوشيدني,نوشيدني,1,1,2025-09-21 16:36:10,1,2025-09-21 16:36:10,,68,,False,3,28,,False,3
+80,SG.Inventory.ItemManagement.Common.ItemCodingGroup,1,محصولات ,محصولات ,2,1,2025-09-21 17:10:19,1,2025-09-21 17:10:22,,67,,False,3,11,,False,3
+94,SG.Inventory.ItemManagement.Common.ItemCodingGroup,3,در جريان ساخت,در جريان ساخت,1,1,2026-02-23 13:03:33,1,2026-02-23 13:03:33,,,,False,3,3,,False,3
+95,SG.Inventory.ItemManagement.Common.ItemCodingGroup,1,لوازم و تجهيزات,لوازم و تجهيزات,2,1,2026-03-25 17:53:58,1,2026-03-25 17:56:32,,7,,False,3,41,,False,3
+96,SG.Inventory.ItemManagement.Common.ItemCodingGroup,2,اثاثه,اثاثه,1,1,2026-03-25 17:54:13,1,2026-03-25 17:54:13,,7,,False,3,42,,False,3
+98,SG.Inventory.ItemManagement.Common.ItemCodingGroup,3,ماشين الات و دستگاه ها,ماشين الات و دستگاه ها,1,1,2026-03-25 17:57:06,1,2026-03-25 17:57:06,,7,,False,3,43,,False,3
+99,SG.Inventory.ItemManagement.Common.ItemCodingGroup,4,وسائط نقليه,وسائط نقليه,1,1,2026-03-25 17:57:31,1,2026-03-25 17:57:31,,7,,False,3,44,,False,3
+100,SG.Inventory.ItemManagement.Common.ItemCodingGroup,5,ساختمان و تاسيسات,ساختمان و تاسيسات,1,1,2026-03-25 17:57:51,1,2026-03-25 17:57:51,,7,,False,3,45,,False,3
+101,SG.Inventory.ItemManagement.Common.ItemCodingGroup,6,دارايي نامشهود,دارايي نامشهود,1,1,2026-03-25 17:58:05,1,2026-03-25 17:58:05,,7,,False,3,46,,False,3
+102,SG.Inventory.ItemManagement.Common.ItemCodingGroup,7,ابزار الات,ابزار الات,1,1,2026-03-25 17:58:24,1,2026-03-25 17:58:24,,7,,False,3,47,,False,3
+103,SG.Inventory.ItemManagement.Common.ItemCodingGroup,8,تجهيزات وارداتي,تجهيزات وارداتي,1,1,2026-03-25 17:58:53,1,2026-03-25 17:58:53,,7,,False,3,48,,False,3
+104,SG.Inventory.ItemManagement.Common.ItemCodingGroup,9,دارايي در جريان ساخت,دارايي در جريان ساخت,1,1,2026-03-25 17:59:30,1,2026-03-25 17:59:30,,7,,False,3,49,,False,3
+107,SG.Inventory.ItemManagement.Common.ItemCodingGroup,9,فانتزي,فانتزي,1,10,2026-05-26 18:05:09,10,2026-05-26 18:05:09,,68,,False,3,29,,False,3
+108,SG.Inventory.ItemManagement.Common.ItemCodingGroup,2,محصول فانتزي,محصول فانتزي,1,10,2026-05-26 18:06:31,10,2026-05-26 18:06:31,,67,,False,3,22,,False,3
+111,SG.Inventory.ItemManagement.Common.ItemCodingGroup,5,درجريان ساخت فانتزي,درجريان ساخت فانتزي,1,10,2026-05-26 18:09:09,10,2026-05-26 18:09:09,,,,False,3,5,,False,3
+118,SG.General.PartyManagement.Common.PartyVendorGroup,4,تامين كنندگان فانتزي,تامين كنندگان فانتزي,1,10,2026-05-31 13:09:20,10,2026-05-31 13:09:20,,,,False,3,4,,False,3
+122,SG.General.PartyManagement.Common.PartyCustomerGroup,4,مشاريان فانتزي,مشاريان فانتزي,1,10,2026-05-31 13:11:04,10,2026-05-31 13:11:04,,,,False,3,4,,False,3
+124,SG.General.PartyManagement.Common.PartyVendorGroup,5,ساير تامين كنندگان,ساير تامين كنندگان,1,10,2026-06-14 12:53:11,10,2026-06-14 12:53:11,,,,False,3,5,,False,3

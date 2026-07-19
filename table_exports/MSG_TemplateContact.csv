@@ -1,0 +1,12 @@
+﻿TemplateContactID,TemplateRef,Phone,ContactPhoneRef,ContactType,ParameterName
+1,1,,,0,CreatorContact
+2,2,,,0,PartyContact
+3,3,,,0,ReceiverContact
+4,4,,,0,DelivererContact
+5,5,,,0,PersonnelContact
+6,6,,,0,CustomerPartyContact
+7,7,,,0,DLContact
+8,8,,,0,CustomerContact
+9,9,,,0,CustomerContact
+10,10,,,0,CustomerContact
+11,11,,,0,DLContact

@@ -1,0 +1,2 @@
+﻿ShredInfoID,ShredRef,ShredLength,ShredCount,InterestType,InterestRate,PenaltyRate,RoundDigCount,StartDate,TransferType,InterestAmount,ShredAmount,FinishDate,Length
+8,3,30,12,2,23.0000,0.0000,5,2026-04-03 00:00:00,2,3737500000.0000,,2027-03-05 00:00:00,12

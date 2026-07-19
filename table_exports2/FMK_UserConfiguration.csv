@@ -1,0 +1,17 @@
+﻿UserConfigurationID,Key,UserRef,Value,Version
+1,ApplicationTheme                                  ,1,1,2
+2,SecondLanguageIsReportLanguage                    ,1,False,1
+3,DefaultAction                                     ,1,,2
+4,DesktopKeys                                       ,1,,1
+5,DesktopKeys                                       ,7,,1
+6,DesktopKeys                                       ,9,,1
+7,DesktopKeys                                       ,10,,1
+8,DesktopKeys                                       ,11,,1
+9,ApplicationTheme                                  ,10,3,8
+10,SecondLanguageIsReportLanguage                    ,10,False,1
+11,ApplicationTheme                                  ,12,1,1
+12,SecondLanguageIsReportLanguage                    ,12,False,1
+13,DesktopKeys                                       ,12,,1
+14,DesktopKeys                                       ,13,,1
+15,DesktopKeys                                       ,16,,1
+16,DefaultAction                                     ,10,,1

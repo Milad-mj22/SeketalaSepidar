@@ -1,0 +1,1 @@
+﻿PartySettlementID,Number,Date,State,PartyRef,CurrencyRef,Rate,SettlementByRemainingAmount,SettlementByRemainingAmountInBaseCurrency,SettlementByRemainingRate,ReceiptHeaderRef,PaymentHeaderRef,SettlementType,Description,FiscalYearRef,VoucherRef,CreatorForm,Creator,CreationDate,LastModifier,LastModificationDate,Version

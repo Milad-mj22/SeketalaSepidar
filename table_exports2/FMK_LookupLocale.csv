@@ -1,0 +1,3585 @@
+﻿LookupRef,LocaleName,Title
+40125,ar,تقرير توازن عمودين
+40125,en,BalanceSheet Report Two Columnar
+40125,ku,راپۆرتي ترازي دوو ئەستووني
+40126,ar,تقرير ميزان أربعة أعمدة
+40126,en,BalanceSheet Report Four Columnar
+40126,ku,راپۆرتي ترازي چوار ئەستووني
+40127,ar,تقرير توازن ستة أعمدة
+40127,en,BalanceSheet Report Six Columnar
+40127,ku,راپۆرتي ترازي شەش ئەستووني
+40128,ar,تقرير توازن ثمانية أعمدة
+40128,en,BalanceSheet Report Eight Columnar
+40128,ku,راپۆرتي ترازي هەشت ئەستووني
+40129,en,   
+40130,ar,مجموعة
+40130,en,CL
+40130,ku,گرووپ
+40131,ar,المجموع
+40131,en,GL
+40131,ku,سەرجەم
+40132,ar,المحدّد
+40132,en,SL
+40132,ku,ياريدەر
+40133,ar,المدين
+40133,en,Debit Balance
+40133,ku,قەرزدار
+40134,ar,الدائن
+40134,en,Credit Balance
+40134,ku,خاوەن قەرز
+40135,ar,ليس الهام
+40135,en,Don't Care
+40135,ku,گرنگ نييە
+40136,ar,لا
+40136,en,None
+40136,ku,نييەتي
+40137,ar,العملية
+40137,en,Operational
+40137,ku,كردەيي
+40138,ar,استثمار
+40138,en,Investment
+40138,ku,سەرمايە دانان
+40139,ar,التمويل و تزويد مالي
+40139,en,Financing
+40139,ku,دابينكاريي ماڵيي
+40140,en,
+40141,ar,الآخر
+40141,en,Other
+40141,ku,ديكە
+40142,ar,الطرف الآخر
+40142,en,Party
+40142,ku,لايه‌ن مامه‌ڵه‌
+40143,ar,مركز التكلفة
+40143,en,Cost Center
+40143,ku,ناوەندي خەرج
+40144,ar,الحساب المصرفي
+40144,en,Bank Account
+40144,ku,ژمێرەي بانكي
+40145,ar,صندوق
+40145,en,Cash
+40145,ku,بوخچە
+40146,ar,جهاز قارئ بطاقة
+40146,en,POS
+40146,ku,ئامێري كارت‌ناس
+40147,ar,العقد
+40147,en,Contract
+40147,ku,گرێبەست
+40148,en,Purchase Order
+40149,ar,ممتلكات غير المتداولة
+40149,en,Non-current assets
+40149,ku,سامانه‌ نه‌گه‌ڕه‌كان
+40150,ar,الممتلكات المتداولة
+40150,en,Current assets
+40150,ku,سامانه‌ له‌گه‌ڕه‌كان
+40151,ar,أجور و أرباح المساهمين
+40151,en,Equity
+40151,ku,خاوەن سەرمايە
+40152,ar,ديون غير المتداولة
+40152,en,Non-current debts
+40152,ku,قه‌رزه‌ نه‌گه‌ڕه‌كان
+40153,ar,ديون المتداولة
+40153,en,Current debts
+40153,ku,قه‌رزه‌ له‌ گه‌ڕه‌كان
+40154,ar,الربح والخسارة - صافي المبيعات
+40154,en,Profit (loss) - net sales
+40154,ku,سوود و زيان -  پۆختەي فرۆش
+40155,ar,الربح والخسارة - سعر التكلفة
+40155,en,Profit (loss) - Cost
+40155,ku,سوود و زيان -  نرخي كۆتايي
+40156,ar,الربح والخسارة -  الربح الناتج من الاستثمارات التشغيلية
+40156,en,Profit (loss) - Profit arising from operational investments
+40156,ku,سوود و زيان -  سوودي سەرمايەگوزارييە كردەوەييەكان
+40157,ar,الربح والخسارة -  الإيرادات والمصروفات التشغيلية الأخرى والمبيعات والإدارة العامة
+40157,en,"Profit (loss) - Other operating, sales, and administrative incomes and costs"
+40157,ku,سوود و زيان -  داهات و خەرجەكاني تري كردەوەيي، فرۆش، كارگێريي گشتي
+40158,ar,الربح والخسارة -  الإيرادات والمصروفات غير التشغيلية والمالية الأخرى
+40158,en,Profit (loss) - Other non-operational and financial incomes and costs
+40158,ku,سوود و زيان -  داهات و خەرجە ناكردەوەييەكاني تر
+40159,ar,الربح والخسارة - الضريبية
+40159,en,Profit (loss) - Tax
+40159,ku,سوود و زيان -  باج
+40160,ar,الربح والخسارة - العمليات المتوقفة
+40160,en,Profit (loss) - Discontinued operations
+40160,ku,سوود و زيان -  كاره‌ ڕاگيراوەكان
+40161,ar,الميزانية العمومية
+40161,en,Balance Sheet
+40161,ku,ترازنامە
+40162,ar,الربح والخسارة
+40162,en,Profit Or Loss
+40162,ku,قازانج و زيان
+40163,en,Based on vouchers
+40164,en,Based on GL vouchers
+40165,ar,النسبة المئوية
+40165,en,Percent
+40165,ku,لەسەد
+40166,ar,نقود
+40166,en,Price
+40166,ku,پارە
+40167,en,Apiece
+40168,en,Item
+40169,en,Aggregate
+40170,en,Current
+40171,en,Unused
+40172,en,Sold
+40173,en,Salvaged
+40174,en,Deleted
+40175,en,Acquisition
+40176,en,Extend
+40177,en,IncreaseValue
+40178,en,Depreciated
+40179,en,Not depreciated
+40180,en,Domestic Purchase
+40181,en,Product
+40182,en,Other
+40183,en,Initial
+40184,en,Import Purchase
+40185,en,Domestic Purchase
+40186,en,Import Purchase
+40187,en,Acquisition Receipt
+40188,en,Initial
+40189,en,Transport
+40190,en,Elimination
+40191,en,Sale
+40192,en,Salvage
+40193,en,Unused
+40194,en,ReUsed
+40195,en,Change Depreciation Method
+40196,en,Repair
+40197,en,Depreciation Calculation
+40198,en,Aquisition
+40199,en,Repair
+40200,ar,النقد
+40200,en,Cash
+40200,ku,نەختي
+40201,ar,ائتمان
+40201,en,Credit
+40201,ku,قەڕز
+40202,ar,النقد/ائتمان
+40202,en,Cash/Credit
+40202,ku,نەختي⁄قەڕز
+40203,en,   
+40204,en,Area
+40205,en,Path
+40206,en,Daily
+40207,en,Weekly
+40208,en,Daily
+40209,en,Periodic
+40210,en,All products
+40211,en,Products in grid
+40212,en,None of products
+40213,en,All services
+40214,en,Services in grid
+40215,en,None of services
+40216,ar,1. فاتورة المبيعات
+40216,en,1.Sales Invoice
+40216,ku,1-پسولەي فرۆش
+40217,ar,2. العملي
+40217,en,2.Transport
+40217,ku,2-قازانج و سزاي قيست بەندي
+40218,ar,3.فاتورة الاسترداد
+40218,en,3.Sales Returned Invoice
+40218,ku,3-گەرانەوەي پسولە
+40219,ar,10. إعلان المدين الدائن
+40219,en,10.Debit Credit Note
+40219,ku,10-رێك كردني حيسابي لايان مامڵەي
+40220,ar,4.الاستلام
+40220,en,1.Inventory Receipt
+40220,ku,1-رەسيدي كۆگا
+40221,ar,3- عودة الايصال
+40221,en,3.Inventory Returned Receipt
+40221,ku,2-هەڵگەڕاوەي رەسيد
+40222,ar,4. الخصم النقدي للاستلام
+40222,en,4.Receipt
+40222,ku,4-وەرگرتن
+40223,ar,5. الدفع
+40223,en,5.Payment
+40223,ku,5-پێدان
+40224,ar,1. ايصال المستودع
+40224,en,4.Receipt Discount
+40224,ku,4-داشكاني نەختيي وەرگرتن
+40225,ar,6- الخصم النقدي للدفع
+40225,en,6.Payment Discount
+40225,ku,6-داشكاني نەختيي پێدان
+40226,ar,7.استرداد الشيك الدفعي
+40226,en,7.Payment Refund Cheque
+40226,ku,7-گەرانەوەي چەكي پێدراوە
+40227,ar,8. استرداد الشيك المتلقي
+40227,en,8.Receipt Refund Cheque
+40227,ku,8-گەرانەوەي چەكي وەرگيراو
+40228,ar,9.استرداد الشيك المستفاد
+40228,en,9.Return Spended Cheque
+40228,ku,9-گەڕانەوەي چەكي خەرج كراو
+40229,ar,10.فاتورة شراء الخدمات
+40229,en,10.Service Inventory Purchase Invoice
+40229,ku,10-پسولەي كڕيني خزمەتگوزارييەكان
+40230,ar,11. الفوائد و غرامات الانقسام
+40230,en,11.Shred Interest And Penaly
+40230,ku,11-قازانج و سزاي قيست بەندي
+40231,en,10.Asset Purchase Invoice
+40232,en,12.PurchaseInvoice
+40233,en,12.BillOfLoading
+40234,en,12.InsurancePolicy
+40235,en,12.CommercialOrder
+40236,en,12.CustomsClearance
+40237,ar,مبيعات
+40237,en,Sale
+40237,ku,فرۆش
+40238,ar,الشراء
+40238,en,Buy
+40238,ku,كڕين
+40239,en, 
+40240,ar,التلقي و الدفع
+40240,en,Receipt And Payment
+40240,ku,وەرگرتن و پێدان
+40241,ar,المستودع
+40241,en,Stocks
+40241,ku,كۆگا
+40242,ar,الزبائن و المبيعات
+40242,en,Customers And Sale
+40242,ku,كڕياران و فرۆش
+40243,ar,المزودين
+40243,en,Vendors
+40243,ku,دابينكاران
+40244,en,Fixed Asset
+40245,ar,المفتوح
+40245,en,Open
+40245,ku,كراوە
+40246,ar,مغلق
+40246,en,Close
+40246,ku,داخراو
+40247,ar,غير محدد
+40247,en,Undefined
+40247,ku,ناڕوون
+40248,ar,علي الحساب
+40248,en,On Account
+40248,ku,لەسەرژمێرە
+40249,ar,الاستلام مقدماً
+40249,en,Deposit
+40249,ku,پێشەكي
+40250,en,On Account Paymnet
+40251,en,PrePayment
+40252,ar,اجراء الالتزامات
+40252,en,CommitmentFulfillment
+40252,ku,جێبەجێ كردني بەڵێنەكان
+40253,ar,التلقي مسبقا
+40253,en,Deposit
+40253,ku,پێشەكي
+40254,en,Tender
+40255,en,BankGuarantee
+40256,en,ReceivedGuarantee
+40257,ar,مؤقت
+40257,en,Temporary
+40257,ku,كاتيي
+40258,ar,قبل النهائي
+40258,en,PreFinal
+40258,ku,پێش بڕاوە
+40259,ar,قاطع
+40259,en,Final
+40259,ku,بڕاوە
+40260,ar,عادي
+40260,en,Ordinary
+40260,ku,ئاسايي
+40261,en,Incremental Modified
+40262,en,Decremental Modified
+40263,ar,التعديلات
+40263,en,Rider
+40263,ku,پاشكۆ
+40264,ar,جدول الأعمال
+40264,en,Agenda
+40264,ku,دەستووري كار
+40265,ar,المحضر
+40265,en,Minute
+40265,ku,راپۆرتي كۆبوونەوە
+40266,en,Supplement
+40267,en,Contract
+40268,ar,متزايد بالمائة
+40268,en,Growth Percent
+40268,ku,زيادكردني لەسەديي
+40269,ar,تقليل بالمائة
+40269,en,Reduction Percent
+40269,ku,كەم كردنەوەي لەسەديي
+40270,ar,زيادة كمية
+40270,en,Growth Price
+40270,ku,زيادكردني بڕ
+40271,ar,تقليل كمية
+40271,en,Reduction Price
+40271,ku,كەم كردنەوەي بڕ
+40272,ar,المبلغ الثابت
+40272,en,Fixed Price
+40272,ku,بڕە پارەي نەگۆڕ
+40273,ar,يوم
+40273,en,Day
+40273,ku,رۆژ
+40274,ar,الشهر
+40274,en,Month
+40274,ku,مانگ
+40275,ar,عام
+40275,en,Year
+40275,ku,ساڵ
+40276,ar,متزايد
+40276,en,Additive
+40276,ku,زيادكەرەوە
+40277,ar,المنخفض
+40277,en,Reductive
+40277,ku,كەم كەرەوە
+40278,ar,نقد
+40278,en,In Cash
+40278,ku,نەختيي
+40279,ar,ائتمان
+40279,en,Credit
+40279,ku,قەرزي
+40280,ar,المواد الاستهلاكية
+40280,en,Consumable
+40280,ku,كەرستەي بەكارهێنان
+40281,ar,أجرة
+40281,en,Wage
+40281,ku,حەقدەست
+40282,ar,الزائد
+40282,en,Overload
+40282,ku,سەربار
+40283,ar,الآخر
+40283,en,Other
+40283,ku,ديكە
+40284,ar,المكتب المركزي
+40284,en,Main Office
+40284,ku,نووسينگەي ناوەندي
+40285,ar,ورشة
+40285,en,Workshop
+40285,ku,كارگەيي
+40286,en,Demand
+40287,ar,دين
+40287,en,Debt
+40287,ku,قەرزەكان
+40288,en,OwnershipStatus
+40289,en,Registered
+40290,en,Reduced
+40291,en,Extension
+40292,en,Reduce
+40293,en,Release
+40294,en,Field
+40295,en,Chapter
+40296,en,Class
+40297,en,Register
+40298,en,Decisive Confirmed
+40299,en,Revoked
+40300,en,AgreementItem
+40301,en,Contract
+40302,en,Contracting
+40303,en,Ownership
+40304,en,Paid
+40305,en,Received
+40306,en,Contracting
+40307,en,Ownership
+40308,ar,تعاقد
+40308,en,Contracting
+40309,ar,تعاقد الجزئي
+40309,en,Ownership
+40310,en,DeActive
+40311,en,Active
+40312,ar,النقد
+40312,en,Cash
+40312,ku,نەختي
+40313,ar,ائتمان
+40313,en,Credit
+40313,ku,قەڕز
+40314,ar,النقد/ائتمان
+40314,en,Cash/Credit
+40314,ku,نەختي⁄قەڕز
+40315,ar,10
+40315,en,10
+40315,ku,10
+40316,ar,25
+40316,en,25
+40316,ku,25
+40317,ar,50
+40317,en,50
+40317,ku,50
+40318,ar,100
+40318,en,100
+40318,ku,100
+40319,en,All
+40320,en,Compare - None
+40321,en,Compare - To Last Year
+40322,en,Compare - To Last Two Years
+40323,en,Compare - To Last Three Years
+40324,en,Period Type - Day
+40325,en,Period Type - Week
+40326,en,Period Type - Month
+40327,en,Period Type - Season
+40328,en,Period Type - Year
+40329,en,
+40330,ar,و
+40330,en,And
+40330,ku,و
+40331,ar,يا
+40331,en,Or
+40331,ku,يا
+40332,en,
+40333,en,Equal To
+40334,en,Not Equal To
+40335,en,Greater Than
+40336,en,Greater Than Or Equal To
+40337,en,Less Than
+40338,en,Less Than Or Equal To
+40339,en,Contains
+40340,en,Includes
+40341,en,Is Empty
+40342,en,Is Not Empty
+40343,en,Starts With
+40344,en,Ends With
+40345,en,Does Not Contain
+40346,en,Does Not Include
+40347,en,Yearly
+40348,en,Quarter
+40349,en,Monthly
+40350,en,Weekly
+40351,en,Daily
+40352,en,Increase
+40353,en,Decrease
+40354,en,Not Changed
+40355,ar,1: الممتلكات و لأموال النقدية للمصرف
+40355,en,1: Bank Balanace
+40355,ku,1: هەبووي بانك
+40356,ar,2: أموال
+40356,en,2: Cash Balance
+40356,ku,هەبووي بوخچە:2
+40357,ar,3: قارئ بطاقة المخزون
+40357,en,3: Pos Balance
+40357,ku,هەبووي ئامێري كارت‌ناس:3
+40358,ar,4: Petty cash Balance
+40358,en,4: Petty cash Balance
+40358,ku,4: Petty cash Balance
+40359,ar,5: التعهدات المستحقة
+40359,en,5: Recievable
+40359,ku,بەڵێنەكان بۆ وەرگرتن:5
+40360,ar,6: الالتزامات المستحقة
+40360,en,6: Payable
+40360,ku,بەڵێنەكان بۆ پێدان:6
+40361,en,
+40362,en,Q1
+40363,en,Q2
+40364,en,Q3
+40365,en,Q4
+40366,ar,الرمز
+40366,en,Code
+40366,ku,كۆد
+40367,ar,الباركود
+40367,en,BarCode
+40367,ku,باركۆد
+40368,ar,ابتداي استخدام
+40368,en,Since Employment
+40368,ku,سەرەتاي دامەزراندن
+40369,ar,نقل السنة المالية
+40369,en,Fiscalyear Transfer
+40369,ku,گواستنەوەي ساڵي ماڵيي
+40370,ar,التوظيف
+40370,en,Employment
+40370,ku,دامەزراندن
+40371,ar,تعديل العقد
+40371,en,Modification
+40371,ku,چاكسازي گرێبەستەكە
+40372,ar,آخر
+40372,en,Other
+40372,ku,ديكە
+40373,ar,التعاقدي
+40373,en,Peymani
+40373,ku,بە گرێبەست
+40374,ar,الرسمي
+40374,en,Official
+40374,ku,رەسمي
+40375,ar,رسمي آزمايشي
+40375,en,Tentative Official
+40375,ku,رەسمي تێستيي
+40376,ar,قراردادي
+40376,en,By Contract
+40376,ku,بە گرێبەست
+40377,ar,روزمزد
+40377,en,Daily Pay
+40377,ku,رۆژمزد
+40378,ar,خدمة النظام
+40378,en,Service Pay
+40378,ku,كڕيني خزمەت
+40379,ar,المأمور
+40379,en,Assignee
+40379,ku,فەرمانبەر
+40380,ar,ساعة
+40380,en,Hourly Pay
+40380,ku,كاتژمێريي
+40381,ar,الرسمي الموسمي
+40381,en,Season Official
+40381,ku,رسمي فصلي
+40382,ar,أجرة
+40382,en,Wager Pay
+40382,ku,حەقدەستيي
+40383,ar,ذو صلة بالشركات
+40383,en,Company
+40384,en,
+40385,ar,فرزند سوم
+40385,en,Third Child
+40385,ku,فرزند سوم
+40386,ar,فرزند چهارم
+40386,en,Forth Child
+40386,ku,فرزند چهارم
+40387,ar,فرزند پنجم
+40387,en,Fifth Child
+40387,ku,فرزند پنجم
+40388,ar,الإنتاج
+40388,en,Production
+40388,ku,وەبەرهێنان
+40389,ar,إداري
+40389,en,Ministerial and Institutional
+40389,ku,ئيداري و رێكخراوەيي
+40390,ar,الخدمة و العامة
+40390,en,Service and Public
+40390,ku,خزمەتگوزاريي و گشتيي
+40391,ar,المزود
+40391,en,Buy
+40391,ku,دابينكار
+40392,ar,الآخر
+40392,en,Other
+40392,ku,ديكە
+40393,ar,زبون
+40393,en,Sales
+40393,ku,كڕيار
+40394,en,Broker
+40395,en,PettyCash
+40396,en,Distribution Mobile
+40397,en,CRM Server
+40398,en,ECommerce Server
+40399,en,Item
+40400,en,Product Pack
+40401,en,Aggregate Items In Invoice
+40402,ar,النسبة المئوية
+40402,en,Percent
+40402,ku,لەسەد
+40403,ar,نقود
+40403,en,Price
+40403,ku,پارە
+40404,en,AnotherItem
+40405,ar,المنتج المعبأ
+40405,en,ProductPack
+40405,ku,بەستەي بەرھەمەكان
+40406,en,SameItem
+40407,en,FromItemGroup
+40408,ar,السعر
+40408,en,Price
+40408,ku,يەكەي
+40409,ar,عدد / مبلغ
+40409,en,Quantity
+40409,ku,دەستە/ رادە
+40410,ar,خطي
+40410,en,Linear
+40410,ku,خەتي
+40411,ar,خطوة خطوة
+40411,en,Stepped
+40411,ku,پليكاني
+40412,en,
+40413,en,Registered
+40414,en,Dismissed
+40415,en,Ready To Distribute
+40416,en,Distributing
+40417,en,Distributed
+40418,en,Register Distribution
+40419,en,Ready To Distribute
+40420,en,Return From Ready To Distribute
+40421,en,Send To Device
+40422,en,Delete From Device
+40423,en,Finish In Device
+40424,en,Unlock Distribution
+40425,en,Dismiss
+40426,en,Revoke Dismiss
+40427,en,Revoke Dismiss
+40428,en,
+40429,en,Delivered
+40430,en,Not Delivered
+40431,en,
+40432,en,Received
+40433,en,Not Received
+40434,en,
+40435,en,Registered
+40436,en,Dismissed
+40437,en,Ready To Collect
+40438,en,Collecting
+40439,en,Collected
+40440,en,Register Debt Collection List
+40441,en,Ready To Collect
+40442,en,Return From Ready To Collect
+40443,en,Send To Device
+40444,en,Delete From Device
+40445,en,Finish In Device
+40446,en,Unlock Debt Collection List
+40447,en,Dismiss
+40448,en,Revoke Dismiss
+40449,en,Revoke Dismiss
+40450,en,
+40451,en,Registered
+40452,en,Dismissed
+40453,en,Ready To Distribute
+40454,en,Distributing
+40455,en,Distributed
+40456,en,
+40457,en,Invoice
+40458,en,RetuenedInvoice
+40459,en,Register Distribution
+40460,en,Issue Inventory Delivery
+40461,en,Delete Inventory Delivery
+40462,en,Send To Device
+40463,en,Delete From Device
+40464,en,Finish In Device
+40465,en,Unlock Distribution
+40466,en,Dismiss
+40467,en,Revoke Dismiss
+40468,en,Revoke Dismiss
+40469,ar,أعلى إلى أسفل
+40469,en,Top To Buttom
+40469,ku,سەرەوە بۆ خوار
+40470,ar,من اليمين إلى اليسار
+40470,en,Left To Right
+40470,ku,راست بۆ چەپ
+40471,en,NoMethod
+40472,en,StraightLine
+40473,en,Descending
+40474,ar, التحذير في حالة ازدياد البقية من ائتمان الحساب
+40474,en,Warning
+40475,ar,منع العملية  في حالة ازدياد البقية من ائتمان الحساب
+40475,en,Deny
+40476,ar,لا شيء
+40476,en,None
+40477,ar,مبيعات
+40477,en,Sale
+40477,ku,فرۆش
+40478,ar,الاستهلاك
+40478,en,Consume
+40478,ku,بەكارهێنان
+40479,ar,الآخر
+40479,en,Other
+40479,ku,ديكە
+40480,ar,التحويل بين مستودعات
+40480,en,Inventory Transfer
+40480,ku,گواستنەوەي نێوان كۆگا
+40481,ar,الشراء
+40481,en,Purchase
+40481,ku,كڕين
+40482,ar,الإنتاج
+40482,en,Production
+40482,ku,وەبەرهێنان
+40483,ar,الآخر
+40483,en,Other
+40483,ku,ديكە
+40484,ar,بداية الفترة
+40484,en,Opening
+40484,ku,سەرەتاي خولەكە
+40485,ar,التحويل بين مستودعات
+40485,en,Inventory Transfer
+40485,ku,گواستنەوەي نێوان كۆگا
+40486,ar,ايصال
+40486,en,Receipt
+40486,ku,رەسيد
+40487,ar,عودة الايصال
+40487,en,Receipt Return
+40487,ku,گەڕانەوەي رەسيد
+40488,ar,خروج
+40488,en,Delivery
+40488,ku,دەرچوون
+40489,ar,إعادة الخروج 
+40489,en,Delivery Return
+40489,ku,گەڕانەوەي دەرچوون
+40490,ar,فاتورة خدمات ترتيب
+40490,en,Service Inventory Purchase Invoice
+40490,ku,پسولەي كڕيني خزمەتگوزارييەكان
+40491,ar,الشراء (الداخلية)
+40491,en,Purchase (Domestic)
+40491,ku,كڕين( ناوخۆ)
+40492,ar,الشراء (المستوردة)
+40492,en,Purchase (Import)
+40492,ku,كڕيني (ده‌ره‌كي)
+40493,ar,المستودع
+40493,en,Inventory
+40493,ku,كۆگا
+40494,ar,العقد
+40494,en,Contract
+40494,ku,گرێبەست
+40495,ar,رصيد المخزون
+40495,en,Balancing
+40495,ku,پشكنيني كۆگا
+40496,ar,الإنتاج
+40496,en,Work Order
+40496,ku,وەبەرهێنان
+40497,ar,ItemRequest
+40497,en,ItemRequest
+40497,ku,ItemRequest
+40498,ar,دون العلامة
+40498,en,UnTagged
+40498,ku,بێ تەگ
+40499,ar,لها العلامة
+40499,en,Tagged
+40499,ku,خاوەني تەگ
+40500,ar,موافق العدد
+40500,en,Accepted Counting
+40500,ku,ئەرێ كردني ژماردن
+40501,ar,تسجيل الوثالئق الاقتطاعية /إضافية
+40501,en,Difference Documents Issued
+40501,ku,تۆماري بەڵگەنامە كەميەكان/ زيادە
+40502,ar,تسجيل وثائق المحاسبة تتعارض
+40502,en,Difference Voucher Issued
+40502,ku,تۆماري بەڵگەنامە ژمێريارييەكاني جياوازيي
+40503,ar,عادي
+40503,en,Normal
+40503,ku,ئاسايي
+40504,ar,الخدمات
+40504,en,Service
+40504,ku,خزمەتگوزارييەكان
+40505,en,Asset purchase
+40506,en,
+40507,ar,OtherUnallocatedCostsOfThePreviousFiscalyear
+40507,en,OtherUnallocatedCostsOfThePreviousFiscalyear
+40507,ku,OtherUnallocatedCostsOfThePreviousFiscalyear
+40508,ar,OtherCosts
+40508,en,OtherCosts
+40508,ku,OtherCosts
+40509,ar,مقداري
+40509,en,Unit
+40509,ku,مقداري
+40510,ar,مبلغي
+40510,en,Price
+40510,ku,مبلغي
+40511,ar,به نسبت مساوي
+40511,en,Equal
+40511,ku,به نسبت مساوي
+40512,ar,دستي
+40512,en,Custom
+40512,ku,دستي
+40513,ar,br110
+40513,en,br110
+40513,ku,br110
+40514,ar,br300
+40514,en,br300
+40514,ku,br300
+40515,ar,br600
+40515,en,br600
+40515,ku,br600
+40516,ar,br1200
+40516,en,br1200
+40516,ku,br1200
+40517,ar,br2400
+40517,en,br2400
+40517,ku,br2400
+40518,ar,br4800
+40518,en,br4800
+40518,ku,br4800
+40519,ar,br9600
+40519,en,br9600
+40519,ku,br9600
+40520,ar,br14400
+40520,en,br14400
+40520,ku,br14400
+40521,ar,br19200
+40521,en,br19200
+40521,ku,br19200
+40522,ar,br38400
+40522,en,br38400
+40522,ku,br38400
+40523,ar,br56000
+40523,en,br56000
+40523,ku,br56000
+40524,ar,br57600
+40524,en,br57600
+40524,ku,br57600
+40525,ar,br115200
+40525,en,br115200
+40525,ku,br115200
+40526,ar,br128000
+40526,en,br128000
+40526,ku,br128000
+40527,ar,br256000
+40527,en,br256000
+40527,ku,br256000
+40528,ar,brCustom
+40528,en,brCustom
+40528,ku,brCustom
+40529,ar,db4
+40529,en,db4
+40529,ku,db4
+40530,ar,db5
+40530,en,db5
+40530,ku,db5
+40531,ar,db6
+40531,en,db6
+40531,ku,db6
+40532,ar,db7
+40532,en,db7
+40532,ku,db7
+40533,ar,db8
+40533,en,db8
+40533,ku,db8
+40534,ar,ABKOOHM
+40534,en,ABKOOHM
+40534,ku,ABKOOHM
+40535,ar,ABKOOHCH
+40535,en,ABKOOHCH
+40535,ku,ABKOOHCH
+40536,ar,OmegaDWI3002
+40536,en,OmegaDWI3002
+40536,ku,OmegaDWI3002
+40537,ar,Schenck
+40537,en,Schenck
+40537,ku,Schenck
+40538,ar,MolenLD5218
+40538,en,MolenLD5218
+40538,ku,MolenLD5218
+40539,ar,SchenckDisomatB
+40539,en,SchenckDisomatB
+40539,ku,SchenckDisomatB
+40540,ar,PreciaMolen
+40540,en,PreciaMolen
+40540,ku,PreciaMolen
+40541,ar,TozinElectric
+40541,en,TozinElectric
+40541,ku,TozinElectric
+40542,ar,SchenckDTA
+40542,en,SchenckDTA
+40542,ku,SchenckDTA
+40543,ar,Leon
+40543,en,Leon
+40543,ku,Leon
+40544,ar,SchenckDT
+40544,en,SchenckDT
+40544,ku,SchenckDT
+40545,ar,Delta07
+40545,en,Delta07
+40545,ku,Delta07
+40546,ar,ParsMavazin
+40546,en,ParsMavazin
+40546,ku,ParsMavazin
+40547,ar,TozinElectricTEC1500A
+40547,en,TozinElectricTEC1500A
+40547,ku,TozinElectricTEC1500A
+40548,ar,CASCI1560A
+40548,en,CASCI1560A
+40548,ku,CASCI1560A
+40549,ar,Alpha08Device
+40549,en,Alpha08Device
+40549,ku,Alpha08Device
+40550,ar,ToledoDevice
+40550,en,ToledoDevice
+40550,ku,ToledoDevice
+40551,ar,Alpha05Device
+40551,en,Alpha05Device
+40551,ku,Alpha05Device
+40552,ar,Gamma07Device
+40552,en,Gamma07Device
+40552,ku,Gamma07Device
+40553,ar,TozinTSM8500Device
+40553,en,TozinTSM8500Device
+40553,ku,TozinTSM8500Device
+40554,ar,PandPU800Device
+40554,en,PandPU800Device
+40554,ku,PandPU800Device
+40555,ar,OmegaDWI3002Ver2
+40555,en,OmegaDWI3002Ver2
+40555,ku,OmegaDWI3002Ver2
+40556,ar,Cardinal748
+40556,en,Cardinal748
+40556,ku,Cardinal748
+40557,ar,DeghatA
+40557,en,DeghatA
+40557,ku,DeghatA
+40558,ar,BilanciaiD410Device
+40558,en,BilanciaiD410Device
+40558,ku,BilanciaiD410Device
+40559,ar,TozinTec800
+40559,en,TozinTec800
+40559,ku,TozinTec800
+40560,ar,DeghatDA
+40560,en,DeghatDA
+40560,ku,DeghatDA
+40561,ar,Gamma07Version2Device
+40561,en,Gamma07Version2Device
+40561,ku,Gamma07Version2Device
+40562,ar,FarasooDeghatDevice
+40562,en,FarasooDeghatDevice
+40562,ku,FarasooDeghatDevice
+40563,ar,Toledo8530Device
+40563,en,Toledo8530Device
+40563,ku,Toledo8530Device
+40564,ar,Tesla8000Device
+40564,en,Tesla8000Device
+40564,ku,Tesla8000Device
+40565,ar,Dg18000Device
+40565,en,Dg18000Device
+40565,ku,Dg18000Device
+40566,ar,Cardinal748Ver2
+40566,en,Cardinal748Ver2
+40566,ku,Cardinal748Ver2
+40567,ar,TChenaran01Device
+40567,en,TChenaran01Device
+40567,ku,TChenaran01Device
+40568,ar,TTorbatSugerLostDevice
+40568,en,TTorbatSugerLostDevice
+40568,ku,TTorbatSugerLostDevice
+40569,ar,TTorbatSugerFinenessDevice
+40569,en,TTorbatSugerFinenessDevice
+40569,ku,TTorbatSugerFinenessDevice
+40570,ar,TAbkoohSugerLostDevice
+40570,en,TAbkoohSugerLostDevice
+40570,ku,TAbkoohSugerLostDevice
+40571,ar,ChenaranSugerFinenessDevice
+40571,en,ChenaranSugerFinenessDevice
+40571,ku,ChenaranSugerFinenessDevice
+40572,ar,Pand9800Device
+40572,en,Pand9800Device
+40572,ku,Pand9800Device
+40573,ar,Pand9800GF1TDevice
+40573,en,Pand9800GF1TDevice
+40573,ku,Pand9800GF1TDevice
+40574,ar,Pand9000Device
+40574,en,Pand9000Device
+40574,ku,Pand9000Device
+40575,ar,TBaskoolBaseDevice1
+40575,en,TBaskoolBaseDevice1
+40575,ku,TBaskoolBaseDevice1
+40576,ar,TBaskoolBaseDevice2
+40576,en,TBaskoolBaseDevice2
+40576,ku,TBaskoolBaseDevice2
+40577,ar,TBaskoolBaseDevice3
+40577,en,TBaskoolBaseDevice3
+40577,ku,TBaskoolBaseDevice3
+40578,ar,TBaskoolBaseDevice4
+40578,en,TBaskoolBaseDevice4
+40578,ku,TBaskoolBaseDevice4
+40579,ar,paNone
+40579,en,paNone
+40579,ku,paNone
+40580,ar,paOdd
+40580,en,paOdd
+40580,ku,paOdd
+40581,ar,paEven
+40581,en,paEven
+40581,ku,paEven
+40582,ar,paMark
+40582,en,paMark
+40582,ku,paMark
+40583,ar,paSpace
+40583,en,paSpace
+40583,ku,paSpace
+40584,ar,COM1
+40584,en,COM1
+40584,ku,COM1
+40585,ar,COM2
+40585,en,COM2
+40585,ku,COM2
+40586,ar,COM3
+40586,en,COM3
+40586,ku,COM3
+40587,ar,COM4
+40587,en,COM4
+40587,ku,COM4
+40588,ar,COM5
+40588,en,COM5
+40588,ku,COM5
+40589,ar,COM6
+40589,en,COM6
+40589,ku,COM6
+40590,ar,COM7
+40590,en,COM7
+40590,ku,COM7
+40591,ar,COM8
+40591,en,COM8
+40591,ku,COM8
+40592,ar,COM9
+40592,en,COM9
+40592,ku,COM9
+40593,ar,COM10
+40593,en,COM10
+40593,ku,COM10
+40594,ar,sb1
+40594,en,sb1
+40594,ku,sb1
+40595,ar,sb1p5
+40595,en,sb1p5
+40595,ku,sb1p5
+40596,ar,sb2
+40596,en,sb2
+40596,ku,sb2
+40597,en,Lading
+40598,en,Unloading
+40599,en,Weighing Finished
+40600,en,Voucher Finished
+40601,en,Revoked
+40602,en,Entrance
+40603,en,Exit
+40604,en,Receipt
+40605,en,ReceiptReturn
+40606,en,Delivery
+40607,en,DeliveryReturn
+40608,en,Credit
+40609,en,Cash
+40610,ar,تسجيل
+40610,en,Registered
+40610,ku,تۆماركردن
+40611,ar,ملغي
+40611,en,Revoked
+40611,ku,هەڵوەشێنراو
+40612,ar,النقد
+40612,en,Cash
+40612,ku,نەختي
+40613,ar,ائتمان
+40613,en,Credit
+40613,ku,قەڕز
+40614,ar,النقد/ائتمان
+40614,en,Cash/Credit
+40614,ku,نەختي⁄قەڕز
+40615,ar,مستوي بيع البضائع
+40615,en,InvoicePerItem
+40616,ar,مستوي بيع البضائع
+40616,en,Invoice
+40617,ar,مستوي بيع البضائع في فترة زمنية محددة
+40617,en,DatePeriodPerItem
+40618,ar,مجموع البيع للفاتورات في فترة زمنية معيّنة
+40618,en,DatePeriod
+40619,en,Manual
+40620,ar,بسيط
+40620,en,Linear
+40621,ar,خطوة خطوة
+40621,en,Stepped
+40622,ar,المقدار
+40622,en,Qunatity
+40623,ar,المبلغ
+40623,en,Price
+40624,ar,النسبة المئوية
+40624,en,Percent
+40625,ar,مبلغ
+40625,en,Amount
+40626,ar,المسجّل
+40626,en,Saved
+40627,ar,قبول تسوية الحساب شريطة دفع الشيك
+40627,en,PayedIncludeCheque
+40628,ar,تمت تسوية الحساب
+40628,en,PayedExcludeCheque
+40629,ar,الكل
+40629,en,All
+40630,ar,ضمن العناصر أدناه
+40630,en,Include
+40631,ar,كل بند باستثناء
+40631,en,Exclude
+40632,ar,تسجيل
+40632,en,Registered
+40632,ku,تۆماركردن
+40633,ar,ملغي
+40633,en,Revoked
+40633,ku,هەڵوەشێنراو
+40634,ar,البضائع
+40634,en,Product
+40634,ku,كەرەستە
+40635,ar,خدمة
+40635,en,Service
+40635,ku,خزمەت
+40636,ar,البضائع
+40636,en,Asset product
+40636,ku,كەرەستە
+40637,ar,ممتلكات و الاوراق المالية
+40637,en,Inventory
+40637,ku,هەبوو
+40638,ar,مخزونات المستهلكين للبيع
+40638,en,Sale
+40638,ku,هەبوو بۆ فرۆش
+40639,ar,الرصيد القابل للبع مع احتساب الاحتياطي 
+40639,en,SaleWithReserve
+40639,ku,هەبوو بۆ فرۆش
+40640,ar,آخرين قيمت خريد
+40640,en,Last buy price
+40640,ku,آخرين قيمت خريد
+40641,ar,آخرين قيمت خريد تامين كننده
+40641,en,Last buy price Of Vendor
+40641,ku,آخرين قيمت خريد تامين كننده
+40642,ar,المواقع الجغرافي
+40642,en,Location
+40642,ku,شوێنە جوگرافييەكان
+40643,ar,بلد
+40643,en,Country
+40643,ku,وڵات
+40644,ar,المحافظة
+40644,en,State
+40644,ku,پارێزگا
+40645,ar,المدينة
+40645,en,City
+40645,ku,شار
+40646,ar,قرية
+40646,en,Village
+40646,ku,گوند
+40647,ar,الشراء
+40647,en,Buy
+40647,ku,كڕين
+40648,ar,مبيعات
+40648,en,Sale
+40648,ku,فرۆش
+40649,ar,الشراء و مبيعات
+40649,en,Buy And Sales
+40649,ku,كڕين و فرۆش
+40650,ar,بيان الايصال
+40650,en,Status
+40650,ku,پوختەي هەلومەرج
+40651,ar,الشراء و بيان الايصال
+40651,en,Buy And Status
+40651,ku,كڕين و پوختەي هەلومەرج
+40652,ar,مبيعات و بيان الايصال
+40652,en,Sales And Status
+40652,ku,فرۆش و پوختەي هەلومەرج
+40653,ar,الشراء و مبيعات و بيان الايصال
+40653,en,Buy And Sales And Status
+40653,ku,كڕين و فرۆش و پوختەي هەلومەرج
+40654,ar,ImportBuy
+40654,en,ImportBuy
+40654,ku,ImportBuy
+40655,ar,الشراء و ImportBuy
+40655,en,Buy And ImportBuy
+40655,ku,كڕين و ImportBuy
+40656,ar,مبيعات و ImportBuy
+40656,en,Sales And ImportBuy
+40656,ku,فرۆش و ImportBuy
+40657,ar,الشراء و مبيعات و ImportBuy
+40657,en,Buy And Sales And ImportBuy
+40657,ku,كڕين و فرۆش و ImportBuy
+40658,ar,بيان الايصال و ImportBuy
+40658,en,Status And ImportBuy
+40658,ku,پوختەي هەلومەرج و ImportBuy
+40659,ar,الشراء و بيان الايصال و ImportBuy
+40659,en,Buy And Status And ImportBuy
+40659,ku,كڕين و پوختەي هەلومەرج و ImportBuy
+40660,ar,مبيعات و بيان الايصال و ImportBuy
+40660,en,Sales And Status And ImportBuy
+40660,ku,فرۆش و پوختەي هەلومەرج و ImportBuy
+40661,ar,الشراء و مبيعات و بيان الايصال و ImportBuy
+40661,en,Buy And Sales And Status And ImportBuy
+40661,ku,كڕين و فرۆش و پوختەي هەلومەرج و ImportBuy
+40662,en,StatusOwnerShip
+40663,en,Buy And StatusOwnerShip
+40664,en,Sale And StatusOwnerShip
+40665,en,Buy And Sale And StatusOwnerShip
+40666,en,Status And StatusOwnerShip
+40667,en,Buy And Status And StatusOwnerShip
+40668,en,Sale And Status And StatusOwnerShip
+40669,en,Buy And Sale And Status And StatusOwnerShip
+40670,en,Import And Status And StatusOwnerShip
+40671,en,Buy and Import And StatusOwnerShip
+40672,en,Sale And Import And StatusOwnerShip
+40673,en,Buy And Sale And Import And StatusOwnerShip
+40674,en,Status And Import And StatusOwnerShip
+40675,en,Buy And Status And Import And StatusOwnerShip
+40676,en,Sale And Status And Import And StatusOwnerShip
+40677,ar,كل
+40677,en,All
+40677,ku,هه‌موو
+40678,en,
+40679,en,
+40680,en,
+40681,en,
+40682,en,
+40683,en,
+40684,en,
+40685,en,
+40686,en,
+40687,en,
+40688,en,
+40689,en,
+40690,ar,الفاتورة
+40690,en,Invoice
+40690,ku,پسولە
+40691,ar,ايصالات المخزون
+40691,en,Invoice
+40691,ku,رەسيدي كۆگا
+40692,ar,فاتورة العودة
+40692,en,Returned Invoice
+40692,ku,گەرانەوەي پسولە
+40693,ar,عودة الايصال
+40693,en,Invoice
+40693,ku,گەڕانەوەي رەسيد
+40694,ar,فاتورة خدمات ترتيب
+40694,en,Service Inventory Purchase Invoice
+40694,ku,پسولەي كڕيني خزمەتگوزارييەكان
+40695,ar,الفاتورة
+40695,en,Status
+40695,ku,پوختەي هەلومەرج
+40696,en,InventoryReceiptTransport
+40697,en,Export Sale Invoice
+40698,en,Export Sale Returned Invoice
+40699,en,Import Inventory Receipt
+40700,en,Import Inventory Returned Receipt
+40701,en,Asset Purchase Invoice
+40702,en,AssetSale
+40703,en,CustomsClearance
+40704,en,BillOfLoading
+40705,en,InsurancePolicy
+40706,en,Medicine
+40707,en,Tobacco
+40708,en,Mobile
+40709,en,Household Appliances
+40710,en,Spare parts for vehicles
+40711,en,Oil and Gas and Petrochemical Products and Derivatives
+40712,en,"Gold, including billets, brooches and ornamental artifacts"
+40713,en,Textiles and clothing
+40714,en,toy
+40715,en,"Livestock, white and red meat"
+40716,en,Basic agricultural products
+40717,en,Other items and services
+40718,ar,الشراء
+40718,en,Buy
+40718,ku,كڕين
+40719,ar,مبيعات
+40719,en,Sale
+40719,ku,فرۆش
+40720,ar,شراء و بيع
+40720,en,Buy And Sales
+40720,ku,كڕين و فرۆش
+40721,ar,بيان الايصال
+40721,en,Status
+40721,ku,پوختەي هەلومەرج
+40722,ar,البيع و بيانات الايصال
+40722,en,Buy And Status
+40722,ku,كڕين و پوختەي هەلومەرج
+40723,ar,شراء و بيانات الايصال
+40723,en,Sales And Status
+40723,ku,فرۆشي و پوختەي هەلومەرج
+40724,ar,كل
+40724,en,All
+40724,ku,هه‌موو
+40725,ar,الفاتورة
+40725,en,Invoice
+40725,ku,پسولە
+40726,ar,ايصالات المخزون
+40726,en,Invoice
+40726,ku,رەسيدي كۆگا
+40727,ar,فاتورة العودة
+40727,en,Returned Invoice
+40727,ku,گەرانەوەي پسولە
+40728,ar,عودة الايصال
+40728,en,Invoice
+40728,ku,گەڕانەوەي رەسيد
+40729,ar,فاتورة خدمات ترتيب
+40729,en,Service Inventory Purchase Invoice
+40729,ku,پسولەي كڕيني خزمەتگوزارييەكان
+40730,ar,الفاتورة
+40730,en,Status
+40730,ku,پوختەي هەلومەرج
+40731,ar,الفصلي
+40731,en,Season
+40731,ku,Season
+40732,ar,شهريا
+40732,en,Month
+40732,ku,Month
+40733,ar,غير المرسل
+40733,en,NotSent
+40733,ku,نەنێردراوە
+40734,ar,المستعد لارسال
+40734,en,ReadyToSend
+40734,ku,ئامادەي ناردن
+40735,ar,في حالة الإرسال
+40735,en,Pending
+40735,ku,خەريكي ناردن
+40736,ar,المرسل
+40736,en,Sent
+40736,ku,نێردراوە
+40737,ar,غير ناجح
+40737,en,Failed
+40737,ku,ناسەركەتوو
+40738,ar,ألغيت
+40738,en,Canceled
+40738,ku,هەڵوەشێنراوە
+40739,ar,غير معروف
+40739,en,Unknown
+40739,ku,ناڕوون
+40740,en,None
+40741,en,Party
+40741,ku,لايەني مامەڵە
+40742,en,User
+40742,ku,بەكارھەنەر
+40743,en,CustomContact
+40743,ku,بەردەنگەكانيتر
+40744,ar,أكبر من
+40744,en,GreaterThan
+40744,ku,گەورەتر
+40745,ar,أكبر من أو يساوي
+40745,en,GreaterOrEqual
+40745,ku,گەورەتر يان بەرانبەر
+40746,ar,الأصغر
+40746,en,LessThan
+40746,ku,بچووكتر
+40747,ar,أقل من أو يساوي
+40747,en,LessOrEqual
+40747,ku,بچووكتر يان بەرانبەر
+40748,ar,مماثل
+40748,en,Like
+40748,ku,هاوچەشن
+40749,ar,مساوي
+40749,en,Equal
+40749,ku,بەرانبەر
+40750,ar,غير متساوي
+40750,en,NotEqual
+40750,ku,نابەرانبەر
+40751,ar,فارغ
+40751,en,IsNull
+40751,ku,خاڵي بێت
+40752,ar,غير متشابه
+40752,en,NotLike
+40752,ku,ناهاوچەشن
+40753,ar,ليس فارغا
+40753,en,IsNotNull
+40753,ku,خاڵي نەبێت
+40754,ar,و
+40754,en,AND
+40754,ku,و
+40755,en,OR
+40755,ku,يان
+40756,en,Registered
+40757,en,Approved
+40758,en,Rejected
+40759,en,Dismissed
+40760,ar,مكان للنشط
+40760,en,Business
+40760,ku,شوێني چالاكي
+40761,ar,ارسال ايصال الفواتير
+40761,en,Bill
+40761,ku,ناردني ليستي ژمێرە
+40762,ar,ارسال البضائع
+40762,en,Shipping
+40762,ku,ناردني كەرەستە
+40763,ar,المستودع
+40763,en,Warehouse
+40763,ku,كۆگا
+40764,ar,بيت
+40764,en,Home
+40764,ku,خانوو
+40765,ar,الرسمي
+40765,en,Official
+40765,ku,رەسمي
+40766,ar,بريدي
+40766,en,Postal
+40766,ku,پۆستيي
+40767,ar,الآخر
+40767,en,Misc.
+40767,ku,ديكە
+40768,ar,الشخص الحقيقي
+40768,en,Individual
+40768,ku,كەسي حەقێقي
+40769,ar,كيان قانوني
+40769,en,Company
+40769,ku,كەسي حقۆقي
+40770,ar,وزارة
+40770,en,Ministry
+40770,ku,وەزارەتخانە
+40771,ar,مؤسسة حكومية
+40771,en,Governmental institutions
+40771,ku,رێكخراوەي حكوومي
+40772,ar,الشركة الحومية
+40772,en,Governmental Company
+40772,ku,كۆمپانياي حكوومي
+40773,ar,نظامات حكومية أخرى
+40773,en,Other governmental units
+40773,ku,فەرمانگەكاني‌تري حكوومي
+40774,ar,الهيئات العامة و المنظمات غير الحكومية
+40774,en,Non-governmental public institutions
+40774,ku,رێكخراوە گشتيە ناحكووميەكان
+40775,ar,قطاع خاص
+40775,en,Private Sector
+40775,ku,بەشي ئەهلي
+40776,ar,الآخر
+40776,en,Others
+40776,ku,ديكە
+40777,ar,هاتف المكتب
+40777,en,Office Phone
+40777,ku,تەلەفووني نووسينگە
+40778,ar,الهواتف المحمولة
+40778,en,Mobile
+40778,ku,ژمارە مۆبايل
+40779,ar,هاتف البيت
+40779,en,Home Phone
+40779,ku,تەلەفووني ماڵ
+40780,ar,الهاتف أخرى
+40780,en,Misc. Phone
+40780,ku,تەلەفوونەكاني‌تر
+40781,ar, الفاكس للمكتب
+40781,en,Office Fax
+40781,ku,فكسي نووسينگە
+40782,ar, الفاكس للبيت
+40782,en,Home Fax
+40782,ku,فكسي ماڵ
+40783,ar,الفاكس الآخر
+40783,en,Misc. Fax
+40783,ku,فكسەكاني‌تر
+40784,ar,زبون
+40784,en,Customer
+40784,ku,كڕيار
+40785,ar,المزود
+40785,en,Vendor
+40785,ku,دابينكار
+40786,en,Broker
+40787,ar, البيع من قبل آلات البيع
+40787,en,FinalConsumer
+40787,ku,فرۆش لە لايەن ماشێنەكاني فرۆشەوە
+40788,ar,عادي
+40788,en,Normal
+40788,ku,ئاسايي
+40789,ar,جانب الصفقة الخارجية الذي ليست لهم أنشطة التجارة الخارجية والاقتصادية  في إيران
+40789,en,Export
+40789,ku,لايەني مامەڵەي دەرەكي كە لە ئێراند مۆڵەت و چالاكي ئابوورييان نييە
+40790,ar, التحذير في حالة ازدياد البقية من ائتمان الحساب
+40790,en,Warning
+40791,ar,منع العملية  في حالة ازدياد البقية من ائتمان الحساب
+40791,en,Deny
+40792,ar,لا شيء
+40792,en,None
+40793,ar,إيراني
+40793,en,Iranian
+40793,ku,ئێراني
+40794,ar,غير الإيرانية
+40794,en,Other
+40794,ku,غەيرە ئێراني
+40795,en, 
+40796,ar,عزب
+40796,en,Single
+40796,ku,زگورتي
+40797,ar,متزوج
+40797,en,Married
+40797,ku,هاوسەردار
+40798,ar,المعدل
+40798,en,Divorced
+40798,ku,خێزاندار
+40799,en, 
+40800,ar,أمي
+40800,en,Uneducated
+40800,ku,نەخوێندەوار
+40801,ar,الملمين بالقراءة و الكتابة منخفضة
+40801,en,Undergraduate Elementary
+40801,ku,خوێندەواريي كەم
+40802,ar,المدارس الابتدائية
+40802,en,Elementary
+40802,ku,سەرەتايي
+40803,ar,دورة الثلث في المدارس الإعدادية
+40803,en,Postgraduate Elementary
+40803,ku,سيكل
+40804,ar,قبل دبلوم
+40804,en,Undergraduate Diploma
+40804,ku,ژێر ديپلۆم
+40805,ar,دبلوم أو ما يعادلها
+40805,en,Diploma
+40805,ku,ديپلۆم يان هاوتاي
+40806,ar,البكالوريوس أو ما يعادلها
+40806,en,Bachelor Degree
+40806,ku,كارناسيي يان هاوتاي
+40807,ar,الماجستير أو ما يعادلها
+40807,en,Master Degree
+40807,ku,كارناسي باڵا يان هاوتاي
+40808,ar,الدكتوراه أو ما يعادلها
+40808,en,Doctoral Degree
+40808,ku,دوكتۆري يان هاوتاي
+40809,ar,فوق دكتري يا معادل آن
+40809,en,Post Doctoral Degree
+40809,ku,پسپۆڕيي يان هاوتاي
+40810,ar,شهادة جامعية بدرجة الزمالة
+40810,en,Super Diploma
+40810,ku,بان ديپلۆم
+40811,en, 
+40812,ar,القيام به
+40812,en,Done
+40812,ku,ئەنجام دراو
+40813,ar,لم تفعل
+40813,en,Still Not Done
+40813,ku,ئەنجام نەدراو
+40814,ar,الإعفاء الطبي
+40814,en,Medical Exemption
+40814,ku,بەخشراويي پزيشكي
+40815,ar,الإعفاءات غير طبية
+40815,en,Other Exemption
+40815,ku,بەخشراويي غەيرە پزيشكي
+40816,ar,شراءخدمة النظام
+40816,en,Boughten
+40816,ku,كڕيني خزمەت
+40817,ar,المصابون في الحرب
+40817,en,Victimd of War
+40817,ku,گيانباز
+40818,ar,الحرّ
+40818,en,Prison of War
+40818,ku,ئازادە
+40819,ar,قدامى المحاربين
+40819,en,War Veteran
+40819,ku,ئيسارگەر
+40820,ar,العمل
+40820,en,Working Time
+40820,ku,كاركرد
+40821,ar,فوائد
+40821,en,Bonus
+40821,ku,سەربەشيي
+40822,ar,الخصومات
+40822,en,Leakage
+40822,ku,داشكاوەكان
+40823,ar,التزامات صاحب العمل
+40823,en,Employer Commitment
+40823,ku,بەڵێنەكاني خاوەنكار
+40824,en,
+40825,ar,رسوم الاستشارة والإشراف والمكافآت
+40825,en,Consulting and Advisory Fee (Column number 15)
+40825,ku,مبلغ حق الزحمه/حق مشاوره/حق حضور/حق نظارت/حق التاليف/ حق فني/ پاداش شوراي حل اختلاف
+40826,ar,مبالغ عقود البحث
+40826,en,Research Contract Amount (Column number 16)
+40826,ku,مبلغ قراردادهاي پژوهشي
+40827,ar,عمل إضافي
+40827,en,Overtime (Column number 17)
+40827,ku,اضافه كاري
+40828,ar,نفقات السفر
+40828,en,Travel Expenses (Column number 18)
+40828,ku,هزينه سفر
+40829,ar,(فوق العاده مسافرت (ماموريت
+40829,en,Travel Allowance (Column number 19)
+40829,ku,(فوق العاده مسافرت (ماموريت
+40830,ar,مكافأة الأداء
+40830,en,Performance Bonus (Column number 20)
+40830,ku,كارانه
+40831,ar,مكافآت باستثناء مكافآت نهاية العام والخدمة
+40831,en,Reward Excluding Year-End and Service Completion (Column number 21)
+40831,ku,پاداش )به استثناي پاداش آخر سال و پاداش پايان خدمت و پاداش بهره وري)
+40832,ar,مكافأة نهاية الخدمة
+40832,en,Service Completion Bonus (Column number 24)
+40832,ku,پاداش پايان خدمت
+40833,ar,تعويض الإقالة
+40833,en,Dismissal Compensation (Column number 25)
+40833,ku,خسارت اخراج
+40834,ar,شراء مدة الخدمة
+40834,en,Service Buyback (Column number 26)
+40834,ku,بازخريد خدمت
+40835,ar,رسوم التدريس والبحث
+40835,en,Teaching and Research Fee (Column number 36)
+40835,ku,حق التدريس/حق التحقيق/ حق پژوهش
+40836,ar,رسوم المناوبة
+40836,en,On-Call Duty Fee (Column number 37)
+40836,ku,حق كشيك
+40837,ar,الرفاهية والتحفيز والإنتاجية
+40837,en,"Welfare, Motivational and Productivity (Column number 38)"
+40837,ku,رفاهي و انگيزشي و بهره وري
+40838,ar,حق السعي (به استثناي مزد، حقوق، پاداش
+40838,en,Wage Right Excluding Salary and Bonus (Column number 39)
+40838,ku,حق السعي (به استثناي مزد، حقوق، پاداش
+40839,ar,مزاياي غير نقدي
+40839,en,Non-cash benefits
+40839,ku,مزاياي غير نقدي
+40840,ar,العمل-اليوم
+40840,en,Working Day
+40840,ku,كاركرد_ رۆژ
+40841,ar,العمل -ساعة و دقيقة.
+40841,en,Working Hours
+40841,ku,كاركرد_ كاتژمێر و خولەك
+40842,ar,التشغيل والعمل- في المئة
+40842,en,Working Percent
+40842,ku,كاركرد_لەسەديي
+40843,ar,عقدي-ثابت
+40843,en,Contract
+40843,ku,بە گرێبەست_ نەگۆڕ
+40844,ar,الحاسبات
+40844,en,Calculated
+40844,ku,ژمێركاري
+40845,ar,الإدخال اليدوي
+40845,en,Manual Entry
+40845,ku,تۆماري دەستيي
+40846,ar,عادي
+40846,en,Normal
+40846,ku,ئاسايي
+40847,ar,استثنائي
+40847,en,Unexpected
+40847,ku,تايبەت
+40848,en,
+40849,ar,يوميا
+40849,en,Daily
+40849,ku,رۆژانە
+40850,ar,ساعة
+40850,en,Hourly
+40850,ku,كاتژمێريي
+40851,ar,في المئة / عدد
+40851,en,PercentNumber
+40851,ku,لەسەد/ ژمارە
+40852,en,
+40853,ar,رقم ثابت
+40853,en,FixPoint
+40853,ku,ژمارەي نەگۆڕ
+40854,ar,أيام الشهر
+40854,en,MonthDay
+40854,ku,رۆژەكاني مانگ
+40855,ar,عدم الإعفاء
+40855,en,Normal(Taxable)
+40855,ku,نەبووني بەخشراويي
+40856,ar,الممارسين في المناطق المحرومة
+40856,en,Leakage
+40856,ku,ئيشكەراني ناوچە هەژارەكان
+40857,ar,الأحرار
+40857,en,Prison of War
+40857,ku,ئازادەكان
+40858,ar,المصابون في الحرب
+40858,en,Victimd of War
+40858,ku,گيانباز
+40859,ar,موظفو القوات المسلحة
+40859,en,Military
+40859,ku,ئەنداماني هێزە سەربازيەكان
+40860,ar,وزارة المعلومات
+40860,en,InformationMiministry
+40860,ku,وەزارەتي هەواڵگري (ئيتڵاعات)
+40861,ar,المناطق الحرة للتجارية-الصناعية
+40861,en,Free Land
+40861,ku,ناوچەكاني ئازادي بازرگاني_ پيشەسازي
+40862,ar,الحرّ و المعاق
+40862,en,Prison & Victimd of War
+40862,ku,ئازادە و گيانباز
+40863,ar, المتقاعد، واجب الموظف و أصحاب المعاشات التقاعدية
+40863,en,Retired
+40863,ku,خانەنشين، كادێر و مووچەخۆر
+40864,ar,الضمان الاجتماعي
+40864,en,Social Security
+40864,ku,دابينكاري كۆمەڵايەتي
+40865,ar,وزارة المالية
+40865,en,Ministry of Economy
+40865,ku,وەزارەتي دارايي
+40866,ar,التأمين التكميلي
+40866,en,Supporting Insurance
+40866,ku,بيمەي تەواوكەرەوە
+40867,en,
+40868,ar,التعديل الشهري
+40868,en,Monthly Adjustment
+40868,ku,هاوسەنگي مانگانە
+40869,ar,التعديل السنوي
+40869,en,Annual Adjustment
+40869,ku,هاوسەنگي ساڵانە
+40870,ar,دون تعديل
+40870,en,No Adjustment
+40870,ku,بەبێ هاوسەنگي
+40871,ar,تعديل شهري على مستوى الشهر
+40871,en,Monthly Adjustment Base On Month
+40871,ku,بەبێ هاوسەنگي
+40872,ar,الشخص الحقيقي
+40872,en,Individual
+40872,ku,كەسي حەقێقي
+40873,ar,شخص قانوني
+40873,en,Company
+40873,ku,كەسي حقۆقي
+40874,ar,وزارة
+40874,en,Ministry
+40874,ku,وەزارەتخانە
+40875,ar,مؤسسة حكومية
+40875,en,Governmental Institute
+40875,ku,رێكخراوەي حكوومي
+40876,ar,الشركة الحومية
+40876,en,Governmental Company
+40876,ku,كۆمپانياي حكوومي
+40877,ar,نظامات حكومية أخرى
+40877,en,Other Governmental Systems
+40877,ku,فەرمانگەكاني‌تري حكوومي
+40878,ar,الهيئات العامة و المنظمات غير الحكومية
+40878,en,Non-Governmental Organizations
+40878,ku,رێكخراوە گشتيە ناحكووميەكان
+40879,ar,قطاع خاص
+40879,en,Private Section
+40879,ku,بەشي ئەهلي
+40880,ar,آخر دافعي الرواتب 
+40880,en,Other Employers
+40880,ku,پێدەرەكاني‌تري مووچە
+40881,ar,رجل
+40881,en,Male
+40881,ku,پياو
+40882,ar,امرأة
+40882,en,Female
+40882,ku,ژن
+40883,ar,آخر
+40883,en,Other
+40883,ku,ديكە
+40884,ar,الإدارة المالية
+40884,en,Official&Financial
+40884,ku,ئيداري ماڵيي
+40885,ar,التعليم الثقافي
+40885,en,Cultural&Didactic
+40885,ku,راهێنانيي فەرهەنگي
+40886,ar,الشؤون الاجتماعية
+40886,en,Social Tasks
+40886,ku,بابەتە كۆمەڵايەتيەكان
+40887,ar,تكنولوجيا المعلومات
+40887,en,Information Technology
+40887,ku,تەكنۆلۆژياي زانياري
+40888,ar,صحة و علاج
+40888,en,Hygiene&Treatment
+40888,ku,تەندروستي و دەرمان
+40889,ar,التقنية و الهندسة
+40889,en,Engineering
+40889,ku,تەكنيكي ئەندازياري
+40890,ar,الخدمات
+40890,en,Services
+40890,ku,خزمەتگوزارييەكان
+40891,ar,الزراعة و البيئة
+40891,en,Agronomy&Nature
+40891,ku,كشتوكاڵ و ژينگە
+40892,ar,التسويق و المبيعات
+40892,en,Marketing&Sales
+40892,ku,بازاڕدۆزينەوە و فرۆش
+40893,ar,حراست و نگهباني
+40893,en,Guarding
+40893,ku,پاراستن
+40894,ar,العمل
+40894,en,Labor
+40894,ku,كرێكاري
+40895,ar,النقل
+40895,en,Transport
+40895,ku,گواستنەوەيي
+40896,ar,ضبط الجودة
+40896,en,Production
+40896,ku,وەبەرهێنان
+40897,ar,بحث
+40897,en,QualityControl
+40897,ku,كۆنترۆڵي كوالێتي
+40898,ar,التخزين
+40898,en,Research
+40898,ku,توێژينەوە
+40899,ar,التخزين
+40899,en,Storekeeping
+40899,ku,كۆگا داري
+40900,ar,القضاة
+40900,en,Judgment
+40900,ku,دادوەرەكان
+40901,ar,أعضاء هيئة التدريس في الجامعات و مؤسسات التعليم العالي
+40901,en,University Teaching
+40901,ku,ئەنداماني لێژنەي زانستيي زانكۆكان و رێكخراوەكاني خوێندني باڵا
+40902,ar,عادي
+40902,en,Normal
+40903,ar,معاق
+40903,en,Handicapped In War
+40904,ar,ابن شهيد
+40904,en,Martyr's Child
+40905,ar,الحرّ
+40905,en,Former PoW
+40906,ar,القوات المسلحة (قوات الأمن و القوات العسكرية)
+40906,en,Armed Forces(Military Or Police)
+40907,ar,سائر المشمولين بالبند 14 من المادة 91
+40907,en,Others Subject To Clause 14 Art 91
+40908,ar,الرعايا الأجانب المشمولون بقانون تجنب استيفاء الضرائب المضاعفة
+40908,en,Foreign Nationals Subject To Double Taxation Avoidance
+40909,ar,مشمولين ماده 25 قانون حمايت از حقوق معلولان
+40909,en,Persons with Disabilities Subject To Art 25
+40909,ku,مشمولين ماده 25 قانون حمايت از حقوق معلولان
+40910,en,Salery
+40911,en,New Year Bonus
+40912,ar,مدفوع
+40912,en,Payed
+40912,ku,پێدراو
+40913,ar,المستردّ
+40913,en,Refunded
+40913,ku,گێڕاوە
+40914,ar,ملغي
+40914,en,Voided
+40914,ku,هەڵوەشێنراو
+40915,ar,إلى الزبون
+40915,en,Customer Payment
+40915,ku,بۆ كڕيار
+40916,ar,المدفوعات إلى الآخر
+40916,en,Payment to ...
+40916,ku,پێدان بە كەساني‌تر
+40917,ar,مصرف للمصرف
+40917,en,Bank to Bank
+40917,ku,بانك بۆ بانك
+40918,ar,البنك للصندوق
+40918,en,Bank To Cash
+40918,ku,بانك بۆ بوخچە
+40919,ar,صندوق بنك
+40919,en,Cash To Bank
+40919,ku,بوخچە بۆ بانك
+40920,ar,صندوق بالصناديق
+40920,en,Cash To Cash
+40920,ku,بوخچە بۆ بوخچە
+40921,ar,ضمان
+40921,en,Guarantee
+40921,ku,مسۆگەر
+40922,ar,Broker Payment
+40922,en,Broker Payment
+40922,ku,Broker Payment
+40923,ar,لتوفير
+40923,en,Vendor Payment
+40923,ku,Vendor Payment
+40924,en,Bankfee
+40924,ku,Bankfee
+40925,en,PettyCash Payment
+40926,en, 
+40927,ar,مدت دار
+40927,en,Post Dated
+40927,ku,ماوەدار
+40928,ar,يوم
+40928,en,Current
+40928,ku,رۆژ
+40929,ar,استرداد الشيكات المستحقة للاستلام
+40929,en,Refund ReceiptCheque
+40929,ku,گەرانەوەي چەكي وەرگيراو 
+40930,ar,اعادة شيكات المبالغ الفائضة المستحقة
+40930,en,Refund Payment Cheque
+40930,ku,گەرانەوي چەكي پێدراو
+40931,ar,اعادة الشيك المستفاد
+40931,en,Return Spended Cheque
+40931,ku,هەڵگەڕانەوەي چەكي خەرج كراو
+40932,ar,النقد
+40932,en,Cash
+40932,ku,نەختيي
+40933,ar,غير النقدية
+40933,en,Non-Cashe
+40933,ku,غەيرە نەختي
+40934,ar,تقديم القائمة من دون دفع الأجر
+40934,en,List without payment
+40934,ku,پێشكەش كردني ليست بەبێ پێدان
+40935,ar,شيك شخصي
+40935,en,Personal Check
+40936,ar,تسديد عن طريق بطاقة الائتمان
+40936,en,POS(Payment Card)
+40937,ar,حوالة مصرفية
+40937,en,Bank Transfer
+40938,ar,إذني
+40938,en,Promissory Note
+40939,ar,شيك مضمون
+40939,en,Gauranteed Check/Certified Check
+40940,ar,إيداع الخزانة
+40940,en,Treasury
+40941,en, 
+40942,ar,ساير
+40942,en,Other
+40942,ku,ديكە
+40943,ar,البنك ملي
+40943,en,Melli
+40943,ku,بانكي ميللي
+40944,ar,بنك صادرات
+40944,en,Saderat
+40944,ku,بانكي سادرات
+40945,ar,بنك ملت
+40945,en,Mellat
+40945,ku,بانكي ميللەت
+40946,ar,بنك سبه
+40946,en,Sepah
+40946,ku,بانكي سپە
+40947,ar,البنك كشاورزي
+40947,en,Keshavarzi
+40947,ku,بانكي كشاورزي
+40948,ar,بنك رفاه كارگران
+40948,en,Refah
+40948,ku,بانكي رفا كارگران
+40949,ar,بنك تنمية الصادرات
+40949,en,Tosee Saderat
+40949,ku,بانكي تۆسعەي سادرات
+40950,ar,بنك  مسكن
+40950,en,Maskan
+40950,ku,بانكي مەسكەن
+40951,ar,بنك التجارة
+40951,en,Tejarat
+40951,ku,بانكي تجارەت
+40952,ar,البنك بارسيان
+40952,en,Parsian
+40952,ku,بانكي پارسيان
+40953,ar,بنك الاقتصاد النوين
+40953,en,Eghtesad Novin
+40953,ku,بانكي اقتسادي نوين
+40954,ar,البنك باسارغاد
+40954,en,Pasargad
+40954,ku,بانكي پاسارگاد
+40955,ar,بنك سرماية
+40955,en,Sarmaie
+40955,ku,بانكي سەرمايە
+40956,ar,بنك سامان
+40956,en,Saman
+40956,ku,بانكي سامان
+40957,ar,بنك الصناعة و المعادن
+40957,en,Sanat o Madan
+40957,ku,بانكي سەنعەت و مەعدەن
+40958,ar,بنك بريد البنك
+40958,en,Post Bank
+40958,ku,بانكي پۆست بانك
+40959,ar,بنك كارآفرين
+40959,en,Kar Afrain
+40959,ku,بانكي كارافەرين
+40960,ar,الحسابات الشهرية
+40960,en,MonthlyCalculation
+40960,ku,ژمێرياري مانگانە
+40961,ar,تخزين السنوات
+40961,en,WorkingHistorySaving
+40961,ku,پاشەكەوتي ساڵەكان
+40962,ar,استرداد شراء السنوات  
+40962,en,WorkingHistoryRepayment
+40962,ku,كڕينەوەي ساڵەكان
+40963,ar,تخزين الإجازة
+40963,en,LeaveSaving
+40963,ku,پاشەكەوتي مۆڵەت
+40964,ar,استرداد شراء الإجازة
+40964,en,LeaveRepayment
+40964,ku,كڕينەوەي مۆڵەت
+40965,ar,أجور العيد
+40965,en,NewYearBonus
+40965,ku,پێداني جێژنانە
+40966,ar,الطلب
+40966,en,Claim
+40966,ku,داواكاري
+40967,ar,دين
+40967,en,Debt
+40967,ku,قەرز
+40971,en,Day
+40972,en,Hour - Minute
+40973,en,Day - Hour - Minute
+40974,en,Waiting
+40975,en,Sending
+40976,en,Sent
+40977,en,Failed
+40978,en,Canceled
+40979,en,Sent
+40980,en,غير قابل ويرايش
+40981,en,قابل ويرايش
+40982,en,New
+40983,en,Edit
+40984,en,Delete
+40985,en,Disable
+40986,en,Enable
+40987,en,Get
+40988,en,Unknown
+40989,en,Official
+40990,en,Hourly
+40991,en,Piofy
+40992,ar,رمز البضائع
+40992,en,Item Code
+40992,ku,كۆدي كەرەستە
+40993,ar,باركود البضائع
+40993,en,Item Barcode
+40993,ku,باركۆدي كەرەستە
+40994,ar,مسجل
+40994,en,Registered
+40994,ku,تۆماركراو
+40995,ar,ملغي
+40995,en,Revoked
+40995,ku,هەڵوەشێنراو
+40996,ar,تسوية
+40996,en,Settled
+40996,ku,ساوكراو
+40997,ar,2. الفاتورة
+40997,en,1.Invoice
+40997,ku,پسولەي1
+40998,ar,2. الإعاديدة
+40998,en,2.ReturnedInvoice
+40998,ku,گەرانەوە 2
+40999,ar,اقرأ مرة أخري
+40999,en,Read again
+40999,ku,دوبارە بيخوێننەوە
+41000,ar,علي حالة التسوية
+41000,en,Settling
+41000,ku,لەحاڵي ساوكردندا
+41001,ar,دفع التسوية دون استلام النقود
+41001,en,Settled without payment
+41001,ku,ساوكردن بەبێ وەرگرتني پارە
+41002,ar,دفع التسوية مع استلام النقود
+41002,en,Settled with payment
+41002,ku,ساوكردن بە وەرگرتني پارە
+41003,ar,دون المفتاح
+41003,en,None
+41003,ku,بێ كليل
+41004,ar,F1
+41004,en,F1
+41004,ku,F1
+41005,ar,F2
+41005,en,F2
+41005,ku,F2
+41006,ar,F3
+41006,en,F3
+41006,ku,F3
+41007,ar,F4
+41007,en,F4
+41007,ku,F4
+41008,ar,F5
+41008,en,F5
+41008,ku,F5
+41009,ar,F6
+41009,en,F6
+41009,ku,F6
+41010,ar,F7
+41010,en,F7
+41010,ku,F7
+41011,ar,F8
+41011,en,F8
+41011,ku,F8
+41012,ar,F9
+41012,en,F9
+41012,ku,F9
+41013,ar,F10
+41013,en,F10
+41013,ku,F10
+41014,ar,F11
+41014,en,F11
+41014,ku,F11
+41015,ar,F12
+41015,en,F12
+41015,ku,F12
+41016,ar,ShiftF1
+41016,en,ShiftF1
+41016,ku,ShiftF1
+41017,ar,ShiftF2
+41017,en,ShiftF2
+41017,ku,ShiftF2
+41018,ar,ShiftF3
+41018,en,ShiftF3
+41018,ku,ShiftF3
+41019,ar,ShiftF4
+41019,en,ShiftF4
+41019,ku,ShiftF4
+41020,ar,ShiftF5
+41020,en,ShiftF5
+41020,ku,ShiftF5
+41021,ar,ShiftF6
+41021,en,ShiftF6
+41021,ku,ShiftF6
+41022,ar,ShiftF7
+41022,en,ShiftF7
+41022,ku,ShiftF7
+41023,ar,ShiftF8
+41023,en,ShiftF8
+41023,ku,ShiftF8
+41024,ar,ShiftF9
+41024,en,ShiftF9
+41024,ku,ShiftF9
+41025,ar,ShiftF11
+41025,en,ShiftF11
+41025,ku,ShiftF11
+41026,ar,ShiftF12
+41026,en,ShiftF12
+41026,ku,ShiftF12
+41027,ar,Ctrl0
+41027,en,Ctrl0
+41027,ku,Ctrl0
+41028,ar,Ctrl1
+41028,en,Ctrl1
+41028,ku,Ctrl1
+41029,ar,Ctrl2
+41029,en,Ctrl2
+41029,ku,Ctrl2
+41030,ar,Ctrl3
+41030,en,Ctrl3
+41030,ku,Ctrl3
+41031,ar,Ctrl4
+41031,en,Ctrl4
+41031,ku,Ctrl4
+41032,ar,Ctrl5
+41032,en,Ctrl5
+41032,ku,Ctrl5
+41033,ar,Ctrl6
+41033,en,Ctrl6
+41033,ku,Ctrl6
+41034,ar,Ctrl7
+41034,en,Ctrl7
+41034,ku,Ctrl7
+41035,ar,Ctrl8
+41035,en,Ctrl8
+41035,ku,Ctrl8
+41036,ar,Ctrl9
+41036,en,Ctrl9
+41036,ku,Ctrl9
+41037,ar,CtrlA
+41037,en,CtrlA
+41037,ku,CtrlA
+41038,ar,CtrlB
+41038,en,CtrlB
+41038,ku,CtrlB
+41039,ar,CtrlC
+41039,en,CtrlC
+41039,ku,CtrlC
+41040,ar,CtrlD
+41040,en,CtrlD
+41040,ku,CtrlD
+41041,ar,CtrlE
+41041,en,CtrlE
+41041,ku,CtrlE
+41042,ar,CtrlF
+41042,en,CtrlF
+41042,ku,CtrlF
+41043,ar,CtrlG
+41043,en,CtrlG
+41043,ku,CtrlG
+41044,ar,CtrlH
+41044,en,CtrlH
+41044,ku,CtrlH
+41045,ar,CtrlI
+41045,en,CtrlI
+41045,ku,CtrlI
+41046,ar,CtrlJ
+41046,en,CtrlJ
+41046,ku,CtrlJ
+41047,ar,CtrlK
+41047,en,CtrlK
+41047,ku,CtrlK
+41048,ar,CtrlL
+41048,en,CtrlL
+41048,ku,CtrlL
+41049,ar,CtrlM
+41049,en,CtrlM
+41049,ku,CtrlM
+41050,ar,CtrlN
+41050,en,CtrlN
+41050,ku,CtrlN
+41051,ar,CtrlO
+41051,en,CtrlO
+41051,ku,CtrlO
+41052,ar,CtrlP
+41052,en,CtrlP
+41052,ku,CtrlP
+41053,ar,CtrlR
+41053,en,CtrlR
+41053,ku,CtrlR
+41054,ar,CtrlS
+41054,en,CtrlS
+41054,ku,CtrlS
+41055,ar,CtrlT
+41055,en,CtrlT
+41055,ku,CtrlT
+41056,ar,CtrlU
+41056,en,CtrlU
+41056,ku,CtrlU
+41057,ar,CtrlV
+41057,en,CtrlV
+41057,ku,CtrlV
+41058,ar,CtrlW
+41058,en,CtrlW
+41058,ku,CtrlW
+41059,ar,CtrlX
+41059,en,CtrlX
+41059,ku,CtrlX
+41060,ar,CtrlY
+41060,en,CtrlY
+41060,ku,CtrlY
+41061,ar,CtrlZ
+41061,en,CtrlZ
+41061,ku,CtrlZ
+41062,ar,CtrlF1
+41062,en,CtrlF1
+41062,ku,CtrlF1
+41063,ar,CtrlF2
+41063,en,CtrlF2
+41063,ku,CtrlF2
+41064,ar,CtrlF3
+41064,en,CtrlF3
+41064,ku,CtrlF3
+41065,ar,CtrlF4
+41065,en,CtrlF4
+41065,ku,CtrlF4
+41066,ar,CtrlF5
+41066,en,CtrlF5
+41066,ku,CtrlF5
+41067,ar,CtrlF6
+41067,en,CtrlF6
+41067,ku,CtrlF6
+41068,ar,CtrlF7
+41068,en,CtrlF7
+41068,ku,CtrlF7
+41069,ar,CtrlF8
+41069,en,CtrlF8
+41069,ku,CtrlF8
+41070,ar,CtrlF9
+41070,en,CtrlF9
+41070,ku,CtrlF9
+41071,ar,CtrlF11
+41071,en,CtrlF11
+41071,ku,CtrlF11
+41072,ar,CtrlF12
+41072,en,CtrlF12
+41072,ku,CtrlF12
+41073,ar,AltF1
+41073,en,AltF1
+41073,ku,AltF1
+41074,ar,AltF2
+41074,en,AltF2
+41074,ku,AltF2
+41075,ar,AltF3
+41075,en,AltF3
+41075,ku,AltF3
+41076,ar,AltF4
+41076,en,AltF4
+41076,ku,AltF4
+41077,ar,AltF4
+41077,en,AltF4
+41077,ku,AltF4
+41078,ar,AltF4
+41078,en,AltF5
+41078,ku,AltF4
+41079,ar,AltF6
+41079,en,AltF6
+41079,ku,AltF6
+41080,ar,AltF7
+41080,en,AltF7
+41080,ku,AltF7
+41081,ar,AltF8
+41081,en,AltF8
+41081,ku,AltF8
+41082,ar,AltF9
+41082,en,AltF9
+41082,ku,AltF9
+41083,ar,AltF10
+41083,en,AltF10
+41083,ku,AltF10
+41084,ar,AltF11
+41084,en,AltF11
+41084,ku,AltF11
+41085,ar,AltF12
+41085,en,AltF12
+41085,ku,AltF12
+41086,en,
+41087,ar,EXW
+41087,en,EXW
+41087,ku,EXW
+41088,ar,FCA
+41088,en,FCA
+41088,ku,FCA
+41089,ar,CPT
+41089,en,CPT
+41089,ku,CPT
+41090,ar,CIP
+41090,en,CIP
+41090,ku,CIP
+41091,ar,DAP
+41091,en,DAP
+41091,ku,DAP
+41092,ar,DPU
+41092,en,DPU
+41092,ku,DPU
+41093,ar,DDP
+41093,en,DDP
+41093,ku,DDP
+41094,ar,FAS
+41094,en,FAS
+41094,ku,FAS
+41095,ar,FOB
+41095,en,FOB
+41095,ku,FOB
+41096,ar,CFR
+41096,en,CFR
+41096,ku,CFR
+41097,ar,CIF
+41097,en,CIF
+41097,ku,CIF
+41098,ar,Registered
+41098,en,Registered
+41098,ku,Registered
+41099,ar,Closed
+41099,en,Closed
+41099,ku,Closed
+41100,ar,None
+41100,en,None
+41100,ku,None
+41101,ar,Approved
+41101,en,Approved
+41101,ku,Approved
+41102,ar,Rejected
+41102,en,Rejected
+41102,ku,Rejected
+41103,ar,Registered
+41103,en,Registered
+41103,ku,Registered
+41104,ar,Closed
+41104,en,Closed
+41104,ku,Closed
+41105,ar,Registered
+41105,en,Registered
+41105,ku,Registered
+41106,ar,Calculated
+41106,en,Calculated
+41106,ku,Calculated
+41107,en,none
+41108,ar,equal
+41108,en,equal
+41108,ku,equal
+41109,ar,amount
+41109,en,amount
+41109,ku,amount
+41110,ar,quantity
+41110,en,quantity
+41110,ku,quantity
+41111,en,
+41112,ar,Registered
+41112,en,Registered
+41112,ku,Registered
+41113,ar,Closed
+41113,en,Closed
+41113,ku,Closed
+41114,en,none
+41115,ar,Unit
+41115,en,Unit
+41115,ku,Unit
+41116,ar,Price
+41116,en,Price
+41116,ku,Price
+41117,ar,Equal
+41117,en,Equal
+41117,ku,Equal
+41118,ar,Weight
+41118,en,Weight
+41118,ku,Weight
+41119,en,None
+41120,ar,A ( ALL RISK )
+41120,en,A ( ALL RISK )
+41120,ku,A ( ALL RISK )
+41121,ar,B ( W. A )
+41121,en,B ( W. A )
+41121,ku,B ( W. A )
+41122,ar,C ( F.P.A )
+41122,en,C ( F.P.A )
+41122,ku,C ( F.P.A )
+41123,ar,TOTAL LOSS
+41123,en,TOTAL LOSS
+41123,ku,TOTAL LOSS
+41124,ar,Other
+41124,en,Other
+41124,ku,Other
+41125,ar,Performa
+41125,en,Performa
+41125,ku,Performa
+41126,ar,PurchaseOrder
+41126,en,PurchaseOrder
+41126,ku,PurchaseOrder
+41127,ar,InsurancePolicy
+41127,en,InsurancePolicy
+41127,ku,InsurancePolicy
+41128,ar,CommercialOrder
+41128,en,CommercialOrder
+41128,ku,CommercialOrder
+41129,ar,PurchaseInvoice
+41129,en,PurchaseInvoice
+41129,ku,PurchaseInvoice
+41130,ar,BillOfLoading
+41130,en,BillOfLoading
+41130,ku,BillOfLoading
+41131,ar,CustomsClearance 
+41131,en,CustomsClearance
+41131,ku,CustomsClearance
+41132,ar,PurchaseCost
+41132,en,PurchaseCost
+41132,ku,PurchaseCost
+41133,ar,Not Saved
+41133,en,Not Saved
+41133,ku,Not Saved
+41134,ar,Registered
+41134,en,Registered
+41134,ku,Registered
+41135,ar,Approved
+41135,en,Approved
+41135,ku,Approved
+41136,ar,Rejected
+41136,en,Rejected
+41136,ku,Rejected
+41137,ar,Closed
+41137,en,Closed
+41137,ku,Closed
+41138,ar,Register
+41138,en,Register
+41138,ku,Register
+41139,ar,Approve
+41139,en,Approve
+41139,ku,Approve
+41140,ar,Return From Approved
+41140,en,Return From Approved
+41140,ku,Return From Approved
+41141,ar,Reject
+41141,en,Reject
+41141,ku,Reject
+41142,ar,Return From Rejected
+41142,en,Return From Rejected
+41142,ku,Return From Rejected
+41143,ar,Manual Close
+41143,en,Manual Close
+41143,ku,Manual Close
+41144,ar,Close
+41144,en,Close
+41144,ku,Close
+41145,ar,Return From Closed
+41145,en,Return From Closed
+41145,ku,Return From Closed
+41146,ar,Consume
+41146,en,Consume
+41146,ku,Consume
+41147,ar,Other
+41147,en,Other
+41147,ku,Other
+41148,ar,Inventory Transfer
+41148,en,Inventory Transfer
+41148,ku,Inventory Transfer
+41149,ar,Not Saved
+41149,en,Not Saved
+41149,ku,Not Saved
+41150,ar,Registered
+41150,en,Registered
+41150,ku,Registered
+41151,ar,Approved
+41151,en,Approved
+41151,ku,Approved
+41152,ar,Rejected
+41152,en,Rejected
+41152,ku,Rejected
+41153,ar,Closed
+41153,en,Closed
+41153,ku,Closed
+41154,ar,Register
+41154,en,Register
+41154,ku,Register
+41155,ar,Approve
+41155,en,Approve
+41155,ku,Approve
+41156,ar,Return From Approved
+41156,en,Return From Approved
+41156,ku,Return From Approved
+41157,ar,Reject
+41157,en,Reject
+41157,ku,Reject
+41158,ar,Return From Rejected
+41158,en,Return From Rejected
+41158,ku,Return From Rejected
+41159,ar,Manual Close
+41159,en,Manual Close
+41159,ku,Manual Close
+41160,ar,Close
+41160,en,Close
+41160,ku,Close
+41161,ar,Return From Closed
+41161,en,Return From Closed
+41161,ku,Return From Closed
+41162,en,none
+41163,ar,Retail
+41163,en,Retail
+41163,ku,Retail
+41164,ar,Inquiry
+41164,en,Inquiry
+41164,ku,Inquiry
+41165,ar,Not Saved
+41165,en,Normal
+41165,ku,Not Saved
+41166,ar,Emergency
+41166,en,Emergency
+41166,ku,Emergency
+41167,ar,Import
+41167,en,Import
+41167,ku,Import
+41168,ar,Internal
+41168,en,Internal
+41168,ku,Internal
+41169,ar,Register
+41169,en,Register
+41169,ku,Register
+41170,ar,Approve
+41170,en,Approve
+41170,ku,Approve
+41171,ar,Return From Approved
+41171,en,Return From Approved
+41171,ku,Return From Approved
+41172,ar,Reject
+41172,en,Reject
+41172,ku,Reject
+41173,ar,Return From Rejected
+41173,en,Return From Rejected
+41173,ku,Return From Rejected
+41174,ar,Manual Close
+41174,en,Manual Close
+41174,ku,Manual Close
+41175,ar,Close
+41175,en,Close
+41175,ku,Close
+41176,ar,Return From Closed
+41176,en,Return From Closed
+41176,ku,Return From Closed
+41177,ar,Return From Closed
+41177,en,Return From Closed
+41177,ku,Return From Closed
+41178,ar,Internal Purchase Invoice
+41178,en,Internal Purchase Invoice
+41178,ku,Internal Purchase Invoice
+41179,ar,Service Purchase Invoice
+41179,en,Service Purchase Invoice
+41179,ku,Service Purchase Invoice
+41180,ar,Asset Purchase Invoice
+41180,en,Asset Purchase Invoice
+41180,ku,Asset Purchase Invoice
+41181,ar,Import Purchase Invoice
+41181,en,Import Purchase Invoice
+41181,ku,Import Purchase Invoice
+41182,ar,تعيين للبنك
+41182,en,Transfer To Bank
+41182,ku,رادەست‌كار بە بانك
+41183,ar,استلام و الاحتجاج
+41183,en,Cashing and Return
+41183,ku,وەرگرتن و پێشبڕي
+41184,ar,النقدية
+41184,en,Cashing
+41184,ku,نەختەوە كردن
+41185,ar,صندوق
+41185,en,InCash
+41185,ku,لە لاي بوخچەوە
+41186,ar,تعيين للبنك
+41186,en,Tranfer To Bank
+41186,ku,رادەست‌كار بە بانك
+41187,ar,الجمع
+41187,en,Cashed
+41187,ku,وەرگرتن
+41188,ar,احتجاج
+41188,en,Returned
+41188,ku,پێشبڕيي
+41189,ar,النقدية
+41189,en,Cashed
+41189,ku,نەختەوەكراو
+41190,ar,خرج شده
+41190,en,Spending
+41190,ku,خەرج كراو
+41191,ar,الردّ
+41191,en,Refunded
+41191,ku,گێڕانەوە
+41192,ar,نقد
+41192,en,Cash
+41192,ku,پارەي نەخت
+41193,ar,بطاقة قارئ
+41193,en,Card Reader
+41193,ku,كارت‌ناس
+41194,ar,الشيك
+41194,en,Cheque
+41194,ku,چەك
+41195,ar,مسودة
+41195,en,Draft
+41195,ku,حەواڵە
+41196,en,Petty Cash
+41197,ar,التلقي من الزبون
+41197,en,Customer Receipt
+41197,ku,وەرگرتن لە كڕيار
+41198,ar,الاستلامات الأخرى
+41198,en,Other Receipt
+41198,ku,وەرگرتنەكاني‌تر
+41199,ar,ضمان
+41199,en,Guarantee
+41199,ku,مسۆگەر
+41200,en,BrokerReceipt
+41201,ar,التلقي من الموردين
+41201,en,Vendor Receipt
+41201,ku,وەرگرتن لە دابينكار
+41202,ar,النقلي
+41202,en,Transmit Receipt
+41202,ku,گوێزراوەيي
+41203,en,PettyCash Receipt
+41204,ar,1: الممتلكات و لأموال النقدية للمصرف
+41204,en,1: Bank Balanace
+41204,ku,1: هەبووي بانك
+41205,ar,2: أموال
+41205,en,2: Cash Balance
+41205,ku,هەبووي بوخچە:2
+41206,ar,3: قارئ بطاقة المخزون
+41206,en,3: Pos Balance
+41206,ku,هەبووي ئامێري كارت‌ناس:3
+41207,ar,4: الشيكات المستحقة من الصندوق
+41207,en,4: Recievable Cheques in Cash
+41207,ku,ئەو چەكانەي لاي بوخچە كە دەبێ وەربگيردرێت:4
+41208,ar,5: الشيكات المستحقة للبنك
+41208,en,5: Recievable Cheques in Bank
+41208,ku,ئەو چەكانەي لاي بانك كە دەبێ وەربگيردرێت:5
+41209,ar,6- الشيكات المستحقة غير المسددة
+41209,en,6: Payable Cheques
+41209,ku,ئەو چەكە پێدراوانە كە نەختەوە نەكراون:6
+41210,ar,7: التعهدات المستحقة
+41210,en,7: Recievable
+41210,ku,بەڵێنەكان بۆ وەرگرتن:7
+41211,ar,8: الالتزامات المستحقة
+41211,en,8: Payable
+41211,ku,بەڵێنەكان بۆ پێدان:8
+41212,ar,_____________
+41212,en,Solid
+41213,ar,_____________
+41213,en,Dash
+41214,ar,-------------------
+41214,en,Dot
+41214,ku,-------------------
+41215,ar,-------------------
+41215,en,DashDot
+41215,ku,-------------------
+41216,ar,-------------------
+41216,en,DashDotDot
+41216,ku,-------------------
+41217,ar,-------------------
+41217,en,Double
+41217,ku,-------------------
+41218,ar,Custom
+41218,en,Custom
+41218,ku,Custom
+41219,ar,Letter
+41219,en,Letter
+41219,ku,Letter
+41220,ar,Tabloid
+41220,en,Tabloid
+41220,ku,Tabloid
+41221,ar,Leggal
+41221,en,Leggal
+41221,ku,Leggal
+41222,ar,A3
+41222,en,A3
+41222,ku,A3
+41223,ar,A4
+41223,en,A4
+41223,ku,A4
+41224,ar,A5
+41224,en,A5
+41224,ku,A5
+41225,ar,B4(JIS)
+41225,en,B4(JIS)
+41225,ku,B4(JIS)
+41226,ar,B5(JIS)
+41226,en,B5(JIS)
+41226,ku,B5(JIS)
+41227,ar,japanese Postcard
+41227,en,japanese Postcard
+41227,ku,japanese Postcard
+41228,ar,سيتم طباعتها
+41228,en,None
+41228,ku,چاپ نەكرێت
+41229,ar,طباعة الصفحة الأولى
+41229,en,FirstPage
+41229,ku,چاپ لە يەكەمين لاپەڕەدا
+41230,ar,طباعة الصفحة الأخيرة
+41230,en,LastPage
+41230,ku,چاپ لە دوايين لاپەڕەدا
+41231,ar,طباعة صفحات فردية
+41231,en,OddPages
+41231,ku,چاپ لە لاپەڕە تاقەكاندا
+41232,ar,طباعة الصفحات الزوجية
+41232,en,EvenPages
+41232,ku,چاپ لە لاپەڕە جووتەكاندا
+41233,ar, الطباعة في النطاقات المترددة
+41233,en,RepeatedBand
+41233,ku,چاپ لە باندە دووپاتەكاندا
+41234,ar,يرجى تحديد
+41234,en,None
+41234,ku,تكايە هاتنگەكە دياري بكەن.
+41235,ar,ممتلكات
+41235,en,DataSet
+41235,ku,بوونەتي
+41236,ar,السيناريو
+41236,en,Query
+41236,ku,ئێسكريپت
+41237,ar,جدول
+41237,en,Table
+41237,ku,شانە
+41238,ar,أبدا
+41238,en,Never
+41238,ku,هەرگيز
+41239,ar,دائما
+41239,en,Always
+41239,ku,هەميشە
+41240,ar,تداخل
+41240,en,WhenOverlapped
+41240,ku,يەك داپۆشين
+41241,ar,لا شيء
+41241,en,None
+41241,ku,هيچ‌يەك
+41242,ar,تصاعدي
+41242,en,Ascending
+41242,ku,چوونەسەر
+41243,ar,التنازلي
+41243,en,Descending
+41243,ku,دابەزين
+41244,ar,ثنائي
+41244,en,Binary
+41244,ku,باينێري
+41245,ar,معقول
+41245,en,Bit
+41245,ku,گونجاو
+41246,ar,الحرف
+41246,en,Char
+41246,ku,كاراكتێر
+41247,ar,تاريخ الزمن
+41247,en,DateTime
+41247,ku,رێكەوت كات
+41248,ar, العشري المتوسط
+41248,en,Decimal
+41248,ku,دەيانەي ناوەندي
+41249,ar,العشري الكبير
+41249,en,Float
+41249,ku,دەيانەي گەورە
+41250,ar,الصورة
+41250,en,Image
+41250,ku,وێنە
+41251,ar,الرقمية
+41251,en,Int
+41251,ku,ژمارەيي
+41252,ar,نقود
+41252,en,Money
+41252,ku,پارە
+41253,ar,حرف  يونيكود
+41253,en,NChar
+41253,ku,كاراكتێري يونيكۆد
+41254,ar,نص  يونيكود
+41254,en,NText
+41254,ku,دەقي يونيكۆد
+41255,ar,سلسلة يونيكود
+41255,en,NVarChar
+41255,ku,بەشي يونيكۆد
+41256,ar,العشرية الصغيرة
+41256,en,Real
+41256,ku,دەيانەي بچووك
+41257,ar,تاريخ صغير
+41257,en,SmallDateTime
+41257,ku,رێكەوتي بچووك
+41258,ar,عدد قليل
+41258,en,SmallInt
+41258,ku,ژمارەي بچووك
+41259,ar,نص غير يونيكود 
+41259,en,Text
+41259,ku,دەقي جگە يونيكۆد
+41260,ar,عدد قليل جدا
+41260,en,TinyInt
+41260,ku,ژمارەي زۆر بچووك
+41261,ar,ثنائي كبير
+41261,en,VarBinary
+41261,ku,باينێري گەورە
+41262,ar,سلسلة
+41262,en,VarChar
+41262,ku,بەش
+41263,ar,Xml
+41263,en,Xml
+41263,ku,Xml
+41264,ar,التاريخ
+41264,en,Date
+41264,ku,رێكەوت
+41265,ar,None
+41265,en,None
+41265,ku,None
+41266,ar,Character
+41266,en,Character
+41266,ku,Character
+41267,ar,Word
+41267,en,Word
+41267,ku,Word
+41268,ar,EllipsisCharacter
+41268,en,EllipsisCharacter
+41268,ku,EllipsisCharacter
+41269,ar,EllipsisWord
+41269,en,EllipsisWord
+41269,ku,EllipsisWord
+41270,ar,EllipsisPath
+41270,en,EllipsisPath
+41270,ku,EllipsisPath
+41271,ar,المجموع 
+41271,en,Sum
+41271,ku,كۆ
+41272,ar,الحد الأدنى
+41272,en,Min
+41272,ku,كەمينە
+41273,ar,الحد الأقصي
+41273,en,Max
+41273,ku,زۆرينە
+41274,ar,المعدل
+41274,en,Avg
+41274,ku,مامناوەند
+41275,ar,عدد
+41275,en,Count
+41275,ku,رادە
+41276,ar,#
+41276,en,Custom
+41276,ku,#
+41277,ar,¼
+41277,en,Quarter
+41277,ku,¼
+41278,ar,1
+41278,en,Half
+41278,ku,½
+41279,ar,1
+41279,en,One
+41279,ku,1
+41280,ar,1½
+41280,en,OneAndHalf
+41280,ku,1½
+41281,ar,2
+41281,en,Tow
+41281,ku,2
+41282,ar,4
+41282,en,Tree
+41282,ku,3
+41283,ar,4
+41283,en,Four
+41283,ku,4
+41284,ar,5
+41284,en,Five
+41284,ku,5
+41285,ar,6
+41285,en,Six
+41285,ku,6
+41286,en,Normal
+41287,en,CustomerCodeBased
+41288,en,Registered
+41289,en,Approved
+41290,en,Dismissed
+41291,ar,غير النشيط
+41291,en,InActive
+41291,ku,ناچالاك
+41292,ar,الناشط
+41292,en,Active
+41292,ku,چالاك
+41293,en,None
+41294,ar,الآخر
+41294,en,Other
+41294,ku,ديكە
+41295,ar,التيار/الجاري
+41295,en,Jari
+41295,ku,لەگەڕ
+41296,ar,سيبا
+41296,en,Siba
+41296,ku,سيبا
+41297,ar,تشرين الاول
+41297,en,Mehr
+41297,ku,رەزبەر
+41298,ar,حساب السبهر
+41298,en,Sepehr
+41298,ku,سپێهر
+41299,ar,حساب الجاري الذهبي
+41299,en,Jari Talaee
+41299,ku,لەگەڕي زێڕين
+41300,ar,حساب الجام
+41300,en,Jam
+41300,ku,جام
+41301,ar,حساب الوديعة
+41301,en,Gharzolhasaneh
+41301,ku,قەرزولحەسەنە
+41302,ar,الوديعة الاستثمارية قصيرة الأجل
+41302,en,Sepordeh Kootah Moddat
+41302,ku,سپێردەي سەرمايەداناني كورت خايەن
+41303,ar,الوديعة الاستثمارية  طويلة الأجل
+41303,en,Sepordeh Boland Moddat
+41303,ku,سپێردەي سەرمايەداناني درێژ خايەن
+41304,ar,جهاز الصراف الآلي
+41304,en,Aber Bank
+41304,ku,كارت‌ناس
+41305,ar,مسجل
+41305,en,Saved
+41305,ku,تۆماركراو
+41306,ar,أصدرت وثيقة المحاسبية
+41306,en,Vouchered
+41306,ku,بەڵگەي ژمێرياري دەركراو
+41307,ar,الإنشاء
+41307,en,Initial
+41308,ar,الاوراق المالية الأولي
+41308,en,Opening Balance
+41308,ku,هەبووي سەرەتايي
+41309,ar,الاوراق المالية الأولي
+41309,en,Opening Balance
+41309,ku,هەبووي سەرەتايي
+41310,ar,الاوراق المالية الأولي
+41310,en,Opening Balance
+41310,ku,هەبووي سەرەتايي
+41311,ar,ايصال التسديد
+41311,en,Receipt Note
+41311,ku,بەڵگەنامەي وەرگرتن
+41312,ar,استلام الشيكات
+41312,en,Cheque Receipt
+41312,ku,وەرگرتني چەك
+41313,ar,مسودة
+41313,en,Draft
+41313,ku,حەواڵە
+41314,ar,تحميل قارئ البطاقة
+41314,en,Card Reader Receipt
+41314,ku,وەرگرتن لە كارت‌ناس
+41315,ar,تلقي  الشيك الاحتجاجي
+41315,en,Protested Cheque Receipt
+41315,ku,وەرگرتني چەكي پێشبڕيدار
+41316,en,Petty cash Charge
+41317,ar,اعلان التسديد
+41317,en,Payment Statement
+41317,ku,رەسيدي پێدان
+41318,ar,دفع الشيك
+41318,en,Cheque Payment
+41318,ku,پێداني چەك
+41319,ar,إعلان الانسحاب
+41319,en,Withdrawal
+41319,ku,راگەيەندراوي هەڵگرتن
+41320,ar,تحقق الشيك
+41320,en,Spending Cheque
+41320,ku,خەرج كردني چەك
+41321,ar, إلغاء الشيك
+41321,en,Void Cheque
+41321,ku,هەڵوەشاندنەوەي چەك
+41322,ar,العمليات المصرفية للشيك
+41322,en,Note Receivable Banking Procedures
+41322,ku,كردە بانكيەكاني چەك
+41323,ar,تعيين للبنك
+41323,en,Transfer Cheque To Bank
+41323,ku,رادەست‌كار بە بانك
+41324,ar,الحصول علي شيك
+41324,en,Cashing Cheque
+41324,ku,نەختەوە كردني چەك
+41325,ar,احتجاج الشيك
+41325,en,Returned Cheque
+41325,ku,پێشبڕي چەك
+41326,ar,تحقق صرف الشيك
+41326,en,Cheque Cash
+41326,ku,نەختەوەكردني چەك
+41327,ar,توصيل مجموعة من الشيكات المستحقة التسديدية
+41327,en,Payment Cheque Cashing
+41327,ku,نەختەوە كردني چەكي پێدراو
+41328,ar,ارتداد الشيك
+41328,en,Refund Cheque
+41329,ar,استرداد الشيكات المستحقة للاستلام
+41329,en,Refund Receipt Cheque
+41329,ku,گەرانەوەي چەكي وەرگيراو 
+41330,ar,اعادة شيكات المبالغ الفائضة المستحقة
+41330,en,Refund Payment Cheque
+41330,ku,گەرانەوي چەكي پێدراو
+41331,ar,بطاقة تسوية قارئ
+41331,en,Card Reader Polling
+41331,ku,ساوكردني كارت‌ناس
+41332,ar,اعادة الشيك المستفاد
+41332,en,Return Spended Cheque
+41332,ku,هەڵگەڕانەوەي چەكي خەرج كراو
+41333,ar,استرداد الشيك المستاد المطلوبة
+41333,en,Return Spended Returned Cheque
+41333,ku,هەڵگەڕاوەي چەكي خەرج كراوي پێشبڕيدار
+41334,en,Cash Deposit For Guarantee
+41335,en,Bank FEE
+41336,ar,الاوراق المالية الأولي
+41336,en,Opening Balance
+41336,ku,هەبووي سەرەتايي
+41337,ar,فاتورة المبيعات
+41337,en,Invoice
+41337,ku,پسولەي فرۆش
+41338,ar,محاسبة عمولة
+41338,en,Commission Calculation
+41339,en,Customer
+41340,en,Broker
+41341,en,Vendor
+41342,en,Other
+41343,en,Invoice
+41344,en,Payment
+41345,en,InventoryReceiptReturn
+41346,en,PurchaseInvoiceReturn
+41347,en,DebitOpeningBalance
+41348,en,DebitNote
+41349,en,RefundReceiptCheque
+41350,en,ShredInvoiceInterestAndPenaltyItem
+41351,en,ShredPersonelLoan
+41352,en,ShredOtherReceivable
+41353,en,CommissionCalculation
+41354,en,ReturnedInvoice
+41355,en,Receipt
+41356,en,CreditOpeningBalance
+41357,en,CreditNote
+41358,en,RefundPaymentCheque
+41359,en,ReturnChequeOther
+41360,en,InventoryReceipt
+41361,en,SettlementByRemaining
+41362,en,
+41363,en,Registered
+41364,en,Approved
+41365,en, 
+41366,ar,أ
+41366,en,A
+41366,ku,ئەلف
+41367,ar,ب
+41367,en,B
+41367,ku,ب
+41368,ar,اسم المستخدم لي
+41368,en,I have User Name
+41368,ku,ناوي به‌كارهێنه‌ر هەيە
+41369,ar,أنا شفرة التتبع لي
+41369,en,I have Tracking Code
+41369,ku,كۆدي شوێن‌گيريم هەيە
+41370,ar,لم أسجل كود الاقتصادي لنفسي
+41370,en,I have not Register for Economic Code
+41370,ku,پێش ناونووسي كۆدي ئابووريم نەكردووە
+41371,ar,مازندران
+41371,en,Mazandaran
+41371,ku,مازندەران
+41372,ar,الشرق اذربيجان
+41372,en,Azarbaijan_Sharghi
+41372,ku,ئازربايجاني رۆژهەڵات
+41373,ar,اذربيجان الغربية
+41373,en,Azarbaijan_Gharbi
+41373,ku,ئازربايجاني رۆژئاوا
+41374,ar,كرمنشاه
+41374,en,Kermanshah
+41374,ku,كرماشان
+41375,ar,خوزستان
+41375,en,Khozestan
+41375,ku,خووزستان
+41376,ar,فارس
+41376,en,Fars
+41376,ku,فارس
+41377,ar,كرمان
+41377,en,Kerman
+41377,ku,كرمان
+41378,ar,خراسان رضوي
+41378,en,Khorasan_Razavi
+41378,ku,خۆراساني رەزەوي
+41379,ar,أصفهان
+41379,en,Esfahan
+41379,ku,ئيسفەهان
+41380,ar,شمال خراسان
+41380,en,Khorasan_Shomali
+41380,ku,خۆراساني باكوور
+41381,ar,كردستان
+41381,en,Kordestan
+41381,ku,كوردستان
+41382,ar,هرمزكان
+41382,en,Hormozgan
+41382,ku,هورمزگان
+41383,ar,همدان
+41383,en,Hamedan
+41383,ku,هەمەدان
+41384,ar,جهار محال بختياري
+41384,en,Chahar_Mahal_Bakhtiari
+41384,ku,چوارمەحاڵي بەختياري
+41385,ar,ورستان
+41385,en,Lorestan
+41385,ku,لۆڕستان
+41386,ar,إيلام
+41386,en,Ilam
+41386,ku,ئيلام
+41387,ar,كهكيلويه و بوير احمد
+41387,en,Kohkiloyeh_BoyerAhmad
+41387,ku,كۆهكيلوويە و بوێرئەحمەد
+41388,ar,زنجان
+41388,en,Zanjan
+41388,ku,زەنجان
+41389,ar, خراسان جنوبي
+41389,en,Khorasan_Jonobi
+41389,ku,خۆراساني باشوور
+41390,ar,مدينة طهران - جنوب
+41390,en,Tehran_Jonob
+41390,ku,شاري تاران_باشوور
+41391,ar,مدينة طهران - الغربية
+41391,en,Tehran_Gharb
+41391,ku,شاري تاران_رۆژئاوا
+41392,ar,مدينة طهران - الشرق
+41392,en,Tehran_Shargh
+41392,ku,شاري تاران_رۆژهەڵات
+41393,ar,مدينة طهران - مركز
+41393,en,Tehran_Markaz
+41393,ku,شاري تاران_ناوەند
+41394,ar,مدينة طهران - موديان الكبير
+41394,en,Tehran_Bozorg
+41394,ku,شاري تاران_پيتاكدەراني گەورە
+41395,ar,مدينة طهران - شمال
+41395,en,Tehran_Shomal
+41395,ku,شاري تاران_باكوور
+41396,ar,مركزي
+41396,en,Markazi
+41396,ku,ناوەنديي
+41397,ar,محافظة طهران  - مدينة ري / جنوب
+41397,en,Tehran_Rey
+41397,ku,پارێزگاي تاران_ شاري رەي/ باشوور
+41398,en,Alborz
+41399,ar,محافظة طهران - شميرانات / شمال
+41399,en,Tehran_Shemiran
+41399,ku,پارێزگاي تاران_ شەميرانات/ باكوور
+41400,ar,محافظة طهران - شهريار / الغربية
+41400,en,Tehran_Shariar
+41400,ku,پارێزگاي تاران_شەهريار/ رۆژئاوا
+41401,ar,محافظة طهران - بومهن/ الشرق
+41401,en,Tehran_Bomhen
+41401,ku,پارێزگاي تاران_بوومێهێن/ رۆژهەڵات
+41402,ar,جيلان
+41402,en,Gilan
+41402,ku,گيلان
+41403,ar,أردبيل
+41403,en,Ardebil
+41403,ku,ئەردەبێڵ
+41404,ar,قم
+41404,en,Ghom
+41404,ku,قۆم
+41405,ar,قزوين
+41405,en,Ghazvin
+41405,ku,قەزوين
+41406,ar,كلستان
+41406,en,Golestan
+41406,ku,گوڵستان
+41407,ar,سيستان وبلوشستان
+41407,en,Sistan_Balochetan
+41407,ku,سيستان و بەلووچستان
+41408,ar,يزد
+41408,en,Yazd
+41408,ku,يەزد
+41409,ar,بوشهر
+41409,en,Booshehr
+41409,ku,بووشێهر
+41410,ar,سمنان
+41410,en,Semnan
+41410,ku,سمنان
+41411,ar,المبيعات المحلية
+41411,en,Domestic Market
+41411,ku,فرۆشي ناوخۆ
+41412,ar,مبيعات التصدير
+41412,en,Export Market
+41412,ku,فرۆشي هەناردەكاري
+41413,ar,الناشط
+41413,en,ACTIVE
+41413,ku,چالاك
+41414,ar,غير النشيط
+41414,en,INACTIVE
+41414,ku,ناچالاك
+41415,ar,البضائع
+41415,en,Part
+41415,ku,كەرەستە
+41416,ar,خدمة
+41416,en,Service
+41416,ku,خزمەت
+41417,en,
+41418,ar,سعر البيع الأخير
+41418,en,Last sale price
+41418,ku,كۆتايي نرخي فرۆشتن
+41419,ar,سعر البيع الأخير للزبائن
+41419,en,Last sale price to customer
+41419,ku,كۆتايي نرخي فرۆشتن بۆ كڕيار
+41420,ar,سعر الشراء الأخير
+41420,en,Last bu price
+41420,ku,كۆتايي نرخي كڕين
+41421,ar,فاتورة المبيعات
+41421,en,Invoice
+41421,ku,پسول?ي فر?ش
+41422,ar,فاتورة العودة
+41422,en,ReturnedInvoice
+41422,ku,گ?ران?و?ي پسول?
+41423,en,Monthly
+41423,ku,مانگانە
+41424,en,Yearly
+41424,ku,ساڵانە
+41425,ar,فاتورة المبيعات
+41425,en,Invoice
+41425,ku,پسولەي فرۆش
+41426,ar,فاتورة الشراء
+41426,en,Purchase Invoice
+41426,ku,داواكاري
+41427,ar,ايصالات التخزين
+41427,en,Inventory Receipt
+41427,ku,رەسيدي كۆگا
+41428,ar,قروض الموظفين
+41428,en,Personel Loan
+41428,ku,وامي كارمەندي
+41429,ar,القروض المصرفية
+41429,en,Bank Loan
+41429,ku,قەرزي بانكيي
+41430,ar,أخرى - التحميل
+41430,en,Other Receivable
+41430,ku,ديكە_وەرگرتني
+41431,ar,أخرى - تدفع
+41431,en,Other Payable
+41431,ku,ديكە_پێداني
+41432,ar,فاتورة شراء الخدمات
+41432,en,Service Purchase Invoice
+41432,ku,پسولەي كڕيني خزمەتگوزارييەكان
+41433,ar,تسوية
+41433,en,Paid
+41433,ku,ساوكراو
+41434,ar,غير التسوية
+41434,en,Not Paid
+41434,ku,ساونەكراو
+41435,ar,أول قسط
+41435,en,First Shred
+41435,ku,يەكەم قيست
+41436,ar,آخر قسط
+41436,en,Last Shred
+41436,ku,دوايين قيست
+41437,ar,أسود
+41437,en,Black
+41437,ku,رەش
+41438,ar,أزرق
+41438,en,Blue
+41438,ku,شين
+41439,ar,فضة
+41439,en,Silver
+41439,ku,زيوين
+41440,ar,زجاجي
+41440,en,VistaGlass
+41440,ku,شووشەيي
+41441,ar,سلسلة
+41441,en,String
+41441,ku,بەش
+41442,ar,عدد صحيح
+41442,en,Integer
+41442,ku,ژمارەي تەواو
+41443,ar,عدد الفاصلة العشرية
+41443,en,Decimal
+41443,ku,ژمارەي دەيانە
+41444,ar,التاريخ
+41444,en,Date
+41444,ku,رێكەوت
+41445,ar,حلقة الوصل
+41445,en,Url
+41445,ku,لينك
+41446,ar,الناشط
+41446,en,Active
+41446,ku,چالاك
+41447,ar,مغلق
+41447,en,Closed
+41447,ku,داخراو
+41448,ar,اللغة الفارسية
+41448,en,Persian
+41448,ku,فارسي
+41449,ar,الإنجليزية
+41449,en,English
+41449,ku,ئينگليزي
+41450,ar,كردي
+41450,en,Kurdish
+41450,ku,كۆردي
+41451,ar,العربية
+41451,en,Arabic
+41451,ku,عربي
+41452,ar,هجرية شمسية
+41452,en,Persian
+41452,ku,كۆچي هەتاوي
+41453,ar,الميلادي
+41453,en,Christian
+41453,ku,زاييني
+41454,ar,يساوي
+41454,en,equals
+41454,ku,يەكسانە لەگەڵ
+41455,ar,أكبر من
+41455,en,greater than
+41455,ku,گەورەتر لە
+41456,ar,أكبر من أو يساوي
+41456,en,greater than or equal
+41456,ku,گەورەتر يان بەرانبەرە لەگەڵ
+41457,ar,أقل من
+41457,en,less than
+41457,ku,بچووكترە لە
+41458,ar,أقل من أو يساوي
+41458,en,less than or equal
+41458,ku,بچووكتر يان بەرانبەرە لەگەڵ
+41459,ar,خلافا ل
+41459,en,not equals
+41459,ku,دژە لەگەڵ
+41460,ar,تلقائيا
+41460,en,Automatic
+41460,ku,ئوتۆماتيك
+41461,ar,كتيب يدوي
+41461,en,Manual
+41461,ku,دەستيي
+41462,en,
+41463,ar,نيسان
+41463,en,January
+41463,ku,خاكەلێوە
+41464,ar,مايو
+41464,en,February
+41464,ku,گوڵان
+41465,ar,حزيران
+41465,en,March
+41465,ku,جۆزەردان
+41466,ar,تموز
+41466,en,April
+41466,ku,پووشپەڕ
+41467,ar,آب
+41467,en,May
+41467,ku,گەلاوێژ
+41468,ar,أيلول
+41468,en,June
+41468,ku,خەرمانان
+41469,ar,تشرين الاول
+41469,en,July
+41469,ku,رەزبەر
+41470,ar,تشرين الثاني
+41470,en,August
+41470,ku,گەڵاڕێزان
+41471,ar,كانون الاول
+41471,en,September
+41471,ku,سەرماوەز
+41472,ar,شهر أكتوبر 10
+41472,en,October
+41472,ku,بەفرانبار
+41473,ar,شهر نوفمبر 11
+41473,en,November
+41473,ku,رێبەندان
+41474,ar,مارس
+41474,en,December
+41474,ku,رەشەمە
+41475,ar,الزبائن و المبيعات
+41475,en,Customers & Sales
+41475,ku,كڕياران و فرۆش
+41476,ar,الموردين و المستودعات
+41476,en,Vendors & Inventory
+41476,ku,دابينكاران و كۆگا
+41477,ar,التلقي و الدفع
+41477,en,Receipt & Payment
+41477,ku,وەرگرتن و پێدان
+41478,ar,المحاسبة
+41478,en,Accounting
+41478,ku,ژمێرياري
+41479,ar,الرواتب و الاجور
+41479,en,Payroll
+41479,ku,مووچە و حەقدەست
+41480,ar,البيع بالتجزئة
+41480,en,Point of sale
+41480,ku,وردەفرۆشي
+41481,ar,تعاقد
+41481,en,Contract
+41481,ku,بەڵێندارێتيي
+41482,ar,ترتيب العمل
+41482,en,Work Order
+41482,ku,داواكاري
+41483,en,Fixed Asset Management
+41484,en,Communication
+41485,en,Distribution
+41486,ar,طلبات الشراء
+41486,en,Purchase orders Management
+41487,en,Internal Logistic
+41488,en,Logistic
+41489,en,CompanyDashboard
+41490,en,TaxPayer
+41491,ar,الشركة
+41491,en,Company
+41491,ku,كۆمپانيا
+41492,ar,الإعدادات
+41492,en,Configurations
+41492,ku,رێكخستنەكان
+41493,ar,ممتلكات
+41493,en,Entity
+41493,ku,بوونەتي
+41494,ar,تحقيق
+41494,en,Script
+41494,ku,تاوتوێ
+41495,ar,إكسيل
+41495,en,Entity
+41495,ku,ئەكسێل
+41496,ar,النص
+41496,en,Text
+41496,ku,دەق
+41497,ar,DBF
+41497,en,DBF
+41497,ku,DBF
+41498,en,
+41499,ar,تلقى
+41499,en,Imported
+41499,ku,وەرگيرا
+41500,ar,خطأ
+41500,en,Error
+41500,ku,كێشە
+41501,ar,فاصلة
+41501,en,Camma
+41501,ku,كاما
+41502,ar,علامة التبويب
+41502,en,Tab
+41502,ku,تێب
+41503,ar,مسافة فارغة
+41503,en,Space
+41503,ku,مەوداي بەتاڵ
+41504,ar,لا شيء
+41504,en,None
+41504,ku,هيچ‌يەك
+41505,ar,فاصلة منقوطة
+41505,en,Semicolon
+41505,ku,كاما نوختە
+41506,en,
+41507,ar,ربيع
+41507,en,spring
+41507,ku,بەهار
+41508,ar,الصيف
+41508,en,summer
+41508,ku,هاوين
+41509,ar,الربيع / الصيف
+41509,en,spring/summer
+41509,ku,بەهار/ هاوين
+41510,ar,الخريف
+41510,en,fall
+41510,ku,پاييز
+41511,ar,الربيع / الخريف
+41511,en,fall
+41511,ku,بەهار/ پاييز
+41512,ar,الصيف / الخريف
+41512,en,fall
+41512,ku,هاوين/ پاييز
+41513,ar,الربيع / الصيف / الخريف
+41513,en,fall
+41513,ku,بەهار/ هاوين/ پاييز
+41514,ar,شتاء
+41514,en,winter
+41514,ku,زستان
+41515,ar,الربيع / شتاء
+41515,en,spring
+41515,ku,بەهار/ زستان
+41516,ar,صيف / شتاء
+41516,en,summer
+41516,ku,هاوين/ زستان
+41517,ar,ربيع / صيف / شتاء
+41517,en,spring/summer
+41517,ku,بەهار/ هاوين/ زستان
+41518,ar,خريف / شتاء
+41518,en,fall
+41518,ku,پاييز/ زستان
+41519,ar,الربيع / الخريف / الشتاء
+41519,en,fall
+41519,ku,بەهار/ بەهار/ زستان
+41520,ar,الصيف / الخريف / الشتاء
+41520,en,fall
+41520,ku,هاوين/ پاييز/ زستان
+41521,ar,الصيف / الخريف / الشتاء
+41521,en,fall
+41521,ku,بەهار/ هاوين/ پاييز/ زستان
+41522,en,
+41523,en,
+41524,en,
+41525,en,
+41526,en,
+41527,en,
+41528,en,
+41529,en,
+41530,en,
+41531,en,
+41532,en,
+41533,en,
+41534,en,
+41535,en,
+41536,en,
+41537,en,
+41538,en,
+41539,en,
+41540,en,
+41541,en,
+41542,en,
+41543,en,
+41544,en,
+41545,en,
+41546,en,
+41547,en,
+41548,en,
+41549,en,
+41550,en,
+41551,en,
+41552,en,
+41553,en,
+41554,en,
+41555,en,
+41556,en,
+41557,en,
+41558,en,
+41559,en,
+41560,en,
+41561,en,
+41562,en,
+41563,en,
+41564,en,
+41565,en,
+41566,en,
+41567,en,
+41568,en,
+41569,en,
+41570,en,
+41571,en,
+41572,en,
+41573,en,
+41574,en,
+41575,en,
+41576,ar,فاتورة المبيعات
+41576,en,1.Sales Invoice
+41576,ku,پسولەي فرۆش_1
+41577,ar,2-الفاتورة الاستردادية
+41577,en,2.Sales Returned Invoice
+41577,ku,گەرانەوەي پسولە2
+41578,ar,3-ايصال استلام المستودع 
+41578,en,3.Inventory Receipt
+41578,ku,رەسيدي كۆگا_3
+41579,ar,4- عودة الايصال
+41579,en,4.Inventory Returned Receipt
+41579,ku,هەڵگەڕاوەي رەسيد_4
+41580,ar,5- فاتورة شراء الخدمات
+41580,en,4.Service Inventory Purchase Invoice
+41580,ku,پسولەي كڕيني خزمەتگوزارييەكان5
+41581,ar,6.Asset Purchase Invoice
+41581,en,6.Asset Purchase Invoice
+41581,ku,6.Asset Purchase Invoice
+41582,ar,7.Asset Sale
+41582,en,7.Asset Sale
+41582,ku,7.Asset Sale
+41583,ar,8.ContractStatus
+41583,en,8.ContractStatus
+41583,ku,8.ContractStatus
+41584,ar,9.Status
+41584,en,9.OwnershipStatus
+41584,ku,9.OwnershipStatus
+41585,ar,10.CustomsClearance
+41585,en,10.CustomsClearance
+41585,ku,10.CustomsClearance
+41586,ar,11.BillOfLoading
+41586,en,11.BillOfLoading
+41586,ku,11.BillOfLoading
+41587,ar,12.InsurancePolicy
+41587,en,12.InsurancePolicy
+41587,ku,12.InsurancePolicy
+41588,ar,داخلي
+41588,en,Domestic
+41588,ku,ناوخۆ
+41589,ar,أجنبي
+41589,en,Non Domestic
+41589,ku,بياني
+41590,ar,فاتورة المبيعات
+41590,en,Sales Invoice
+41590,ku,پسولەي فرۆش
+41591,ar,فاتورة الاسترداد
+41591,en,Sales Returned Invoice
+41591,ku,گەرانەوەي پسولە
+41592,ar,الاستلام
+41592,en,Inventory Receipt
+41592,ku,رەسيدي كۆگا
+41593,ar,عودة الايصال
+41593,en,Inventory Returned Receipt 
+41593,ku,هەڵگەڕاوەي رەسيد
+41594,ar,خروج الأوراق المالية من المستودع
+41594,en,Inventory Delivery
+41594,ku,دەرچووني كۆگا
+41595,ar,إعادة خروج الأوراق المالية من مستودع
+41595,en,Inventory Delivery Return
+41595,ku,گەڕانەوەي دەرچووني كۆگا
+41596,ar,البنوك
+41596,en,Banks 
+41596,ku,بانكەكان
+41597,ar,الصناديق
+41597,en,Cashes 
+41597,ku,بوخچەكان
+41598,ar,أجهزة قارئات البطاقات
+41598,en,POS 
+41598,ku,كارت‌ناسەكان
+41599,ar,الزبائن
+41599,en,Cutomers
+41599,ku,كڕياران
+41600,ar,المزودكن
+41600,en,Vendors
+41600,ku,دابينكاران
+41601,ar,الشيكات التسوية و الدفع
+41601,en,Initial Receipt Cheques
+41601,ku,چەكە جێگرەكاني وەرگيراو
+41602,ar,الشيكات المدفوعة
+41602,en,Initial Payment Cheques
+41602,ku,چەكە جێگرەكاني پێدان
+41603,ar,سلعة
+41603,en,Part  
+41603,ku,كەرەستە
+41604,en,Asset 
+41605,en,AssetDepreciation
+41606,en,Broker
+41607,en,Petty Cash
+41608,ar,مؤقت
+41608,en,Temporary
+41608,ku,كاتيي
+41609,ar,الدائم
+41609,en,Permanent
+41609,ku,بەردەوام
+41610,ar,عام
+41610,en,General
+41610,ku,گشتيي
+41611,ar,أنظمة أخرى
+41611,en,Other Systems
+41611,ku,سيستەمەكاني ديكە
+41612,ar,إغلاق الحسابات
+41612,en,Close Accounts
+41612,ku,داخستني ژمێرەكان
+41613,ar,إغلاق
+41613,en,Closing
+41613,ku,كۆتايي
+41614,ar,افتتاح
+41614,en,Opening
+41614,ku,كرانەوە
+41615,ar,التسعكر
+41615,en,Currency Conversion
+41615,ku,پارە گۆڕينەوە
+41616,en,None
+41617,ar,في حالة الانتاج
+41617,en,UnderProduction
+41617,ku,لە حاڵي وەبەرهێناندا
+41618,ar,إنهاء الانتاج
+41618,en,ProductionEnd
+41618,ku,كۆتايي وەبەرهێنان
+41619,ar,محسوب
+41619,en,Calculated
+41619,ku,ژمێركاري كراو
+41620,en,RawMaterials
+41621,en,SemiMades
+41622,en,Both

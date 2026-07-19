@@ -1,0 +1,1498 @@
+﻿Type,Code,Title,Title_En,DisplayOrder,Extra,System,LookupID
+MajorLanguage                                     ,1,فارسي,Persian,1,,FMK,264
+MajorLanguage                                     ,2,انگليسي,English,2,,FMK,265
+ReportColumnType                                  ,2,گزارش تراز دو ستوني,,1,,ACC,40125
+ReportColumnType                                  ,4,گزارش تراز چهار ستوني,,2,,ACC,40126
+ReportColumnType                                  ,6,گزارش تراز شش ستوني,,3,,ACC,40127
+ReportColumnType                                  ,8,گزارش تراز هشت ستوني,,4,,ACC,40128
+AccountType                                       ,0,   ,,0,,ACC,40129
+AccountType                                       ,1,گروه,,1,,ACC,40130
+AccountType                                       ,2,كل,,2,,ACC,40131
+AccountType                                       ,3,معين,,3,,ACC,40132
+BalanceType                                       ,1,بدهكار,,1,,ACC,40133
+BalanceType                                       ,2,بستانكار,,2,,ACC,40134
+BalanceType                                       ,3,مهم نيست,,3,,ACC,40135
+CashFlowCategory                                  ,0,ندارد,,0,,ACC,40136
+CashFlowCategory                                  ,1,عملياتي,,1,,ACC,40137
+CashFlowCategory                                  ,2,سرمايه گذاري,,2,,ACC,40138
+CashFlowCategory                                  ,3,تامين مالي,,3,,ACC,40139
+DLType                                            ,0,,,1,,ACC,40140
+DLType                                            ,1,ساير,,1,,ACC,40141
+DLType                                            ,2,طرف مقابل,,2,,ACC,40142
+DLType                                            ,3,مركز هزينه,,3,,ACC,40143
+DLType                                            ,4,حساب بانكي,,4,,ACC,40144
+DLType                                            ,5,صندوق,,5,,ACC,40145
+DLType                                            ,6,دستگاه كارت خوان,,6,,ACC,40146
+DLType                                            ,7,قرارداد,,7,,ACC,40147
+DLType                                            ,8,سفارش خريد,,8,,ACC,40148
+TopicCategory                                     ,1,داراييهاي غير جاري,,1,,ACC,40149
+TopicCategory                                     ,2,داراييهاي جاري,,2,,ACC,40150
+TopicCategory                                     ,3,حقوق صاحبان سهام,,3,,ACC,40151
+TopicCategory                                     ,4,بدهي هاي غير جاري,,4,,ACC,40152
+TopicCategory                                     ,5,بدهي هاي جاري,,5,,ACC,40153
+TopicCategory                                     ,6,سود و زياني - فروش خالص,,6,,ACC,40154
+TopicCategory                                     ,7,سود و زياني - بهاي تمام شده,,7,,ACC,40155
+TopicCategory                                     ,8,سود و زياني - سود حاصل از سرمايه گذاري هاي عملياتي,,8,,ACC,40156
+TopicCategory                                     ,9,سود و زياني - ساير درامد ها و هزينه هاي عملياتي ، فروش ، اداري عمومي,,9,,ACC,40157
+TopicCategory                                     ,10,سود و زياني - ساير درامد ها و هزينه هاي غير عملياتي و مالي,,10,,ACC,40158
+TopicCategory                                     ,11,سود و زياني - مالياتي,,11,,ACC,40159
+TopicCategory                                     ,12,سود و زياني - عمليات متوقف شده,,12,,ACC,40160
+TopicType                                         ,1,ترازنامه اي,,1,,ACC,40161
+TopicType                                         ,2,سود و زياني,,2,,ACC,40162
+FormOptions                                       ,1,بر مبناي اسناد حسابداري,,1,,ACC,40163
+FormOptions                                       ,2,بر مبناي اسناد كل,,2,,ACC,40164
+AdditionType                                      ,1,درصدي,,1,,SLS,40165
+AdditionType                                      ,2,مبلغي,,2,,SLS,40166
+AdditionType                                      ,3,هر واحد,,3,,SLS,40167
+AdditionFactorBasis                               ,1,كالا و خدمات,,1,,SLS,40168
+AdditionFactorBasis                               ,3,سرجمع,,3,,SLS,40169
+AssetState                                        ,1,جاري,,1,,AST,40170
+AssetState                                        ,2,بلا استفاده,,2,,AST,40171
+AssetState                                        ,3,فروش رفته,,3,,AST,40172
+AssetState                                        ,4,اسقاط شده,,4,,AST,40173
+AssetState                                        ,5,حذف شده,,5,,AST,40174
+CostPartType                                      ,1,تحصيل,,1,,AST,40175
+CostPartType                                      ,2,گسترش و الحاق,,2,,AST,40176
+CostPartType                                      ,3,تعميرات اساسي,,3,,AST,40177
+CostPartDepreciationState                         ,1,مستهلك شده,,1,,AST,40178
+CostPartDepreciationState                         ,2,مستهلك نشده,,2,,AST,40179
+AcquisitionReceiptType                            ,1,خريد داخلي,,1,,AST,40180
+AcquisitionReceiptType                            ,2,ساخت,,2,,AST,40181
+AcquisitionReceiptType                            ,3,ساير,,3,,AST,40182
+AcquisitionReceiptType                            ,4,استقرار,,4,,AST,40183
+AcquisitionReceiptType                            ,5,خريد وارداتي,,5,,AST,40184
+PurchaseType                                      ,1,خريد داخلي,,1,,AST,40185
+PurchaseType                                      ,2,خريد وارداتي,,2,,AST,40186
+AssetTransactionType                              ,1,تحصيل دارايي,,1,,AST,40187
+AssetTransactionType                              ,2,استقرار,,2,,AST,40188
+AssetTransactionType                              ,3,نقل و انتقال,,3,,AST,40189
+AssetTransactionType                              ,4,حذف,,4,,AST,40190
+AssetTransactionType                              ,5,فروش,,5,,AST,40191
+AssetTransactionType                              ,6,اسقاط,,6,,AST,40192
+AssetTransactionType                              ,7,بلااستفاده,,7,,AST,40193
+AssetTransactionType                              ,8,استفاده مجدد,,8,,AST,40194
+AssetTransactionType                              ,9,تغيير نرخ و روش,,9,,AST,40195
+AssetTransactionType                              ,10,مخارج پس از تحصيل,,10,,AST,40196
+AssetTransactionType                              ,99,محاسبه استهلاك,,99,,AST,40197
+AssetRelatedItemType                              ,1,تحصيل,,1,,AST,40198
+AssetRelatedItemType                              ,2,تعمير,,2,,AST,40199
+AssetSaleSettlementType                           ,1,نقدي,,1,,AST,40200
+AssetSaleSettlementType                           ,2,نسيه,,2,,AST,40201
+AssetSaleSettlementType                           ,3,نقدي/نسيه,,3,,AST,40202
+AreaAndPathType                                   ,0,   ,,0,,DST,40203
+AreaAndPathType                                   ,1,منطقه,,1,,DST,40204
+AreaAndPathType                                   ,2,مسير,,2,,DST,40205
+OrderingScheduleRecurrenceType                    ,1,روزانه,,1,,DST,40206
+OrderingScheduleRecurrenceType                    ,2,هفتگي,,2,,DST,40207
+SalesLimitControlType                             ,1,روزانه,,1,,DST,40208
+SalesLimitControlType                             ,2,دوره اي,,2,,DST,40209
+ProductSaleLineProductsState                      ,1,همه كالاها,,1,,DST,40210
+ProductSaleLineProductsState                      ,2,كالاهاي موجود در جدول پايين,,2,,DST,40211
+ProductSaleLineProductsState                      ,3,هيچ كدام از كالاها,,3,,DST,40212
+ProductSaleLineServicesState                      ,1,همه خدمات,,1,,DST,40213
+ProductSaleLineServicesState                      ,2,خدمات موجود در جدول پايين,,2,,DST,40214
+ProductSaleLineServicesState                      ,3,هيچ كدام از خدمات,,3,,DST,40215
+BillItemType                                      ,1,1-فاكتور فروش,,1,,GNR,40216
+BillItemType                                      ,15,2-حمل,,2,,GNR,40217
+BillItemType                                      ,2,3-فاكتور برگشتي,,3,,GNR,40218
+BillItemType                                      ,3,10-اعلاميه بدهكار بستانكار,,4,,GNR,40219
+BillItemType                                      ,4,1-رسيد انبار,,5,,GNR,40220
+BillItemType                                      ,5,3-برگشت رسيد ,,6,,GNR,40221
+BillItemType                                      ,6,4-دريافت,,7,,GNR,40222
+BillItemType                                      ,7,5-پرداخت,,8,,GNR,40223
+BillItemType                                      ,10,4-تخفيف نقدي دريافت,,11,,GNR,40224
+BillItemType                                      ,11,6-تخفيف نقدي پرداخت,,12,,GNR,40225
+BillItemType                                      ,8,7-استرداد چك پرداختي,,9,,GNR,40226
+BillItemType                                      ,9,8-استرداد چك دريافتي,,10,,GNR,40227
+BillItemType                                      ,12,9-برگشت چك خرج شده,,13,,GNR,40228
+BillItemType                                      ,13,10-فاكتور خريد خدمات,,14,,GNR,40229
+BillItemType                                      ,14,11-بهره و جريمه تقسيط,,15,,GNR,40230
+BillItemType                                      ,16,10-فاكتور خريد دارايي,,16,,GNR,40231
+BillItemType                                      ,17,12-فاكتور خريد وارداتي,,17,,GNR,40232
+BillItemType                                      ,18,12-بارنامه,,18,,GNR,40233
+BillItemType                                      ,19,12-بيمه نامه,,19,,GNR,40234
+BillItemType                                      ,20,12-سفارش بازرگاني,,20,,GNR,40235
+BillItemType                                      ,21,12-ترخيص,,21,,GNR,40236
+BillType                                          ,1,فروش,,1,,GNR,40237
+BillType                                          ,2,خريد,,2,,GNR,40238
+ClosingGroup                                      ,0, ,,1,,GNR,40239
+ClosingGroup                                      ,1,دريافت و پرداخت,,1,,GNR,40240
+ClosingGroup                                      ,2,انبار,,3,,GNR,40241
+ClosingGroup                                      ,4,مشتريان و فروش,,2,,GNR,40242
+ClosingGroup                                      ,8,تامين كنندگان,,4,,GNR,40243
+ClosingGroup                                      ,16,دارايي ثابت,,5,,GNR,40244
+ClosingState                                      ,0,باز,,1,,GNR,40245
+ClosingState                                      ,1,بسته,,2,,GNR,40246
+ClosingState                                      ,2,نامشخص,,3,,GNR,40247
+PreReceiptType                                    ,1,علي الحساب,,1,,CNT,40248
+PreReceiptType                                    ,2,پيش دريافت,,2,,CNT,40249
+PreReceiptType                                    ,3,علي الحساب پرداختي,,3,,CNT,40250
+PreReceiptType                                    ,4,پيش پرداخت,,4,,CNT,40251
+Regard                                            ,1,انجام تعهدات قرارداد,,3,,CNT,40252
+Regard                                            ,2,پيش دريافت / علي الحساب,,4,,CNT,40253
+Regard                                            ,3,شركت در مناقصه,,1,,CNT,40254
+Regard                                            ,4,صدور ضمانت نامه بانكي ,,2,,CNT,40255
+Regard                                            ,5,پيش پرداخت / علي الحساب ,,5,,CNT,40256
+StatusType                                        ,1,موقت,,1,,CNT,40257
+StatusType                                        ,2,ماقبل قطعي,,2,,CNT,40258
+StatusType                                        ,3,قطعي,,3,,CNT,40259
+StatusRelationType                                ,1,عادي,,1,,CNT,40260
+StatusRelationType                                ,2,تعديل افزايشي,,2,,CNT,40261
+StatusRelationType                                ,3,تعديل كاهشي,,3,,CNT,40262
+ChangeType                                        ,1,الحاقيه,,1,,CNT,40263
+ChangeType                                        ,2,دستوركار,,2,,CNT,40264
+ChangeType                                        ,3,صورت جلسه,,3,,CNT,40265
+ChangeType                                        ,4,متمم,,4,,CNT,40266
+ChangeType                                        ,5,قرارداد,,5,,CNT,40267
+ChangeAmountType                                  ,1,افزايش درصدي,,1,,CNT,40268
+ChangeAmountType                                  ,2,كاهش درصدي,,2,,CNT,40269
+ChangeAmountType                                  ,3,افزايش مبلغي,,4,,CNT,40270
+ChangeAmountType                                  ,4,كاهش مبلغي,,5,,CNT,40271
+ChangeAmountType                                  ,5,مبلغ ثابت,,6,,CNT,40272
+TimeUnit                                          ,1,روز,,1,,CNT,40273
+TimeUnit                                          ,30,ماه,,2,,CNT,40274
+TimeUnit                                          ,365,سال,,3,,CNT,40275
+CoefficientType                                   ,1,افزاينده,,1,,CNT,40276
+CoefficientType                                   ,2,كاهنده,,1,,CNT,40277
+CostStatementType                                 ,1,نقدي,,1,,CNT,40278
+CostStatementType                                 ,2,اعتباري,,2,,CNT,40279
+CostStatementItemType                             ,1,مواد مصرفي,,1,,CNT,40280
+CostStatementItemType                             ,2,دستمزد,,2,,CNT,40281
+CostStatementItemType                             ,3,سربار,,3,,CNT,40282
+CostStatementItemType                             ,4,ساير,,4,,CNT,40283
+CostStatementVoucherType                          ,1,دفتر مركزي,,1,,CNT,40284
+CostStatementVoucherType                          ,2,كارگاهي,,2,,CNT,40285
+SettlementType                                    ,1,صورت وضعيت پيمانكاري,,1,,CNT,40286
+SettlementType                                    ,2,صورت هزينه,,2,,CNT,40287
+SettlementType                                    ,3,صورت وضعيت پيمانكارجزء,,3,,CNT,40288
+GuaranteeState                                    ,1,ثبت شده,,1,,CNT,40289
+GuaranteeState                                    ,2,آزاد شده,,2,,CNT,40290
+GuaranteeOperationType                            ,1,تمديد,,1,,CNT,40291
+GuaranteeOperationType                            ,2,تقليل,,2,,CNT,40292
+GuaranteeOperationType                            ,3,آزاد سازي,,3,,CNT,40293
+ContractPriceListCategoryType                     ,1,رشته,,1,,CNT,40294
+ContractPriceListCategoryType                     ,2,فصل,,2,,CNT,40295
+ContractPriceListCategoryType                     ,3,رسته,,3,,CNT,40296
+StatusConfirmationStateType                       ,1,ارسالي,,1,,CNT,40297
+StatusConfirmationStateType                       ,2,تاييد نهايي,,2,,CNT,40298
+StatusConfirmationStateType                       ,3,ابطالي,,3,,CNT,40299
+ContractAffectedChange                            ,1,مفاد,,1,,CNT,40300
+ContractAffectedChange                            ,2,قرارداد,,2,,CNT,40301
+ContractNature                                    ,1,پيمانكاري,,1,,CNT,40302
+ContractNature                                    ,2,پيمانكارجزء,,2,,CNT,40303
+GuaranteeNature                                   ,1,ضمانت نامه پرداختي,,1,,CNT,40304
+GuaranteeNature                                   ,2,ضمانت نامه دريافتي,,2,,CNT,40305
+StatusNature                                      ,1,پيمانكاري,,1,,CNT,40306
+StatusNature                                      ,2,پيمانكارجزء,,2,,CNT,40307
+CoefficientNature                                 ,1,پيمانكاري,,1,,CNT,40308
+CoefficientNature                                 ,2,پيمانكارجزء,,2,,CNT,40309
+ContractActivationStateType                       ,0,غير فعال,,0,,CNT,40310
+ContractActivationStateType                       ,1,فعال,,1,,CNT,40311
+StatusSettlementType                              ,1,نقدي,,1,,CNT,40312
+StatusSettlementType                              ,2,نسيه,,2,,CNT,40313
+StatusSettlementType                              ,3,نقدي/نسيه,,3,,CNT,40314
+ReportRowCountLimits                              ,10,10,,10,,GNR,40315
+ReportRowCountLimits                              ,25,25,,25,,GNR,40316
+ReportRowCountLimits                              ,50,50,,50,,GNR,40317
+ReportRowCountLimits                              ,100,100,,100,,GNR,40318
+ReportRowCountLimits                              ,2147483646,همه موارد,,2147483646,,GNR,40319
+ManagementReportCompareOptions                    ,0,مقايسه - خالي,,0,,GNR,40320
+ManagementReportCompareOptions                    ,1,مقايسه - با 1 سال گذشته,,1,,GNR,40321
+ManagementReportCompareOptions                    ,2,مقايسه - با 2 سال گذشته,,2,,GNR,40322
+ManagementReportCompareOptions                    ,3,مقايسه - با 3 سال گذشته,,3,,GNR,40323
+ManagementReportsPeriodType                       ,1,دوره زماني - روز,,1,,GNR,40324
+ManagementReportsPeriodType                       ,2,دوره زماني - هفته,,2,,GNR,40325
+ManagementReportsPeriodType                       ,3,دوره زماني - ماه,,3,,GNR,40326
+ManagementReportsPeriodType                       ,4,دوره زماني - فصل,,4,,GNR,40327
+ManagementReportsPeriodType                       ,5,دوره زماني - سال,,5,,GNR,40328
+ReportLogicalOperator                             ,0,,,0,,GNR,40329
+ReportLogicalOperator                             ,1,و,,1,,GNR,40330
+ReportLogicalOperator                             ,2,يا,,2,,GNR,40331
+ReportFilterOperator                              ,0,,,0,,GNR,40332
+ReportFilterOperator                              ,1,برابر با,,1,,GNR,40333
+ReportFilterOperator                              ,2,برابر نيست با,,2,,GNR,40334
+ReportFilterOperator                              ,3,بزرگتر,,3,,GNR,40335
+ReportFilterOperator                              ,4,بزرگتر يا مساوي با,,4,,GNR,40336
+ReportFilterOperator                              ,5,كوچك تر,,5,,GNR,40337
+ReportFilterOperator                              ,6,كوچكتر يا مساوي با,,6,,GNR,40338
+ReportFilterOperator                              ,7,شامل,,7,,GNR,40339
+ReportFilterOperator                              ,8,شامل,,8,,GNR,40340
+ReportFilterOperator                              ,9,خالي است,,13,,GNR,40341
+ReportFilterOperator                              ,10,خالي نيست,,14,,GNR,40342
+ReportFilterOperator                              ,11,شروع مي شود با,,11,,GNR,40343
+ReportFilterOperator                              ,12,پايان مي پذيرد با,,12,,GNR,40344
+ReportFilterOperator                              ,13,شامل نمي شود از,,9,,GNR,40345
+ReportFilterOperator                              ,14,شامل نمي شود از,,10,,GNR,40346
+CompanyDashboardRange                             ,1,سالانه,,1,,GNR,40347
+CompanyDashboardRange                             ,2,فصلي,,2,,GNR,40348
+CompanyDashboardRange                             ,3,ماهانه,,3,,GNR,40349
+CompanyDashboardRange                             ,4,هفتگي,,4,,GNR,40350
+CompanyDashboardRange                             ,5,روزانه,,5,,GNR,40351
+SalaryChangeType                                  ,1,افزايش,,1,,RPA,40352
+SalaryChangeType                                  ,2,كاهش,,2,,RPA,40353
+SalaryChangeType                                  ,3,بدون تغيير,,3,,RPA,40354
+BankFlowCompanyDashboardReportType                ,1,1: موجودي بانك,,1,,RPA,40355
+BankFlowCompanyDashboardReportType                ,2,2: موجودي صندوق,,2,,RPA,40356
+BankFlowCompanyDashboardReportType                ,3,3: موجودي دستگاه كارت خوان,,3,,RPA,40357
+BankFlowCompanyDashboardReportType                ,4,4: موجودي تنخواه دار,,4,,RPA,40358
+BankFlowCompanyDashboardReportType                ,5,5: تعهدات دريافتني,,5,,RPA,40359
+BankFlowCompanyDashboardReportType                ,6,6: تعهدات پرداختني,,6,,RPA,40360
+Quarter                                           ,0,,,0,,GNR,40361
+Quarter                                           ,1,اول,,1,,GNR,40362
+Quarter                                           ,2,دوم,,2,,GNR,40363
+Quarter                                           ,3,سوم,,3,,GNR,40364
+Quarter                                           ,4,چهارم,,4,,GNR,40365
+ItemIdentifierType                                ,1,كد,,1,,INV,40366
+ItemIdentifierType                                ,2,باركد,,2,,INV,40367
+InitiateType                                      ,1,ابتداي استخدام,,1,,PAY,40368
+InitiateType                                      ,2,انتقال سال مالي,,2,,PAY,40369
+ContractType                                      ,1,استخدام,,1,,PAY,40370
+ContractType                                      ,2,اصلاح قرارداد,,2,,PAY,40371
+EmploymentType                                    ,0,ساير,,0,,PAY,40372
+EmploymentType                                    ,1,پيماني,,1,,PAY,40373
+EmploymentType                                    ,2,رسمي,,2,,PAY,40374
+EmploymentType                                    ,3,رسمي آزمايشي,,3,,PAY,40375
+EmploymentType                                    ,4,قراردادي,,4,,PAY,40376
+EmploymentType                                    ,5,روزمزد,,5,,PAY,40377
+EmploymentType                                    ,6,خريد خدمت,,6,,PAY,40378
+EmploymentType                                    ,7,مامور,,7,,PAY,40379
+EmploymentType                                    ,8,ساعتي,,8,,PAY,40380
+EmploymentType                                    ,9,رسمي فصلي,,9,,PAY,40381
+EmploymentType                                    ,10,كارمزدي,,10,,PAY,40382
+EmploymentType                                    ,11,شركتي,,11,,PAY,40383
+TaxDiscountType                                   ,0,,,0,,PAY,40384
+TaxDiscountType                                   ,1,فرزند سوم,,1,,PAY,40385
+TaxDiscountType                                   ,2,فرزند چهارم,,2,,PAY,40386
+TaxDiscountType                                   ,3,فرزند پنجم,,3,,PAY,40387
+CostCenterType                                    ,1,توليد,,1,,RPA,40388
+CostCenterType                                    ,2,اداري و تشكيلاتي,,2,,RPA,40389
+CostCenterType                                    ,4,خدماتي و عمومي,,4,,RPA,40390
+DebitCreditNoteType                               ,1,تامين كننده,,1,,GNR,40391
+DebitCreditNoteType                               ,3,ساير,,3,,GNR,40392
+DebitCreditNoteType                               ,2,مشتري,,2,,GNR,40393
+DebitCreditNoteType                               ,4,واسط,,4,,GNR,40394
+DebitCreditNoteType                               ,5,تنخواه دار,,5,,GNR,40395
+DeviceType                                        ,0,موبايل سفارش‌گيري و پخش,,1,,GNR,40396
+DeviceType                                        ,1,سرور CRM,,2,,GNR,40397
+DeviceType                                        ,2,سرور فروشگاه اينترنتي,,2,,GNR,40398
+DiscountCalculationBasis                          ,0,كالا و خدمات,,0,,SLS,40399
+DiscountCalculationBasis                          ,1,بسته محصول,,1,,SLS,40400
+DiscountCalculationBasis                          ,2,سرجمع كالا در فاكتور,,2,,SLS,40401
+DiscountType                                      ,1,درصدي,,1,,SLS,40402
+DiscountType                                      ,2,مبلغي,,2,,SLS,40403
+DiscountType                                      ,3,جايزه از كالاي ديگر,,4,,SLS,40404
+DiscountType                                      ,4,بسته محصول,,6,,SLS,40405
+DiscountType                                      ,5,جايزه از همان كالا,,3,,SLS,40406
+DiscountType                                      ,6,جايزه از گروه كالاي تخفيف,,5,,SLS,40407
+SaleVolumeType                                    ,1,مبلغ,,1,,SLS,40408
+SaleVolumeType                                    ,2,تعداد/مقدار,,2,,SLS,40409
+DiscountCalcType                                  ,1,خطي,,1,,SLS,40410
+DiscountCalcType                                  ,2,پلكاني,,2,,SLS,40411
+ColdDistributionState                             ,0,,,0,,DST,40412
+ColdDistributionState                             ,1,ثبت شده,,1,,DST,40413
+ColdDistributionState                             ,2,خاتمه يافته,,2,,DST,40414
+ColdDistributionState                             ,3,آماده توزيع,,3,,DST,40415
+ColdDistributionState                             ,4,در حال توزيع,,4,,DST,40416
+ColdDistributionState                             ,5,توزيع شده,,5,,DST,40417
+ColdDistributionTrigger                           ,0,ثبت توزيع,,0,,DST,40418
+ColdDistributionTrigger                           ,1,آماده توزيع,,1,,DST,40419
+ColdDistributionTrigger                           ,2,برگشت از آماده توزيع,,2,,DST,40420
+ColdDistributionTrigger                           ,3,ارسال به دستگاه,,3,,DST,40421
+ColdDistributionTrigger                           ,4,حذف از دستگاه,,4,,DST,40422
+ColdDistributionTrigger                           ,5,خاتمه در دستگاه,,5,,DST,40423
+ColdDistributionTrigger                           ,6,باز كردن توزيع,,6,,DST,40424
+ColdDistributionTrigger                           ,7,خاتمه توزيع,,7,,DST,40425
+ColdDistributionTrigger                           ,8,برگشت از خاتمه توزيع,,8,,DST,40426
+ColdDistributionTrigger                           ,9,برگشت از خاتمه توزيع,,9,,DST,40427
+ColdDistributionInvoiceState                      ,0,,,0,,DST,40428
+ColdDistributionInvoiceState                      ,1,تحول شد,,1,,DST,40429
+ColdDistributionInvoiceState                      ,2,تحويل نشد,,2,,DST,40430
+ColdDistributionReturnedInvoiceState              ,0,,,0,,DST,40431
+ColdDistributionReturnedInvoiceState              ,1,دريافت شد,,1,,DST,40432
+ColdDistributionReturnedInvoiceState              ,2,دريافت نشد,,2,,DST,40433
+DebtCollectionListState                           ,0,,,0,,DST,40434
+DebtCollectionListState                           ,1,ثبت شده,,1,,DST,40435
+DebtCollectionListState                           ,2,خاتمه يافته,,2,,DST,40436
+DebtCollectionListState                           ,3,آماده وصول,,3,,DST,40437
+DebtCollectionListState                           ,4,در حال وصول,,4,,DST,40438
+DebtCollectionListState                           ,5,وصول شده,,5,,DST,40439
+DebtCollectionListTrigger                         ,0,ثبت ليست وصول,,0,,DST,40440
+DebtCollectionListTrigger                         ,1,آماده وصول,,1,,DST,40441
+DebtCollectionListTrigger                         ,2,برگشت از آماده وصول,,2,,DST,40442
+DebtCollectionListTrigger                         ,3,ارسال به دستگاه,,3,,DST,40443
+DebtCollectionListTrigger                         ,4,حذف از دستگاه,,4,,DST,40444
+DebtCollectionListTrigger                         ,5,خاتمه در دستگاه,,5,,DST,40445
+DebtCollectionListTrigger                         ,6,باز كردن ليست وصول,,6,,DST,40446
+DebtCollectionListTrigger                         ,7,خاتمه ليست وصول,,7,,DST,40447
+DebtCollectionListTrigger                         ,8,برگشت از خاتمه ليست وصول,,8,,DST,40448
+DebtCollectionListTrigger                         ,9,برگشت از خاتمه ليست وصول,,9,,DST,40449
+HotDistributionState                              ,0,,,0,,DST,40450
+HotDistributionState                              ,1,ثبت شده,,1,,DST,40451
+HotDistributionState                              ,2,خاتمه يافته,,2,,DST,40452
+HotDistributionState                              ,3,آماده توزيع,,3,,DST,40453
+HotDistributionState                              ,4,در حال توزيع,,4,,DST,40454
+HotDistributionState                              ,5,توزيع شده,,5,,DST,40455
+HotDistributionSaleDocumentType                   ,0,,,0,,DST,40456
+HotDistributionSaleDocumentType                   ,1,فاكتور,,1,,DST,40457
+HotDistributionSaleDocumentType                   ,2,فاكتور برگشتي,,2,,DST,40458
+HotDistributionTrigger                            ,0,ثبت توزيع,,0,,DST,40459
+HotDistributionTrigger                            ,1,صدور سند خروج انبار,,1,,DST,40460
+HotDistributionTrigger                            ,2,حذف سند خروج انبار,,2,,DST,40461
+HotDistributionTrigger                            ,3,ارسال به دستگاه,,3,,DST,40462
+HotDistributionTrigger                            ,4,حذف از دستگاه,,4,,DST,40463
+HotDistributionTrigger                            ,5,خاتمه در دستگاه,,5,,DST,40464
+HotDistributionTrigger                            ,6,باز كردن توزيع,,6,,DST,40465
+HotDistributionTrigger                            ,7,خاتمه توزيع,,7,,DST,40466
+HotDistributionTrigger                            ,8,برگشت از خاتمه توزيع,,8,,DST,40467
+HotDistributionTrigger                            ,9,برگشت از خاتمه توزيع,,9,,DST,40468
+DynamicFastReportFillOrder                        ,1,بالا به پايين,,1,,RPA,40469
+DynamicFastReportFillOrder                        ,2,راست به چپ,,2,,RPA,40470
+DepreciationMethod                                ,1,بدون روش,,1,,AST,40471
+DepreciationMethod                                ,2,خط مستقيم,,2,,AST,40472
+DepreciationMethod                                ,3,نزولي,,3,,AST,40473
+GroupingCreditCheckingType                        ,1,هشدار در صورت بيشتر شدن مانده از اعتبار,,1,,GNR,40474
+GroupingCreditCheckingType                        ,2,جلوگيري از عمليات در صورت بيشتر شدن مانده از اعتبار,,2,,GNR,40475
+GroupingCreditCheckingType                        ,3,هيچكدام,,3,,GNR,40476
+InventoryDeliveryType                             ,1,فروش,,1,,INV,40477
+InventoryDeliveryType                             ,2,مصرف,,2,,INV,40478
+InventoryDeliveryType                             ,3,ساير,,3,,INV,40479
+InventoryDeliveryType                             ,4,انتقال بين انبار,,4,,INV,40480
+InventoryReceiptType                              ,1,خريد,,1,,INV,40481
+InventoryReceiptType                              ,2,توليد,,2,,INV,40482
+InventoryReceiptType                              ,3,ساير,,3,,INV,40483
+InventoryReceiptType                              ,4,ابتداي دوره,,4,,INV,40484
+InventoryReceiptType                              ,5,انتقال بين انبار,,5,,INV,40485
+InventoryVoucherType                              ,1,رسيد,,1,,INV,40486
+InventoryVoucherType                              ,2,برگشت رسيد,,2,,INV,40487
+InventoryVoucherType                              ,3,خروج,,3,,INV,40488
+InventoryVoucherType                              ,4,برگشت خروج,,4,,INV,40489
+InventoryVoucherType                              ,5,فاكتور خريد خدمات,,5,,INV,40490
+InventoryReceiptPurchaseType                      ,1,خريد (داخلي),,1,,INV,40491
+InventoryReceiptPurchaseType                      ,2,خريد (وارداتي),,2,,INV,40492
+FormCreator                                       ,1,انبار,,1,,CNT,40493
+FormCreator                                       ,2,قرارداد,,2,,CNT,40494
+FormCreator                                       ,3,انبارگرداني,,3,,CNT,40495
+FormCreator                                       ,4,توليد,,4,,CNT,40496
+FormCreator                                       ,5,درخواست كالا از انبار,,4,,CNT,40497
+InventoryBalancingState                           ,1,فاقد تگ,,1,,INV,40498
+InventoryBalancingState                           ,2,داراي تگ,,2,,INV,40499
+InventoryBalancingState                           ,3,تأييد شمارش,,3,,INV,40500
+InventoryBalancingState                           ,4,ثبت اسناد كسري/اضافي,,4,,INV,40501
+InventoryBalancingState                           ,5,ثبت اسناد حسابداري مغايرت,,5,,INV,40502
+InventoryPurchaseInvoiceType                      ,1,عادي,,1,,INV,40503
+InventoryPurchaseInvoiceType                      ,2,خدمات,,2,,INV,40504
+InventoryPurchaseInvoiceType                      ,3,دارايي,,2,,INV,40505
+CostType                                          ,0,,,0,,INV,40506
+CostType                                          ,1,ساير هزينه هاي تسهميم نشده دوره مالي قبل,,1,,INV,40507
+CostType                                          ,2,ساير هزينه ها,,2,,INV,40508
+CostAllotmentType                                 ,1,مقداري,,1,,INV,40509
+CostAllotmentType                                 ,2,مبلغي,,2,,INV,40510
+CostAllotmentType                                 ,3,مساوي,,3,,INV,40511
+CostAllotmentType                                 ,4,دستي,,4,,INV,40512
+WeighbridgeBaudRate                               ,0,br110,,0,,INV,40513
+WeighbridgeBaudRate                               ,1,br300,,1,,INV,40514
+WeighbridgeBaudRate                               ,2,br600,,2,,INV,40515
+WeighbridgeBaudRate                               ,3,br1200,,3,,INV,40516
+WeighbridgeBaudRate                               ,4,br2400,,4,,INV,40517
+WeighbridgeBaudRate                               ,5,br4800,,5,,INV,40518
+WeighbridgeBaudRate                               ,6,br9600,,6,,INV,40519
+WeighbridgeBaudRate                               ,7,br14400,,7,,INV,40520
+WeighbridgeBaudRate                               ,8,br19200,,8,,INV,40521
+WeighbridgeBaudRate                               ,9,br38400,,9,,INV,40522
+WeighbridgeBaudRate                               ,10,br56000,,10,,INV,40523
+WeighbridgeBaudRate                               ,11,br57600,,11,,INV,40524
+WeighbridgeBaudRate                               ,12,br115200,,12,,INV,40525
+WeighbridgeBaudRate                               ,13,br128000,,13,,INV,40526
+WeighbridgeBaudRate                               ,14,br256000,,14,,INV,40527
+WeighbridgeBaudRate                               ,15,brCustom,,15,,INV,40528
+WeighbridgeDataBits                               ,0,db4,,0,,INV,40529
+WeighbridgeDataBits                               ,1,db5,,1,,INV,40530
+WeighbridgeDataBits                               ,2,db6,,2,,INV,40531
+WeighbridgeDataBits                               ,3,db7,,3,,INV,40532
+WeighbridgeDataBits                               ,4,db8,,4,,INV,40533
+WeighbridgeModel                                  ,0,ABKOOHM,,0,,INV,40534
+WeighbridgeModel                                  ,1,ABKOOHCH,,1,,INV,40535
+WeighbridgeModel                                  ,2,OmegaDWI3002,,2,,INV,40536
+WeighbridgeModel                                  ,3,Schenck,,3,,INV,40537
+WeighbridgeModel                                  ,4,MolenLD5218,,4,,INV,40538
+WeighbridgeModel                                  ,5,SchenckDisomatB,,5,,INV,40539
+WeighbridgeModel                                  ,6,PreciaMolen,,6,,INV,40540
+WeighbridgeModel                                  ,7,TozinElectric,,7,,INV,40541
+WeighbridgeModel                                  ,8,SchenckDTA,,8,,INV,40542
+WeighbridgeModel                                  ,9,Leon,,9,,INV,40543
+WeighbridgeModel                                  ,10,SchenckDT,,10,,INV,40544
+WeighbridgeModel                                  ,11,Delta07,,11,,INV,40545
+WeighbridgeModel                                  ,12,ParsMavazin,,12,,INV,40546
+WeighbridgeModel                                  ,13,TozinElectricTEC1500A,,13,,INV,40547
+WeighbridgeModel                                  ,14,CASCI1560A,,14,,INV,40548
+WeighbridgeModel                                  ,15,Alpha08Device,,15,,INV,40549
+WeighbridgeModel                                  ,16,ToledoDevice,,16,,INV,40550
+WeighbridgeModel                                  ,17,Alpha05Device,,17,,INV,40551
+WeighbridgeModel                                  ,18,Gamma07Device,,18,,INV,40552
+WeighbridgeModel                                  ,19,TozinTSM8500Device,,19,,INV,40553
+WeighbridgeModel                                  ,20,PandPU800Device,,20,,INV,40554
+WeighbridgeModel                                  ,21,OmegaDWI3002Ver2,,21,,INV,40555
+WeighbridgeModel                                  ,22,Cardinal748,,22,,INV,40556
+WeighbridgeModel                                  ,23,DeghatA,,23,,INV,40557
+WeighbridgeModel                                  ,24,BilanciaiD410Device,,24,,INV,40558
+WeighbridgeModel                                  ,25,TozinTec800,,25,,INV,40559
+WeighbridgeModel                                  ,26,DeghatDA,,26,,INV,40560
+WeighbridgeModel                                  ,27,Gamma07Version2Device,,27,,INV,40561
+WeighbridgeModel                                  ,28,FarasooDeghatDevice,,28,,INV,40562
+WeighbridgeModel                                  ,29,Toledo8530Device,,29,,INV,40563
+WeighbridgeModel                                  ,30,Tesla8000Device,,30,,INV,40564
+WeighbridgeModel                                  ,31,Dg18000Device,,31,,INV,40565
+WeighbridgeModel                                  ,32,Cardinal748Ver2,,32,,INV,40566
+WeighbridgeModel                                  ,33,TChenaran01Device,,33,,INV,40567
+WeighbridgeModel                                  ,34,TTorbatSugerLostDevice,,34,,INV,40568
+WeighbridgeModel                                  ,35,TTorbatSugerFinenessDevice,,35,,INV,40569
+WeighbridgeModel                                  ,36,TAbkoohSugerLostDevice,,36,,INV,40570
+WeighbridgeModel                                  ,37,ChenaranSugerFinenessDevice,,37,,INV,40571
+WeighbridgeModel                                  ,38,Pand9800Device,,38,,INV,40572
+WeighbridgeModel                                  ,39,Pand9800GF1TDevice,,39,,INV,40573
+WeighbridgeModel                                  ,40,Pand9000Device,,40,,INV,40574
+WeighbridgeModel                                  ,41,TBaskoolBaseDevice1,,41,,INV,40575
+WeighbridgeModel                                  ,42,TBaskoolBaseDevice2,,42,,INV,40576
+WeighbridgeModel                                  ,43,TBaskoolBaseDevice3,,43,,INV,40577
+WeighbridgeModel                                  ,44,TBaskoolBaseDevice4,,44,,INV,40578
+WeighbridgeParity                                 ,0,paNone,,0,,INV,40579
+WeighbridgeParity                                 ,1,paOdd,,1,,INV,40580
+WeighbridgeParity                                 ,2,paEven,,2,,INV,40581
+WeighbridgeParity                                 ,3,paMark,,3,,INV,40582
+WeighbridgeParity                                 ,4,paSpace,,4,,INV,40583
+WeighbridgePort                                   ,1,COM1,,1,,INV,40584
+WeighbridgePort                                   ,2,COM2,,2,,INV,40585
+WeighbridgePort                                   ,3,COM3,,3,,INV,40586
+WeighbridgePort                                   ,4,COM4,,4,,INV,40587
+WeighbridgePort                                   ,5,COM5,,5,,INV,40588
+WeighbridgePort                                   ,6,COM6,,6,,INV,40589
+WeighbridgePort                                   ,7,COM7,,7,,INV,40590
+WeighbridgePort                                   ,8,COM8,,8,,INV,40591
+WeighbridgePort                                   ,9,COM9,,9,,INV,40592
+WeighbridgePort                                   ,10,COM10,,10,,INV,40593
+WeighbridgeStopBits                               ,0,sb1,,0,,INV,40594
+WeighbridgeStopBits                               ,1,sb1p5,,1,,INV,40595
+WeighbridgeStopBits                               ,2,sb2,,2,,INV,40596
+WeighingState                                     ,1,بارگيري,,1,,INV,40597
+WeighingState                                     ,2,تخليه,,2,,INV,40598
+WeighingState                                     ,3,اتمام توزين,,3,,INV,40599
+WeighingState                                     ,4,خاتمه يافته,,4,,INV,40600
+WeighingState                                     ,5,ابطال شده,,5,,INV,40601
+WeighingType                                      ,1,ورود,,1,,INV,40602
+WeighingType                                      ,2,خروج,,2,,INV,40603
+WeighingVchType                                   ,1,رسيد انبار,,1,,INV,40604
+WeighingVchType                                   ,2,برگشت رسيد انبار,,2,,INV,40605
+WeighingVchType                                   ,3,خروج انبار,,3,,INV,40606
+WeighingVchType                                   ,4,برگشت خروج انبار,,4,,INV,40607
+PaymentMethod                                     ,2,اعتباري,,1,,SLS,40608
+PaymentMethod                                     ,1,نقدي,,2,,SLS,40609
+InvoiceState                                      ,1,ثبت,,1,,SLS,40610
+InvoiceState                                      ,2,ابطال شده,,2,,SLS,40611
+InvoiceSettlementType                             ,1,نقدي,,1,,SLS,40612
+InvoiceSettlementType                             ,2,نسيه,,2,,SLS,40613
+InvoiceSettlementType                             ,3,نقدي/نسيه,,3,,SLS,40614
+CommissionCalculationBase                         ,1,حجم فروش كالا در يك فاكتور,,1,,SLS,40615
+CommissionCalculationBase                         ,2,حجم فروش در يك فاكتور,,2,,SLS,40616
+CommissionCalculationBase                         ,3,حجم فروش كالا در بازه,,3,,SLS,40617
+CommissionCalculationBase                         ,4,سرجمع فروش فاكتورها در بازه,,4,,SLS,40618
+CommissionCalculationBase                         ,5,ورود دستي,,5,,SLS,40619
+CommissionCalculationType                         ,1,ساده,,1,,SLS,40620
+CommissionCalculationType                         ,2,پلكاني,,2,,SLS,40621
+CommissionSaleVolumeCalculationBase               ,1,مقدار,,1,,SLS,40622
+CommissionSaleVolumeCalculationBase               ,2,مبلغ,,2,,SLS,40623
+CommissionType                                    ,1,درصدي,,1,,SLS,40624
+CommissionType                                    ,2,مبلغي,,2,,SLS,40625
+CommissionInvoiceSettlementState                  ,1,ثبت شده,,1,,SLS,40626
+CommissionInvoiceSettlementState                  ,2,تسويه شده به شرط وصول چك,,2,,SLS,40627
+CommissionInvoiceSettlementState                  ,3,تسويه شده,,3,,SLS,40628
+CommissionItemFilterType                          ,1,همه,,1,,SLS,40629
+CommissionItemFilterType                          ,2,شامل كالاهاي زير باشد,,2,,SLS,40630
+CommissionItemFilterType                          ,3,تمامي كالا ها به جز,,3,,SLS,40631
+CustomsDeclarationState                           ,1,ثبت,,1,,SLS,40632
+CustomsDeclarationState                           ,2,ابطال شده,,2,,SLS,40633
+ItemType                                          ,1,كالا,,1,,INV,40634
+ItemType                                          ,2,خدمت,,2,,INV,40635
+ItemType                                          ,3,كالاي دارايي,,1,,INV,40636
+ItemStockSummaryType                              ,1,موجودي,,1,,INV,40637
+ItemStockSummaryType                              ,2,موجودي قابل فروش,,2,,INV,40638
+ItemStockSummaryType                              ,3,موجودي قابل فروش بااحتساب رزرو,,3,,INV,40639
+LastFeeOfInventoryPriceType                       ,0,آخرين قيمت خريد,,0,,INV,40640
+LastFeeOfInventoryPriceType                       ,1,آخرين قيمت خريد تامين كننده,,1,,INV,40641
+LocationType                                      ,0,محل هاي جغرافيايي,,1,,GNR,40642
+LocationType                                      ,1,كشور,,2,,GNR,40643
+LocationType                                      ,2,استان,,3,,GNR,40644
+LocationType                                      ,3,شهر,,4,,GNR,40645
+LocationType                                      ,4,روستا,,5,,GNR,40646
+MarketingDisketteType1396                         ,1,خريد,,1,,GNR,40647
+MarketingDisketteType1396                         ,2,فروش,,2,,GNR,40648
+MarketingDisketteType1396                         ,3,خريد و فروش,,3,,GNR,40649
+MarketingDisketteType1396                         ,4,صورت وضعيت,,4,,GNR,40650
+MarketingDisketteType1396                         ,5,خريد و صورت وضعيت,,5,,GNR,40651
+MarketingDisketteType1396                         ,6,فروش و صورت وضعيت,,6,,GNR,40652
+MarketingDisketteType1396                         ,7,خريد و فروش و صورت وضعيت,,7,,GNR,40653
+MarketingDisketteType1396                         ,8,خريد وارداتي,,8,,GNR,40654
+MarketingDisketteType1396                         ,9,خريد و خريد وارداتي,,9,,GNR,40655
+MarketingDisketteType1396                         ,10,فروش و خريد وارداتي,,10,,GNR,40656
+MarketingDisketteType1396                         ,11,خريد و فروش و خريد وارداتي,,11,,GNR,40657
+MarketingDisketteType1396                         ,12,صورت وضعيت و خريد وارداتي,,12,,GNR,40658
+MarketingDisketteType1396                         ,13,خريد و صورت وضعيت و خريد وارداتي,,13,,GNR,40659
+MarketingDisketteType1396                         ,14,فروش و صورت وضعيت و خريد وارداتي,,14,,GNR,40660
+MarketingDisketteType1396                         ,15,خريد و فروش و صورت وضعيت و خريد وارداتي,,15,,GNR,40661
+MarketingDisketteType1396                         ,16,صورت وضعيت پيمانكاري جزء,,16,,GNR,40662
+MarketingDisketteType1396                         ,17,خريد و صورت وضعيت پيمانكاري جزء,,17,,GNR,40663
+MarketingDisketteType1396                         ,18,فروش و صورت وضعيت پيمانكاري جزء,,18,,GNR,40664
+MarketingDisketteType1396                         ,19,خريد و فروش و صورت وضعيت پيمانكاري جزء,,19,,GNR,40665
+MarketingDisketteType1396                         ,20,صورت وضعيت  پيمانكار و پيمانكار جزء,,20,,GNR,40666
+MarketingDisketteType1396                         ,21,خريد و صورت وضعيت  پيمانكار و پيمانكار جزء,,21,,GNR,40667
+MarketingDisketteType1396                         ,22,فروش و صورت وضعيت  پيمانكار و پيمانكار جزء,,22,,GNR,40668
+MarketingDisketteType1396                         ,23,خريد و فروش و صورت وضعيت  پيمانكار و پيمانكار جزء,,23,,GNR,40669
+MarketingDisketteType1396                         ,24,خريد وارداتي و صورت وضعيت پيمانكار جزء,,24,,GNR,40670
+MarketingDisketteType1396                         ,25,خريد و خريد وارداتي و صورت وضعيت پيمانكار جزء,,25,,GNR,40671
+MarketingDisketteType1396                         ,26,فروش و خريد وارداتي و صورت وضعيت پيمانكار جزء,,26,,GNR,40672
+MarketingDisketteType1396                         ,27,خريد و فروش و خريد وارداتي و صورت وضعيت پيمانكار جزء,,27,,GNR,40673
+MarketingDisketteType1396                         ,28,صورت وضعيت و خريد وارداتي و صورت وضعيت پيمانكار جزء,,28,,GNR,40674
+MarketingDisketteType1396                         ,29,خريد و صورت وضعيت و خريد وارداتي و صورت وضعيت پيمانكار جزء,,29,,GNR,40675
+MarketingDisketteType1396                         ,30,فروش و صورت وضعيت و خريد وارداتي و صورت وضعيت پيمانكار جزء,,30,,GNR,40676
+MarketingDisketteType1396                         ,31,همه,,31,,GNR,40677
+CustomerCategoryForTax96                          ,0,هيچكدام,,0,,GNR,40678
+CustomerCategoryForTax96                          ,5,مودي مشمول ثبت نام در نظام مالياتي,,1,,GNR,40679
+CustomerCategoryForTax96                          ,6,مشمولين حقيقي ماده 81,,2,,GNR,40680
+CustomerCategoryForTax96                          ,7,اشخاصي كه مشمول ثبت نام در نظام مالياتي نيستند,,3,,GNR,40681
+CustomerCategoryForTax96                          ,8,مصرف كننده نهايي,,4,,GNR,40682
+VendorCategoryForTax96                            ,0,هيچكدام,,0,,GNR,40683
+VendorCategoryForTax96                            ,5,مودي مشمول ثبت نام در نظام مالياتي,,1,,GNR,40684
+VendorCategoryForTax96                            ,6,مشمولين حقيقي ماده 81,,2,,GNR,40685
+VendorCategoryForTax96                            ,7,اشخاصي كه مشمول ثبت نام در نظام مالياتي نيستند,,3,,GNR,40686
+VendorCategoryForTax96                            ,8,كمتر از 5 % حد نصاب,,4,,GNR,40687
+CompanyCitizenship                                ,0,ايراني,,0,,GNR,40688
+CompanyCitizenship                                ,1,خارجي,,1,,GNR,40689
+MarketingDisketteItemType1396                     ,1,فاكتور,,1,,GNR,40690
+MarketingDisketteItemType1396                     ,2,رسيد انبار,,2,,GNR,40691
+MarketingDisketteItemType1396                     ,3,فاكتور برگشتي,,3,,GNR,40692
+MarketingDisketteItemType1396                     ,4,برگشت رسيد,,4,,GNR,40693
+MarketingDisketteItemType1396                     ,5,فاكتور خريد خدمات,,5,,GNR,40694
+MarketingDisketteItemType1396                     ,6,صورت وضعيت,,6,,GNR,40695
+MarketingDisketteItemType1396                     ,7,حمل رسيد انبار,,7,,GNR,40696
+MarketingDisketteItemType1396                     ,8,فاكتور فروش صادراتي,,8,,GNR,40697
+MarketingDisketteItemType1396                     ,9,فاكتور برگشتي صادراتي,,9,,GNR,40698
+MarketingDisketteItemType1396                     ,10,رسيد انبار وارداتي,,10,,GNR,40699
+MarketingDisketteItemType1396                     ,11,برگشت رسيد انبار وارداتي,,11,,GNR,40700
+MarketingDisketteItemType1396                     ,12,فاكتور خريد دارايي,,12,,GNR,40701
+MarketingDisketteItemType1396                     ,13,فروش دارايي,,13,,GNR,40702
+MarketingDisketteItemType1396                     ,17,ترخيص,,17,,GNR,40703
+MarketingDisketteItemType1396                     ,18,بارنامه,,18,,GNR,40704
+MarketingDisketteItemType1396                     ,19,بيمه نامه,,19,,GNR,40705
+ItemCategoryForTax96                              ,1,دارو,,0,,GNR,40706
+ItemCategoryForTax96                              ,2,دخانيات,,1,,GNR,40707
+ItemCategoryForTax96                              ,3,موبايل,,2,,GNR,40708
+ItemCategoryForTax96                              ,4,لوازم خانگي برقي,,3,,GNR,40709
+ItemCategoryForTax96                              ,5,قطعات مصرفي و يدكي وسايل نقليه,,4,,GNR,40710
+ItemCategoryForTax96                              ,6,فراورده ها و مشتقات نفتي و گازي و پتروشيميايي,,5,,GNR,40711
+ItemCategoryForTax96                              ,7,طلا اعم از شمش ،مسكوكات و مصنوعات زينتي,,6,,GNR,40712
+ItemCategoryForTax96                              ,8,منسوجات و پوشاك,,7,,GNR,40713
+ItemCategoryForTax96                              ,9,اسباب بازي,,8,,GNR,40714
+ItemCategoryForTax96                              ,10,دام زنده، گوشت سفيد و قرمز,,9,,GNR,40715
+ItemCategoryForTax96                              ,11,محصولات اساسي كشاورزي,,10,,GNR,40716
+ItemCategoryForTax96                              ,12,ساير كالا ها و خدمات,,11,,GNR,40717
+MarketingDisketteType                             ,1,خريد,,1,,GNR,40718
+MarketingDisketteType                             ,2,فروش,,2,,GNR,40719
+MarketingDisketteType                             ,3,خريد و فروش,,3,,GNR,40720
+MarketingDisketteType                             ,4,صورت وضعيت,,4,,GNR,40721
+MarketingDisketteType                             ,5,خريد و صورت وضعيت,,5,,GNR,40722
+MarketingDisketteType                             ,6,فروش و صورت وضعيت,,6,,GNR,40723
+MarketingDisketteType                             ,7,همه,,7,,GNR,40724
+MarketingDisketteItemType                         ,1,فاكتور,,1,,GNR,40725
+MarketingDisketteItemType                         ,2,رسيد انبار,,2,,GNR,40726
+MarketingDisketteItemType                         ,3,فاكتور برگشتي,,3,,GNR,40727
+MarketingDisketteItemType                         ,4,برگشت رسيد,,4,,GNR,40728
+MarketingDisketteItemType                         ,5,فاكتور خريد خدمات,,5,,GNR,40729
+MarketingDisketteItemType                         ,6,صورت وضعيت,,6,,GNR,40730
+PeriodType                                        ,1,فصلي,,1,,GNR,40731
+PeriodType                                        ,2,ماهانه,,2,,GNR,40732
+MessageSendState                                  ,1,ارسال نشده,,1,,MSG,40733
+MessageSendState                                  ,2,آماده ارسال,,2,,MSG,40734
+MessageSendState                                  ,3,در حال ارسال,,3,,MSG,40735
+MessageSendState                                  ,4,ارسال شده,,4,,MSG,40736
+MessageSendState                                  ,5,ناموفق,,5,,MSG,40737
+MessageSendState                                  ,6,لغو شده,,6,,MSG,40738
+MessageSendState                                  ,7,نامشخص,,7,,MSG,40739
+ContactType                                       ,0,,,0,,FMK,40740
+ContactType                                       ,1,طرف حساب,,1,,FMK,40741
+ContactType                                       ,2,كاربر,,2,,FMK,40742
+ContactType                                       ,3,ساير مخاطبين,,3,,FMK,40743
+SimpleFilterCondition                             ,0,بزرگتر,,1,,FMK,40744
+SimpleFilterCondition                             ,1,بزرگتر يا مساوي,,2,,FMK,40745
+SimpleFilterCondition                             ,2,كوچكتر,,3,,FMK,40746
+SimpleFilterCondition                             ,3,كوچكتر يا مساوي,,4,,FMK,40747
+SimpleFilterCondition                             ,4,مشابه,,5,,FMK,40748
+SimpleFilterCondition                             ,5,مساوي,,7,,FMK,40749
+SimpleFilterCondition                             ,6,نامساوي,,8,,FMK,40750
+SimpleFilterCondition                             ,7,خالي باشد,,9,,FMK,40751
+SimpleFilterCondition                             ,10,نامشابه,,6,,FMK,40752
+SimpleFilterCondition                             ,11,خالي نباشد,,10,,FMK,40753
+FilterOperator                                    ,1,و,,1,,FMK,40754
+FilterOperator                                    ,2,يا,,2,,FMK,40755
+OrderState                                        ,1,ثبت شده,,1,,DST,40756
+OrderState                                        ,2,تاييد شده,,2,,DST,40757
+OrderState                                        ,3,رد شده,,3,,DST,40758
+OrderState                                        ,4,خاتمه يافته,,4,,DST,40759
+AddressType                                       ,1,محل فعاليت,,1,,GNR,40760
+AddressType                                       ,2,ارسال صورتحساب,,2,,GNR,40761
+AddressType                                       ,3,ارسال كالا,,3,,GNR,40762
+AddressType                                       ,4,انبار,,4,,GNR,40763
+AddressType                                       ,5,منزل,,5,,GNR,40764
+AddressType                                       ,6,رسمي,,6,,GNR,40765
+AddressType                                       ,7,پستي,,7,,GNR,40766
+AddressType                                       ,8,ساير,,8,,GNR,40767
+PartyType                                         ,1,شخص حقيقي,,1,,GNR,40768
+PartyType                                         ,2,شخص حقوقي,,2,,GNR,40769
+PartySubType                                      ,1,وزارتخانه,,1,,GNR,40770
+PartySubType                                      ,2,موسسه دولتي,,2,,GNR,40771
+PartySubType                                      ,3,شركت دولتي,,3,,GNR,40772
+PartySubType                                      ,4,ساير دستگاه هاي دولتي,,4,,GNR,40773
+PartySubType                                      ,5,نهادهاي عمومي غير دولتي,,5,,GNR,40774
+PartySubType                                      ,6,بخش خصوصي,,6,,GNR,40775
+PartySubType                                      ,7,ساير,,7,,GNR,40776
+PhoneType                                         ,1,تلفن دفتر,,1,,GNR,40777
+PhoneType                                         ,2,تلفن همراه,,2,,GNR,40778
+PhoneType                                         ,3,تلفن منزل,,3,,GNR,40779
+PhoneType                                         ,4,تلفن ساير,,4,,GNR,40780
+PhoneType                                         ,5,دورنگار دفتر,,5,,GNR,40781
+PhoneType                                         ,6,دورنگار منزل,,6,,GNR,40782
+PhoneType                                         ,7,دورنگار ساير,,7,,GNR,40783
+PartyOpeningBalanceType                           ,0,مشتري,,0,,GNR,40784
+PartyOpeningBalanceType                           ,1,تامين كننده,,1,,GNR,40785
+PartyOpeningBalanceType                           ,2,واسط,,2,,GNR,40786
+CustomerCategoryForTax                            ,1,فروش توسط ماشينهاي فروش Pos,,1,,GNR,40787
+CustomerCategoryForTax                            ,2,عادي,,2,,GNR,40788
+CustomerCategoryForTax                            ,3,طرف معامله خارجي كه در ايران اقامت و فعاليت اقتصادي ندارند,,3,,GNR,40789
+CreditCheckingType                                ,1,هشدار در صورت بيشتر شدن مانده از اعتبار,,1,,GNR,40790
+CreditCheckingType                                ,2,جلوگيري از عمليات در صورت بيشتر شدن مانده از اعتبار,,2,,GNR,40791
+CreditCheckingType                                ,3,هيچكدام,,3,,GNR,40792
+NationalityType                                   ,1,ايراني,,1,,PAY,40793
+NationalityType                                   ,2,غير ايراني,,2,,PAY,40794
+MarriageStatus                                    ,0, ,,0,,PAY,40795
+MarriageStatus                                    ,1,مجرد,,1,,PAY,40796
+MarriageStatus                                    ,2,متاهل,,2,,PAY,40797
+MarriageStatus                                    ,3,معيل,,3,,PAY,40798
+EducationDegree                                   ,0, ,,0,,PAY,40799
+EducationDegree                                   ,1,بيسواد,,1,,PAY,40800
+EducationDegree                                   ,2,كم سواد,,2,,PAY,40801
+EducationDegree                                   ,3,ابتدايي,,3,,PAY,40802
+EducationDegree                                   ,4,سيكل,,4,,PAY,40803
+EducationDegree                                   ,5,زير ديپلم,,5,,PAY,40804
+EducationDegree                                   ,6,ديپلم يا معادل آن,,6,,PAY,40805
+EducationDegree                                   ,7,كارشناسي يا معادل آن,,8,,PAY,40806
+EducationDegree                                   ,8,كارشناسي ارشد يا معادل آن,,9,,PAY,40807
+EducationDegree                                   ,9,دكتري يا معادل آن,,10,,PAY,40808
+EducationDegree                                   ,10,فوق دكتري يا معادل آن,,11,,PAY,40809
+EducationDegree                                   ,11,فوق ديپلم,,7,,PAY,40810
+MilitaryStatus                                    ,0, ,,0,,PAY,40811
+MilitaryStatus                                    ,1,انجام داده,,1,,PAY,40812
+MilitaryStatus                                    ,2,انجام نداده,,2,,PAY,40813
+MilitaryStatus                                    ,3,معافيت پزشكي,,3,,PAY,40814
+MilitaryStatus                                    ,4,معافيت غير پزشكي,,4,,PAY,40815
+MilitaryStatus                                    ,5,خريد خدمت,,5,,PAY,40816
+MilitaryStatus                                    ,6,جانباز,,6,,PAY,40817
+MilitaryStatus                                    ,7,آزاده,,7,,PAY,40818
+MilitaryStatus                                    ,8,ايثارگر,,8,,PAY,40819
+ElementClass                                      ,1,كاركرد,,1,,PAY,40820
+ElementClass                                      ,2,مزايا,,2,,PAY,40821
+ElementClass                                      ,3,كسور,,3,,PAY,40822
+ElementClass                                      ,4,تعهدات كارفرما,,4,,PAY,40823
+ElementTaxType                                    ,0,,,0,,PAY,40824
+ElementTaxType                                    ,15,(مبلغ حق الزحمه/حق مشاوره/حق حضور/حق نظارت/حق التاليف/ حق فني/ پاداش شوراي حل اختلاف (ستون شماره 15,,1,,PAY,40825
+ElementTaxType                                    ,16,(مبلغ قراردادهاي پژوهشي (ستون شماره 16,,2,,PAY,40826
+ElementTaxType                                    ,17,(اضافه كاري (ستون شماره 17,,3,,PAY,40827
+ElementTaxType                                    ,18,(هزينه سفر (ستون شماره 18,,4,,PAY,40828
+ElementTaxType                                    ,19,(فوق العاده مسافرت (ماموريت) (ستون شماره 19,,5,,PAY,40829
+ElementTaxType                                    ,20,(كارانه (ستون شماره 20,,6,,PAY,40830
+ElementTaxType                                    ,21,(پاداش (به استثناي پاداش آخر سال و پاداش پايان خدمت و پاداش بهره وري) (ستون شماره 21,,7,,PAY,40831
+ElementTaxType                                    ,24,(پاداش پايان خدمت (ستون شماره 24,,8,,PAY,40832
+ElementTaxType                                    ,25,(خسارت اخراج (ستون شماره 25,,9,,PAY,40833
+ElementTaxType                                    ,26,(بازخريد خدمت (ستون شماره 26,,10,,PAY,40834
+ElementTaxType                                    ,36,(حق التدريس/حق التحقيق/ حق پژوهش (ستون شماره 36,,11,,PAY,40835
+ElementTaxType                                    ,37,(حق كشيك (ستون شماره 37,,12,,PAY,40836
+ElementTaxType                                    ,38,(رفاهي و انگيزشي و بهره وري (ستون شماره 38,,13,,PAY,40837
+ElementTaxType                                    ,39,(حق السعي (به استثناي مزد، حقوق، پاداش) (ستون شماره 39,,14,,PAY,40838
+ElementTaxType                                    ,512,مزاياي غير نقدي,,15,,PAY,40839
+ElementType                                       ,1,كاركرد-روز,,1,,PAY,40840
+ElementType                                       ,2,كاركرد-ساعت و دقيقه,,2,,PAY,40841
+ElementType                                       ,3,كاركرد- درصدي,,3,,PAY,40842
+ElementType                                       ,4,قراردادي-ثابت,,4,,PAY,40843
+ElementType                                       ,5,محاسباتي,,5,,PAY,40844
+ElementType                                       ,6,ورود دستي,,6,,PAY,40845
+ElementNormalType                                 ,1,عادي,,1,,PAY,40846
+ElementNormalType                                 ,2,فوق العاده,,2,,PAY,40847
+ElementCalcType                                   ,0,,,1,,PAY,40848
+ElementCalcType                                   ,1,روزانه,,2,,PAY,40849
+ElementCalcType                                   ,2,ساعتي,,3,,PAY,40850
+ElementCalcType                                   ,3,درصد/عدد,,4,,PAY,40851
+ElementDenominatorsType                           ,0,,,1,,PAY,40852
+ElementDenominatorsType                           ,1,عدد ثابت,,2,,PAY,40853
+ElementDenominatorsType                           ,2,روزهاي ماه,,3,,PAY,40854
+TaxGroupType                                      ,0,عدم معافيت,,1,,PAY,40855
+TaxGroupType                                      ,1,شاغلين در مناطق محروم,,2,,PAY,40856
+TaxGroupType                                      ,2,آزادگان,,3,,PAY,40857
+TaxGroupType                                      ,3,جانباز,,4,,PAY,40858
+TaxGroupType                                      ,4,پرسنل نيروهاي مسلح ,,5,,PAY,40859
+TaxGroupType                                      ,5,وزارت اطلاعات,,7,,PAY,40860
+TaxGroupType                                      ,6,مناطق آزاد تجاري-صنعتي,,8,,PAY,40861
+TaxGroupType                                      ,7,آزاده و جانباز,,9,,PAY,40862
+TaxGroupType                                      ,8,بازنشسته ، وظيفه و مستمري بگير,,10,,PAY,40863
+BranchType                                        ,1,تامين اجتماعي,,1,,PAY,40864
+BranchType                                        ,2,وزارت دارايي,,2,,PAY,40865
+BranchType                                        ,3,بيمه تكميلي,,3,,PAY,40866
+AdjustmentType                                    ,0,,,0,,PAY,40867
+AdjustmentType                                    ,1,تعديل ماهانه,,1,,PAY,40868
+AdjustmentType                                    ,2,تعديل سالانه,,2,,PAY,40869
+AdjustmentType                                    ,3,بدون تعديل,,3,,PAY,40870
+AdjustmentType                                    ,4,تعديل ماهانه در سطح ماه,,4,,PAY,40871
+PrimaryTaxPayerType                               ,1,شخص حقيقي,,1,,PAY,40872
+PrimaryTaxPayerType                               ,2,شخص حقوقي,,2,,PAY,40873
+SecondaryTaxPayerType                             ,1,وزارت خانه,,1,,PAY,40874
+SecondaryTaxPayerType                             ,2,موسسه دولتي,,2,,PAY,40875
+SecondaryTaxPayerType                             ,3,شركت دولتي,,3,,PAY,40876
+SecondaryTaxPayerType                             ,4,ساير دستگاه هاي دولتي,,4,,PAY,40877
+SecondaryTaxPayerType                             ,5,نهادهاي عمومي غير دولتي,,5,,PAY,40878
+SecondaryTaxPayerType                             ,6,بخش خصوصي,,6,,PAY,40879
+SecondaryTaxPayerType                             ,7,ساير پرداخت كنندگان حقوق,,7,,PAY,40880
+SexType                                           ,1,مرد,,1,,PAY,40881
+SexType                                           ,2,زن,,2,,PAY,40882
+GuildType                                         ,0,ساير,,1,,PAY,40883
+GuildType                                         ,1,اداري مالي,,2,,PAY,40884
+GuildType                                         ,2,آموزشي فرهنگي,,3,,PAY,40885
+GuildType                                         ,3,امور اجتماعي,,4,,PAY,40886
+GuildType                                         ,4,فناوري اطلاعات,,5,,PAY,40887
+GuildType                                         ,5,بهداشت و درمان,,6,,PAY,40888
+GuildType                                         ,6,فني مهندسي,,7,,PAY,40889
+GuildType                                         ,7,خدمات,,8,,PAY,40890
+GuildType                                         ,8,كشاورزي و محيط زيست,,9,,PAY,40891
+GuildType                                         ,9,بازاريابي و فروش,,10,,PAY,40892
+GuildType                                         ,10,حراست و نگهباني,,11,,PAY,40893
+GuildType                                         ,11,كارگري,,12,,PAY,40894
+GuildType                                         ,12,ترابري,,13,,PAY,40895
+GuildType                                         ,13,توليدي,,14,,PAY,40896
+GuildType                                         ,14,كنترل كيفي,,15,,PAY,40897
+GuildType                                         ,15,تحقيقات,,16,,PAY,40898
+GuildType                                         ,16,انبارداري,,17,,PAY,40899
+GuildType                                         ,17,قضات,,18,,PAY,40900
+GuildType                                         ,18,اعضاي هيئت علمي دانشگاه ها و موسسات آموزش عالي,,19,,PAY,40901
+EmployeeStatus                                    ,1,عادي,,1,,PAY,40902
+EmployeeStatus                                    ,2,جانباز,,2,,PAY,40903
+EmployeeStatus                                    ,3,فرزند شهيد,,3,,PAY,40904
+EmployeeStatus                                    ,4,آزاده,,4,,PAY,40905
+EmployeeStatus                                    ,5,نيروهاي مسلح(نظامي يا انتظامي),,5,,PAY,40906
+EmployeeStatus                                    ,6,ساير مشمولين بند 14 ماده 91,,6,,PAY,40907
+EmployeeStatus                                    ,7,اتباع خارجي مشمول قانون اجتناب از اخذ ماليات مضاعف,,7,,PAY,40908
+EmployeeStatus                                    ,10,مشمولين ماده 25 قانون حمايت از حقوق معلولان,,8,,PAY,40909
+TaxType                                           ,1,حقوق,,1,,PAY,40910
+TaxType                                           ,2,عيدي,,2,,PAY,40911
+PaymentChequeState                                ,1,پرداخت شده,,1,,RPA,40912
+PaymentChequeState                                ,2,مسترد شده,,2,,RPA,40913
+PaymentChequeState                                ,4,ابطال شده,,4,,RPA,40914
+PaymentType                                       ,1, به مشتري,,2,,RPA,40915
+PaymentType                                       ,2,پرداخت به ساير,,4,,RPA,40916
+PaymentType                                       ,4,بانك به بانك,,5,,RPA,40917
+PaymentType                                       ,8,بانك به صندوق,,6,,RPA,40918
+PaymentType                                       ,16,صندوق به بانك,,7,,RPA,40919
+PaymentType                                       ,32,صندوق به صندوق,,8,,RPA,40920
+PaymentType                                       ,64,تضمين,,9,,RPA,40921
+PaymentType                                       ,128,پرداخت به واسط,,3,,RPA,40922
+PaymentType                                       ,256,به تامين كننده,,1,,RPA,40923
+PaymentType                                       ,1024,كارمزد,,10,,RPA,40924
+PaymentType                                       ,2048,به تنخواه دار,,11,,RPA,40925
+DurationType                                      ,0, ,,0,,RPA,40926
+DurationType                                      ,1,مدت دار,,1,,RPA,40927
+DurationType                                      ,2,روز,,2,,RPA,40928
+RefundType                                        ,1,استرداد چك دريافتني,,1,,RPA,40929
+RefundType                                        ,2,استرداد چك پرداختني,,2,,RPA,40930
+RefundType                                        ,4,برگشت چك خرج شده,,3,,RPA,40931
+TaxPaymentType                                    ,1,نقدي,,1,,PAY,40932
+TaxPaymentType                                    ,2,غيرنقدي,,2,,PAY,40933
+TaxPaymentType                                    ,3,ارائه ليست بدون پرداخت,,3,,PAY,40934
+TaxPaymentType                                    ,4,چك شخصي,,4,,PAY,40935
+TaxPaymentType                                    ,5,پرداخت با كارت اعتباري,,5,,PAY,40936
+TaxPaymentType                                    ,6,انتقال بانكي,,6,,PAY,40937
+TaxPaymentType                                    ,7,سفته,,7,,PAY,40938
+TaxPaymentType                                    ,8,چك تضمين شده,,8,,PAY,40939
+TaxPaymentType                                    ,9,واريز خزانه,,9,,PAY,40940
+TaxBankType                                       ,100, ,,0,,PAY,40941
+TaxBankType                                       ,0,ساير,,100,,PAY,40942
+TaxBankType                                       ,1,بانك ملي,,1,,PAY,40943
+TaxBankType                                       ,2,بانك صادرات,,2,,PAY,40944
+TaxBankType                                       ,3,بانك ملت,,3,,PAY,40945
+TaxBankType                                       ,4,بانك سپه,,4,,PAY,40946
+TaxBankType                                       ,5,بانك كشاورزي,,5,,PAY,40947
+TaxBankType                                       ,6,بانك رفاه كارگران,,6,,PAY,40948
+TaxBankType                                       ,7,بانك توسعه صادرات,,7,,PAY,40949
+TaxBankType                                       ,8,بانك مسكن,,8,,PAY,40950
+TaxBankType                                       ,9,بانك تجارت,,9,,PAY,40951
+TaxBankType                                       ,10,بانك پارسيان,,10,,PAY,40952
+TaxBankType                                       ,11,بانك اقتصاد نوين,,11,,PAY,40953
+TaxBankType                                       ,12,بانك پاسارگاد,,12,,PAY,40954
+TaxBankType                                       ,13,بانك سرمايه,,13,,PAY,40955
+TaxBankType                                       ,14,بانك سامان,,14,,PAY,40956
+TaxBankType                                       ,15,بانك صنعت و معدن,,15,,PAY,40957
+TaxBankType                                       ,16,بانك پست بانك,,16,,PAY,40958
+TaxBankType                                       ,17,بانك كارآفرين,,17,,PAY,40959
+CalculationType                                   ,1,محاسبات ماهانه,,1,,PAY,40960
+CalculationType                                   ,2,ذخيره سنوات,,2,,PAY,40961
+CalculationType                                   ,3,بازخريد سنوات,,3,,PAY,40962
+CalculationType                                   ,4,ذخيره مرخصي,,4,,PAY,40963
+CalculationType                                   ,5,بازخريد مرخصي,,5,,PAY,40964
+CalculationType                                   ,6,پرداخت عيدي,,6,,PAY,40965
+PayrollSettlementItemType                         ,1,مطالبه,,1,,PAY,40966
+PayrollSettlementItemType                         ,2,بدهي,,2,,PAY,40967
+PiofyAttendanceFactorMeasurementUnit              ,1,روز,,1,,GNR,40971
+PiofyAttendanceFactorMeasurementUnit              ,2,ساعت - دقيقه,,2,,GNR,40972
+PiofyAttendanceFactorMeasurementUnit              ,3,روز - ساعت - دقيقه,,3,,GNR,40973
+SendingState                                      ,1,انتظار,,1,,GNR,40974
+SendingState                                      ,2,در حال ارسال,,2,,GNR,40975
+SendingState                                      ,3,ارسال شده,,3,,GNR,40976
+SendingState                                      ,4,خطا,,4,,GNR,40977
+SendingState                                      ,5,تعليق,,5,,GNR,40978
+SendingState                                      ,6,ارسال شده,,6,,GNR,40979
+PiofyMonthlyCalculationState                      ,1,Unfinalized,,1,,PAY,40980
+PiofyMonthlyCalculationState                      ,2,Finalized,,2,,PAY,40981
+CommandType                                       ,1,جديد,,1,,GNR,40982
+CommandType                                       ,2,ويرايش,,2,,GNR,40983
+CommandType                                       ,3,حذف,,3,,GNR,40984
+CommandType                                       ,4,غيرفعال,,4,,GNR,40985
+CommandType                                       ,5,فعال,,5,,GNR,40986
+CommandType                                       ,6,دريافت,,6,,GNR,40987
+PiofyEmploymentType                               ,0,نامشخص,,0,,GNR,40988
+PiofyEmploymentType                               ,1,رسمي,,1,,GNR,40989
+PiofyEmploymentType                               ,2,ساعتي,,2,,GNR,40990
+CommunicationSystem                               ,1,پايوفاي,,1,,GNR,40991
+PosInvoiceItemCaretPlace                          ,1,كد كالا,,1,,POS,40992
+PosInvoiceItemCaretPlace                          ,2,باركد كالا,,2,,POS,40993
+PosInvoiceState                                   ,1,ثبت شده,,1,,POS,40994
+PosInvoiceState                                   ,2,ابطال شده,,2,,POS,40995
+PosInvoiceState                                   ,3,تسويه شده,,3,,POS,40996
+SettlementItemType                                ,1,1.فاكتور,,1,,POS,40997
+SettlementItemType                                ,2,2.برگشتي,,2,,POS,40998
+SettlementItemType                                ,3,مجددا بخوانيد,,3,,POS,40999
+SettlementState                                   ,1,در حال تسويه,,1,,POS,41000
+SettlementState                                   ,2,تسويه بدون دريافت وجه,,2,,POS,41001
+SettlementState                                   ,3,تسويه با دريافت وجه,,3,,POS,41002
+PosShortCut                                       ,0,بدون كليد,,0,,POS,41003
+PosShortCut                                       ,112,F1,,112,,POS,41004
+PosShortCut                                       ,113,F2,,113,,POS,41005
+PosShortCut                                       ,114,F3,,114,,POS,41006
+PosShortCut                                       ,115,F4,,115,,POS,41007
+PosShortCut                                       ,116,F5,,116,,POS,41008
+PosShortCut                                       ,117,F6,,117,,POS,41009
+PosShortCut                                       ,118,F7,,118,,POS,41010
+PosShortCut                                       ,119,F8,,119,,POS,41011
+PosShortCut                                       ,120,F9,,120,,POS,41012
+PosShortCut                                       ,121,F10,,121,,POS,41013
+PosShortCut                                       ,122,F11,,122,,POS,41014
+PosShortCut                                       ,123,F12,,123,,POS,41015
+PosShortCut                                       ,65648,ShiftF1,,65648,,POS,41016
+PosShortCut                                       ,65649,ShiftF2,,65649,,POS,41017
+PosShortCut                                       ,65650,ShiftF3,,65650,,POS,41018
+PosShortCut                                       ,65651,ShiftF4,,65651,,POS,41019
+PosShortCut                                       ,65652,ShiftF5,,65652,,POS,41020
+PosShortCut                                       ,65653,ShiftF6,,65653,,POS,41021
+PosShortCut                                       ,65654,ShiftF7,,65654,,POS,41022
+PosShortCut                                       ,65655,ShiftF8,,65655,,POS,41023
+PosShortCut                                       ,65656,ShiftF9,,65656,,POS,41024
+PosShortCut                                       ,65658,ShiftF11,,65658,,POS,41025
+PosShortCut                                       ,65659,ShiftF12,,65659,,POS,41026
+PosShortCut                                       ,131120,Ctrl0,,131120,,POS,41027
+PosShortCut                                       ,131121,Ctrl1,,131121,,POS,41028
+PosShortCut                                       ,131122,Ctrl2,,131122,,POS,41029
+PosShortCut                                       ,131123,Ctrl3,,131123,,POS,41030
+PosShortCut                                       ,131124,Ctrl4,,131124,,POS,41031
+PosShortCut                                       ,131125,Ctrl5,,131125,,POS,41032
+PosShortCut                                       ,131126,Ctrl6,,131126,,POS,41033
+PosShortCut                                       ,131127,Ctrl7,,131127,,POS,41034
+PosShortCut                                       ,131128,Ctrl8,,131128,,POS,41035
+PosShortCut                                       ,131129,Ctrl9,,131129,,POS,41036
+PosShortCut                                       ,131137,CtrlA,,131137,,POS,41037
+PosShortCut                                       ,131138,CtrlB,,131138,,POS,41038
+PosShortCut                                       ,131139,CtrlC,,131139,,POS,41039
+PosShortCut                                       ,131140,CtrlD,,131140,,POS,41040
+PosShortCut                                       ,131141,CtrlE,,131141,,POS,41041
+PosShortCut                                       ,131142,CtrlF,,131142,,POS,41042
+PosShortCut                                       ,131143,CtrlG,,131143,,POS,41043
+PosShortCut                                       ,131144,CtrlH,,131144,,POS,41044
+PosShortCut                                       ,131145,CtrlI,,131145,,POS,41045
+PosShortCut                                       ,131146,CtrlJ,,131146,,POS,41046
+PosShortCut                                       ,131147,CtrlK,,131147,,POS,41047
+PosShortCut                                       ,131148,CtrlL,,131148,,POS,41048
+PosShortCut                                       ,131149,CtrlM,,131149,,POS,41049
+PosShortCut                                       ,131150,CtrlN,,131150,,POS,41050
+PosShortCut                                       ,131151,CtrlO,,131151,,POS,41051
+PosShortCut                                       ,131152,CtrlP,,131152,,POS,41052
+PosShortCut                                       ,131153,CtrlR,,131153,,POS,41053
+PosShortCut                                       ,131154,CtrlS,,131154,,POS,41054
+PosShortCut                                       ,131155,CtrlT,,131155,,POS,41055
+PosShortCut                                       ,131156,CtrlU,,131156,,POS,41056
+PosShortCut                                       ,131157,CtrlV,,131157,,POS,41057
+PosShortCut                                       ,131158,CtrlW,,131158,,POS,41058
+PosShortCut                                       ,131160,CtrlX,,131160,,POS,41059
+PosShortCut                                       ,131161,CtrlY,,131161,,POS,41060
+PosShortCut                                       ,131162,CtrlZ,,131162,,POS,41061
+PosShortCut                                       ,131184,CtrlF1,,131184,,POS,41062
+PosShortCut                                       ,131185,CtrlF2,,131185,,POS,41063
+PosShortCut                                       ,131186,CtrlF3,,131186,,POS,41064
+PosShortCut                                       ,131187,CtrlF4,,131187,,POS,41065
+PosShortCut                                       ,131188,CtrlF5,,131188,,POS,41066
+PosShortCut                                       ,131189,CtrlF6,,131189,,POS,41067
+PosShortCut                                       ,131190,CtrlF7,,131190,,POS,41068
+PosShortCut                                       ,131191,CtrlF8,,131191,,POS,41069
+PosShortCut                                       ,131192,CtrlF9,,131192,,POS,41070
+PosShortCut                                       ,131194,CtrlF11,,131194,,POS,41071
+PosShortCut                                       ,131195,CtrlF12,,131195,,POS,41072
+PosShortCut                                       ,262256,AltF1,,262256,,POS,41073
+PosShortCut                                       ,262257,AltF2,,262257,,POS,41074
+PosShortCut                                       ,262258,AltF3,,262258,,POS,41075
+PosShortCut                                       ,262259,AltF4,,262259,,POS,41076
+PosShortCut                                       ,262260,AltF4,,262260,,POS,41077
+PosShortCut                                       ,262261,AltF5,,262261,,POS,41078
+PosShortCut                                       ,262262,AltF6,,262262,,POS,41079
+PosShortCut                                       ,262263,AltF7,,262263,,POS,41080
+PosShortCut                                       ,262264,AltF8,,262264,,POS,41081
+PosShortCut                                       ,262265,AltF9,,262265,,POS,41082
+PosShortCut                                       ,262266,AltF10,,262266,,POS,41083
+PosShortCut                                       ,262267,AltF11,,262267,,POS,41084
+PosShortCut                                       ,262268,AltF12,,262268,,POS,41085
+PerformaContractType                              ,0,,,0,,POM,41086
+PerformaContractType                              ,1,EXW,,1,,POM,41087
+PerformaContractType                              ,2,FCA,,2,,POM,41088
+PerformaContractType                              ,3,CPT,,3,,POM,41089
+PerformaContractType                              ,4,CIP,,4,,POM,41090
+PerformaContractType                              ,5,DAP,,5,,POM,41091
+PerformaContractType                              ,6,DPU,,6,,POM,41092
+PerformaContractType                              ,7,DDP,,7,,POM,41093
+PerformaContractType                              ,8,FAS,,8,,POM,41094
+PerformaContractType                              ,9,FOB,,9,,POM,41095
+PerformaContractType                              ,10,CFR,,10,,POM,41096
+PerformaContractType                              ,11,CIF,,11,,POM,41097
+PerformaState                                     ,0,ثبت شده,,0,,POM,41098
+PerformaState                                     ,1,خاتمه يافته,,1,,POM,41099
+PerformaState                                     ,2,ثبت نشده,,0,,POM,41100
+PerformaState                                     ,3,تاييد شده,,1,,POM,41101
+PerformaState                                     ,4,رد شده,,1,,POM,41102
+PurchaseOrderState                                ,0,ثبت شده,,0,,POM,41103
+PurchaseOrderState                                ,1,خاتمه يافته,,1,,POM,41104
+PurchaseCostState                                 ,0,ثبت شده,,0,,POM,41105
+PurchaseCostState                                 ,1,محاسبه شده,,1,,POM,41106
+SharingMethod                                     ,0,,,0,,POM,41107
+SharingMethod                                     ,1,مساوي,,1,,POM,41108
+SharingMethod                                     ,2,مقداري,,2,,POM,41109
+SharingMethod                                     ,3,مبلغي,,3,,POM,41110
+Foreignpurchaseinvoicestate                       ,0,,,0,,POM,41111
+ForeignPurchaseInvoiceState                       ,1,ثبت شده,,1,,POM,41112
+ForeignPurchaseInvoiceState                       ,2,خاتمه يافته,,2,,POM,41113
+AllotmentType                                     ,0,,,0,,POM,41114
+AllotmentType                                     ,1,مقداري,,1,,POM,41115
+AllotmentType                                     ,2,مبلغي,,2,,POM,41116
+AllotmentType                                     ,3,مساوي,,3,,POM,41117
+AllotmentType                                     ,4,وزني,,4,,POM,41118
+InsuranceCoverType                                ,0,,,0,,POM,41119
+InsuranceCoverType                                ,1,A ( ALL RISK ),,1,,POM,41120
+InsuranceCoverType                                ,2,B ( W. A ),,2,,POM,41121
+InsuranceCoverType                                ,3,C ( F.P.A ),,3,,POM,41122
+InsuranceCoverType                                ,4,TOTAL LOSS,,4,,POM,41123
+InsuranceCoverType                                ,5,ساير,,5,,POM,41124
+PurchasingOperationType                           ,1,پيش فاكتور خريد,,1,,POM,41125
+PurchasingOperationType                           ,2,سفارش خريد,,2,,POM,41126
+PurchasingOperationType                           ,3,بيمه نامه,,3,,POM,41127
+PurchasingOperationType                           ,4,سفارش بازرگاني,,4,,POM,41128
+PurchasingOperationType                           ,5,فاكتور خريد وارداتي,,5,,POM,41129
+PurchasingOperationType                           ,6,بارنامه,,6,,POM,41130
+PurchasingOperationType                           ,7,ترخيص,,7,,POM,41131
+PurchasingOperationType                           ,8,محاسبه بهاي تمام شده,,8,,POM,41132
+ItemRequestState                                  ,0,ثبت نشده,,0,,POM,41133
+ItemRequestState                                  ,1,ثبت شده,,1,,POM,41134
+ItemRequestState                                  ,2,تاييد شده,,0,,POM,41135
+ItemRequestState                                  ,3,رد شده,,0,,POM,41136
+ItemRequestState                                  ,4,خاتمه يافته,,1,,POM,41137
+ItemRequestTrigger                                ,0,ثبت,,0,,POM,41138
+ItemRequestTrigger                                ,1,تاييد,,1,,POM,41139
+ItemRequestTrigger                                ,2,برگشت از تاييد,,0,,POM,41140
+ItemRequestTrigger                                ,3,رد,,0,,POM,41141
+ItemRequestTrigger                                ,4,برگشت از رد,,1,,POM,41142
+ItemRequestTrigger                                ,5,خاتمه دستي,,0,,POM,41143
+ItemRequestTrigger                                ,6,خاتمه,,0,,POM,41144
+ItemRequestTrigger                                ,7,برگشت از خاتمه,,1,,POM,41145
+ItemRequestType                                   ,2,مصرف در خط توليد,,0,,POM,41146
+ItemRequestType                                   ,3,ساير,,0,,POM,41147
+ItemRequestType                                   ,4,انتقال بين انبار,,1,,POM,41148
+PurchaseRequestState                              ,0,ثبت نشده,,0,,POM,41149
+PurchaseRequestState                              ,1,ثبت شده,,1,,POM,41150
+PurchaseRequestState                              ,2,تاييد شده,,0,,POM,41151
+PurchaseRequestState                              ,3,رد شده,,0,,POM,41152
+PurchaseRequestState                              ,4,خاتمه يافته,,1,,POM,41153
+PurchaseRequestTrigger                            ,0,ثبت,,0,,POM,41154
+PurchaseRequestTrigger                            ,1,تاييد,,1,,POM,41155
+PurchaseRequestTrigger                            ,2,برگشت از تاييد,,0,,POM,41156
+PurchaseRequestTrigger                            ,3,رد,,0,,POM,41157
+PurchaseRequestTrigger                            ,4,برگشت از رد,,1,,POM,41158
+PurchaseRequestTrigger                            ,5,خاتمه دستي,,0,,POM,41159
+PurchaseRequestTrigger                            ,6,خاتمه,,0,,POM,41160
+PurchaseRequestTrigger                            ,7,برگشت از خاتمه,,1,,POM,41161
+PurchasingProcedure                               ,0,,,0,,POM,41162
+PurchasingProcedure                               ,1,خرد,,0,,POM,41163
+PurchasingProcedure                               ,2,استعلامي,,1,,POM,41164
+PurchaseRequestItemPriority                       ,1,عادي,,0,,POM,41165
+PurchaseRequestItemPriority                       ,2,ضروري,,1,,POM,41166
+PurchasingType                                    ,1,وارداتي,,1,,POM,41167
+PurchasingType                                    ,2,داخلي,,0,,POM,41168
+PerformaTrigger                                   ,0,ثبت,,0,,POM,41169
+PerformaTrigger                                   ,1,تاييد,,1,,POM,41170
+PerformaTrigger                                   ,2,برگشت از تاييد,,0,,POM,41171
+PerformaTrigger                                   ,3,رد,,0,,POM,41172
+PerformaTrigger                                   ,4,برگشت از رد,,1,,POM,41173
+PerformaTrigger                                   ,5,خاتمه دستي,,0,,POM,41174
+PerformaTrigger                                   ,6,خاتمه,,0,,POM,41175
+PerformaTrigger                                   ,7,برگشت از خاتمه,,1,,POM,41176
+PerformaTrigger                                   ,8,برگشت از خاتمه,,1,,POM,41177
+PurchaseInvoiceType                               ,1,فاكتور خريد,,0,,POM,41178
+PurchaseInvoiceType                               ,2,فاكتور خريد خدمت,,0,,POM,41179
+PurchaseInvoiceType                               ,3,فاكتور خريد دارايي,,0,,POM,41180
+PurchaseInvoiceType                               ,4,فاكتور خريد وارداتي,,1,,POM,41181
+ReceiptBanking                                    ,1,واگذار به بانك,,1,,RPA,41182
+ReceiptBanking                                    ,2,وصول و واخواست,,2,,RPA,41183
+ReceiptBanking                                    ,3,نقد كردن,,3,,RPA,41184
+ReceiptChequeState                                ,1,نزد صندوق,,1,,RPA,41185
+ReceiptChequeState                                ,2,واگذار به بانك,,2,,RPA,41186
+ReceiptChequeState                                ,4,وصول,,3,,RPA,41187
+ReceiptChequeState                                ,8,واخواست,,4,,RPA,41188
+ReceiptChequeState                                ,16,نقد شده,,5,,RPA,41189
+ReceiptChequeState                                ,32,خرج شده,,6,,RPA,41190
+ReceiptChequeState                                ,64,استرداد,,7,,RPA,41191
+ReceiptItemType                                   ,1,وجه نقد,,1,,RPA,41192
+ReceiptItemType                                   ,2,كارت خوان,,2,,RPA,41193
+ReceiptItemType                                   ,4,چك,,3,,RPA,41194
+ReceiptItemType                                   ,8,حواله,,4,,RPA,41195
+ReceiptItemType                                   ,16,تنخواه دار,,5,,RPA,41196
+ReceiptType                                       ,1,دريافت از مشتري,,1,,RPA,41197
+ReceiptType                                       ,2,ساير دريافت ها,,4,,RPA,41198
+ReceiptType                                       ,4,تضمين,,5,,RPA,41199
+ReceiptType                                       ,8,دريافت از واسط,,3,,RPA,41200
+ReceiptType                                       ,16,دريافت از تامين كننده,,2,,RPA,41201
+ReceiptType                                       ,32,انتقالي,,6,,RPA,41202
+ReceiptType                                       ,64,دريافت از تنخواه دار,,7,,RPA,41203
+CashFlowReportType                                ,1,1: موجودي بانك,,1,,RPA,41204
+CashFlowReportType                                ,2,2: موجودي صندوق,,2,,RPA,41205
+CashFlowReportType                                ,3,3: موجودي دستگاه كارت خوان,,3,,RPA,41206
+CashFlowReportType                                ,4,4: چكهاي دريافتني نزد صندوق,,4,,RPA,41207
+CashFlowReportType                                ,5,5: چكهاي دريافتني نزد بانك,,5,,RPA,41208
+CashFlowReportType                                ,6,6: چكهاي پرداختني وصول نشده,,6,,RPA,41209
+CashFlowReportType                                ,7,7: تعهدات دريافتني,,7,,RPA,41210
+CashFlowReportType                                ,8,8: تعهدات پرداختني,,8,,RPA,41211
+LineStyle                                         ,0,_____________,,0,,GNR,41212
+LineStyle                                         ,1,---.--.--.-.-.---.-------,,1,,GNR,41213
+LineStyle                                         ,2,-------------------,,2,,GNR,41214
+LineStyle                                         ,3,-------------------,,3,,GNR,41215
+LineStyle                                         ,4,-------------------,,4,,GNR,41216
+LineStyle                                         ,5,-------------------,,5,,GNR,41217
+PaperSize                                         ,1,Custom,,1,,GNR,41218
+PaperSize                                         ,2,Letter,,2,,GNR,41219
+PaperSize                                         ,3,Tabloid,,3,,GNR,41220
+PaperSize                                         ,4,Leggal,,4,,GNR,41221
+PaperSize                                         ,5,A3,,5,,GNR,41222
+PaperSize                                         ,6,A4,,6,,GNR,41223
+PaperSize                                         ,7,A5,,7,,GNR,41224
+PaperSize                                         ,8,B4(JIS),,8,,GNR,41225
+PaperSize                                         ,9,B5(JIS),,9,,GNR,41226
+PaperSize                                         ,10,japanese Postcard,,10,,GNR,41227
+PrintOn                                           ,0,چاپ نشود,,0,,GNR,41228
+PrintOn                                           ,1,چاپ در اولين صفحه,,1,,GNR,41229
+PrintOn                                           ,2,چاپ در آخرين صفحه,,2,,GNR,41230
+PrintOn                                           ,3,چاپ در صفحات فرد,,3,,GNR,41231
+PrintOn                                           ,4,چاپ در صفحات زوج,,4,,GNR,41232
+PrintOn                                           ,5,چاپ در باندهاي تكرار,,5,,GNR,41233
+RgDataSourceType                                  ,0,لطفا ورودي را مشخص كنيد,,0,,GNR,41234
+RgDataSourceType                                  ,1,موجوديت,,1,,GNR,41235
+RgDataSourceType                                  ,2,اسكريپت,,2,,GNR,41236
+RgDataSourceType                                  ,3,جدول,,3,,GNR,41237
+ShiftMode                                         ,0,هرگز,,0,,GNR,41238
+ShiftMode                                         ,1,هميشه,,1,,GNR,41239
+ShiftMode                                         ,2,همپوشاني,,2,,GNR,41240
+SortOrder                                         ,0,هيچكدام,,0,,GNR,41241
+SortOrder                                         ,1,صعودي,,1,,GNR,41242
+SortOrder                                         ,2,نزولي,,2,,GNR,41243
+SqlDbType                                         ,1,باينري,,7,,GNR,41244
+SqlDbType                                         ,2,منطقي,,7,,GNR,41245
+SqlDbType                                         ,3,كاراكتر,,7,,GNR,41246
+SqlDbType                                         ,4,تاريخ زمان,,2,,GNR,41247
+SqlDbType                                         ,5,اعشاري متوسط,,5,,GNR,41248
+SqlDbType                                         ,6,اعشاري بزرگ,,6,,GNR,41249
+SqlDbType                                         ,7,عكس,,7,,GNR,41250
+SqlDbType                                         ,8,عددي,,1,,GNR,41251
+SqlDbType                                         ,9,پول,,7,,GNR,41252
+SqlDbType                                         ,10,كاراكتر يونيكد,,7,,GNR,41253
+SqlDbType                                         ,11,متن يونيكد,,7,,GNR,41254
+SqlDbType                                         ,12,رشته يونيكد,,7,,GNR,41255
+SqlDbType                                         ,13,اعشاري كوچك,,4,,GNR,41256
+SqlDbType                                         ,15,تاريخ كوچك,,7,,GNR,41257
+SqlDbType                                         ,16,عدد كوچك,,7,,GNR,41258
+SqlDbType                                         ,18,متن غير يونيكد,,7,,GNR,41259
+SqlDbType                                         ,20,عدد خيلي كوچك,,7,,GNR,41260
+SqlDbType                                         ,21,باينري بزرگ,,7,,GNR,41261
+SqlDbType                                         ,22,رشته,,7,,GNR,41262
+SqlDbType                                         ,25,Xml,,7,,GNR,41263
+SqlDbType                                         ,31,تاريخ,,3,,GNR,41264
+StringTrimming                                    ,0,None,,0,,GNR,41265
+StringTrimming                                    ,1,Character,,1,,GNR,41266
+StringTrimming                                    ,2,Word,,2,,GNR,41267
+StringTrimming                                    ,3,EllipsisCharacter,,3,,GNR,41268
+StringTrimming                                    ,4,EllipsisWord,,4,,GNR,41269
+StringTrimming                                    ,5,EllipsisPath,,5,,GNR,41270
+TotalType                                         ,0,جمع,,0,,GNR,41271
+TotalType                                         ,1,كمينه,,1,,GNR,41272
+TotalType                                         ,2,بيشينه,,2,,GNR,41273
+TotalType                                         ,3,ميانگين,,3,,GNR,41274
+TotalType                                         ,4,تعداد,,4,,GNR,41275
+RgBorderSize                                      ,0,#,,0,,GNR,41276
+RgBorderSize                                      ,25,¼,,1,,GNR,41277
+RgBorderSize                                      ,50,½,,2,,GNR,41278
+RgBorderSize                                      ,100,1,,3,,GNR,41279
+RgBorderSize                                      ,150,1½,,4,,GNR,41280
+RgBorderSize                                      ,200,2,,5,,GNR,41281
+RgBorderSize                                      ,300,3,,6,,GNR,41282
+RgBorderSize                                      ,400,4,,7,,GNR,41283
+RgBorderSize                                      ,500,5,,8,,GNR,41284
+RgBorderSize                                      ,600,6,,9,,GNR,41285
+ReportMetaDataType                                ,0,عادي,,0,,FMK,41286
+ReportMetaDataType                                ,1,بر اساس مشتري,,1,,FMK,41287
+ReturnOrderState                                  ,1,ثبت شده,,1,,DST,41288
+ReturnOrderState                                  ,2,تاييد شده,,2,,DST,41289
+ReturnOrderState                                  ,4,خاتمه يافته,,4,,DST,41290
+EntityIsActive                                    ,0,غير فعال,,2,,RPA,41291
+EntityIsActive                                    ,1,فعال,,1,,RPA,41292
+BankAccountType                                   ,0,,,0,,RPA,41293
+BankAccountType                                   ,1,ساير,,1,,RPA,41294
+BankAccountType                                   ,2,جاري,,2,,RPA,41295
+BankAccountType                                   ,3,سيبا,,3,,RPA,41296
+BankAccountType                                   ,4,مهر,,4,,RPA,41297
+BankAccountType                                   ,5,سپهر,,5,,RPA,41298
+BankAccountType                                   ,6,جاري طلايي,,6,,RPA,41299
+BankAccountType                                   ,7,جام,,7,,RPA,41300
+BankAccountType                                   ,8,قرض الحسنه,,8,,RPA,41301
+BankAccountType                                   ,9,سپرده سرمايه گذاري كوتاه مدت,,9,,RPA,41302
+BankAccountType                                   ,10,سپرده سرمايه گذاري بلند مدت,,10,,RPA,41303
+BankAccountType                                   ,11,عابر بانك,,11,,RPA,41304
+HeaderState                                       ,1,ثبت شده,,1,,RPA,41305
+HeaderState                                       ,2,سند حسابداري صادر شده,,2,,RPA,41306
+HeaderState                                       ,4,استقرار,,3,,RPA,41307
+RpaDocType                                        ,1,موجودي اوليه,,1,,Rpa,41308
+RpaDocType                                        ,2,موجودي اوليه,,2,,Rpa,41309
+RpaDocType                                        ,3,موجودي اوليه,,3,,Rpa,41310
+RpaDocType                                        ,10,رسيد دريافت,,10,,Rpa,41311
+RpaDocType                                        ,11,دريافت چك,,11,,Rpa,41312
+RpaDocType                                        ,12,حواله,,12,,Rpa,41313
+RpaDocType                                        ,13,دريافت از كارت خوان,,13,,Rpa,41314
+RpaDocType                                        ,14,دريافت چك واخواستي,,14,,Rpa,41315
+RpaDocType                                        ,15,شارژ تنخواه,,15,,Rpa,41316
+RpaDocType                                        ,20,اعلاميه پرداخت,,20,,Rpa,41317
+RpaDocType                                        ,21,پرداخت چك,,21,,Rpa,41318
+RpaDocType                                        ,22,اعلاميه برداشت,,22,,Rpa,41319
+RpaDocType                                        ,23,خرج كردن چك,,23,,Rpa,41320
+RpaDocType                                        ,24,ابطال چك,,24,,Rpa,41321
+RpaDocType                                        ,30,عمليات بانكي چك,,30,,Rpa,41322
+RpaDocType                                        ,31,واگذار به بانك,,31,,Rpa,41323
+RpaDocType                                        ,32,وصول چك,,32,,Rpa,41324
+RpaDocType                                        ,33,واخواست چك,,33,,Rpa,41325
+RpaDocType                                        ,34,نقد كردن چك,,34,,Rpa,41326
+RpaDocType                                        ,41,وصول چك پرداختني,,41,,Rpa,41327
+RpaDocType                                        ,50,استرداد چك,,50,,Rpa,41328
+RpaDocType                                        ,51,استرداد چك دريافتني,,51,,Rpa,41329
+RpaDocType                                        ,52,استرداد چك پرداختني,,52,,Rpa,41330
+RpaDocType                                        ,61,تسويه كارت خوان,,20,,RPA,41331
+RpaDocType                                        ,53,برگشت چك خرج شده,,51,,Rpa,41332
+RpaDocType                                        ,54,برگشت چك خرج شده واخواستي,,52,,Rpa,41333
+RpaDocType                                        ,60,سپرده نقدي ضمانت نامه,,60,,Rpa,41334
+RpaDocType                                        ,62,كارمزد بانكي,,62,,Rpa,41335
+RpaDocType                                        ,70,موجودي اوليه,,70,,Rpa,41336
+PartySettlementType                               ,1,فاكتور فروش,,1,,RPA,41337
+PartySettlementType                               ,2,محاسبه پورسانت,,2,,RPA,41338
+PartyAccountSettlementType                        ,1,مشتري,,1,,RPA,41339
+PartyAccountSettlementType                        ,2,واسط,,2,,RPA,41340
+PartyAccountSettlementType                        ,3,تامين كننده,,3,,RPA,41341
+PartyAccountSettlementType                        ,4,ساير,,4,,RPA,41342
+PartyAccountSettlementItemDebitCreditEntityType   ,1,فاكتور فروش,,1,,RPA,41343
+PartyAccountSettlementItemDebitCreditEntityType   ,2,اعلاميه پرداخت,,2,,RPA,41344
+PartyAccountSettlementItemDebitCreditEntityType   ,3,برگشت رسيد انبار,,3,,RPA,41345
+PartyAccountSettlementItemDebitCreditEntityType   ,4,فاكتور مرجوعي,,4,,RPA,41346
+PartyAccountSettlementItemDebitCreditEntityType   ,5,مانده اول دوره بدهكار,,5,,RPA,41347
+PartyAccountSettlementItemDebitCreditEntityType   ,6,اعلاميه بدهكار,,6,,RPA,41348
+PartyAccountSettlementItemDebitCreditEntityType   ,7,استرداد چك دريافتني,,7,,RPA,41349
+PartyAccountSettlementItemDebitCreditEntityType   ,8,بهره و جريمه قلم تقسيط فاكتور فروش,,8,,RPA,41350
+PartyAccountSettlementItemDebitCreditEntityType   ,9,وام كارمندي,,9,,RPA,41351
+PartyAccountSettlementItemDebitCreditEntityType   ,10,ساير دريافتني,,10,,RPA,41352
+PartyAccountSettlementItemDebitCreditEntityType   ,21,محاسبه پورسانت,,21,,RPA,41353
+PartyAccountSettlementItemDebitCreditEntityType   ,22,فاكتور برگشتي,,22,,RPA,41354
+PartyAccountSettlementItemDebitCreditEntityType   ,23,رسيد دريافت,,23,,RPA,41355
+PartyAccountSettlementItemDebitCreditEntityType   ,24,مانده اول دوره بستانكار,,24,,RPA,41356
+PartyAccountSettlementItemDebitCreditEntityType   ,25,اعلاميه بستانكار,,25,,RPA,41357
+PartyAccountSettlementItemDebitCreditEntityType   ,26,استرداد چك پرداختني,,26,,RPA,41358
+PartyAccountSettlementItemDebitCreditEntityType   ,27,برگشت چك خرج شده,,27,,RPA,41359
+PartyAccountSettlementItemDebitCreditEntityType   ,28,رسيد انبار,,28,,RPA,41360
+PartyAccountSettlementItemDebitCreditEntityType   ,29,تسويه از مانده قبلي,,29,,RPA,41361
+PettyCashBillState                                ,0,,,0,,RPA,41362
+PettyCashBillState                                ,1,ثبت شده,,1,,RPA,41363
+PettyCashBillState                                ,2,تاييد شده,,2,,RPA,41364
+SectionResponsible                                ,0, ,,0,,SLS,41365
+SectionResponsible                                ,1,الف,,1,,SLS,41366
+SectionResponsible                                ,2,ب,,2,,SLS,41367
+EconomicCodeState                                 ,0,نام كاربري دارم,,0,,SLS,41368
+EconomicCodeState                                 ,1,كد رهگيري دارم,,1,,SLS,41369
+EconomicCodeState                                 ,2,پيش ثبت نام كد اقتصادي نكرده ام,,2,,SLS,41370
+TaxOffice                                         ,12,مازندران,,12,,SLS,41371
+TaxOffice                                         ,13,آذربايجان شرقي,,13,,SLS,41372
+TaxOffice                                         ,14,آذربايجان غربي,,14,,SLS,41373
+TaxOffice                                         ,15,كرمانشاه,,15,,SLS,41374
+TaxOffice                                         ,16,خوزستان,,16,,SLS,41375
+TaxOffice                                         ,17,فارس,,17,,SLS,41376
+TaxOffice                                         ,18,كرمان,,18,,SLS,41377
+TaxOffice                                         ,19,خراسان رضوي,,19,,SLS,41378
+TaxOffice                                         ,20,اصفهان,,20,,SLS,41379
+TaxOffice                                         ,21,خراسان شمالي,,21,,SLS,41380
+TaxOffice                                         ,22,كردستان,,22,,SLS,41381
+TaxOffice                                         ,23,هرمزگان,,23,,SLS,41382
+TaxOffice                                         ,24,همدان,,24,,SLS,41383
+TaxOffice                                         ,25,چهار محال بختياري,,25,,SLS,41384
+TaxOffice                                         ,26,لرستان,,26,,SLS,41385
+TaxOffice                                         ,27,ايلام,,27,,SLS,41386
+TaxOffice                                         ,28,كهگيلويه و بوير احمد,,28,,SLS,41387
+TaxOffice                                         ,29,زنجان,,29,,SLS,41388
+TaxOffice                                         ,31,خراسان جنوبي,,31,,SLS,41389
+TaxOffice                                         ,32,شهر تهران - جنوب,,10,,SLS,41390
+TaxOffice                                         ,34,شهر تهران - غرب,,10,,SLS,41391
+TaxOffice                                         ,35,شهر تهران - شرق,,10,,SLS,41392
+TaxOffice                                         ,36,شهر تهران - مركز,,10,,SLS,41393
+TaxOffice                                         ,39,شهر تهران - موديان بزرگ,,10,,SLS,41394
+TaxOffice                                         ,40,شهر تهران - شمال,,10,,SLS,41395
+TaxOffice                                         ,44,مركزي,,44,,SLS,41396
+TaxOffice                                         ,46,استان تهران - شهر ري / جنوب,,10,,SLS,41397
+TaxOffice                                         ,49,البرز - كرج,,49,,SLS,41398
+TaxOffice                                         ,51,استان تهران - شميرانات / شمال,,10,,SLS,41399
+TaxOffice                                         ,52,استان تهران - شهريار / غرب,,10,,SLS,41400
+TaxOffice                                         ,53,استان تهران - بومهن / شرق,,10,,SLS,41401
+TaxOffice                                         ,55,گيلان,,55,,SLS,41402
+TaxOffice                                         ,61,اردبيل,,61,,SLS,41403
+TaxOffice                                         ,62,قم,,62,,SLS,41404
+TaxOffice                                         ,63,قزوين,,63,,SLS,41405
+TaxOffice                                         ,64,گلستان,,64,,SLS,41406
+TaxOffice                                         ,66,سيستان و بلوچستان,,66,,SLS,41407
+TaxOffice                                         ,77,يزد,,77,,SLS,41408
+TaxOffice                                         ,88,بوشهر,,88,,SLS,41409
+TaxOffice                                         ,99,سمنان,,99,,SLS,41410
+SaleTypeMarket                                    ,1,فروش داخلي,,1,,SLS,41411
+SaleTypeMarket                                    ,2,فروش صادراتي,,2,,SLS,41412
+OrderStatus                                       ,1,فعال,,1,,SLS,41413
+OrderStatus                                       ,2,غير فعال,,2,,SLS,41414
+ProductType                                       ,1,كالا,,1,,SLS,41415
+ProductType                                       ,2,خدمت,,2,,SLS,41416
+ProductType                                       ,3,,,3,,SLS,41417
+ItemPriceSummaryType                              ,1,آخرين قيمت فروش,,1,,SLS,41418
+ItemPriceSummaryType                              ,2,آخرين قيمت فروش به مشتري,,2,,SLS,41419
+ItemPriceSummaryType                              ,3,آخرين قيمت خريد,,3,,SLS,41420
+CommissionInvoiceType                             ,1,فاكتور فروش,,1,,SLS,41421
+CommissionInvoiceType                             ,2,فاكتور برگشتي,,2,,SLS,41422
+InterestRateTypes                                 ,1,ماهيانه,,1,,GNR,41423
+InterestRateTypes                                 ,2,ساليانه,,2,,GNR,41424
+Shredables                                        ,1,فاكتور فروش,,1,,GNR,41425
+Shredables                                        ,2,فاكتور خريد,,2,,GNR,41426
+Shredables                                        ,3,رسيد انبار,,3,,GNR,41427
+Shredables                                        ,4,وام كارمندي,,0,,GNR,41428
+Shredables                                        ,5,وام بانكي,,5,,GNR,41429
+Shredables                                        ,6,ساير - دريافتني,,6,,GNR,41430
+Shredables                                        ,7,ساير - پرداختني,,7,,GNR,41431
+Shredables                                        ,8,فاكتور خريد خدمات,,8,,GNR,41432
+ShredItemStatus                                   ,1,تسويه شده,,1,,GNR,41433
+ShredItemStatus                                   ,2,تسويه نشده,,2,,GNR,41434
+TransferRemainedAmountTypes                       ,1,اولين قسط,,1,,GNR,41435
+TransferRemainedAmountTypes                       ,2,آخرين قسط,,2,,GNR,41436
+ApplicationTheme                                  ,0,مشكي,,1,,FMK,41437
+ApplicationTheme                                  ,1,آبي,,2,,FMK,41438
+ApplicationTheme                                  ,2,نقره اي,,3,,FMK,41439
+ApplicationTheme                                  ,3,شيشه اي,,4,,FMK,41440
+ExtraInformationColumnType                        ,1,رشته,,1,,FMK,41441
+ExtraInformationColumnType                        ,2,عدد صحيح,,2,,FMK,41442
+ExtraInformationColumnType                        ,3,عدد اعشاري,,3,,FMK,41443
+ExtraInformationColumnType                        ,4,تاريخ,,4,,FMK,41444
+ExtraInformationColumnType                        ,5,لينك,,5,,FMK,41445
+FiscalYearStatus                                  ,1,فعال,,1,,FMK,41446
+FiscalYearStatus                                  ,2,بسته شده,,2,,FMK,41447
+SgCulture                                         ,1,فارسي,,1,,FMK,41448
+SgCulture                                         ,2,انگليسي,,2,,FMK,41449
+SgCulture                                         ,3,كردي,,3,,FMK,41450
+SgCulture                                         ,4,عربي,,4,,FMK,41451
+MajorCalendar                                     ,1,هجري شمسي,,1,,FMK,41452
+MajorCalendar                                     ,2,ميلادي,,2,,FMK,41453
+LogicalOperator                                   ,1,برابر با,,1,,FMK,41454
+LogicalOperator                                   ,2,بزرگتر از,,2,,FMK,41455
+LogicalOperator                                   ,3,بزرگتر يا مساوي با,,3,,FMK,41456
+LogicalOperator                                   ,4,كوچكتر از,,4,,FMK,41457
+LogicalOperator                                   ,5,كوچكتر يا مساوي با,,5,,FMK,41458
+LogicalOperator                                   ,6,مخالف با,,6,,FMK,41459
+NumberingMethod                                   ,1,خودكار,,1,,FMK,41460
+NumberingMethod                                   ,2,دستي,,2,,FMK,41461
+Months                                            ,0,,,0,,FMK,41462
+Months                                            ,1,فروردين,,1,,FMK,41463
+Months                                            ,2,ارديبهشت,,2,,FMK,41464
+Months                                            ,3,خرداد,,3,,FMK,41465
+Months                                            ,4,تير,,4,,FMK,41466
+Months                                            ,5,مرداد,,5,,FMK,41467
+Months                                            ,6,شهريور,,6,,FMK,41468
+Months                                            ,7,مهر,,7,,FMK,41469
+Months                                            ,8,آبان,,8,,FMK,41470
+Months                                            ,9,آذر,,9,,FMK,41471
+Months                                            ,10,دي,,10,,FMK,41472
+Months                                            ,11,بهمن,,11,,FMK,41473
+Months                                            ,12,اسفند,,12,,FMK,41474
+SubSystemsKind                                    ,0,مشتريان و فروش,,0,,FMK,41475
+SubSystemsKind                                    ,1,تامين كنندگان و انبار,,4,,FMK,41476
+SubSystemsKind                                    ,2,دريافت و پرداخت,,6,,FMK,41477
+SubSystemsKind                                    ,3,حسابداري,,8,,FMK,41478
+SubSystemsKind                                    ,4,حقوق و دستمزد,,9,,FMK,41479
+SubSystemsKind                                    ,7,خرده فروشي,,1,,FMK,41480
+SubSystemsKind                                    ,8,پيمانكاري,,10,,FMK,41481
+SubSystemsKind                                    ,9,سفارش كار,,5,,FMK,41482
+SubSystemsKind                                    ,10,دارايي ثابت,,7,,FMK,41483
+SubSystemsKind                                    ,11,ارتباطات,,13,,GNR,41484
+SubSystemsKind                                    ,12,سفارش‌گيري و پخش,,2,,FMK,41485
+SubSystemsKind                                    ,13,سفارشات و خريد خارجي,,3,,FMK,41486
+SubSystemsKind                                    ,14,تداركات و خريد داخلي,,3,,FMK,41487
+SubSystemsKind                                    ,15,تداركات و خريد,,3,,FMK,41488
+SubSystemsKind                                    ,16,گزارش‌هاي مديريتي,,12,,GNR,41489
+SubSystemsKind                                    ,17,سامانه موديان مالياتي,,11,,GNR,41490
+SubSystemsKind                                    ,5,شركت,,14,,FMK,41491
+SubSystemsKind                                    ,6,تنظيمات,,15,,FMK,41492
+InputType                                         ,0,موجوديت,,0,,FMK,41493
+InputType                                         ,1,پرس و جو,,1,,FMK,41494
+IOType                                            ,0,اكسل,,0,,FMK,41495
+IOType                                            ,1,متن,,1,,FMK,41496
+IOType                                            ,2,DBF,,2,,FMK,41497
+ImportFlag                                        ,1, ,,1,,FMK,41498
+ImportFlag                                        ,2,دريافت شد,,2,,FMK,41499
+ImportFlag                                        ,3,خطا,,3,,FMK,41500
+Seperator                                         ,0,كاما,,0,,FMK,41501
+Seperator                                         ,1,تب,,1,,FMK,41502
+Seperator                                         ,2,فاصله خالي,,2,,FMK,41503
+Seperator                                         ,3,هيچكدام,,3,,FMK,41504
+Seperator                                         ,4,كاما نقطه,,4,,FMK,41505
+Season                                            ,0,,,0,,FMK,41506
+Season                                            ,1,بهار,,1,,FMK,41507
+Season                                            ,2,تابستان,,2,,FMK,41508
+Season                                            ,3,بهار/تابستان,,2,,FMK,41509
+Season                                            ,4,پاييز,,3,,FMK,41510
+Season                                            ,5,بهار/پاييز,,3,,FMK,41511
+Season                                            ,6,تابستان/پاييز,,3,,FMK,41512
+Season                                            ,7,بهار/تابستان/پاييز,,3,,FMK,41513
+Season                                            ,8,زمستان,,4,,FMK,41514
+Season                                            ,9,بهار/زمستان,,1,,FMK,41515
+Season                                            ,10,تابستان/زمستان,,2,,FMK,41516
+Season                                            ,11,بهار/تابستان/زمستان,,2,,FMK,41517
+Season                                            ,12,پاييز/زمستان,,3,,FMK,41518
+Season                                            ,13,بهار/پاييز/زمستان,,3,,FMK,41519
+Season                                            ,14,تابستان/پاييز/زمستان,,3,,FMK,41520
+Season                                            ,15,بهار/تابستان/پاييز/زمستان,,3,,FMK,41521
+TaxPayerPartyType                                 ,0,-,,0,,GNR,41522
+TaxPayerPartyType                                 ,1,حقيقي,,1,,GNR,41523
+TaxPayerPartyType                                 ,2,حقوقي,,2,,GNR,41524
+TaxPayerPartyType                                 ,3,مشاركت مدني,,3,,GNR,41525
+TaxPayerPartyType                                 ,4,اتباع غير ايراني,,4,,GNR,41526
+TaxPayerBillSubmitType                            ,0,,,0,,GNR,41527
+TaxPayerBillSubmitType                            ,1,ارسال مستقيم اطلاعات به سامانه,,1,,GNR,41528
+TaxPayerBillSubmitType                            ,2,ارسال اطلاعات از طريق شركت معتمد سام,,2,,GNR,41529
+TaxPayerBillSubmitType                            ,3,ارسال اطلاعات از طريق شركت معتمد كيسان,,3,,GNR,41530
+TaxPayerBillSubmitType                            ,4,ارسال اطلاعات از طريق شركت معتمد تيس,,4,,GNR,41531
+TaxPayerBillSubmitType                            ,5,ارسال مستقيم اطلاعات به سامانه نسخه 2,,1,,GNR,41532
+TaxPayerBillState                                 ,0,,,0,,GNR,41533
+TaxPayerBillState                                 ,1,نياز به ارسال,,1,,GNR,41534
+TaxPayerBillState                                 ,2,در انتظار استعلام,,2,,GNR,41535
+TaxPayerBillState                                 ,3,خطا در ارسال,,3,,GNR,41536
+TaxPayerBillState                                 ,4,ارسال شده,,4,,GNR,41537
+TaxPayerBillStateInWorkBook                       ,0,,,0,,GNR,41538
+TaxPayerBillStateInWorkBook                       ,1,تاييد,,1,,GNR,41539
+TaxPayerBillStateInWorkBook                       ,2,رد,,2,,GNR,41540
+TaxPayerBillStateInWorkBook                       ,3,عدم نياز به واكنش,,3,,GNR,41541
+TaxPayerBillStateInWorkBook                       ,4,در انتظار واكنش,,4,,GNR,41542
+TaxPayerBillActionType                            ,0,,,0,,GNR,41543
+TaxPayerBillActionType                            ,1,اصلي,,1,,GNR,41544
+TaxPayerBillActionType                            ,2,اصلاحي,,2,,GNR,41545
+TaxPayerBillActionType                            ,3,ابطالي,,3,,GNR,41546
+TaxPayerBillActionType                            ,4,برگشت از فروش,,4,,GNR,41547
+TaxPayerBillBillType                              ,0,,,0,,GNR,41548
+TaxPayerBillBillType                              ,1,نوع اول,,1,,GNR,41549
+TaxPayerBillBillType                              ,2,نوع دوم,,2,,GNR,41550
+TaxPayerBillBillPattern                           ,0,,,0,,GNR,41551
+TaxPayerBillBillPattern                           ,1,فروش,,1,,GNR,41552
+TaxPayerBillBillPattern                           ,2,فروش ارز,,2,,GNR,41553
+TaxPayerBillBillPattern                           ,4,قرارداد پيمانكاري,,4,,GNR,41554
+TaxPayerBillBillPattern                           ,7,صادرات,,7,,GNR,41555
+TaxPayerBillSettlementType                        ,0,,,0,,GNR,41556
+TaxPayerBillSettlementType                        ,1,نقدي,,1,,GNR,41557
+TaxPayerBillSettlementType                        ,2,نسيه,,2,,GNR,41558
+TaxPayerBillSettlementType                        ,3,نقدي / نسيه,,3,,GNR,41559
+BillSubmitLogRequestType                          ,1,ارسال,,1,,GNR,41560
+BillSubmitLogRequestType                          ,2,استعلام,,1,,GNR,41561
+BillRelatedVoucherType                            ,0,,,0,,GNR,41562
+BillRelatedVoucherType                            ,1,فاكتور,,1,,GNR,41563
+BillRelatedVoucherType                            ,2,صورت وضعيت,,2,,GNR,41564
+BillRelatedVoucherType                            ,3,اظهارنامه گمركي,,3,,GNR,41565
+BillRelatedVoucherType                            ,4,فروش دارايي,,4,,GNR,41566
+BillMakingMethod                                  ,0,,,0,,GNR,41567
+BillMakingMethod                                  ,1,خودكار,,1,,GNR,41568
+BillMakingMethod                                  ,2,دستي,,2,,GNR,41569
+TaxPayerBillEntityType                            ,1,فاكتور,,1,,GNR,41570
+TaxPayerBillEntityType                            ,2,فاكتور برگشتي,,2,,GNR,41571
+TaxPayerBillEntityType                            ,3,فاكتور صادرات خدمات,,3,,GNR,41572
+TaxPayerBillEntityType                            ,4,صورت وضعيت,,4,,GNR,41573
+TaxPayerBillEntityType                            ,5,اظهارنامه گمركي,,5,,GNR,41574
+TaxPayerBillEntityType                            ,6,فاكتور فروش دارايي ثابت,,6,,GNR,41575
+VatItemType                                       ,1,1-فاكتور فروش,,1,,GNR,41576
+VatItemType                                       ,2,2-فاكتور برگشتي,,2,,GNR,41577
+VatItemType                                       ,3,3-رسيد انبار,,3,,GNR,41578
+VatItemType                                       ,4,4-برگشت رسيد ,,4,,GNR,41579
+VatItemType                                       ,5,5-فاكتور خريد خدمات ,,5,,GNR,41580
+VatItemType                                       ,6,6-فاكتور خريد دارايي ,,6,,GNR,41581
+VatItemType                                       ,7,7-فروش دارايي ,,7,,GNR,41582
+VatItemType                                       ,8,8-صورت وضعيت پيمانكار,,8,,GNR,41583
+VatItemType                                       ,9,9-صورت وضعيت پيمانكار جزء,,9,,GNR,41584
+VatItemType                                       ,10,10-ترخيص,,10,,GNR,41585
+VatItemType                                       ,11,11-بارنامه,,11,,GNR,41586
+VatItemType                                       ,12,12-بيمه نامه,,12,,GNR,41587
+DomesticType                                      ,1,داخلي,,1,,GNR,41588
+DomesticType                                      ,2,خارجي,,2,,GNR,41589
+VoucherItemTrackingVoucherType                    ,1,فاكتور فروش,,1,,INV,41590
+VoucherItemTrackingVoucherType                    ,2,فاكتور برگشتي,,2,,INV,41591
+VoucherItemTrackingVoucherType                    ,3,رسيد انبار,,3,,INV,41592
+VoucherItemTrackingVoucherType                    ,4,برگشت رسيد انبار,,4,,INV,41593
+VoucherItemTrackingVoucherType                    ,5,خروج انبار,,5,,INV,41594
+VoucherItemTrackingVoucherType                    ,6,برگشت خروج انبار,,6,,INV,41595
+RecordType                                        ,1,بانك ها,,1,,ACC,41596
+RecordType                                        ,2,صندوق ها,,2,,ACC,41597
+RecordType                                        ,3,كارت خوان ها,,3,,ACC,41598
+RecordType                                        ,4,مشتريان,,4,,ACC,41599
+RecordType                                        ,5,تامين كنندگان,,5,,ACC,41600
+RecordType                                        ,6,چكهاي استقرار دريافتي,,6,,ACC,41601
+RecordType                                        ,7,چكهاي استقرار پرداختي,,7,,ACC,41602
+RecordType                                        ,8,    كالا  ,,8,,ACC,41603
+RecordType                                        ,9,    دارايي  ,,9,,ACC,41604
+RecordType                                        ,10,استهلاك انباشته دارايي,,10,,ACC,41605
+RecordType                                        ,11,واسط,,11,,ACC,41606
+RecordType                                        ,12,تنخواه دار,,12,,ACC,41607
+VoucherState                                      ,1,موقت,,1,,ACC,41608
+VoucherState                                      ,2,دائم,,2,,ACC,41609
+VoucherType                                       ,1,عمومي,,1,,ACC,41610
+VoucherType                                       ,2,ساير سيستم ها,,2,,ACC,41611
+VoucherType                                       ,3,بستن حسابها,,3,,ACC,41612
+VoucherType                                       ,4,اختتاميه,,4,,ACC,41613
+VoucherType                                       ,5,افتتاحيه,,5,,ACC,41614
+VoucherType                                       ,6,تسعير,,6,,ACC,41615
+ProductOrderState                                 ,0,,,0,,WKO,41616
+ProductOrderState                                 ,1,درحال توليد,,1,,WKO,41617
+ProductOrderState                                 ,2,اتمام توليد,,2,,WKO,41618
+ProductOrderState                                 ,3,محاسبه شده,,3,,WKO,41619
+ProductionForecastDisplayMethod                   ,1,نمايش مواد اوليه,,1,,WKO,41620
+ProductionForecastDisplayMethod                   ,2,نمايش مواد نيمه ساخته,,2,,WKO,41621
+ProductionForecastDisplayMethod                   ,3,نمايش هر دو,,3,,WKO,41622

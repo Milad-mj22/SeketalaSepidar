@@ -5,7 +5,7 @@ import pyodbc
 # Database connection settings
 # ============================
 # Replace with your server and database details
-server = 'DESKTOP-JKDSDCN\SEPIDAR' # E.g., 'localhost' or 'server_name\instance_name'
+server = 'localhost' # E.g., 'localhost' or 'server_name\instance_name'
 database ='Sepidar01'
 driver = '{ODBC Driver 17 for SQL Server}' # Make sure you have the correct driver installed
 
@@ -19,7 +19,7 @@ connection_string = (
 
 print('first')
 
-output_file = "database_tables_record_count_4.txt"
+output_file = "database_tables_record_count_5.txt"
 
 try:
     # Connect to SQL Server

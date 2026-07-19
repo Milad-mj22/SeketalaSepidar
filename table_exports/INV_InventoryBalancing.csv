@@ -1,0 +1,3 @@
+﻿InventoryBalancingId,Number,State,StockRef,OperatorDLRef,RedundancySLRef,RedundancyDLRef,ShortageSLRef,ShortageDLRef,Date,FiscalYearRef,Description,Description_En,InventoryReceiptRef,InventoryDeliveryRef,ItemMinQuantity,Version,Creator,CreationDate,LastModifier,LastModificationDate
+30,1,3,10,57,,,,,2026-04-20 00:00:00,1,,,3927,,0.0000,4,12,2026-07-05 10:21:40,12,2026-07-05 10:29:59
+33,2,3,10,57,,,,,2026-05-21 00:00:00,1,,,,27208,0.0000,4,12,2026-07-05 12:02:52,12,2026-07-05 12:07:56

@@ -1,0 +1,4 @@
+﻿PartyRelatedId,PartyRef,IsMain,Name,Post,Name_En,Post_En,Phone,Email,Version
+1,5,True,حسين محمدخاني,نماينده رسمي اصفهان,حسين محمدخاني,نماينده رسمي اصفهان,09133941663,ariatarazfardad@gmail.com,5
+2,5,False,خدمات پس از فروش,پشتيباني,خدمات پس از فروش,پشتيباني,81022444,info@sepidarsystem.com,3
+3,6,True,حسين محمدخاني,مديرعامل,حسين محمدخاني,مديرعامل,09133941663,ariatarazfardad@gmail.com,4

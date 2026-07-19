@@ -1,0 +1,4 @@
+﻿SaleTypeId,Number,Title,Title_En,SaleTypeMarket,PartSalesSLRef,ServiceSalesSLRef,PartSalesReturnSLRef,ServiceSalesReturnSLRef,PartSalesDiscountSLRef,ServiceSalesDiscountSLRef,SalesAdditionSLRef,Version,Creator,CreationDate,LastModifier,LastModificationDate
+3,1,اصلي,اصلي,1,802,811,805,807,808,808,811,2,1,2024-03-03 13:54:27,10,2026-04-29 11:52:54
+5,2,فروش مواد اوليه,فروش مواد اوليه,1,915,804,916,807,917,810,811,6,1,2024-03-03 13:55:16,13,2026-04-23 14:11:16
+14,3,فروش فانتزي,فروش فانتزي,1,929,804,930,807,931,810,811,1,10,2026-05-26 18:11:00,10,2026-05-26 18:11:00

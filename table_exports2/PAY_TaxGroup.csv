@@ -1,0 +1,4 @@
+﻿TaxGroupId,Title,Title_En,Type,Version,Creator,CreationDate,LastModifier,LastModificationDate,TaxFlatRate
+1,گروه هاي مالياتي عادي (100%),Normal Taxable (100%),0,1,1,2018-03-05 13:34:00,1,2018-03-05 13:34:00,10
+2,مناطق محروم (50%),Leakage Area (50%),1,1,1,2018-03-05 13:34:00,1,2018-03-05 13:34:00,5
+3,معاف (0%),NonTaxable (0%),6,1,1,2018-03-05 13:34:00,1,2018-03-05 13:34:00,0

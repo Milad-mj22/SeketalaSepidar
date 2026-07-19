@@ -1,0 +1,1 @@
+﻿ReceiptChequeId,Number,SecondNumber,IsGuarantee,AccountNo,Amount,Date,Description,Description_En,Version,State,CashRef,ReceiptHeaderRef,BankRef,BranchCode,BranchTitle,LocationRef,HeaderNumber,HeaderDate,CurrencyRef,Rate,AmountInBaseCurrency,BankBranchRef,DlRef,Type,InitState,SayadCode,ChequeOwner

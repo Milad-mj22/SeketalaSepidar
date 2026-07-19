@@ -1,0 +1,17 @@
+﻿FactTableName,DependentView,DateBased
+MRP.SaleFacts,MRP.vwReturnedSaleInvoiceVersion,True
+MRP.SaleFacts,MRP.vwSaleInvoiceVersion,True
+MRP.SaleFacts,MRP.vwItemVersion,False
+MRP.ItemTransactionsFact,MRP.vwInventoryDeliveryVersion,True
+MRP.ItemTransactionsFact,MRP.vwInventoryReceiptVersion,True
+MRP.ItemTransactionsFact,MRP.vwItemVersion,False
+MRP.ReceivableCommitmentsFact,MRP.vwShredItemVersion,True
+MRP.ReceivableCommitmentsFact,MRP.vwStatusVersion,True
+MRP.ReceivableCommitmentsFact,MRP.vwReceiptChequeVersion,True
+MRP.ReceivableCommitmentsFact,MRP.vwReceiptChequeBankingVersion,True
+MRP.ReceivableCommitmentsFact,MRP.vwDebitCreditNoteVersion,True
+MRP.ReceivableCommitmentsFact,MRP.vwPartyOpeningBalanceVersion,True
+MRP.ReceivableCommitmentsFact,MRP.vwRefundChequeVersion,True
+MRP.ReceivableCommitmentsFact,MRP.vwReceiptHeaderVersion,True
+MRP.ReceivableCommitmentsFact,MRP.vwReturnedSaleInvoiceVersion,True
+MRP.ReceivableCommitmentsFact,MRP.vwSaleInvoiceVersion,True

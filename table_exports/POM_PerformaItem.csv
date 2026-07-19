@@ -1,0 +1,1 @@
+﻿PerformaItemID,PerformaRef,RowNumber,ItemRef,TracingRef,Quantity,SecondaryQuantity,Fee,FeeInBaseCurrency,Price,PriceInBaseCurrency,Discount,DiscountInBaseCurrency,Addition,AdditionInBaseCurrency,NetPrice,NetPriceInBaseCurrency,Description,PurchaseRequestItemRef,Tax,TaxInBaseCurrency,Duty,DutyInBaseCurrency,InsuranceAmount,InsuranceAmountInBaseCurrency,DeliveryDate

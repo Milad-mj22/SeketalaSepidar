@@ -1,0 +1,1 @@
+﻿BillItemID,BillRef,RowID,Type,InvoiceRef,ReturnedInvoiceRef,DebitCreditNoteRef,InventoryReceiptRef,ServiceInventoryPurchaseInvoiceRef,PaymentHeaderRef,ReceiptHeaderRef,RefundChequeRef,AmountInBaseCurrency,Amount,EntityFullName,ShredRef,PurchaseInvoiceRef,BillOfLoadingRef,InsurancePolicyRef,CommercialOrderRef,CustomsClearanceRef
