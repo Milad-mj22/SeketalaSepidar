@@ -828,13 +828,41 @@
                 </div>
             </div>
             
+
+
+    <div class="header-actions" style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+        <div style="display: flex; align-items: center; gap: 8px; background: var(--gray-50); padding: 4px 12px 4px 16px; border-radius: var(--radius-sm); border: 2px solid var(--gray-200); transition: var(--transition);">
+            <i class="fas fa-link" style="color: var(--primary); font-size: 16px;"></i>
+            <label for="relationSelect" style="font-weight: 600; color: var(--gray-700); font-size: 13px; white-space: nowrap;">
+                رابطه:
+            </label>
+            <select id="relationSelect" style="padding: 8px 12px; border: none; border-radius: 6px; font-size: 14px; background: white; min-width: 200px; cursor: pointer; font-family: inherit; transition: var(--transition);">
+                <option value="">انتخاب رابطه...</option>
+                {% for relation in relations %}
+                    <option value="{{ relation.id }}" data-source="{{ relation.source_warehouse.id }}" data-destination="{{ relation.destination_warehouse.id }}">
+                        {{ relation.relation_name }} - {{ relation.source_warehouse.name }} → {{ relation.destination_warehouse.name }}
+                    </option>
+                {% endfor %}
+            </select>
+            <span id="selectedRelationInfo" style="font-size: 12px; color: var(--gray-400); min-width: 80px;">
+                <i class="fas fa-info-circle"></i>
+            </span>
+        </div>
+
+
+
+
+
+
+
+
             <!-- Search -->
-            <div class="search-wrapper">
+            <!-- <div class="search-wrapper">
                 <input type="text" id="searchInput" placeholder="🔍 جستجوی فرمول بر اساس کد یا عنوان..." />
                 <button class="btn btn-primary" onclick="searchFormulas()">
                     <i class="fas fa-search"></i>
                 </button>
-            </div>
+            </div> -->
         </div>
 
         <!-- ===== RESULTS ===== -->
@@ -1481,6 +1509,13 @@ function sendToServer(values) {
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> در حال ارسال...';
     submitBtn.classList.add('btn-loading');
 
+    // دریافت رابطه انتخاب شده
+    const relationSelect = document.getElementById('relationSelect');
+    const relationId = relationSelect.value;
+    const relationName = relationSelect.options[relationSelect.selectedIndex]?.text || '';
+
+
+
     const payload = {
         formulas: values.map(item => ({
             formula_id: item.formula_id,
@@ -1496,7 +1531,9 @@ function sendToServer(values) {
                 quantity: wItem.quantity,
                 withdrawal_amount: wItem.withdrawal_amount
             }))
-        }))
+        })),
+            relation_id: relationId,  // ارسال ID رابطه
+            relation_name: relationName  // ارسال نام رابطه (اختیاری)
     };
 
     fetch('/api/submit-all-formula-values/', {

@@ -6,11 +6,13 @@ import logging
 from SekeSepidar.settings import CREATOR_SEPIDAR
 from SepidarApp.Steps.delivery_order import save_inventory_delivery_db
 from SepidarApp.Steps.recepi_order import save_inventory_receipt_db
+from SepidarApp.Steps.update_quantity import update_stock_batch
 from SepidarApp.databaseConnector import DatabaseConnection
 
 logger = logging.getLogger(__name__)
 
-def save_product_order_db(db_connection:DatabaseConnection, formula_id, product_id, withdrawal_amount, material_details, quantity=1,):
+def save_product_order_db(db_connection:DatabaseConnection, formula_id, product_id, withdrawal_amount, material_details, quantity=1,
+                          stock_source_ref=None , stock_dest_ref=None):
     """
     ذخیره یک رکورد جدید در جدول ProductOrder
     
@@ -264,7 +266,7 @@ def save_product_order_db(db_connection:DatabaseConnection, formula_id, product_
         TEMP_STOCK_REF = 10
         TEMP_DELIVERER_REF = 5
         items = {'item_ref':product_id,quantity:quantity}
-        recepi = save_inventory_receipt_db(db_connection=db_connection,product_order_ref=product_order_ref,stock_ref=TEMP_STOCK_REF,deliverer_dl_ref=TEMP_DELIVERER_REF,items=material_details,number_product_order_ref=new_number)
+        recepi = save_inventory_receipt_db(db_connection=db_connection,product_order_ref=product_order_ref,stock_ref=stock_source_ref,deliverer_dl_ref=TEMP_DELIVERER_REF,items=material_details,number_product_order_ref=new_number)
         if not recepi['success']:
             logger.warning(f"خطا در ذخیره recepi: {recepi.get('error')}")
             conn.rollback()
@@ -275,7 +277,29 @@ def save_product_order_db(db_connection:DatabaseConnection, formula_id, product_
         
         
         ############# STEP4 ############# UPDATE INVOICE QUANTITY
-        
+
+        ret_update = update_stock_batch(db_connection=db_connection,items=material_details,type='output',stock_ref=stock_source_ref)
+        if not ret_update['success']:
+            logger.warning(f"خطا در ذخیره update: {ret_update.get('error')}")
+            conn.rollback()
+            return {
+                'success': False,
+                'error': f"خطا در ذخیره update: {ret_update.get('error')}"
+            }
+
+
+        final_product = [{'item_ref':product_id,'withdrawal_amount':quantity}]
+        ret_update = update_stock_batch(db_connection=db_connection,items=final_product,type='input',stock_ref=stock_dest_ref)
+        if not ret_update['success']:
+            logger.warning(f"خطا در ذخیره update: {ret_update.get('error')}")
+            conn.rollback()
+            return {
+                'success': False,
+                'error': f"خطا در ذخیره update: {ret_update.get('error')}"
+            }
+
+
+
 
 
         return {
@@ -295,7 +319,7 @@ def save_product_order_db(db_connection:DatabaseConnection, formula_id, product_
         }
 
 
-def save_multiple_product_orders(conn, orders_data):
+def save_multiple_product_orders(conn, orders_data,stock_source_ref,stock_dest_ref):
     """
     ذخیره چندین سفارش محصول به صورت همزمان
     
@@ -326,7 +350,9 @@ def save_multiple_product_orders(conn, orders_data):
             product_id=order.get('product_id'),
             withdrawal_amount=order.get('total_withdrawal'),
             material_details=order.get('withdrawal_items'),
-            quantity=order.get('consumption_value', 0)
+            quantity=order.get('consumption_value', 0),
+            stock_source_ref = stock_source_ref,
+            stock_dest_ref = stock_dest_ref,
         )
         
         results.append(result)
