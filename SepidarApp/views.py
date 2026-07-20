@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
 from SepidarApp.Steps.save_order import save_multiple_product_orders
+from SepidarApp.models import WarehouseRelation
 
 @login_required(login_url='authentication:sign-in')
 def first_page(request):
@@ -89,12 +90,16 @@ def formula_list(request):
         active_formulas = sum(1 for f in formula_list if f['is_active'])
         total_items = sum(len(f['items']) for f in formula_list)
         
+        relations = WarehouseRelation.objects.select_related('source_warehouse', 'destination_warehouse').all()
+
+
         return render(request, 'formula_list.html', {
             'formulas': formula_list,
             'total_formulas': total_formulas,
             'active_formulas': active_formulas,
             'total_items': total_items,
-            'inactive_formulas': total_formulas - active_formulas
+            'inactive_formulas': total_formulas - active_formulas,
+            'relations': relations,  # اضافه کردن روابط به context
         })
         
     except pyodbc.Error as e:
@@ -277,6 +282,8 @@ def submit_all_formula_values(request):
         # دریافت داده از درخواست
         data = json.loads(request.body)
         formulas = data.get('formulas', [])
+        relation_id = data.get('relation_id', [])
+        
         
         if not formulas:
             return JsonResponse({
@@ -284,6 +291,27 @@ def submit_all_formula_values(request):
                 'error': 'هیچ مقداری برای ثبت وجود ندارد'
             }, status=400)
         
+
+        
+        if not relation_id:
+            return JsonResponse({
+                'success': False,
+                'error': 'هیچ مقداری برای رابطه مورد نظر وجود ندارد'
+            }, status=400)
+        
+        relation = WarehouseRelation.objects.filter(id=relation_id)
+
+        
+        if not relation:
+            return JsonResponse({
+                'success': False,
+                'error': 'رابطه مورد نظر یافت نشد'
+            }, status=400)
+        
+        relation = relation.first()
+        stock_source_ref = relation.source_warehouse.number
+        stock_dest_ref = relation.destination_warehouse.number
+
         # اعتبارسنجی مقادیر
         for item in formulas:
             formula_id = item.get('formula_id')
@@ -414,11 +442,12 @@ def submit_all_formula_values(request):
 
         # ذخیره مقادیر در دیتابیس
         saved_formulas = []
+        all_exist = True
         if all_exist:
             pass
 
             # for item in formulas:
-            save_results  = save_multiple_product_orders(db,formulas)
+            save_results  = save_multiple_product_orders(db,formulas,stock_source_ref,stock_dest_ref)
 
             saved_results = save_results.get('results', [])
             saved_count = save_results.get('saved', 0)
