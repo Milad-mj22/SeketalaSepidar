@@ -261,10 +261,20 @@ def save_product_order_db(db_connection:DatabaseConnection, formula_id, product_
         
         
         ############### STEP3 ########### CREATE RECEPI ORDER
-        # TEMP_STOCK_REF = 10
-        # TEMP_DELIVERER_REF = 5
-        # save_inventory_receipt_db(db_connection=db_connection,stock_ref=TEMP_STOCK_REF,deliverer_dl_ref=TEMP_DELIVERER_REF)
-
+        TEMP_STOCK_REF = 10
+        TEMP_DELIVERER_REF = 5
+        items = {'item_ref':product_id,quantity:quantity}
+        recepi = save_inventory_receipt_db(db_connection=db_connection,product_order_ref=product_order_ref,stock_ref=TEMP_STOCK_REF,deliverer_dl_ref=TEMP_DELIVERER_REF,items=material_details,number_product_order_ref=new_number)
+        if not recepi['success']:
+            logger.warning(f"خطا در ذخیره recepi: {recepi.get('error')}")
+            conn.rollback()
+            return {
+                'success': False,
+                'error': f"خطا در ذخیره recepi: {recepi.get('error')}"
+            }
+        
+        
+        ############# STEP4 ############# UPDATE INVOICE QUANTITY
         
 
 
