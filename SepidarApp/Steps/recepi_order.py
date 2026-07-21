@@ -64,16 +64,15 @@ def save_inventory_receipt_db(
 
         # 1. Get max InventoryReceiptID and Number (per StockRef)
         cursor.execute("""
-            SELECT MAX(InventoryReceiptID)
-            FROM [Sepidar01].[INV].[InventoryReceipt]
-        """)
-        result = cursor.fetchone()
-        last_id = result[0] if result[0] is not None else 0
+        UPDATE FMK.IDGeneration
+        SET LastId = LastId + 1
+        OUTPUT inserted.LastId
+        WHERE TableName = ?
+        """, ("INV.InventoryReceipt",))
 
-        if last_id:
-            new_id = last_id + 1
-        else:
-            new_id = 1
+        new_id = cursor.fetchone()[0]
+
+
 
         # 2. FiscalYearRef (default 1, or query active fiscal year)
         fiscal_year_ref = 1   # adjust as needed
@@ -252,19 +251,25 @@ def save_inventory_receipt_items_batch(
                 'items': []
             }
         
-        # Get max InventoryReceiptItemID
-        cursor.execute("""
-            SELECT ISNULL(MAX(InventoryReceiptItemID), 0) 
-            FROM [Sepidar01].[INV].[InventoryReceiptItem]
-        """)
-        result = cursor.fetchone()
-        max_id = result[0] if result else 0
+
         
         inserted_items = []
         
         # Process each item
         for idx, item in enumerate(items):
-            new_item_id = max_id + idx + 1
+
+            # Get max InventoryReceiptItemID
+            cursor.execute("""
+            UPDATE FMK.IDGeneration
+            SET LastId = LastId + 1
+            OUTPUT inserted.LastId
+            WHERE TableName = ?
+            """, ("INV.InventoryReceiptItem",))
+
+            max_id = cursor.fetchone()[0]
+
+
+            new_item_id = max_id 
             row_number = idx + 1
             
             # Get item data with defaults

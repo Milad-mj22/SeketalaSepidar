@@ -41,20 +41,15 @@ def save_inventory_delivery_db(
         cursor = conn.cursor()
         
         # 1. دریافت بزرگترین InventoryDeliveryID و Number
+       
         cursor.execute("""
-            SELECT 
-                ISNULL(MAX(InventoryDeliveryID), 0) as MaxID,
-                ISNULL(MAX(Number), 0) as MaxNumber
-            FROM [Sepidar01].[INV].[InventoryDelivery]
-        """)
-        
-        result = cursor.fetchone()
-        
-        if result:
-            max_id = result[0]
-            new_id = max_id + 1
-        else:
-            new_id = 1
+        UPDATE FMK.IDGeneration
+        SET LastId = LastId + 1
+        OUTPUT inserted.LastId
+        WHERE TableName = ?
+        """, ("INV.InventoryDelivery",))
+
+        new_id = cursor.fetchone()[0]       
         
         inventory_delivery_id = new_id
 
@@ -210,14 +205,18 @@ def save_inventory_delivery_item_db(
         conn = db_connection.get_connection()
         cursor = conn.cursor()
         
-        # 1. دریافت آخرین InventoryDeliveryItemID
+        # 1. دریافت آخرین InventoryDeliveryItemID        
         cursor.execute("""
-            SELECT ISNULL(MAX(InventoryDeliveryItemID), 0) as MaxID
-            FROM [Sepidar01].[INV].[InventoryDeliveryItem]
-        """)
-        
-        result = cursor.fetchone()
-        new_item_id = result[0] + 1 if result else 1
+        UPDATE FMK.IDGeneration
+        SET LastId = LastId + 1
+        OUTPUT inserted.LastId
+        WHERE TableName = ?
+        """, ("INV.InventoryDeliveryItem",))
+
+        new_item_id = cursor.fetchone()[0]
+
+
+
         
         # 2. دریافت آخرین RowNumber برای این رسید
         cursor.execute("""
