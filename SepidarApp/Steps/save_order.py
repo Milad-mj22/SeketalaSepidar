@@ -48,6 +48,20 @@ def save_product_order_db(db_connection:DatabaseConnection, formula_id, product_
         else:
             new_id = 1
             new_number = 1
+
+
+        cursor.execute("""
+        UPDATE FMK.IDGeneration
+        SET LastId = LastId + 1
+        OUTPUT inserted.LastId
+        WHERE TableName = ?
+        """, ("WKO.ProductOrder",))
+
+        new_id = cursor.fetchone()[0]
+
+
+
+
         product_order_ref = new_id
         # 2. دریافت اطلاعات فرمول و محصول از دیتابیس
         cursor.execute("""
@@ -107,8 +121,8 @@ def save_product_order_db(db_connection:DatabaseConnection, formula_id, product_
         #     ORDER BY CostCenterRef
         # """)
         
-        cost_center =(1,5,'توليدي (آماده سازي)','توليدي (آماده سازي)',1101)
-
+        # cost_center =(1,5,'توليدي (آماده سازي)','توليدي (آماده سازي)',1101)
+        cost_center =(7,18,'واحد عمومي توليد (آشپزخانه)','واحد عمومي توليد (آشپزخانه)',1103)
 
 
         
@@ -226,6 +240,8 @@ def save_product_order_db(db_connection:DatabaseConnection, formula_id, product_
 
 
         logger.info(f"[Sepidar01].[WKO].[ProductOrder] جدید با شناسه {new_id} و شماره {new_number} ایجاد شد")
+
+
 
 
         # ===== ذخیره مواد اولیه =====
@@ -503,16 +519,10 @@ def save_material_of_order_db(db_connection: DatabaseConnection, product_order_i
         saved_count = 0
         saved_items = []
         
-        # 1. دریافت آخرین ProductOrderBOMItemID
-        cursor.execute("""
-            SELECT TOP 1 
-                ProductOrderBOMItemID
-            FROM [Sepidar01].[WKO].[ProductOrderBOMItem]
-            ORDER BY ProductOrderBOMItemID DESC
-        """)
-        
-        last_record = cursor.fetchone()
-        next_id = (last_record[0] + 1) if last_record else 1
+
+
+
+
         
         # 2. برای هر ماده، اطلاعات کامل را از دیتابیس دریافت کن
         for idx, material in enumerate(material_details):
@@ -579,6 +589,15 @@ def save_material_of_order_db(db_connection: DatabaseConnection, product_order_i
 
 
 
+            # 1. دریافت آخرین ProductOrderBOMItemID
+            cursor.execute("""
+            UPDATE FMK.IDGeneration
+            SET LastId = LastId + 1
+            OUTPUT inserted.LastId
+            WHERE TableName = ?
+            """, ("WKO.ProductOrderBOMItem",))
+
+            next_id = cursor.fetchone()[0]
 
 
 
@@ -587,7 +606,7 @@ def save_material_of_order_db(db_connection: DatabaseConnection, product_order_i
 
             # ایجاد رکورد جدید
             new_record = {
-                'ProductOrderBOMItemID': next_id + idx,
+                'ProductOrderBOMItemID': next_id,
                 'ProductOrderRef': product_order_id,
                 'ItemRef': item_data[0],
                 # 'ItemCode': item_data[1],
