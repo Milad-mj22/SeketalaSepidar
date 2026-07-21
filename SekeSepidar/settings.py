@@ -197,7 +197,7 @@ PUBLIC_KEY_FILE = 'public.pem'
 
 # روش دوم: استفاده از تنظیمات جداگانه (اختیاری)
 SQL_USE_CONNECTION_STRING = False  # اگر True باشد از string بالا استفاده می‌کند
-SQL_SERVER = 'DESKTOP-JKDSDCN'
+SQL_SERVER = 'DESKTOP-JKDSDCN\SEPIDAR'
 # SQL_SERVER = "DESKTOP-OCIN559"
 # SQL_SERVER = "DESKTOP-HDSP3L0"
 SQL_DATABASE = 'Sepidar01'
