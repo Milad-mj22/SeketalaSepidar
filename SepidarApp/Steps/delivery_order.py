@@ -102,7 +102,7 @@ def save_inventory_delivery_db(
             'LastModifier': creator,
             'LastModificationDate': now,
             'Version': 1,
-            'Description': description
+            'Description': None
         }
         
         # 4. ساخت کوئری INSERT
@@ -121,7 +121,7 @@ def save_inventory_delivery_db(
         logger.info(f"InventoryDelivery جدید با شناسه {new_id} و شماره {new_number} ایجاد شد")
         
 
-        results = save_inventory_delivery_items_batch(db_connection=db_connection,inventory_delivery_ref=inventory_delivery_id,items=items,product_order_ref=product_order_ref)
+        results = save_inventory_delivery_items_batch(db_connection=db_connection,inventory_delivery_ref=inventory_delivery_id,items=items,product_order_ref=product_order_ref,default_description=description)
 
         if not results['success']:
             if hasattr(conn, 'rollback'):
@@ -256,10 +256,10 @@ def save_inventory_delivery_item_db(
             'TracingRef': tracing_ref,
             'Quantity': quantity,
             'SecondaryQuantity': secondary_quantity,
-            'RemainingQuantity': remaining_quantity if remaining_quantity is not None else quantity,
+            'RemainingQuantity': 0,#remaining_quantity if remaining_quantity is not None else quantity,
             'RemainingSecondaryQuantity': None,
             'SLAccountRef': sl_account_ref,
-            'Price': price,
+            'Price': None,#price,
             'Description': description,
             'Description_En': None,
             'Version': version,
