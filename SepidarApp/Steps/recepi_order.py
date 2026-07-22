@@ -13,7 +13,7 @@ def save_inventory_receipt_db(
     sl_account_ref: int = None,
     purchase_type: int = 1,          # Default, adjust as needed
     is_return: int = 0,
-    type: int = 1,                   # Default receipt type
+    type: int = 2,                   # Default receipt type
     total_price: float = 0,
     total_tax: float = 0,
     total_duty: float = 0,
