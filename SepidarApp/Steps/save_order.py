@@ -267,7 +267,8 @@ def save_product_order_db(db_connection:DatabaseConnection, formula_id, product_
 
 
         ############### STEP2 ############# CREATE INVENTORY DELIVERY RECORD
-        delivery =  save_inventory_delivery_db(db_connection=db_connection,product_order_ref=product_order_ref, stock_ref=stock_source_ref, receiver_dl_ref=5, total_price=0, is_return=0, type=1, destination_stock_ref=None, creator=15, description=None,items=material_details)
+        description = f'مربوط به سفارش توليد محصول شماره {product_order_ref}'
+        delivery =  save_inventory_delivery_db(db_connection=db_connection,product_order_ref=product_order_ref, stock_ref=stock_source_ref, receiver_dl_ref=5, total_price=0, is_return=0, type=1, destination_stock_ref=None, creator=15, description=description,items=material_details)
         if not delivery['success']:
             logger.warning(f"خطا در ذخیره InventoryDelivery: {delivery.get('error')}")
             conn.rollback()
