@@ -34,10 +34,8 @@ import logging
 from .databaseConnector import db
 
 logger = logging.getLogger(__name__)
+@login_required
 def formula_list(request):
-    """
-    Display all formulas with their boom items in a table
-    """
     try:
         # Connect to database
         db.connect()
@@ -69,7 +67,6 @@ def formula_list(request):
                     'items': []
                 }
             
-            # Add item if exists
             if row.FormulaBomItemID:
                 formulas[formula_id]['items'].append({
                     'id': row.FormulaBomItemID,
@@ -84,7 +81,6 @@ def formula_list(request):
                     'stock_unit': row.StockUnitName if hasattr(row, 'StockUnitName') else None,
                 })
         
-        # Convert to list for template
         formula_list = list(formulas.values())
         
         # Get summary statistics
@@ -93,16 +89,49 @@ def formula_list(request):
         total_items = sum(len(f['items']) for f in formula_list)
         
         relations = WarehouseRelation.objects.select_related('source_warehouse', 'destination_warehouse').all()
-
-
-        return render(request, 'formula_list.html', {
+        
+        # ============================================
+        # دریافت داده‌های needed_materials از SESSION
+        # ============================================
+        exist=False
+        try:
+            needed_materials = request.session['needed_materials']
+            selected_date = request.session['materials_date']
+            count = request.session['materials_count']
+            exist = True
+        except:
+            if not exist:
+                needed_materials = []
+                selected_date = []
+                count = []
+        # همچنین از GET برای خطاها استفاده کنید
+        error_message = request.GET.get('error', '')
+        
+        # پردازش needed_materials
+        materials_by_code = {}
+        for material in needed_materials:
+            code = material.get('code', '')
+            if code:
+                materials_by_code[code] = material
+        
+        context = {
             'formulas': formula_list,
             'total_formulas': total_formulas,
             'active_formulas': active_formulas,
             'total_items': total_items,
             'inactive_formulas': total_formulas - active_formulas,
-            'relations': relations,  # اضافه کردن روابط به context
-        })
+            'relations': relations,
+            # داده‌های جدید از session
+            'needed_materials': needed_materials,
+            'materials_by_code': materials_by_code,
+            'needed_material_codes': list(materials_by_code.keys()),
+            'has_needed_materials': len(needed_materials) > 0,
+            'selected_date': selected_date,
+            'count': count,
+            'error_message': error_message,
+        }
+        
+        return render(request, 'formula_list.html', context)
         
     except pyodbc.Error as e:
         error_message = f"Database error: {str(e)}"
@@ -114,6 +143,9 @@ def formula_list(request):
         return render(request, 'error.html', {'error': error_message})
     finally:
         db.close()
+
+
+              
 def formula_detail(request, formula_id):
     """
     Display a single formula with its items
@@ -835,7 +867,7 @@ def get_materials(request):
             })
         
         # Call external API with Gregorian date
-        api_url = f"http://127.0.0.1:8900/data_analysis/api/get-date-items/?date={gregorian_date}"
+        api_url = f"https://seketalamanager.ir/data_analysis/api/get-date-items/?date={gregorian_date}"
         logger.info(f"Calling external API: {api_url}")
         
         # Use the alias http_requests instead of requests
@@ -947,82 +979,69 @@ def get_formula_id(db,product_id):
 
 
 
-def update_formula_recipe(recieep_items):
 
 
 
 
+from django.shortcuts import redirect
+from django.urls import reverse
+import urllib.parse
+import json
 
+
+from django.shortcuts import redirect
+from django.urls import reverse
+import json
+import logging
+
+logger = logging.getLogger(__name__)
 
 @csrf_exempt
 @require_http_methods(["POST"])
 def submit_materials(request):
-    """
-    Submit adjusted materials data
-    """
     try:
         data = json.loads(request.body)
         materials = data.get('materials', [])
         date = data.get('date')
         
         if not materials:
-            return JsonResponse({
-                'success': False,
-                'error': 'هیچ داده‌ای برای ثبت وجود ندارد'
-            })
+            return redirect(f"{reverse('formula_list')}?error={urllib.parse.quote('هیچ داده‌ای برای ثبت وجود ندارد')}")
         
-        # Process each material
+        needed_items = []
         saved_count = 0
-        errors = []
         
         for material in materials:
             try:
-                # Your logic to save material data
-                # For example, save to database or call another API
-                
-                # Example: Save to database (you need to implement your model)
-                # Material.objects.create(
-                #     code=material.get('code'),
-                #     name=material.get('name'),
-                #     original_quantity=material.get('original_quantity', 0),
-                #     adjusted_quantity=material.get('adjusted_quantity', 0),
-                #     available_quantity=material.get('available_quantity', 0),
-                #     date=date,
-                #     created_at=datetime.now()
-                # )
-                product_code = get_product_id(db,material['code'])
-                if product_code is None:
-                    print(f'Code not Exist for Item : {material['code']}  {material['name']}')
-                    continue
-                formula_id = get_formula_id(db,product_code)
-
-                
+                if material.get('adjusted_quantity', 0) > 0 or material.get('has_code_changed', False):
+                    item_data = {
+                        'code': material.get('code', ''),
+                        'original_code': material.get('original_code', ''),
+                        'quantity': material.get('adjusted_quantity', 0),
+                        'original_quantity': material.get('original_quantity', 0),
+                        'name': material.get('name', ''),
+                        'available_quantity': material.get('available_quantity', 0),
+                        'has_code_changed': material.get('has_code_changed', False),
+                        'has_quantity_changed': material.get('has_quantity_changed', False)
+                    }
+                    needed_items.append(item_data)
+                    saved_count += 1
             except Exception as e:
-                errors.append(f"خطا در ثبت {material.get('name')}: {str(e)}")
-                logger.error(f"Error saving material {material.get('code')}: {e}")
+                logger.error(f"Error processing material {material.get('code')}: {e}")
         
         if saved_count > 0:
-            return JsonResponse({
-                'success': True,
-                'message': f'{saved_count} ماده با موفقیت ثبت شد',
-                'saved_count': saved_count,
-                'errors': errors if errors else None
-            })
+            # ذخیره در session
+            request.session['needed_materials'] = needed_items
+            request.session['materials_date'] = date
+            request.session['materials_count'] = saved_count
+            
+            # هدایت به صفحه فرمول
+            return redirect('formula_list')
         else:
-            return JsonResponse({
-                'success': False,
-                'error': 'هیچ ماده‌ای ثبت نشد',
-                'errors': errors
-            })
+            error_msg = 'هیچ ماده‌ای با مقدار مثبت یا کد تغییر یافته وجود ندارد'
+            return redirect(f"{reverse('formula_list')}?error={urllib.parse.quote(error_msg)}")
             
     except json.JSONDecodeError:
-        return JsonResponse({
-            'success': False,
-            'error': 'داده‌های ارسالی معتبر نیستند'
-        })
+        return redirect(f"{reverse('formula_list')}?error={urllib.parse.quote('داده‌های ارسالی معتبر نیستند')}")
     except Exception as e:
         logger.error(f"Error in submit_materials: {e}")
-        return JsonResponse({
-            'success': False,
-            'error': str(e)
-        })
+        return redirect(f"{reverse('formula_list')}?error={urllib.parse.quote(str(e))}")

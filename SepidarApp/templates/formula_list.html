@@ -1,5 +1,7 @@
 {% extends "base_dashboard.html" %}
 {% load static %}
+{% load vipaUtilsTag %}
+
 
 {% block content %}
 <head>
@@ -815,6 +817,49 @@
                     <span class="icon">📋</span>
                     <h1>فرمول‌های محصولات</h1>
                 </div>
+
+
+<!-- بعد از Stats و قبل از header-actions -->
+<!-- ===== ALERT: SHOW DATA FROM SESSION ===== -->
+{% if has_needed_materials %}
+<div class="alert alert-success" id="materialsAlert">
+    <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+        <i class="fas fa-check-circle" style="font-size: 24px;"></i>
+        <div>
+            <strong style="font-size: 16px;">{{ count }} ماده</strong>
+            <span style="font-size: 14px;">با موفقیت از صفحه مدیریت مواد دریافت شدند.</span>
+            {% if selected_date %}
+            <span style="margin-right: 16px; font-size: 13px; color: #6b7280;">
+                <i class="fas fa-calendar"></i> تاریخ: {{ selected_date }}
+            </span>
+            {% endif %}
+        </div>
+    </div>
+    <div style="display: flex; gap: 8px; align-items: center;">
+        <span style="background: #22c55e; color: white; padding: 4px 14px; border-radius: 20px; font-size: 12px; font-weight: 600;">
+            <i class="fas fa-arrow-down"></i> اعمال شد
+        </span>
+        <button class="close-btn" onclick="this.closest('.alert').style.display='none'">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+</div>
+{% endif %}
+
+{% if error_message %}
+<div class="alert alert-danger" id="errorAlert">
+    <div style="display: flex; align-items: center; gap: 12px;">
+        <i class="fas fa-exclamation-circle" style="font-size: 24px;"></i>
+        <span style="font-size: 14px;">{{ error_message }}</span>
+    </div>
+    <button class="close-btn" onclick="this.closest('.alert').style.display='none'">
+        <i class="fas fa-times"></i>
+    </button>
+</div>
+{% endif %}
+
+
+
                 <div class="header-actions">
                     <button class="btn btn-success" id="submit-all-btn">
                         <i class="fas fa-save"></i> ثبت تمام مقادیر
@@ -927,23 +972,66 @@
                             
                             <!-- ===== VALUE INPUT IN HEADER ===== -->
                             <!-- ===== VALUE INPUT IN HEADER ===== -->
-                            <div class="value-input-inline" onclick="event.stopPropagation();">
-                                <i class="fas fa-pen input-icon"></i>
-                                <label for="value_{{ formula.id }}">مقدار:</label>
-                                <input type="number" 
-                                    id="value_{{ formula.id }}" 
-                                    class="formula-value-input"
-                                    step="0.01" 
-                                    min="0" 
-                                    max="999999.99"
-                                    placeholder="0.00"
-                                    data-formula-id="{{ formula.id }}"
-                                    data-formula-code="{{ formula.code }}"
-                                    data-formula-title="{{ formula.title }}"
-                                    data-product-id="{{ formula.product_id|default:'' }}"
-                                    data-product-unit="{{ formula.product_unit|default:'' }}"
-                                    onclick="event.stopPropagation();">
-                            </div>
+<!-- ===== VALUE INPUT IN HEADER ===== -->
+<!-- ===== VALUE INPUT IN HEADER ===== -->
+<!-- ===== VALUE INPUT IN HEADER ===== -->
+<!-- ===== VALUE INPUT IN HEADER ===== -->
+<div class="value-input-inline" onclick="event.stopPropagation();">
+    <i class="fas fa-pen input-icon"></i>
+    <label for="value_{{ formula.id }}">مقدار:</label>
+    {% with product_code=formula.product_code|stringformat:'s' %}
+        {% with code_exists=product_code|exists_in_list:needed_material_codes %}
+            <!-- لاگ کردن product_code -->
+            {{ product_code|log_debug:'product_code' }}
+            <!-- لاگ کردن code_exists -->
+            {{ code_exists|log_debug:'code_exists' }}
+            
+            {% if code_exists %}
+                {% with quantity=needed_materials|get_quantity:product_code %}
+                    <!-- لاگ کردن quantity -->
+                    {{ quantity|log_debug:'quantity' }}
+                    {% with formatted_quantity=quantity|floatformat:2 %}
+                        {{ formatted_quantity|log_debug:'formatted_quantity' }}
+                        <input type="number" 
+                            id="value_{{ formula.id }}" 
+                            class="formula-value-input has-value"
+                            step="0.01" 
+                            min="0" 
+                            max="999999.99"
+                            placeholder="0.00"
+                            data-formula-id="{{ formula.id }}"
+                            data-formula-code="{{ formula.code }}"
+                            data-formula-title="{{ formula.title }}"
+                            data-product-code="{{ product_code }}"
+                            data-product-id="{{ formula.product_id|default:'' }}"
+                            data-product-unit="{{ formula.product_unit|default:'' }}"
+                            value="{{ formatted_quantity }}"
+                            onclick="event.stopPropagation();">
+                    {% endwith %}
+                {% endwith %}
+            {% else %}
+                <input type="number" 
+                    id="value_{{ formula.id }}" 
+                    class="formula-value-input"
+                    step="0.01" 
+                    min="0" 
+                    max="999999.99"
+                    placeholder="0.00"
+                    data-formula-id="{{ formula.id }}"
+                    data-formula-code="{{ formula.code }}"
+                    data-formula-title="{{ formula.title }}"
+                    data-product-code="{{ product_code }}"
+                    data-product-id="{{ formula.product_id|default:'' }}"
+                    data-product-unit="{{ formula.product_unit|default:'' }}"
+                    value=""
+                    onclick="event.stopPropagation();">
+            {% endif %}
+        {% endwith %}
+    {% endwith %}
+</div>
+
+
+
                         </div>
                         
                         <div class="formula-badges">

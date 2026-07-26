@@ -517,6 +517,35 @@
         .persian-datepicker-holder .persian-datepicker .datepicker-header .datepicker-title {
             color: white !important;
         }
+
+
+
+.editable-input.material-code-input {
+    width: 120px;
+    padding: 6px 10px;
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    text-align: center;
+    font-weight: 600;
+    font-size: 14px;
+    transition: var(--transition);
+    background: white;
+    direction: ltr;
+}
+
+.editable-input.material-code-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.editable-input.material-code-input.modified {
+    border-color: var(--warning);
+    background: #fffbeb;
+}
+
+
+
     </style>
 </head>
 <body>
@@ -576,21 +605,21 @@
                     </div>
                 </div>
                 <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th style="width: 50px;">#</th>
-                                <th>کد ماده</th>
-                                <th>نام ماده</th>
-                                <th style="text-align: center;">مقدار نیاز</th>
-                                <th style="text-align: center;">مقدار موجودی</th>
-                                <th style="text-align: center;">وضعیت</th>
-                                <th style="text-align: center; min-width: 150px;">مقدار قابل تنظیم</th>
-                            </tr>
-                        </thead>
-                        <tbody id="materialsTableBody">
-                        </tbody>
-                    </table>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 50px;">#</th>
+                            <th style="min-width: 130px;">کد ماده</th>
+                            <th>نام ماده</th>
+                            <th style="text-align: center;">مقدار نیاز</th>
+                            <th style="text-align: center;">مقدار موجودی</th>
+                            <th style="text-align: center;">وضعیت</th>
+                            <th style="text-align: center; min-width: 150px;">مقدار قابل تنظیم</th>
+                        </tr>
+                    </thead>
+                    <tbody id="materialsTableBody">
+                    </tbody>
+                </table>
                 </div>
             </div>
             
@@ -831,89 +860,97 @@
     // ========================================
     // RENDER TABLE - FULL EDITABILITY VERSION
     // ========================================
-    function renderTable(data) {
-        const tbody = document.getElementById('materialsTableBody');
-        tbody.innerHTML = '';
+function renderTable(data) {
+    const tbody = document.getElementById('materialsTableBody');
+    tbody.innerHTML = '';
+    
+    if (!data || data.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="7" style="text-align: center; padding: 30px; color: var(--gray-400);">
+                    <i class="fas fa-inbox" style="font-size: 24px; display: block; margin-bottom: 8px;"></i>
+                    هیچ داده‌ای موجود نیست
+                </td>
+            </tr>
+        `;
+        return;
+    }
+    
+    data.forEach((item, index) => {
+        const requiredQty = parseFloat(item.quantity) || 0;
+        const availableQty = parseFloat(item.available_quantity) || 0;
+        const shortage = requiredQty - availableQty;
         
-        if (!data || data.length === 0) {
-            tbody.innerHTML = `
-                <tr>
-                    <td colspan="7" style="text-align: center; padding: 30px; color: var(--gray-400);">
-                        <i class="fas fa-inbox" style="font-size: 24px; display: block; margin-bottom: 8px;"></i>
-                        هیچ داده‌ای موجود نیست
-                    </td>
-                </tr>
-            `;
-            return;
+        let statusClass = 'success';
+        let statusText = 'موجود';
+        let statusIcon = '✅';
+        
+        if (shortage > 0) {
+            statusClass = 'warning';
+            statusText = `کمبود ${shortage.toFixed(2)}`;
+            statusIcon = '⚠️';
+        } else if (availableQty === 0) {
+            statusClass = 'danger';
+            statusText = 'بی‌موجودی';
+            statusIcon = '❌';
+        } else {
+            statusClass = 'success';
+            statusText = 'موجود';
+            statusIcon = '✅';
         }
         
-        data.forEach((item, index) => {
-            const requiredQty = parseFloat(item.quantity) || 0;
-            const availableQty = parseFloat(item.available_quantity) || 0;
-            const shortage = requiredQty - availableQty;
-            
-            let statusClass = 'success';
-            let statusText = 'موجود';
-            let statusIcon = '✅';
-            
-            if (shortage > 0) {
-                statusClass = 'warning';
-                statusText = `کمبود ${shortage.toFixed(2)}`;
-                statusIcon = '⚠️';
-            } else if (availableQty === 0) {
-                statusClass = 'danger';
-                statusText = 'بی‌موجودی';
-                statusIcon = '❌';
-            } else {
-                statusClass = 'success';
-                statusText = 'موجود';
-                statusIcon = '✅';
-            }
-            
-            // مقدار پیش‌فرض: اگر موجودی داریم از موجودی استفاده کن، در غیر این صورت از نیاز
-            const defaultVal = availableQty > 0 ? Math.min(requiredQty, availableQty) : requiredQty;
-            
-            const tr = document.createElement('tr');
-            tr.setAttribute('data-index', index);
-            tr.setAttribute('data-material-code', item.code || '');
-            tr.innerHTML = `
-                <td style="text-align: center; font-weight: 600; color: var(--gray-500);">${index + 1}</td>
-                <td><strong style="color: var(--gray-700);">${item.code || '-'}</strong></td>
-                <td><strong>${item.name || 'نامشخص'}</strong></td>
-                <td style="text-align: center; font-weight: 600; color: var(--primary);">${requiredQty.toFixed(2)}</td>
-                <td style="text-align: center; font-weight: 600; color: ${availableQty > 0 ? 'var(--success)' : 'var(--danger)'};">${availableQty.toFixed(2)}</td>
-                <td style="text-align: center;">
-                    <span class="badge-status ${statusClass}">
-                        ${statusIcon} ${statusText}
-                    </span>
-                </td>
-                <td style="text-align: center;">
-                    <input type="number" 
-                        class="editable-input quantity-input"
-                        step="0.01"
-                        min="0"
-                        value="${defaultVal.toFixed(2)}"
-                        data-index="${index}"
-                        data-material-code="${item.code || ''}"
-                        data-material-name="${item.name || ''}"
-                        data-required="${requiredQty}"
-                        data-available="${availableQty}"
-                        oninput="onQuantityChange(this)"
-                        onblur="onQuantityBlur(this)"
-                    />
-                    <div style="font-size: 11px; color: var(--gray-400); margin-top: 4px;">
-                        <span style="color: var(--primary);">نیاز: ${requiredQty.toFixed(2)}</span> | 
-                        <span style="color: ${availableQty > 0 ? 'var(--success)' : 'var(--danger)'};">موجودی: ${availableQty.toFixed(2)}</span>
-                        ${requiredQty > 0 ? `<br><span style="color: var(--gray-400);">توصیه: ${Math.min(requiredQty, availableQty).toFixed(2)}</span>` : ''}
-                    </div>
-                </td>
-            `;
-            tbody.appendChild(tr);
-        });
+        const defaultVal = availableQty > 0 ? Math.min(requiredQty, availableQty) : requiredQty;
         
-        document.getElementById('totalItemsCount').textContent = data.length;
-    }
-
+        const tr = document.createElement('tr');
+        tr.setAttribute('data-index', index);
+        tr.setAttribute('data-material-code', item.code || '');
+        tr.innerHTML = `
+            <td style="text-align: center; font-weight: 600; color: var(--gray-500);">${index + 1}</td>
+            <td>
+                <input type="text" 
+                    class="editable-input material-code-input"
+                    value="${item.code || ''}"
+                    data-index="${index}"
+                    data-original-code="${item.code || ''}"
+                    placeholder="کد ماده"
+                    style="width: 120px;"
+                    onchange="onCodeChange(this)"
+                />
+            </td>
+            <td><strong>${item.name || 'نامشخص'}</strong></td>
+            <td style="text-align: center; font-weight: 600; color: var(--primary);">${requiredQty.toFixed(2)}</td>
+            <td style="text-align: center; font-weight: 600; color: ${availableQty > 0 ? 'var(--success)' : 'var(--danger)'};">${availableQty.toFixed(2)}</td>
+            <td style="text-align: center;">
+                <span class="badge-status ${statusClass}">
+                    ${statusIcon} ${statusText}
+                </span>
+            </td>
+            <td style="text-align: center;">
+                <input type="number" 
+                    class="editable-input quantity-input"
+                    step="0.01"
+                    min="0"
+                    value="${defaultVal.toFixed(2)}"
+                    data-index="${index}"
+                    data-material-code="${item.code || ''}"
+                    data-material-name="${item.name || ''}"
+                    data-required="${requiredQty}"
+                    data-available="${availableQty}"
+                    oninput="onQuantityChange(this)"
+                    onblur="onQuantityBlur(this)"
+                />
+                <div style="font-size: 11px; color: var(--gray-400); margin-top: 4px;">
+                    <span style="color: var(--primary);">نیاز: ${requiredQty.toFixed(2)}</span> | 
+                    <span style="color: ${availableQty > 0 ? 'var(--success)' : 'var(--danger)'};">موجودی: ${availableQty.toFixed(2)}</span>
+                    ${requiredQty > 0 ? `<br><span style="color: var(--gray-400);">توصیه: ${Math.min(requiredQty, availableQty).toFixed(2)}</span>` : ''}
+                </div>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+    
+    document.getElementById('totalItemsCount').textContent = data.length;
+}
     // ========================================
     // QUANTITY INPUT HANDLERS - NO RESTRICTIONS
     // ========================================
@@ -1024,234 +1061,309 @@
     // ========================================
     // SUBMIT MATERIALS
     // ========================================
-    function submitMaterials() {
-        const inputs = document.querySelectorAll('.quantity-input');
-        const modifiedData = [];
-        let hasData = false;
-        let hasChanges = false;
+function submitMaterials() {
+    const inputs = document.querySelectorAll('.quantity-input');
+    const codeInputs = document.querySelectorAll('.material-code-input');
+    const modifiedData = [];
+    let hasData = false;
+    let hasChanges = true;
+    
+    // جمع‌آوری داده‌ها
+    const codeMap = {};
+    codeInputs.forEach(codeInput => {
+        const index = parseInt(codeInput.dataset.index);
+        codeMap[index] = codeInput.value.trim();
+    });
+    
+    inputs.forEach(input => {
+        const val = parseFloat(input.value) || 0;
+        const index = parseInt(input.dataset.index);
+        const material = materialsData[index];
         
-        inputs.forEach(input => {
-            const val = parseFloat(input.value) || 0;
-            const index = parseInt(input.dataset.index);
-            const material = materialsData[index];
+        if (material) {
+            const originalQty = parseFloat(material.quantity) || 0;
+            const originalCode = material.code || '';
+            const newCode = codeMap[index] || originalCode;
             
-            if (material) {
-                const originalQty = parseFloat(material.quantity) || 0;
-                hasData = true;
-                
-                if (val !== originalQty) {
-                    hasChanges = true;
-                }
-                
-                modifiedData.push({
-                    code: material.code,
-                    name: material.name,
-                    original_quantity: originalQty,
-                    adjusted_quantity: val,
-                    available_quantity: parseFloat(material.available_quantity) || 0,
-                    date: document.getElementById('datepicker').value
-                });
+            hasData = true;
+            
+            // بررسی تغییرات در مقدار و کد
+            if (val !== originalQty || newCode !== originalCode) {
+                hasChanges = true;
             }
-        });
-        
-        if (!hasData || modifiedData.length === 0) {
-            Swal.fire({
-                title: '⚠️ توجه',
-                text: 'هیچ داده‌ای برای ثبت وجود ندارد',
-                icon: 'warning',
-                confirmButtonText: 'باشه',
-                confirmButtonColor: '#f59e0b'
-            });
-            return;
-        }
-        
-        if (!hasChanges) {
-            Swal.fire({
-                title: 'ℹ️ توجه',
-                text: 'هیچ تغییری در مقادیر ایجاد نشده است',
-                icon: 'info',
-                confirmButtonText: 'باشه',
-                confirmButtonColor: '#3b82f6'
-            });
-            return;
-        }
-        
-        // ساخت جدول برای نمایش
-        let tableHtml = `
-            <div style="max-height: 300px; overflow-y: auto; direction: rtl; text-align: right;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
-                    <thead style="background: var(--gray-800); color: white; position: sticky; top: 0;">
-                        <tr>
-                            <th style="padding: 8px; border: 1px solid #e2e8f0;">#</th>
-                            <th style="padding: 8px; border: 1px solid #e2e8f0;">کد</th>
-                            <th style="padding: 8px; border: 1px solid #e2e8f0;">نام</th>
-                            <th style="padding: 8px; border: 1px solid #e2e8f0; text-align: center;">مقدار اصلی</th>
-                            <th style="padding: 8px; border: 1px solid #e2e8f0; text-align: center;">مقدار تنظیم شده</th>
-                            <th style="padding: 8px; border: 1px solid #e2e8f0; text-align: center;">موجودی</th>
-                            <th style="padding: 8px; border: 1px solid #e2e8f0; text-align: center;">تغییر</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-        `;
-        
-        modifiedData.forEach((item, index) => {
-            const diff = item.adjusted_quantity - item.original_quantity;
-            const diffColor = diff !== 0 ? (diff > 0 ? 'var(--success)' : 'var(--danger)') : 'var(--gray-400)';
-            const diffText = diff !== 0 ? (diff > 0 ? `+${diff.toFixed(2)}` : diff.toFixed(2)) : 'بدون تغییر';
             
-            tableHtml += `
-                <tr>
-                    <td style="padding: 6px 8px; border: 1px solid #e2e8f0; text-align: center;">${index + 1}</td>
-                    <td style="padding: 6px 8px; border: 1px solid #e2e8f0;">${item.code || '-'}</td>
-                    <td style="padding: 6px 8px; border: 1px solid #e2e8f0;">${item.name}</td>
-                    <td style="padding: 6px 8px; border: 1px solid #e2e8f0; text-align: center; color: var(--primary);">${item.original_quantity.toFixed(2)}</td>
-                    <td style="padding: 6px 8px; border: 1px solid #e2e8f0; text-align: center; color: ${diffColor}; font-weight: 600;">${item.adjusted_quantity.toFixed(2)}</td>
-                    <td style="padding: 6px 8px; border: 1px solid #e2e8f0; text-align: center; color: ${item.available_quantity > 0 ? 'var(--success)' : 'var(--danger)'};">${item.available_quantity.toFixed(2)}</td>
-                    <td style="padding: 6px 8px; border: 1px solid #e2e8f0; text-align: center; color: ${diffColor}; font-weight: 600;">${diffText}</td>
-                </tr>
-            `;
-        });
-        
-        tableHtml += `</tbody></table></div>`;
-        
+            modifiedData.push({
+                original_code: originalCode,
+                code: newCode,
+                name: material.name,
+                original_quantity: originalQty,
+                adjusted_quantity: val,
+                available_quantity: parseFloat(material.available_quantity) || 0,
+                date: document.getElementById('datepicker').value,
+                has_code_changed: newCode !== originalCode,
+                has_quantity_changed: val !== originalQty
+            });
+        }
+    });
+    
+    if (!hasData || modifiedData.length === 0) {
         Swal.fire({
-            title: '📋 تایید ثبت',
-            html: `
-                <div style="direction: rtl; text-align: right;">
-                    <p style="font-size: 15px; margin-bottom: 12px;">
-                        <strong>${modifiedData.length}</strong> ماده با مقادیر زیر ثبت خواهند شد:
-                    </p>
-                    ${tableHtml}
-                    <div style="margin-top: 12px; padding: 10px; background: var(--gray-50); border-radius: 6px; font-size: 13px;">
-                        <i class="fas fa-calendar" style="color: var(--primary);"></i>
-                        تاریخ: <strong>${document.getElementById('datepicker').value}</strong>
-                    </div>
-                </div>
-            `,
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#22c55e',
-            cancelButtonColor: '#ef4444',
-            confirmButtonText: '✅ تایید و ثبت',
-            cancelButtonText: '❌ انصراف',
-            width: 900,
-            padding: '20px'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                sendToServer(modifiedData);
-            }
+            title: '⚠️ توجه',
+            text: 'هیچ داده‌ای برای ثبت وجود ندارد',
+            icon: 'warning',
+            confirmButtonText: 'باشه',
+            confirmButtonColor: '#f59e0b'
         });
+        return;
     }
-
+    
+    if (!hasChanges) {
+        Swal.fire({
+            title: 'ℹ️ توجه',
+            text: 'هیچ تغییری در مقادیر یا کد مواد ایجاد نشده است',
+            icon: 'info',
+            confirmButtonText: 'باشه',
+            confirmButtonColor: '#3b82f6'
+        });
+        return;
+    }
+    
+    // ساخت جدول برای نمایش
+    let tableHtml = `
+        <div style="max-height: 300px; overflow-y: auto; direction: rtl; text-align: right;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                <thead style="background: var(--gray-800); color: white; position: sticky; top: 0;">
+                    <tr>
+                        <th style="padding: 8px; border: 1px solid #e2e8f0;">#</th>
+                        <th style="padding: 8px; border: 1px solid #e2e8f0;">کد جدید</th>
+                        <th style="padding: 8px; border: 1px solid #e2e8f0;">نام</th>
+                        <th style="padding: 8px; border: 1px solid #e2e8f0; text-align: center;">مقدار اصلی</th>
+                        <th style="padding: 8px; border: 1px solid #e2e8f0; text-align: center;">مقدار جدید</th>
+                        <th style="padding: 8px; border: 1px solid #e2e8f0; text-align: center;">وضعیت</th>
+                    </tr>
+                </thead>
+                <tbody>
+    `;
+    
+    modifiedData.forEach((item, index) => {
+        const diff = item.adjusted_quantity - item.original_quantity;
+        const diffColor = diff !== 0 ? (diff > 0 ? 'var(--success)' : 'var(--danger)') : 'var(--gray-400)';
+        const diffText = diff !== 0 ? (diff > 0 ? `+${diff.toFixed(2)}` : diff.toFixed(2)) : 'بدون تغییر';
+        const codeChanged = item.has_code_changed;
+        const codeColor = codeChanged ? 'var(--warning)' : 'var(--gray-400)';
+        const codeText = codeChanged ? '🔄 تغییر کد' : 'بدون تغییر';
+        
+        tableHtml += `
+            <tr>
+                <td style="padding: 6px 8px; border: 1px solid #e2e8f0; text-align: center;">${index + 1}</td>
+                <td style="padding: 6px 8px; border: 1px solid #e2e8f0; color: ${codeColor}; font-weight: ${codeChanged ? '600' : '400'};">
+                    ${item.code}
+                    ${codeChanged ? `<div style="font-size: 10px; color: var(--gray-400);">(قدیمی: ${item.original_code})</div>` : ''}
+                </td>
+                <td style="padding: 6px 8px; border: 1px solid #e2e8f0;">${item.name}</td>
+                <td style="padding: 6px 8px; border: 1px solid #e2e8f0; text-align: center; color: var(--primary);">${item.original_quantity.toFixed(2)}</td>
+                <td style="padding: 6px 8px; border: 1px solid #e2e8f0; text-align: center; color: ${diffColor}; font-weight: 600;">${item.adjusted_quantity.toFixed(2)}</td>
+                <td style="padding: 6px 8px; border: 1px solid #e2e8f0; text-align: center;">
+                    <span style="font-size: 12px; color: ${codeColor};">
+                        ${codeText}
+                        ${item.has_quantity_changed ? '<br><span style="color: ' + diffColor + ';">' + diffText + '</span>' : ''}
+                    </span>
+                </td>
+            </tr>
+        `;
+    });
+    
+    tableHtml += `</tbody></table></div>`;
+    
+    // شمارش تغییرات
+    const codeChanges = modifiedData.filter(item => item.has_code_changed).length;
+    const quantityChanges = modifiedData.filter(item => item.has_quantity_changed).length;
+    
+    Swal.fire({
+        title: '📋 تایید ثبت',
+        html: `
+            <div style="direction: rtl; text-align: right;">
+                <p style="font-size: 15px; margin-bottom: 8px;">
+                    <strong>${modifiedData.length}</strong> ماده با تغییرات زیر ثبت خواهند شد:
+                </p>
+                <div style="display: flex; gap: 16px; margin: 12px 0; flex-wrap: wrap;">
+                    <span style="padding: 4px 12px; background: var(--warning); color: white; border-radius: 20px; font-size: 13px;">
+                        🔄 تغییر کد: ${codeChanges} مورد
+                    </span>
+                    <span style="padding: 4px 12px; background: var(--primary); color: white; border-radius: 20px; font-size: 13px;">
+                        📊 تغییر مقدار: ${quantityChanges} مورد
+                    </span>
+                </div>
+                ${tableHtml}
+                <div style="margin-top: 12px; padding: 10px; background: var(--gray-50); border-radius: 6px; font-size: 13px;">
+                    <i class="fas fa-calendar" style="color: var(--primary);"></i>
+                    تاریخ: <strong>${document.getElementById('datepicker').value}</strong>
+                </div>
+            </div>
+        `,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#22c55e',
+        cancelButtonColor: '#ef4444',
+        confirmButtonText: '✅ تایید و ثبت',
+        cancelButtonText: '❌ انصراف',
+        width: 950,
+        padding: '20px'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            sendToServer(modifiedData);
+        }
+    });
+}
     // ========================================
     // SEND TO SERVER
     // ========================================
-    function sendToServer(data) {
-        const submitBtn = document.getElementById('submitBtn');
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> در حال ارسال...';
-        submitBtn.classList.add('btn-loading');
-        
-        const payload = {
-            date: document.getElementById('datepicker').value,
-            materials: data
-        };
-        
-        console.log('📤 Sending payload:', payload);
-        
-        fetch('/api/submit-materials/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': getCSRFToken()
-            },
-            body: JSON.stringify(payload)
-        })
-        .then(response => response.json())
-        .then(data => {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = '<i class="fas fa-save"></i> ثبت';
-            submitBtn.classList.remove('btn-loading');
-            
-            if (data.success) {
-                Swal.fire({
-                    title: '✅ ثبت موفق',
-                    text: data.message || 'تمام مواد با موفقیت ثبت شدند',
-                    icon: 'success',
-                    confirmButtonText: 'باشه',
-                    confirmButtonColor: '#22c55e'
-                }).then(() => {
-                    // بعد از ثبت موفق، می‌توانید صفحه را به‌روزرسانی کنید
-                    // یا مقادیر را بازنشانی کنید
-                });
-            } else {
-                Swal.fire({
-                    title: '❌ خطا',
-                    text: data.error || 'خطا در ثبت اطلاعات',
-                    icon: 'error',
-                    confirmButtonText: 'باشه',
-                    confirmButtonColor: '#ef4444'
-                });
-            }
-        })
-        .catch(error => {
+function sendToServer(data) {
+    const submitBtn = document.getElementById('submitBtn');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> در حال ارسال...';
+    submitBtn.classList.add('btn-loading');
+    
+    const payload = {
+        date: document.getElementById('datepicker').value,
+        materials: data,
+        total_count: data.length,
+        code_changes_count: data.filter(item => item.has_code_changed).length,
+        quantity_changes_count: data.filter(item => item.has_quantity_changed).length
+    };
+    
+    console.log('📤 Sending payload:', payload);
+    
+    // استفاده از fetch با redirect manual برای دریافت پاسخ
+    fetch('/api/submit-materials/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCSRFToken()
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(response => {
+        // بررسی اینکه آیا ریدایرکت شده است
+        if (response.redirected) {
+            // به صفحه جدید هدایت شو
+            window.location.href = response.url;
+            return;
+        }
+        // اگر ریدایرکت نبود، پاسخ JSON است
+        return response.json();
+    })
+    .then(responseData => {
+        // اگر ریدایرکت شده بود، این بخش اجرا نمی‌شود
+        if (responseData && !responseData.success) {
             submitBtn.disabled = false;
             submitBtn.innerHTML = '<i class="fas fa-save"></i> ثبت';
             submitBtn.classList.remove('btn-loading');
             
             Swal.fire({
                 title: '❌ خطا',
-                text: 'خطا در ارتباط با سرور: ' + error.message,
+                text: responseData.error || 'خطا در ثبت اطلاعات',
                 icon: 'error',
                 confirmButtonText: 'باشه',
                 confirmButtonColor: '#ef4444'
             });
+        }
+    })
+    .catch(error => {
+        // اگر خطایی رخ دهد
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-save"></i> ثبت';
+        submitBtn.classList.remove('btn-loading');
+        
+        Swal.fire({
+            title: '❌ خطا',
+            text: 'خطا در ارتباط با سرور: ' + error.message,
+            icon: 'error',
+            confirmButtonText: 'باشه',
+            confirmButtonColor: '#ef4444'
         });
-    }
-
+    });
+}
     // ========================================
     // RESET ALL TO ORIGINAL VALUES
     // ========================================
-    function resetAllToOriginal() {
-        Swal.fire({
-            title: '⚠️ تایید بازنشانی',
-            text: 'آیا از بازنشانی تمام مقادیر به مقادیر اولیه مطمئن هستید؟',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#f59e0b',
-            cancelButtonColor: '#94a3b8',
-            confirmButtonText: '🔄 بله، بازنشانی کن',
-            cancelButtonText: 'انصراف'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                document.querySelectorAll('.quantity-input').forEach(input => {
-                    const requiredQty = parseFloat(input.dataset.required) || 0;
-                    const availableQty = parseFloat(input.dataset.available) || 0;
-                    // مقدار اولیه: اگر موجودی داریم از موجودی استفاده کن، در غیر این صورت از نیاز
-                    const defaultVal = availableQty > 0 ? Math.min(requiredQty, availableQty) : requiredQty;
-                    
-                    input.value = defaultVal.toFixed(2);
-                    input.classList.remove('has-value');
-                    input.classList.remove('modified');
-                    
-                    if (defaultVal > 0) {
-                        input.classList.add('has-value');
-                    }
-                });
+function resetAllToOriginal() {
+    Swal.fire({
+        title: '⚠️ تایید بازنشانی',
+        text: 'آیا از بازنشانی تمام مقادیر و کدها به مقادیر اولیه مطمئن هستید؟',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#f59e0b',
+        cancelButtonColor: '#94a3b8',
+        confirmButtonText: '🔄 بله، بازنشانی کن',
+        cancelButtonText: 'انصراف'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // بازنشانی کدها
+            document.querySelectorAll('.material-code-input').forEach(input => {
+                const originalCode = input.dataset.originalCode || '';
+                input.value = originalCode;
+                input.classList.remove('modified');
+            });
+            
+            // بازنشانی مقادیر
+            document.querySelectorAll('.quantity-input').forEach(input => {
+                const requiredQty = parseFloat(input.dataset.required) || 0;
+                const availableQty = parseFloat(input.dataset.available) || 0;
+                const defaultVal = availableQty > 0 ? Math.min(requiredQty, availableQty) : requiredQty;
                 
-                updateSummary(materialsData);
+                input.value = defaultVal.toFixed(2);
+                input.classList.remove('has-value');
+                input.classList.remove('modified');
                 
-                Swal.fire({
-                    title: '✅ بازنشانی شد',
-                    text: 'تمام مقادیر به مقدار اولیه بازگردانده شدند',
-                    icon: 'success',
-                    timer: 1500,
-                    showConfirmButton: false
-                });
-            }
-        });
-    }
+                if (defaultVal > 0) {
+                    input.classList.add('has-value');
+                }
+            });
+            
+            updateSummary(materialsData);
+            
+            Swal.fire({
+                title: '✅ بازنشانی شد',
+                text: 'تمام کدها و مقادیر به حالت اولیه بازگردانده شدند',
+                icon: 'success',
+                timer: 1500,
+                showConfirmButton: false
+            });
+        }
+    });
+}
 
+function clearAllQuantities() {
+    Swal.fire({
+        title: '⚠️ تایید پاک کردن',
+        text: 'آیا از پاک کردن تمام مقادیر تنظیم شده مطمئن هستید؟ (کدها حفظ می‌شوند)',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#ef4444',
+        cancelButtonColor: '#94a3b8',
+        confirmButtonText: '🗑️ بله، پاک کن',
+        cancelButtonText: 'انصراف'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.querySelectorAll('.quantity-input').forEach(input => {
+                input.value = '0.00';
+                input.classList.remove('has-value');
+                input.classList.remove('modified');
+            });
+            
+            updateSummary(materialsData);
+            
+            Swal.fire({
+                title: '✅ پاک شد',
+                text: 'تمام مقادیر پاک شدند (کدها بدون تغییر باقی ماندند)',
+                icon: 'success',
+                timer: 1500,
+                showConfirmButton: false
+            });
+        }
+    });
+}
     // ========================================
     // CLEAR ALL QUANTITIES
     // ========================================
