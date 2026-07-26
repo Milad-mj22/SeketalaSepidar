@@ -181,8 +181,8 @@ def save_product_order_db(db_connection:DatabaseConnection, formula_id, product_
             'RemainingBOMCost': None,
             # 'BOMPercent': 0,
             # 'CurrentYearBOMCost': None,
-            'EstimatedLabourCost': estimated_labour * withdrawal_amount if estimated_labour else 0,
-            'EstimatedOverheadCost': estimated_overhead * withdrawal_amount if estimated_overhead else 0,
+            'EstimatedLabourCost': None,
+            'EstimatedOverheadCost':None ,# estimated_overhead * withdrawal_amount if estimated_overhead else 0,
             # 'Cost': 0,
             # 'EstimatedLabourPercent': 0,
             # 'EstimatedOverheadPercent': 0,
@@ -267,7 +267,8 @@ def save_product_order_db(db_connection:DatabaseConnection, formula_id, product_
 
 
         ############### STEP2 ############# CREATE INVENTORY DELIVERY RECORD
-        delivery =  save_inventory_delivery_db(db_connection=db_connection,product_order_ref=product_order_ref, stock_ref=stock_source_ref, receiver_dl_ref=5, total_price=0, is_return=0, type=1, destination_stock_ref=None, creator=15, description=None,items=material_details)
+        description = f'مربوط به سفارش توليد محصول شماره {product_order_ref}'
+        delivery =  save_inventory_delivery_db(db_connection=db_connection,product_order_ref=product_order_ref, stock_ref=stock_source_ref, receiver_dl_ref=18, total_price=0, is_return=0, type=2, destination_stock_ref=None, creator=15, description=description,items=material_details)
         if not delivery['success']:
             logger.warning(f"خطا در ذخیره InventoryDelivery: {delivery.get('error')}")
             conn.rollback()
@@ -280,9 +281,9 @@ def save_product_order_db(db_connection:DatabaseConnection, formula_id, product_
         
         ############### STEP3 ########### CREATE RECEPI ORDER
         TEMP_STOCK_REF = 10
-        TEMP_DELIVERER_REF = 5
-        items = {'item_ref':product_id,quantity:quantity}
-        recepi = save_inventory_receipt_db(db_connection=db_connection,product_order_ref=product_order_ref,stock_ref=stock_dest_ref,deliverer_dl_ref=TEMP_DELIVERER_REF,items=material_details,number_product_order_ref=new_number)
+        TEMP_DELIVERER_REF = 18
+        items = [{'item_ref':product_id,'quantity':quantity}]
+        recepi = save_inventory_receipt_db(db_connection=db_connection,product_order_ref=product_order_ref,stock_ref=stock_dest_ref,deliverer_dl_ref=TEMP_DELIVERER_REF,items=items,number_product_order_ref=new_number)
         if not recepi['success']:
             logger.warning(f"خطا در ذخیره recepi: {recepi.get('error')}")
             conn.rollback()

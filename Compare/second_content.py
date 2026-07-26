@@ -45,8 +45,8 @@ def compare_table_contents(dir1, dir2, table_name):
 
 # Example usage:
 # Compare two export directories
-dir1 = "table_exports"
-dir2 = "table_exports2"
+dir1 = "table_exports2"
+dir2 = "table_exports3"
 
 # Get list of CSV files
 tables1 = [f for f in os.listdir(dir1) if f.endswith('.csv')]

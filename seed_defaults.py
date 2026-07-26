@@ -140,6 +140,28 @@ pages_data = [
         "order" : 1,
     },
 
+
+    {
+        "name": "auto_order",
+        "label": "سفارش خودکار",
+        "icon": """<i class="ki-duotone ki-ranking fs-2">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                        <span class="path3"></span>
+                        <span class="path4"></span>
+                        <span class="path5"></span>
+                        <span class="path6"></span>
+                        <span class="path7"></span>
+                        <span class="path8"></span>
+                    </i>""",
+        "type": "item",
+        "link": "/auto_order",
+        "order" : 2 ,
+    },
+
+
+
+
     {
         "name": "about",
         "label": "درباره نرم افزار",
@@ -155,7 +177,7 @@ pages_data = [
                     </i>""",
         "type": "item",
         "link": "/about/about",
-        "order" : 2,
+        "order" : 3,
     },
     
 ]

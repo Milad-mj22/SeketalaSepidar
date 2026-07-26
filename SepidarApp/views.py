@@ -1,5 +1,6 @@
 import json
 
+from django.contrib.sites import requests
 from django.shortcuts import render
 
 # Create your views here.
@@ -7,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 
 from SepidarApp.Steps.save_order import save_multiple_product_orders
 from SepidarApp.models import WarehouseRelation
+from SepidarApp.utils import persian_to_gregorian
 
 @login_required(login_url='authentication:sign-in')
 def first_page(request):
@@ -785,3 +787,242 @@ def get_formula_recipe_summary(db, formula_id):
     except Exception as e:
         logger.error(f"Error getting recipe summary for formula {formula_id}: {e}")
         return None
+
+
+
+
+
+
+
+
+
+
+def auto_order(request):
+    return render(request,'auto_order.html')
+
+
+
+import requests as http_requests  # Alias to avoid conflict
+
+@require_http_methods(["GET"])
+def get_materials(request):
+    """
+    Fetch materials from external API based on date
+    """
+    try:
+        # Get date from request
+        date = request.GET.get('date')
+        if not date:
+            return JsonResponse({
+                'success': False,
+                'error': 'تاریخ الزامی است'
+            })
+        
+        # Convert Persian date to Gregorian
+        try:
+            gregorian_date = persian_to_gregorian(date)
+            logger.info(f"Converted Persian date '{date}' to Gregorian '{gregorian_date}'")
+        except ValueError as e:
+            return JsonResponse({
+                'success': False,
+                'error': str(e)
+            })
+        except Exception as e:
+            logger.error(f"Date conversion error: {e}")
+            return JsonResponse({
+                'success': False,
+                'error': 'تاریخ صحیح نیست'
+            })
+        
+        # Call external API with Gregorian date
+        api_url = f"http://127.0.0.1:8900/data_analysis/api/get-date-items/?date={gregorian_date}"
+        logger.info(f"Calling external API: {api_url}")
+        
+        # Use the alias http_requests instead of requests
+        response = http_requests.get(api_url, timeout=30)
+        
+        # Check if external API call was successful
+        if response.status_code == 200:
+            external_data = response.json()
+            
+            # Check if external API returned success
+            if external_data.get('success'):
+                # Extract data from external API
+                # The external API returns data as dict: {'10': 11, '11': 22, ...}
+                external_items = external_data.get('data', {})
+                
+                # Convert to array format expected by frontend
+                materials = []
+                for code, quantity in external_items[0].items():
+                    materials.append({
+                        'code': code,
+                        'name': f'ماده {code}',  # You might want to map codes to names
+                        'quantity': quantity,
+                        'available_quantity': quantity,  # Assuming available = required for now
+                    })
+                
+                return JsonResponse({
+                    'success': True,
+                    'data': external_items,  # Send as array
+                    'date': date,
+                    'gregorian_date': gregorian_date,
+                    'total_items': len(materials)
+                })
+            else:
+                return JsonResponse({
+                    'success': False,
+                    'error': external_data.get('error', 'خطا در دریافت اطلاعات از سرویس خارجی')
+                })
+        else:
+            return JsonResponse({
+                'success': False,
+                'error': f'خطا در ارتباط با سرویس خارجی: {response.status_code}',
+                'details': response.text
+            })
+            
+    except http_requests.exceptions.Timeout:
+        logger.error("External API timeout")
+        return JsonResponse({
+            'success': False,
+            'error': 'زمان اتصال به سرور به پایان رسید'
+        })
+    except http_requests.exceptions.ConnectionError:
+        logger.error("External API connection error")
+        return JsonResponse({
+            'success': False,
+            'error': 'خطا در اتصال به سرور'
+        })
+    except Exception as e:
+        logger.error(f"Error in get_materials: {e}")
+        return JsonResponse({
+            'success': False,
+            'error': str(e)
+        })
+    
+
+
+
+def get_product_id(db,product_code):
+    try:
+        query = """
+            SELECT 
+                fbi.ItemID
+            FROM [Sepidar01].[INV].[Item] fbi
+            WHERE fbi.Code = ?
+        """
+        results = db.execute_query(query, product_code)
+        
+        if results and len(results) > 0:
+            return results[0][0]
+    except Exception as e:
+        logger.error(f"Error getting formul id for prdouct :  {product_code}: {e}")
+        return None
+
+
+
+
+
+def get_formula_id(db,product_id):
+    try:
+        query = """
+            SELECT 
+                fbi.ProductFormulaID,
+                fbi.Code,
+                fbi.Title
+            FROM [Sepidar01].[WKO].[ProductFormula] fbi
+            WHERE fbi.ItemRef = ?
+        """
+        results = db.execute_query(query, product_id)
+        
+        if results and len(results) > 0:
+            return {
+                'formula_id':results[0][0],
+                'formula_code':results[0][1],
+                'formula_title':results[0][2],
+            }
+        
+    except Exception as e:
+        logger.error(f"Error getting formul id for prdouct :  {product_id}: {e}")
+        return None
+
+
+
+def update_formula_recipe(recieep_items):
+
+
+
+
+
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def submit_materials(request):
+    """
+    Submit adjusted materials data
+    """
+    try:
+        data = json.loads(request.body)
+        materials = data.get('materials', [])
+        date = data.get('date')
+        
+        if not materials:
+            return JsonResponse({
+                'success': False,
+                'error': 'هیچ داده‌ای برای ثبت وجود ندارد'
+            })
+        
+        # Process each material
+        saved_count = 0
+        errors = []
+        
+        for material in materials:
+            try:
+                # Your logic to save material data
+                # For example, save to database or call another API
+                
+                # Example: Save to database (you need to implement your model)
+                # Material.objects.create(
+                #     code=material.get('code'),
+                #     name=material.get('name'),
+                #     original_quantity=material.get('original_quantity', 0),
+                #     adjusted_quantity=material.get('adjusted_quantity', 0),
+                #     available_quantity=material.get('available_quantity', 0),
+                #     date=date,
+                #     created_at=datetime.now()
+                # )
+                product_code = get_product_id(db,material['code'])
+                if product_code is None:
+                    print(f'Code not Exist for Item : {material['code']}  {material['name']}')
+                    continue
+                formula_id = get_formula_id(db,product_code)
+
+                
+            except Exception as e:
+                errors.append(f"خطا در ثبت {material.get('name')}: {str(e)}")
+                logger.error(f"Error saving material {material.get('code')}: {e}")
+        
+        if saved_count > 0:
+            return JsonResponse({
+                'success': True,
+                'message': f'{saved_count} ماده با موفقیت ثبت شد',
+                'saved_count': saved_count,
+                'errors': errors if errors else None
+            })
+        else:
+            return JsonResponse({
+                'success': False,
+                'error': 'هیچ ماده‌ای ثبت نشد',
+                'errors': errors
+            })
+            
+    except json.JSONDecodeError:
+        return JsonResponse({
+            'success': False,
+            'error': 'داده‌های ارسالی معتبر نیستند'
+        })
+    except Exception as e:
+        logger.error(f"Error in submit_materials: {e}")
+        return JsonResponse({
+            'success': False,
+            'error': str(e)
+        })

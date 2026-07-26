@@ -5,7 +5,7 @@ import os
 # ============================
 # Database connection settings
 # ============================
-server = r'localhost'
+server = r'DESKTOP-JKDSDCN\SEPIDAR'
 database = 'Sepidar01'
 driver = '{ODBC Driver 17 for SQL Server}'
 
@@ -79,7 +79,7 @@ try:
     tables = cursor.fetchall()
     print(f"📊 Found {len(tables)} tables")
     
-    output_dir = "table_exports2"
+    output_dir = "table_exports3"
     summary_file = "export_summary.txt"
     
     with open(summary_file, "w", encoding="utf-8") as f:
