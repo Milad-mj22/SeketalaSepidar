@@ -317,14 +317,18 @@ def submit_all_formula_values(request):
         data = json.loads(request.body)
         formulas = data.get('formulas', [])
         relation_id = data.get('relation_id', [])
-        
+        selected_date = data.get('selectedDate',None)
         
         if not formulas:
             return JsonResponse({
                 'success': False,
                 'error': 'هیچ مقداری برای ثبت وجود ندارد'
             }, status=400)
-        
+
+        georgian_date = None
+        if selected_date is not None:
+            georgian_date = persian_to_gregorian(selected_date)
+      
 
         
         if not relation_id:
@@ -481,7 +485,7 @@ def submit_all_formula_values(request):
             pass
 
             # for item in formulas:
-            save_results  = save_multiple_product_orders(db,formulas,stock_source_ref,stock_dest_ref)
+            save_results  = save_multiple_product_orders(db,formulas,stock_source_ref,stock_dest_ref,georgian_date)
 
             saved_results = save_results.get('results', [])
             saved_count = save_results.get('saved', 0)
@@ -1006,6 +1010,9 @@ def submit_materials(request):
         
         if not materials:
             return redirect(f"{reverse('formula_list')}?error={urllib.parse.quote('هیچ داده‌ای برای ثبت وجود ندارد')}")
+
+        
+
         
         needed_items = []
         saved_count = 0

@@ -1226,6 +1226,14 @@
         }
 
         // ========================================
+        // GET SELECTED DATE FROM BACKEND
+        // ========================================
+
+
+
+
+
+        // ========================================
         // TOGGLE FORMULA (Expand/Collapse)
         // ========================================
         function toggleFormula(headerElement) {
@@ -1543,6 +1551,9 @@ function getAllValues() {
                     });
                 }
             });
+
+
+
             
             values.push({
                 formula_id: formulaId,
@@ -1750,6 +1761,15 @@ function sendToServer(values) {
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> در حال ارسال...';
     submitBtn.classList.add('btn-loading');
 
+
+    const selectedDateFromBackend = "{{ selected_date|default:'' }}";
+    console.log('Selected date from backend:', selectedDateFromBackend);
+
+    const selectedDate = selectedDateFromBackend || localStorage.getItem('selected_date') || '';
+
+
+
+
     const payload = {
         formulas: values.map(item => ({
             formula_id: item.formula_id,
@@ -1767,7 +1787,8 @@ function sendToServer(values) {
             }))
         })),
         relation_id: relationId,
-        relation_name: relationName
+        relation_name: relationName,
+        selectedDate : selectedDate
     };
 
     console.log('Sending payload with relation:', payload);

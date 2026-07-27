@@ -32,7 +32,8 @@ def save_inventory_receipt_db(
     base_inventory_delivery_ref: int = None,
     base_import_purchase_invoice_ref: int = None,
     items: dict = None,               # optional items for detail insertion,
-    number_product_order_ref=None
+    number_product_order_ref=None,
+    georgian_date=None
 ):
     """
     Create a new receipt record in the InventoryReceipt table.
@@ -99,7 +100,10 @@ def save_inventory_receipt_db(
 
 
         # 3. Current timestamp
-        now = datetime.now()
+        if georgian_date is None:
+            now = datetime.now()
+        else:
+            now = georgian_date
 
         # 4. Build the new record dictionary
         new_record = {

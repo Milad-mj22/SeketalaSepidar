@@ -1,6 +1,6 @@
 import jdatetime
 
-def persian_to_gregorian(persian_date_str):
+def persian_to_gregorian(persian_date_str,ret_full = True):
     # Split the date
     parts = persian_date_str.split('/')
     year = int(parts[0])
@@ -12,7 +12,8 @@ def persian_to_gregorian(persian_date_str):
     
     # Convert to Gregorian
     gregorian_date = jalali_date.togregorian()
-    
+    if ret_full:
+        return gregorian_date
     return gregorian_date.strftime('%Y-%m-%d')
 
 

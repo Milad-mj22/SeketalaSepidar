@@ -17,7 +17,8 @@ def save_inventory_delivery_db(
     type: int = 2,
     is_return: int = 0,
     total_price: float = 0,
-    items:dict=None
+    items:dict=None,
+    georgian_date = None
 ):
     """
     ایجاد یک رسید جدید در جدول InventoryDelivery
@@ -82,7 +83,10 @@ def save_inventory_delivery_db(
         fiscal_year_ref =  1
         
         # 3. ساخت رکورد جدید
-        now = datetime.now()
+        if georgian_date is None:
+            now = datetime.now()
+        else:
+            now = georgian_date
         
         new_record = {
             'InventoryDeliveryID': new_id,
