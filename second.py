@@ -41,8 +41,8 @@ file2 = "ثبت درخواست خروج_2.txt"  # Replace with actual file name
 file3 = "خروج از انبار_3.txt"  # Replace with actual file name
 file4 = "database_tables_record_count_4.txt"  # Replace with actual file name
 
-f1 = "second.txt"
-f2 = "three.txt"
+f1 = "first.txt"
+f2 = "second.txt"
 d1 = parse_table_counts(f1)
 d2 = parse_table_counts(f2)
 

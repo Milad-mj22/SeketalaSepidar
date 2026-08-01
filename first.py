@@ -19,7 +19,7 @@ connection_string = (
 
 print('first')
 
-output_file = "three.txt"
+output_file = "second.txt"
 
 try:
     # Connect to SQL Server

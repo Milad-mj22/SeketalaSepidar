@@ -16,6 +16,9 @@ media/temp_exports/
 
 my_database_copy.db
 
+table_exports1/
+table_exports2/
+
 private.pem
 public.pem
 license.key
