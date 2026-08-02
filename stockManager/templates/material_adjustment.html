@@ -1,0 +1,1053 @@
+{% extends "base_dashboard.html" %}
+{% load static %}
+
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تنظیمات مواد اولیه - انبار 11</title>
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --primary-light: #818cf8;
+            --success: #22c55e;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            --shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--gray-50);
+            padding: 20px;
+            direction: rtl;
+        }
+        
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 24px 30px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 24px;
+            border: 1px solid var(--gray-200);
+        }
+        
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .header-title h1 {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .header-title .icon {
+            font-size: 28px;
+        }
+        
+        .header-title .badge-warehouse {
+            background: var(--primary);
+            color: white;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .header-stats {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .stat-badge {
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            background: var(--gray-100);
+            color: var(--gray-700);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .stat-badge .num {
+            font-size: 18px;
+            color: var(--primary);
+        }
+        
+        .stat-badge .num.success { color: var(--success); }
+        .stat-badge .num.danger { color: var(--danger); }
+        .stat-badge .num.warning { color: var(--warning); }
+
+        .sms-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 16px;
+            background: var(--gray-50);
+            border-radius: var(--radius-sm);
+            border: 2px solid var(--gray-200);
+        }
+        
+        .sms-toggle label {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--gray-700);
+            cursor: pointer;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            width: 48px;
+            height: 26px;
+            background: var(--gray-300);
+            border-radius: 13px;
+            cursor: pointer;
+            transition: var(--transition);
+            flex-shrink: 0;
+        }
+        
+        .toggle-switch.active {
+            background: var(--success);
+        }
+        
+        .toggle-switch .slider {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 22px;
+            height: 22px;
+            background: white;
+            border-radius: 50%;
+            transition: var(--transition);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .toggle-switch.active .slider {
+            left: 24px;
+        }
+
+        .btn {
+            padding: 10px 24px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            font-family: inherit;
+        }
+        
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4); }
+        
+        .btn-success { background: var(--success); color: white; }
+        .btn-success:hover { background: #16a34a; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4); }
+        
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-danger:hover { background: #dc2626; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4); }
+        
+        .btn-warning { background: var(--warning); color: white; }
+        .btn-warning:hover { background: #d97706; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4); }
+        
+        .btn-info { background: var(--info); color: white; }
+        .btn-info:hover { background: #2563eb; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4); }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        
+        .btn-loading {
+            background: var(--warning) !important;
+            pointer-events: none;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            border: 1px solid var(--gray-200);
+        }
+        
+        .table-header {
+            padding: 16px 20px;
+            background: var(--gray-50);
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        
+        .table-header h3 {
+            font-size: 16px;
+            color: var(--gray-700);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .table-header .badge-count {
+            background: var(--primary);
+            color: white;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        .table-header .info-text {
+            font-size: 12px;
+            color: var(--gray-400);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .table-wrapper {
+            overflow-x: auto;
+            padding: 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        
+        th {
+            background: var(--gray-100);
+            padding: 12px 14px;
+            text-align: right;
+            border-bottom: 2px solid var(--gray-200);
+            font-weight: 600;
+            color: var(--gray-700);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+            vertical-align: middle;
+        }
+        
+        tr:hover td { background: #f8fafc; }
+        tr:nth-child(even) td { background: var(--gray-50); }
+        tr:nth-child(even):hover td { background: #f1f5f9; }
+        
+        .editable-input {
+            width: 100%;
+            padding: 6px 10px;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-sm);
+            text-align: center;
+            font-weight: 600;
+            font-size: 14px;
+            transition: var(--transition);
+            background: white;
+            max-width: 120px;
+            direction: ltr;
+        }
+        
+        .editable-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+        
+        .editable-input.modified {
+            border-color: var(--warning);
+            background: #fffbeb;
+        }
+        
+        .editable-input.positive {
+            border-color: var(--success);
+            background: #f0fdf4;
+        }
+        
+        .editable-input.negative {
+            border-color: var(--danger);
+            background: #fee2e2;
+        }
+        
+        .editable-input.has-value {
+            border-color: var(--success);
+            background: #f0fdf4;
+        }
+        
+        .editable-input:disabled {
+            background: var(--gray-100);
+            cursor: not-allowed;
+        }
+        
+        .stock-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        
+        .stock-badge.good { background: #dcfce7; color: #16a34a; }
+        .stock-badge.warning { background: #fef3c7; color: #d97706; }
+        .stock-badge.danger { background: #fee2e2; color: #dc2626; }
+        
+        .stock-detail-tooltip {
+            position: relative;
+            cursor: help;
+            border-bottom: 1px dashed var(--gray-300);
+        }
+        
+        .stock-list {
+            font-size: 10px;
+            color: var(--gray-400);
+            max-width: 150px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .code-badge {
+            background: var(--gray-100);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .loading-overlay.active {
+            display: flex;
+        }
+        
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--gray-200);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .floating-summary {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            right: 30px;
+            background: white;
+            padding: 16px 24px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            z-index: 1000;
+            transition: var(--transition);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .floating-summary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+        }
+        
+        .floating-summary .summary-section {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        
+        .floating-summary .summary-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--gray-600);
+        }
+        
+        .floating-summary .summary-item .num {
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--primary);
+        }
+        
+        .floating-summary .summary-item .num.success { color: var(--success); }
+        .floating-summary .summary-item .num.danger { color: var(--danger); }
+        .floating-summary .summary-item .num.warning { color: var(--warning); }
+        
+        .floating-summary .divider {
+            width: 1px;
+            height: 30px;
+            background: var(--gray-200);
+        }
+        
+        .floating-summary .summary-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--gray-500);
+        }
+        
+        .empty-state .icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+        
+        .empty-state h2 {
+            font-size: 22px;
+            color: var(--gray-700);
+            margin-bottom: 8px;
+        }
+        
+        .empty-state p {
+            color: var(--gray-400);
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 12px; }
+            .header { padding: 16px; }
+            .header-top { flex-direction: column; align-items: stretch; }
+            .header-title h1 { font-size: 20px; flex-wrap: wrap; }
+            .header-stats { flex-direction: column; align-items: stretch; }
+            .header-actions { flex-direction: column; width: 100%; }
+            .header-actions .btn { width: 100%; justify-content: center; }
+            .floating-summary {
+                bottom: 12px;
+                left: 12px;
+                right: 12px;
+                padding: 12px 16px;
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .floating-summary .summary-section { justify-content: center; }
+            .floating-summary .divider { display: none; }
+            .floating-summary .summary-actions { justify-content: center; }
+            .editable-input { max-width: 80px; font-size: 12px; }
+            .stat-badge { justify-content: center; }
+            .sms-toggle { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="loading-spinner"></div>
+        </div>
+
+        <!-- Header -->
+        <div class="header">
+            <div class="header-top">
+                <div class="header-title">
+                    <span class="icon">📦</span>
+                    <h1>
+                        تنظیمات مواد اولیه
+                        <span class="badge-warehouse">انبار پیش‌فرض: 11</span>
+                    </h1>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-warning" onclick="resetAllToOriginal()">
+                        <i class="fas fa-undo"></i> بازنشانی
+                    </button>
+                    <button class="btn btn-info" onclick="refreshStock()">
+                        <i class="fas fa-sync-alt"></i> بروزرسانی موجودی
+                    </button>
+                </div>
+            </div>
+            
+            <div class="header-stats">
+                <div class="stat-badge">
+                    <i class="fas fa-boxes" style="color: var(--primary);"></i>
+                    کل مواد: <span class="num" id="totalMaterials">{{ total_materials|default:0 }}</span>
+                </div>
+                <div class="stat-badge">
+                    <i class="fas fa-edit" style="color: var(--warning);"></i>
+                    ویرایش شده: <span class="num" id="modifiedCount">0</span>
+                </div>
+                <div class="stat-badge">
+                    <i class="fas fa-check-circle" style="color: var(--success);"></i>
+                    موجودی مناسب: <span class="num success" id="goodStock">0</span>
+                </div>
+                <div class="stat-badge">
+                    <i class="fas fa-exclamation-triangle" style="color: var(--warning);"></i>
+                    کمبود: <span class="num warning" id="lowStock">0</span>
+                </div>
+                <div class="stat-badge">
+                    <i class="fas fa-times-circle" style="color: var(--danger);"></i>
+                    بی‌موجودی: <span class="num danger" id="zeroStock">0</span>
+                </div>
+                <div class="sms-toggle">
+                    <label for="globalSmsToggle">📱 ارسال پیامک</label>
+                    <div class="toggle-switch" id="globalSmsToggle" onclick="toggleGlobalSms()">
+                        <div class="slider"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-container">
+            <div class="table-header">
+                <h3>
+                    <i class="fas fa-list" style="color: var(--primary);"></i>
+                    لیست مواد اولیه
+                    <span class="badge-count" id="totalItemsCount">{{ materials|length|default:0 }}</span>
+                </h3>
+                <div class="info-text">
+                    <i class="fas fa-database" style="color: var(--info);"></i>
+                    موجودی از دیتابیس خارجی خوانده می‌شود
+                    <span style="margin: 0 6px;">|</span>
+                    <i class="fas fa-save" style="color: var(--success);"></i>
+                    فقط درصد و پیامک ذخیره می‌شود
+                </div>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 40px;">#</th>
+                            <th style="min-width: 100px;">کد</th>
+                            <th style="min-width: 130px;">نام ماده</th>
+                            <th style="text-align: center; min-width: 80px;">انبار 11</th>
+                            <th style="text-align: center; min-width: 80px;">موجودی کل</th>
+                            <th style="text-align: center; min-width: 80px;">حداقل</th>
+                            <th style="text-align: center; min-width: 100px;">وضعیت</th>
+                            <th style="text-align: center; min-width: 120px;">درصد تنظیم (%)</th>
+                            <th style="text-align: center; min-width: 50px;">پیامک</th>
+                        </tr>
+                    </thead>
+                    <tbody id="materialsBody">
+                        {% for material in materials %}
+                        <tr data-code="{{ material.code }}" 
+                            data-default-stock="{{ material.default_stock_quantity }}" 
+                            data-total-stock="{{ material.total_stock_quantity }}"
+                            data-min-amount="{{ material.minimum_amount }}">
+                            <td style="text-align: center; font-weight: 600; color: var(--gray-400);">{{ forloop.counter }}</td>
+                            <td><span class="code-badge">{{ material.code }}</span></td>
+                            <td>
+                                <strong>{{ material.title }}</strong>
+                                {% if material.title_en %}
+                                <div style="font-size: 11px; color: var(--gray-400);">{{ material.title_en }}</div>
+                                {% endif %}
+                                <div style="font-size: 11px; color: var(--gray-400);">واحد: {{ material.unit_title|default:'-' }}</div>
+                            </td>
+                            <td style="text-align: center; font-weight: 600; color: var(--primary);">
+                                {{ material.default_stock_quantity|floatformat:2 }}
+                            </td>
+                            <td style="text-align: center;">
+                                <span class="stock-detail-tooltip" title="{% for stock in material.stock_details %}انبار {{ stock.stock_code }}: {{ stock.quantity|floatformat:2 }}{% if not forloop.last %}, {% endif %}{% endfor %}">
+                                    {{ material.total_stock_quantity|floatformat:2 }}
+                                </span>
+                                <div class="stock-list">
+                                    {% for stock in material.stock_details %}
+                                    انبار {{ stock.stock_code }}: {{ stock.quantity|floatformat:2 }}{% if not forloop.last %}, {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </td>
+                            <td style="text-align: center; font-weight: 600; color: var(--danger);">
+                                {{ material.minimum_amount|floatformat:2 }}
+                            </td>
+                            <td style="text-align: center;">
+                                {% with total=material.total_stock_quantity min=material.minimum_amount %}
+                                {% if total >= min %}
+                                <span class="stock-badge good">✅ موجود</span>
+                                {% elif total > 0 %}
+                                <span class="stock-badge warning">⚠️ کمبود</span>
+                                {% else %}
+                                <span class="stock-badge danger">❌ بی‌موجودی</span>
+                                {% endif %}
+                                {% endwith %}
+                            </td>
+                            <td style="text-align: center;">
+                                <input type="number" 
+                                    class="editable-input percent-input"
+                                    step="0.1"
+                                    min="-100"
+                                    max="1000"
+                                    value="{{ material.adjustment_percent|floatformat:1 }}"
+                                    data-code="{{ material.code }}"
+                                    data-total-stock="{{ material.total_stock_quantity }}"
+                                    oninput="onPercentChange(this)"
+                                    placeholder="%"
+                                />
+                            </td>
+                            <td style="text-align: center;">
+                                <input type="checkbox" 
+                                    class="sms-checkbox"
+                                    data-code="{{ material.code }}"
+                                    {% if material.send_sms %}checked{% endif %}
+                                    style="width: 18px; height: 18px; cursor: pointer;"
+                                />
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="9" style="text-align: center; padding: 40px; color: var(--gray-400);">
+                                <i class="fas fa-inbox" style="font-size: 32px; display: block; margin-bottom: 8px;"></i>
+                                هیچ ماده‌ای با انبار پیش‌فرض 11 یافت نشد
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Summary -->
+    <div class="floating-summary" id="floatingSummary">
+        <div class="summary-section">
+            <div class="summary-item">
+                <i class="fas fa-edit" style="color: var(--warning);"></i>
+                <span>ویرایش شده:</span>
+                <span class="num" id="summaryModified">0</span>
+            </div>
+            <div class="divider"></div>
+            <div class="summary-item">
+                <i class="fas fa-check-circle" style="color: var(--success);"></i>
+                <span>با پیامک:</span>
+                <span class="num success" id="summarySms">0</span>
+            </div>
+            <div class="divider"></div>
+            <div class="summary-item">
+                <i class="fas fa-percent" style="color: var(--primary);"></i>
+                <span>میانگین درصد:</span>
+                <span class="num" id="summaryAvgPercent">0%</span>
+            </div>
+        </div>
+        <div class="summary-actions">
+            <button class="btn btn-success" onclick="saveAll()" id="saveBtn">
+                <i class="fas fa-save"></i> ذخیره تنظیمات
+            </button>
+        </div>
+    </div>
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    // ========================================
+    // CSRF TOKEN
+    // ========================================
+    function getCSRFToken() {
+        return document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    }
+
+    // ========================================
+    // GLOBAL SMS TOGGLE
+    // ========================================
+    let globalSmsEnabled = false;
+
+    function toggleGlobalSms() {
+        const toggle = document.getElementById('globalSmsToggle');
+        globalSmsEnabled = !globalSmsEnabled;
+        toggle.classList.toggle('active');
+        
+        document.querySelectorAll('.sms-checkbox').forEach(cb => {
+            cb.checked = globalSmsEnabled;
+        });
+        
+        updateSummary();
+    }
+
+    // ========================================
+    // PERCENT CHANGE
+    // ========================================
+    function onPercentChange(input) {
+        const val = parseFloat(input.value) || 0;
+        input.classList.remove('modified', 'positive', 'negative');
+        if (val !== 0) {
+            input.classList.add('modified');
+            if (val > 0) input.classList.add('positive');
+            else input.classList.add('negative');
+        }
+        updateSummary();
+    }
+
+    // ========================================
+    // UPDATE SUMMARY
+    // ========================================
+    function updateSummary() {
+        const rows = document.querySelectorAll('#materialsBody tr[data-code]');
+        let modified = 0;
+        let smsCount = 0;
+        let totalPercent = 0;
+        let percentCount = 0;
+        let good = 0, low = 0, zero = 0;
+        
+        rows.forEach(row => {
+            const percentInput = row.querySelector('.percent-input');
+            const smsCheckbox = row.querySelector('.sms-checkbox');
+            const totalStock = parseFloat(row.dataset.totalStock) || 0;
+            const minAmount = parseFloat(row.dataset.minAmount) || 0;
+            
+            if (percentInput) {
+                const val = parseFloat(percentInput.value) || 0;
+                if (val !== 0) {
+                    modified++;
+                    totalPercent += val;
+                    percentCount++;
+                }
+            }
+            
+            if (smsCheckbox && smsCheckbox.checked) {
+                smsCount++;
+            }
+            
+            // وضعیت موجودی
+            if (totalStock >= minAmount) {
+                good++;
+            } else if (totalStock > 0) {
+                low++;
+            } else {
+                zero++;
+            }
+        });
+        
+        const avgPercent = percentCount > 0 ? (totalPercent / percentCount) : 0;
+        
+        document.getElementById('modifiedCount').textContent = modified;
+        document.getElementById('summaryModified').textContent = modified;
+        document.getElementById('summarySms').textContent = smsCount;
+        document.getElementById('summaryAvgPercent').textContent = avgPercent.toFixed(1) + '%';
+        document.getElementById('goodStock').textContent = good;
+        document.getElementById('lowStock').textContent = low;
+        document.getElementById('zeroStock').textContent = zero;
+    }
+
+    // ========================================
+    // REFRESH STOCK FROM EXTERNAL DB
+    // ========================================
+    function refreshStock() {
+        const overlay = document.getElementById('loadingOverlay');
+        overlay.classList.add('active');
+        
+        fetch('/api/refresh-stock/', {
+            method: 'GET',
+            headers: {
+                'X-CSRFToken': getCSRFToken()
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            overlay.classList.remove('active');
+            
+            if (data.success) {
+                const rows = document.querySelectorAll('#materialsBody tr[data-code]');
+                rows.forEach(row => {
+                    const code = row.dataset.code;
+                    if (data.data[code]) {
+                        const defaultStock = data.data[code].default_stock;
+                        const totalStock = data.data[code].total_stock;
+                        
+                        row.dataset.defaultStock = defaultStock;
+                        row.dataset.totalStock = totalStock;
+                        
+                        // بروزرسانی سلول‌های موجودی (ایندکس‌ها: 3=انبار11, 4=موجودی کل, 6=وضعیت)
+                        const cells = row.querySelectorAll('td');
+                        if (cells.length >= 5) {
+                            cells[3].textContent = defaultStock.toFixed(2);
+                            cells[4].innerHTML = `
+                                <span class="stock-detail-tooltip" title="${row.querySelector('.stock-detail-tooltip')?.title || ''}">
+                                    ${totalStock.toFixed(2)}
+                                </span>
+                                <div class="stock-list">${row.querySelector('.stock-list')?.textContent || ''}</div>
+                            `;
+                            
+                            // بروزرسانی وضعیت
+                            const min = parseFloat(row.dataset.minAmount) || 0;
+                            if (totalStock >= min) {
+                                cells[6].innerHTML = '<span class="stock-badge good">✅ موجود</span>';
+                            } else if (totalStock > 0) {
+                                cells[6].innerHTML = '<span class="stock-badge warning">⚠️ کمبود</span>';
+                            } else {
+                                cells[6].innerHTML = '<span class="stock-badge danger">❌ بی‌موجودی</span>';
+                            }
+                        }
+                    }
+                });
+                
+                Swal.fire({
+                    title: '✅ بروزرسانی شد',
+                    text: 'موجودی‌ها از دیتابیس خارجی بروزرسانی شدند',
+                    icon: 'success',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+                
+                updateSummary();
+            } else {
+                Swal.fire({
+                    title: '❌ خطا',
+                    text: data.error || 'خطا در بروزرسانی موجودی',
+                    icon: 'error',
+                    confirmButtonText: 'باشه'
+                });
+            }
+        })
+        .catch(error => {
+            overlay.classList.remove('active');
+            Swal.fire({
+                title: '❌ خطا',
+                text: 'خطا در ارتباط با سرور: ' + error.message,
+                icon: 'error',
+                confirmButtonText: 'باشه'
+            });
+        });
+    }
+
+    // ========================================
+    // RESET ALL
+    // ========================================
+    function resetAllToOriginal() {
+        Swal.fire({
+            title: '⚠️ تایید بازنشانی',
+            text: 'آیا از بازنشانی تمام درصدها به صفر مطمئن هستید؟',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#f59e0b',
+            cancelButtonColor: '#94a3b8',
+            confirmButtonText: '🔄 بله، بازنشانی کن',
+            cancelButtonText: 'انصراف'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.querySelectorAll('.percent-input').forEach(input => {
+                    input.value = '0';
+                    input.classList.remove('modified', 'positive', 'negative');
+                });
+                
+                document.querySelectorAll('.sms-checkbox').forEach(cb => {
+                    cb.checked = false;
+                });
+                
+                document.getElementById('globalSmsToggle').classList.remove('active');
+                globalSmsEnabled = false;
+                
+                updateSummary();
+                
+                Swal.fire({
+                    title: '✅ بازنشانی شد',
+                    text: 'تمام درصدها صفر و پیامک‌ها غیرفعال شدند',
+                    icon: 'success',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+            }
+        });
+    }
+
+    // ========================================
+    // SAVE ALL
+    // ========================================
+    function saveAll() {
+        const rows = document.querySelectorAll('#materialsBody tr[data-code]');
+        const adjustments = [];
+        
+        rows.forEach(row => {
+            const code = row.dataset.code;
+            const percentInput = row.querySelector('.percent-input');
+            const smsCheckbox = row.querySelector('.sms-checkbox');
+            const nameCell = row.querySelector('td:nth-child(3) strong');
+            const titleEn = row.querySelector('td:nth-child(3) div')?.textContent || '';
+            
+            adjustments.push({
+                code: code,
+                title: nameCell ? nameCell.textContent : '',
+                title_en: titleEn,
+                adjustment_percent: parseFloat(percentInput.value) || 0,
+                send_sms: smsCheckbox.checked
+            });
+        });
+        
+        // فقط مواردی که تغییر داشته‌اند ذخیره شوند
+        const changed = adjustments.filter(a => a.adjustment_percent !== 0 || a.send_sms);
+        
+        if (changed.length === 0) {
+            Swal.fire({
+                title: 'ℹ️ توجه',
+                text: 'هیچ تغییری برای ذخیره وجود ندارد',
+                icon: 'info',
+                confirmButtonText: 'باشه'
+            });
+            return;
+        }
+        
+        const payload = {
+            adjustments: changed,
+            send_sms_global: globalSmsEnabled
+        };
+        
+        const saveBtn = document.getElementById('saveBtn');
+        saveBtn.disabled = true;
+        saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> در حال ذخیره...';
+        
+        fetch('/stock_manager/save-material-adjustments/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCSRFToken()
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(response => response.json())
+        .then(data => {
+            saveBtn.disabled = false;
+            saveBtn.innerHTML = '<i class="fas fa-save"></i> ذخیره تنظیمات';
+            
+            if (data.success) {
+                Swal.fire({
+                    title: '✅ ذخیره شد',
+                    text: data.message || `${data.saved_count} تنظیمات با موفقیت ذخیره شد`,
+                    icon: 'success',
+                    confirmButtonText: 'باشه'
+                });
+                
+                // علامت‌گذاری موارد ذخیره شده
+                rows.forEach(row => {
+                    const percentInput = row.querySelector('.percent-input');
+                    if (percentInput) {
+                        percentInput.classList.remove('modified', 'positive', 'negative');
+                    }
+                });
+                
+                updateSummary();
+            } else {
+                Swal.fire({
+                    title: '❌ خطا',
+                    text: data.error || 'خطا در ذخیره تنظیمات',
+                    icon: 'error',
+                    confirmButtonText: 'باشه'
+                });
+            }
+        })
+        .catch(error => {
+            saveBtn.disabled = false;
+            saveBtn.innerHTML = '<i class="fas fa-save"></i> ذخیره تنظیمات';
+            
+            Swal.fire({
+                title: '❌ خطا',
+                text: 'خطا در ارتباط با سرور: ' + error.message,
+                icon: 'error',
+                confirmButtonText: 'باشه'
+            });
+        });
+    }
+
+    // ========================================
+    // INIT
+    // ========================================
+    document.addEventListener('DOMContentLoaded', function() {
+        updateSummary();
+        
+        // بررسی تنظیمات پیامک از دیتابیس
+        const smsCheckboxes = document.querySelectorAll('.sms-checkbox');
+        let hasSms = false;
+        smsCheckboxes.forEach(cb => {
+            if (cb.checked) hasSms = true;
+        });
+        
+        if (hasSms) {
+            document.getElementById('globalSmsToggle').classList.add('active');
+            globalSmsEnabled = true;
+        }
+    });
+</script>
+{% endblock %}

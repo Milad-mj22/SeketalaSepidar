@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'licenseapp',
     'aboutapp',
     'SepidarApp',
+    'stockManager',
+    'django_apscheduler',
     
 ]
 
@@ -199,7 +201,7 @@ PUBLIC_KEY_FILE = 'public.pem'
 SQL_USE_CONNECTION_STRING = False  # اگر True باشد از string بالا استفاده می‌کند
 SQL_SERVER = 'DESKTOP-JKDSDCN\SEPIDAR'
 # SQL_SERVER = "DESKTOP-OCIN559"
-# SQL_SERVER = "DESKTOP-HDSP3L0"
+SQL_SERVER = "DESKTOP-HDSP3L0"
 SQL_DATABASE = 'Sepidar01'
 SQL_DRIVER = '{ODBC Driver 17 for SQL Server}'
 SQL_TRUSTED_CONNECTION = 'yes'
@@ -216,3 +218,9 @@ SQL_TRUSTED_CONNECTION = 'yes'
 SQLITE_DB_PATH = 'my_database_copy.db'  # مسیر فایل SQLite
 
 CREATOR_SEPIDAR = 16  ## ایدی شخص ایجاد کننده در Sepidar
+
+
+
+# تنظیمات زمان اجرا
+APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
+APSCHEDULER_RUN_NOW_TIMEOUT = 25  # ثانیه

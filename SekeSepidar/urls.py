@@ -24,6 +24,7 @@ urlpatterns = [
     # path('label/',include('labelapp.urls')),
     # path('home/', include('dashboard.urls')),   
     path('', include('SepidarApp.urls')),   
+    path('stock_manager/', include('stockManager.urls')),   
     path('authentication/', include('authentication.urls', namespace='authentication')),
     path('license/',include('licenseapp.urls')),
     path('about/',include('aboutapp.urls')),

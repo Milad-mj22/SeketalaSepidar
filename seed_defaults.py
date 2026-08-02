@@ -159,7 +159,23 @@ pages_data = [
         "order" : 2 ,
     },
 
-
+    {
+        "name": "Stock manager ",
+        "label": "مدیریت موجودی",
+        "icon": """<i class="ki-duotone ki-ranking fs-2">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                        <span class="path3"></span>
+                        <span class="path4"></span>
+                        <span class="path5"></span>
+                        <span class="path6"></span>
+                        <span class="path7"></span>
+                        <span class="path8"></span>
+                    </i>""",
+        "type": "item",
+        "link": "/stock_manager",
+        "order" : 3 ,
+    },
 
 
     {
@@ -177,7 +193,7 @@ pages_data = [
                     </i>""",
         "type": "item",
         "link": "/about/about",
-        "order" : 3,
+        "order" : 4,
     },
     
 ]

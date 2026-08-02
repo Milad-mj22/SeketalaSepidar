@@ -12,3 +12,4 @@ django-multiselectfield
 scikit-learn
 requests
 pyodbc
+django-apscheduler
