@@ -12,10 +12,7 @@ urlpatterns = [
     # path('', views.dashboard_page, name='dashboard_page'),
     path('', views.material_adjustment_page, name='main_page'),
     path('save-material-adjustments/', views.save_material_adjustments, name='material_adjustment_page'),
-    path('home/',include('mainPage.urls')),
-    path('authentication/', include('authentication.urls', namespace='authentication')),
-    path('about/',include('aboutapp.urls')),
-    
+    path('items2buy/', views.low_stock_report_page, name='low_stock_report'), 
 ]
 
 

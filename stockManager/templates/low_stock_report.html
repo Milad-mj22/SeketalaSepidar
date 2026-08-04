@@ -1,0 +1,552 @@
+{% extends "base_dashboard.html" %}
+{% load static %}
+
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>گزارش مواد با کمبود موجودی</title>
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --success: #22c55e;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --shadow: 0 1px 3px rgba(0,0,0,0.12);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --transition: all 0.3s ease;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--gray-50);
+            padding: 20px;
+            direction: rtl;
+        }
+        
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: white;
+            padding: 24px 30px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 24px;
+            border: 1px solid var(--gray-200);
+        }
+        
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .header-title h1 {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--gray-800);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .header-title .icon {
+            font-size: 28px;
+        }
+        
+        .header-title .badge-warning {
+            background: var(--warning);
+            color: white;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .header-stats {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .stat-badge {
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            background: var(--gray-100);
+            color: var(--gray-700);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .stat-badge .num {
+            font-size: 18px;
+        }
+        .stat-badge .num.danger { color: var(--danger); }
+        .stat-badge .num.warning { color: var(--warning); }
+        .stat-badge .num.primary { color: var(--primary); }
+
+        .btn {
+            padding: 10px 24px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: inherit;
+        }
+        
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: #4338ca; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4); }
+        
+        .btn-info { background: var(--info); color: white; }
+        .btn-info:hover { background: #2563eb; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4); }
+
+        /* ===== TABLE ===== */
+        .table-container {
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            border: 1px solid var(--gray-200);
+        }
+        
+        .table-header {
+            padding: 16px 20px;
+            background: var(--gray-50);
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        
+        .table-header h3 {
+            font-size: 16px;
+            color: var(--gray-700);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .table-header .badge-count {
+            background: var(--danger);
+            color: white;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        .table-wrapper {
+            overflow-x: auto;
+            padding: 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        
+        th {
+            background: var(--gray-100);
+            padding: 12px 14px;
+            text-align: right;
+            border-bottom: 2px solid var(--gray-200);
+            font-weight: 600;
+            color: var(--gray-700);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+            vertical-align: middle;
+        }
+        
+        tr:hover td { background: #f8fafc; }
+        tr:nth-child(even) td { background: var(--gray-50); }
+        tr:nth-child(even):hover td { background: #f1f5f9; }
+
+        .code-badge {
+            background: var(--gray-100);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        
+        .stock-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        
+        .stock-badge.warning { background: #fef3c7; color: #d97706; }
+        .stock-badge.danger { background: #fee2e2; color: #dc2626; }
+        .stock-badge.good { background: #dcfce7; color: #16a34a; }
+        
+        .stock-detail-tooltip {
+            position: relative;
+            cursor: help;
+            border-bottom: 1px dashed var(--gray-300);
+        }
+        
+        .stock-list {
+            font-size: 10px;
+            color: var(--gray-400);
+            max-width: 150px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .shortage-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--gray-200);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 4px;
+        }
+        
+        .shortage-bar .fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        
+        .shortage-bar .fill.danger { background: var(--danger); }
+        .shortage-bar .fill.warning { background: var(--warning); }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--gray-500);
+        }
+        
+        .empty-state .icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+        
+        .empty-state h2 {
+            font-size: 22px;
+            color: var(--gray-700);
+            margin-bottom: 8px;
+        }
+        
+        .empty-state p {
+            color: var(--gray-400);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            body { padding: 12px; }
+            .header { padding: 16px; }
+            .header-top { flex-direction: column; align-items: stretch; }
+            .header-title h1 { font-size: 20px; }
+            .header-stats { flex-direction: column; align-items: stretch; }
+            .stat-badge { justify-content: center; }
+            
+            .table-wrapper {
+                font-size: 12px;
+            }
+            
+            th, td {
+                padding: 8px 10px;
+            }
+            
+            .stock-list {
+                max-width: 80px;
+                font-size: 9px;
+            }
+            
+            .code-badge { font-size: 10px; }
+            .stock-badge { font-size: 10px; padding: 2px 8px; }
+        }
+
+        @media (max-width: 480px) {
+            .table-wrapper {
+                font-size: 11px;
+            }
+            
+            th, td {
+                padding: 6px 8px;
+            }
+            
+            .header-title h1 {
+                font-size: 16px;
+            }
+            
+            .header-title .badge-warning {
+                font-size: 11px;
+                padding: 2px 10px;
+            }
+        }
+
+        /* ===== LOADING ===== */
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255,255,255,0.8);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+        .loading-overlay.active { display: flex; }
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--gray-200);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="loading-spinner"></div>
+        </div>
+
+        <!-- Header -->
+        <div class="header">
+            <div class="header-top">
+                <div class="header-title">
+                    <span class="icon">⚠️</span>
+                    <h1>
+                        گزارش مواد با کمبود موجودی
+                        <span class="badge-warning">{{ low_stock_count }} مورد کمبود</span>
+                    </h1>
+                </div>
+                <div>
+                    <button class="btn btn-info" onclick="refreshPage()">
+                        <i class="fas fa-sync-alt"></i> بروزرسانی
+                    </button>
+                </div>
+            </div>
+            
+            <div class="header-stats">
+                <div class="stat-badge">
+                    <i class="fas fa-boxes" style="color: var(--primary);"></i>
+                    کل مواد: <span class="num primary">{{ total_items }}</span>
+                </div>
+                <div class="stat-badge">
+                    <i class="fas fa-exclamation-triangle" style="color: var(--warning);"></i>
+                    کمبود جزئی: <span class="num warning">{{ low_stock_items|length }}</span>
+                </div>
+                <div class="stat-badge">
+                    <i class="fas fa-times-circle" style="color: var(--danger);"></i>
+                    بی‌موجودی: <span class="num danger">{{ low_stock_items|length }}</span>
+                </div>
+                <div class="stat-badge" style="background: #dcfce7; color: #16a34a;">
+                    <i class="fas fa-check-circle"></i>
+                    موجودی مناسب: <span class="num" style="color: #16a34a;">{{ total_items|add:low_stock_count|add:low_stock_count }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-container">
+            <div class="table-header">
+                <h3>
+                    <i class="fas fa-list" style="color: var(--danger);"></i>
+                    مواد با موجودی کمتر از حداقل
+                    <span class="badge-count">{{ low_stock_items|length }}</span>
+                </h3>
+                <div style="font-size: 12px; color: var(--gray-400);">
+                    <i class="fas fa-warehouse"></i>
+                    انبار پیش‌فرض: 11
+                </div>
+            </div>
+            
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 40px;">#</th>
+                            <th style="min-width: 80px;">کد</th>
+                            <th style="min-width: 120px;">نام ماده</th>
+                            <th style="text-align: center; min-width: 70px;">حداقل</th>
+                            <th style="text-align: center; min-width: 70px;">انبار 11</th>
+                            <th style="text-align: center; min-width: 80px;">موجودی کل</th>
+                            <th style="text-align: center; min-width: 100px;">جزئیات انبارها</th>
+                            <th style="text-align: center; min-width: 80px;">کمبود</th>
+                            <th style="text-align: center; min-width: 80px;">وضعیت</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in low_stock_items %}
+                        <tr>
+                            <td style="text-align: center; font-weight: 600; color: var(--gray-400);">{{ forloop.counter }}</td>
+                            <td><span class="code-badge">{{ item.code }}</span></td>
+                            <td>
+                                <strong>{{ item.title }}</strong>
+                                {% if item.title_en %}
+                                <div style="font-size: 10px; color: var(--gray-400);">{{ item.title_en }}</div>
+                                {% endif %}
+                                <div style="font-size: 10px; color: var(--gray-400);">واحد: {{ item.unit_title|default:'-' }}</div>
+                            </td>
+                            <td style="text-align: center; font-weight: 600; color: var(--danger);">
+                                {{ item.minimum_amount|floatformat:2 }}
+                            </td>
+                            <td style="text-align: center; font-weight: 600; color: var(--primary);">
+                                {{ item.default_stock_quantity|floatformat:2 }}
+                            </td>
+                            <td style="text-align: center; font-weight: 600; color: var(--warning);">
+                                {{ item.total_stock_quantity|floatformat:2 }}
+                            </td>
+                            <td style="text-align: center;">
+                                <span class="stock-detail-tooltip" title="{% for stock in item.stock_details %}انبار {{ stock.stock_code }}: {{ stock.quantity|floatformat:2 }}{% if not forloop.last %}, {% endif %}{% endfor %}">
+                                    <i class="fas fa-info-circle" style="color: var(--info);"></i>
+                                    {{ item.stock_details|length }} انبار
+                                </span>
+                                <div class="stock-list">
+                                    {% for stock in item.stock_details %}
+                                    انبار {{ stock.stock_code }}: {{ stock.quantity|floatformat:2 }}{% if not forloop.last %}, {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </td>
+                            <td style="text-align: center;">
+                                <span style="font-weight: 700; color: var(--danger);">
+                                    {{ item.shortage|floatformat:2 }}
+                                </span>
+                                <div class="shortage-bar">
+                                    <div class="fill {% if item.total_stock_quantity == 0 %}danger{% else %}warning{% endif %}" 
+                                         style="width: {% if item.shortage_percent > 100 %}100{% else %}{{ item.shortage_percent|floatformat:0 }}{% endif %}%;">
+                                    </div>
+                                </div>
+                            </td>
+                            <td style="text-align: center;">
+                                {% if item.total_stock_quantity == 0 %}
+                                <span class="stock-badge danger">❌ بی‌موجودی</span>
+                                {% else %}
+                                <span class="stock-badge warning">⚠️ کمبود</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="9" style="text-align: center; padding: 40px; color: var(--gray-400);">
+                                <i class="fas fa-check-circle" style="font-size: 48px; color: var(--success); display: block; margin-bottom: 16px;"></i>
+                                <h2 style="color: var(--success);">همه مواد موجودی کافی دارند!</h2>
+                                <p>هیچ ماده‌ای با موجودی کمتر از حداقل یافت نشد.</p>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    // ========================================
+    // CSRF TOKEN
+    // ========================================
+    function getCSRFToken() {
+        return document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    }
+
+    // ========================================
+    // REFRESH PAGE
+    // ========================================
+    function refreshPage() {
+        const overlay = document.getElementById('loadingOverlay');
+        overlay.classList.add('active');
+        
+        // رفرش ساده صفحه
+        setTimeout(() => {
+            location.reload();
+        }, 500);
+    }
+
+    // ========================================
+    // TOOLTIP FOR STOCK DETAILS (Mobile friendly)
+    // ========================================
+    document.addEventListener('DOMContentLoaded', function() {
+        // برای نمایش جزئیات انبار در موبایل با کلیک
+        const tooltips = document.querySelectorAll('.stock-detail-tooltip');
+        tooltips.forEach(el => {
+            el.addEventListener('click', function(e) {
+                const title = this.getAttribute('title');
+                if (title) {
+                    Swal.fire({
+                        title: '📦 جزئیات انبارها',
+                        text: title,
+                        icon: 'info',
+                        confirmButtonText: 'باشه',
+                        confirmButtonColor: '#3b82f6'
+                    });
+                }
+                e.preventDefault();
+            });
+        });
+    });
+</script>
+{% endblock %}

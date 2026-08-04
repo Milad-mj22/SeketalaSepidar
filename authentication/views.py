@@ -32,7 +32,7 @@ def login_page(request:HttpRequest):
 
         return render(request, 'sign-in.html',{'logo':logo,'app_description':description})
     else:
-        return redirect('dashboard:dashboard_page') 
+        return redirect('sepidarApp:auto_order') 
 
 def check_login(request):
     if request.method == 'POST':

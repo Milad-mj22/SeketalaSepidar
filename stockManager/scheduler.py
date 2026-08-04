@@ -6,7 +6,7 @@ from django_apscheduler.jobstores import DjangoJobStore
 from django_apscheduler.models import DjangoJobExecution
 from django.utils import timezone
 
-from stockManager.utils import prepare_materiasl2send_sms
+from stockManager.utils import prepare_materials2send_sms
 
 logger = logging.getLogger(__name__)
 
@@ -46,7 +46,7 @@ def process_daily_material_adjustment_job():
     logger.info(f"⏰ Running daily job at {timezone.now()}")
     
     try:
-        result = prepare_materiasl2send_sms()# process_daily_material_adjustment()
+        result = prepare_materials2send_sms()# process_daily_material_adjustment()
         logger.info(f"✅ Daily job completed: {result}")
         
         # ثبت تاریخچه اجرا

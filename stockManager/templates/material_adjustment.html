@@ -776,7 +776,7 @@
         rows.forEach(row => {
             const percentInput = row.querySelector('.percent-input');
             const smsCheckbox = row.querySelector('.sms-checkbox');
-            const totalStock = parseFloat(row.dataset.totalStock) || 0;
+            const defaultStock = parseFloat(row.dataset.defaultStock) || 0;
             const minAmount = parseFloat(row.dataset.minAmount) || 0;
             
             if (percentInput) {
@@ -793,9 +793,9 @@
             }
             
             // وضعیت موجودی
-            if (totalStock >= minAmount) {
+            if (defaultStock >= minAmount) {
                 good++;
-            } else if (totalStock > 0) {
+            } else if (defaultStock > 0) {
                 low++;
             } else {
                 zero++;
@@ -937,100 +937,99 @@
     // ========================================
     // SAVE ALL
     // ========================================
-    function saveAll() {
-        const rows = document.querySelectorAll('#materialsBody tr[data-code]');
-        const adjustments = [];
+// ========================================
+// SAVE ALL - SEND ALL DATA
+// ========================================
+function saveAll() {
+    const rows = document.querySelectorAll('#materialsBody tr[data-code]');
+    const allMaterials = [];
+    
+    rows.forEach(row => {
+        const code = row.dataset.code;
+        const percentInput = row.querySelector('.percent-input');
+        const smsCheckbox = row.querySelector('.sms-checkbox');
+        const nameCell = row.querySelector('td:nth-child(3) strong');
+        const titleEn = row.querySelector('td:nth-child(3) div')?.textContent || '';
         
-        rows.forEach(row => {
-            const code = row.dataset.code;
-            const percentInput = row.querySelector('.percent-input');
-            const smsCheckbox = row.querySelector('.sms-checkbox');
-            const nameCell = row.querySelector('td:nth-child(3) strong');
-            const titleEn = row.querySelector('td:nth-child(3) div')?.textContent || '';
-            
-            adjustments.push({
-                code: code,
-                title: nameCell ? nameCell.textContent : '',
-                title_en: titleEn,
-                adjustment_percent: parseFloat(percentInput.value) || 0,
-                send_sms: smsCheckbox.checked
-            });
+        // Get current stock values
+        const defaultStock = parseFloat(row.dataset.defaultStock) || 0;
+        const totalStock = parseFloat(row.dataset.totalStock) || 0;
+        const minAmount = parseFloat(row.dataset.minAmount) || 0;
+        
+        allMaterials.push({
+            code: code,
+            title: nameCell ? nameCell.textContent : '',
+            title_en: titleEn,
+            default_stock: defaultStock,
+            total_stock: totalStock,
+            minimum_amount: minAmount,
+            adjustment_percent: parseFloat(percentInput.value) || 0,
+            send_sms: smsCheckbox.checked
         });
+    });
+    
+    // Send ALL materials, not just changed ones
+    const payload = {
+        materials: allMaterials,  // Send all data
+        send_sms_global: globalSmsEnabled,
+        total_count: allMaterials.length
+    };
+    
+    const saveBtn = document.getElementById('saveBtn');
+    saveBtn.disabled = true;
+    saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> در حال ذخیره...';
+    
+    fetch('/stock_manager/save-material-adjustments/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCSRFToken()
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(response => response.json())
+    .then(data => {
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = '<i class="fas fa-save"></i> ذخیره تنظیمات';
         
-        // فقط مواردی که تغییر داشته‌اند ذخیره شوند
-        const changed = adjustments.filter(a => a.adjustment_percent !== 0 || a.send_sms);
-        
-        if (changed.length === 0) {
+        if (data.success) {
             Swal.fire({
-                title: 'ℹ️ توجه',
-                text: 'هیچ تغییری برای ذخیره وجود ندارد',
-                icon: 'info',
+                title: '✅ ذخیره شد',
+                text: data.message || `${data.saved_count || allMaterials.length} تنظیمات با موفقیت ذخیره شد`,
+                icon: 'success',
                 confirmButtonText: 'باشه'
             });
-            return;
-        }
-        
-        const payload = {
-            adjustments: changed,
-            send_sms_global: globalSmsEnabled
-        };
-        
-        const saveBtn = document.getElementById('saveBtn');
-        saveBtn.disabled = true;
-        saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> در حال ذخیره...';
-        
-        fetch('/stock_manager/save-material-adjustments/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': getCSRFToken()
-            },
-            body: JSON.stringify(payload)
-        })
-        .then(response => response.json())
-        .then(data => {
-            saveBtn.disabled = false;
-            saveBtn.innerHTML = '<i class="fas fa-save"></i> ذخیره تنظیمات';
             
-            if (data.success) {
-                Swal.fire({
-                    title: '✅ ذخیره شد',
-                    text: data.message || `${data.saved_count} تنظیمات با موفقیت ذخیره شد`,
-                    icon: 'success',
-                    confirmButtonText: 'باشه'
-                });
-                
-                // علامت‌گذاری موارد ذخیره شده
-                rows.forEach(row => {
-                    const percentInput = row.querySelector('.percent-input');
-                    if (percentInput) {
-                        percentInput.classList.remove('modified', 'positive', 'negative');
-                    }
-                });
-                
-                updateSummary();
-            } else {
-                Swal.fire({
-                    title: '❌ خطا',
-                    text: data.error || 'خطا در ذخیره تنظیمات',
-                    icon: 'error',
-                    confirmButtonText: 'باشه'
-                });
-            }
-        })
-        .catch(error => {
-            saveBtn.disabled = false;
-            saveBtn.innerHTML = '<i class="fas fa-save"></i> ذخیره تنظیمات';
+            // Clear modification indicators
+            rows.forEach(row => {
+                const percentInput = row.querySelector('.percent-input');
+                if (percentInput) {
+                    percentInput.classList.remove('modified', 'positive', 'negative');
+                }
+            });
             
+            updateSummary();
+        } else {
             Swal.fire({
                 title: '❌ خطا',
-                text: 'خطا در ارتباط با سرور: ' + error.message,
+                text: data.error || 'خطا در ذخیره تنظیمات',
                 icon: 'error',
                 confirmButtonText: 'باشه'
             });
+        }
+    })
+    .catch(error => {
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = '<i class="fas fa-save"></i> ذخیره تنظیمات';
+        
+        Swal.fire({
+            title: '❌ خطا',
+            text: 'خطا در ارتباط با سرور: ' + error.message,
+            icon: 'error',
+            confirmButtonText: 'باشه'
         });
-    }
-
+    });
+}
     // ========================================
     // INIT
     // ========================================

@@ -307,6 +307,7 @@ logger = logging.getLogger(__name__)
 
 @csrf_exempt
 @require_http_methods(["POST"])
+@login_required
 def submit_all_formula_values(request):
     """
     دریافت تمام مقادیر فرمول‌ها و محاسبه مواد اولیه مورد نیاز
@@ -839,7 +840,7 @@ def auto_order(request):
 
 
 import requests as http_requests  # Alias to avoid conflict
-
+@login_required
 @require_http_methods(["GET"])
 def get_materials(request):
     """
@@ -999,7 +1000,7 @@ import json
 import logging
 
 logger = logging.getLogger(__name__)
-
+@login_required
 @csrf_exempt
 @require_http_methods(["POST"])
 def submit_materials(request):

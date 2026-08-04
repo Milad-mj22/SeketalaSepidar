@@ -26,10 +26,10 @@ def material_adjustment_page(request):
         ext_conn = db.get_connection()
         cursor = ext_conn.cursor()
         
-        # دریافت مواد با انبار پیش‌فرض 11 از دیتابیس خارجی
+        # دریافت مواد با انبار پیش‌فرض 10 از دیتابیس خارجی
         query = """
 -- ============================================
--- کوئری دریافت مواد با انبار پیش‌فرض 11
+-- کوئری دریافت مواد با انبار پیش‌فرض 10
 -- ============================================
 SELECT 
     i.Code,
@@ -40,12 +40,12 @@ SELECT
     i.UnitRef,
     u.Title AS UnitTitle,
     
-    -- موجودی در انبار پیش‌فرض (11)
+    -- موجودی در انبار پیش‌فرض (10)
     ISNULL((
         SELECT SUM(Quantity)
         FROM [Sepidar01].[INV].[ItemStockSummary] iss
         WHERE iss.ItemRef = i.ItemID
-          AND iss.StockRef = 11
+          AND iss.StockRef = 10
           AND iss.FiscalYearRef = (
               SELECT MAX(FiscalYearRef) 
               FROM [Sepidar01].[INV].[ItemStockSummary] 
@@ -88,7 +88,7 @@ FROM [Sepidar01].[INV].[Item] i
 LEFT JOIN [Sepidar01].[INV].[Unit] u 
     ON i.UnitRef = u.UnitID
 
-WHERE i.DefaultStockRef = 11
+WHERE i.DefaultStockRef = 10
   AND i.IsActive = 1
 
 ORDER BY i.Code;
@@ -111,14 +111,14 @@ ORDER BY i.Code;
             
             # پردازش جزئیات انبارها
             stock_details = []
-            if row[8]:
-                for part in row[8].split(', '):
-                    if ':' in part:
-                        stock_id, qty = part.split(':')
-                        stock_details.append({
-                            'stock_id': stock_id,
-                            'quantity': float(qty) if qty else 0
-                        })
+            # if row[8]:
+            #     for part in row[8].split(', '):
+            #         if ':' in part:
+            #             stock_id, qty = part.split(':')
+            #             stock_details.append({
+            #                 'stock_id': stock_id,
+            #                 'quantity': float(qty) if qty else 0
+            #             })
             
             materials.append({
                 'code': item_code,
@@ -161,7 +161,7 @@ def save_material_adjustments(request):
     """
     try:
         data = json.loads(request.body)
-        adjustments = data.get('adjustments', [])
+        adjustments = data.get('materials', [])
         send_sms_global = data.get('send_sms_global', False)
         
         if not adjustments:
@@ -255,7 +255,7 @@ def refresh_stock_data(request):
                     SELECT SUM(Quantity)
                     FROM InventoryItem ii
                     WHERE ii.ItemRef = i.ItemID
-                    AND ii.StockRef = 11
+                    AND ii.StockRef = 10
                 ), 0) AS DefaultStock,
                 ISNULL((
                     SELECT SUM(Quantity)
@@ -263,7 +263,7 @@ def refresh_stock_data(request):
                     WHERE ii.ItemRef = i.ItemID
                 ), 0) AS TotalStock
             FROM Item i
-            WHERE i.DefaultStockRef = 11
+            WHERE i.DefaultStockRef = 10
             AND i.IsActive = 1
         """
         
@@ -312,3 +312,164 @@ def send_adjustment_sms(user, count):
     except Exception as e:
         logger.error(f"Error sending SMS: {e}")
         raise
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# stockManager/views.py
+
+@login_required
+def low_stock_report_page(request):
+    """
+    صفحه گزارش مواد با موجودی کمتر از حداقل
+    نمایش موجودی در تمام انبارها
+    """
+    try:
+        # اتصال به دیتابیس خارجی
+        db.connect()
+        ext_conn = db.get_connection()
+        cursor = ext_conn.cursor()
+        
+        # دریافت تمام مواد با انبار پیش‌فرض 10
+        query = """
+        SELECT 
+            i.Code,
+            i.Title,
+            i.Title_En,
+            i.MinimumAmount,
+            i.DefaultStockRef,
+            i.UnitRef,
+            u.Title AS UnitTitle,
+            
+            -- موجودی در انبار پیش‌فرض (10)
+            ISNULL((
+                SELECT SUM(Quantity)
+                FROM [Sepidar01].[INV].[ItemStockSummary] iss
+                WHERE iss.ItemRef = i.ItemID
+                  AND iss.StockRef = 10
+                  AND iss.FiscalYearRef = (
+                      SELECT MAX(FiscalYearRef) 
+                      FROM [Sepidar01].[INV].[ItemStockSummary] 
+                      WHERE ItemRef = i.ItemID
+                  )
+            ), 0) AS DefaultStockQuantity,
+            
+            -- موجودی در تمام انبارها (آخرین سال مالی)
+            ISNULL((
+                SELECT SUM(Quantity)
+                FROM [Sepidar01].[INV].[ItemStockSummary] iss
+                WHERE iss.ItemRef = i.ItemID
+                  AND iss.FiscalYearRef = (
+                      SELECT MAX(FiscalYearRef) 
+                      FROM [Sepidar01].[INV].[ItemStockSummary] 
+                      WHERE ItemRef = i.ItemID
+                  )
+            ), 0) AS TotalStockQuantity,
+            
+            -- لیست موجودی در همه انبارها با جزئیات
+            STUFF((
+                SELECT ', ' + 
+                    CAST(s.Code AS VARCHAR) + ':' + 
+                    CAST(ISNULL(iss.Quantity, 0) AS VARCHAR)
+                FROM [Sepidar01].[INV].[Stock] s
+                INNER JOIN [Sepidar01].[INV].[ItemStockSummary] iss 
+                    ON iss.StockRef = s.StockID 
+                    AND iss.ItemRef = i.ItemID
+                    AND iss.FiscalYearRef = (
+                        SELECT MAX(FiscalYearRef) 
+                        FROM [Sepidar01].[INV].[ItemStockSummary] 
+                        WHERE ItemRef = i.ItemID
+                    )
+                WHERE s.IsActive = 1
+                ORDER BY s.Code
+                FOR XML PATH('')
+            ), 1, 2, '') AS StockDetails
+
+        FROM [Sepidar01].[INV].[Item] i
+        LEFT JOIN [Sepidar01].[INV].[Unit] u 
+            ON i.UnitRef = u.UnitID
+
+        WHERE i.DefaultStockRef = 10
+          AND i.IsActive = 1
+
+        ORDER BY i.Code;
+        """
+        
+        cursor.execute(query)
+        results = cursor.fetchall()
+        
+        low_stock_items = []
+        total_items = 0
+        
+        for row in results:
+            total_stock = float(row[8]) if row[8] else 0
+            default_stock = float(row[7]) if row[7] else 0
+            minimum_amount = float(row[3]) if row[3] else 0
+            
+            # فقط مواردی که موجودی کمتر از حداقل است
+            if default_stock < minimum_amount:
+                # پردازش جزئیات انبارها
+                stock_details = []
+                if row[9]:
+                    for part in row[9].split(', '):
+                        if ':' in part:
+                            stock_code, qty = part.split(':')
+                            stock_details.append({
+                                'stock_code': stock_code,
+                                'quantity': float(qty) if qty else 0
+                            })
+                
+                # محاسبه کمبود
+                if total_stock>0:
+                    shortage = minimum_amount - total_stock
+                else:
+                    shortage = total_stock
+                
+                low_stock_items.append({
+                    'code': row[0],
+                    'title': row[1] or '',
+                    'title_en': row[2] or '',
+                    'minimum_amount': minimum_amount,
+                    'default_stock_ref': row[4],
+                    'unit_ref': row[5],
+                    'unit_title': row[6] or '',
+                    'default_stock_quantity': float(row[7]) if row[7] else 0,
+                    'total_stock_quantity': total_stock,
+                    'stock_details': stock_details,
+                    'shortage': shortage,
+                    'shortage_percent': (shortage / minimum_amount * 100) if minimum_amount > 0 else 0,
+                    'status': 'danger' if total_stock == 0 else 'warning'
+                })
+            
+            total_items += 1
+        
+        db.close()
+        
+        # مرتب‌سازی بر اساس بیشترین کمبود
+        low_stock_items.sort(key=lambda x: x['shortage'], reverse=True)
+        
+        context = {
+            'low_stock_items': low_stock_items,
+            'total_items': total_items,
+            'low_stock_count': len(low_stock_items),
+            'active_page': 'low_stock_report'
+        }
+        
+        return render(request, 'low_stock_report.html', context)
+        
+    except Exception as e:
+        logger.error(f"Error in low_stock_report_page: {e}")
+        if 'db' in locals():
+            db.close()
+        return render(request, 'error.html', {'error': str(e)})
