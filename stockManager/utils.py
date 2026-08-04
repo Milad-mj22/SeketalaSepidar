@@ -153,8 +153,10 @@ def prepare_materials2send_sms():
                 
                 if result:
                     sent_count += 1
+                    print(f"📱 SMS sent to {phone}")
                     logger.info(f"📱 SMS sent to {phone}")
                 else:
+                    print(f"❌ Failed to send SMS to {phone}: {result}")
                     logger.error(f"❌ Failed to send SMS to {phone}: {result}")
         
         return {
