@@ -225,3 +225,50 @@ CREATOR_SEPIDAR = 16  ## ایدی شخص ایجاد کننده در Sepidar
 # تنظیمات زمان اجرا
 APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
 APSCHEDULER_RUN_NOW_TIMEOUT = 25  # ثانیه
+
+
+# تنظیم منطقه زمانی به ایران
+TIME_ZONE = 'Asia/Tehran'
+
+# فعال کردن استفاده از منطقه زمانی
+USE_TZ = True
+
+# فرمت نمایش تاریخ و زمان (اختیاری)
+DATETIME_FORMAT = 'Y/m/d H:i:s'
+DATE_FORMAT = 'Y/m/d'
+TIME_FORMAT = 'H:i:s'
+
+# فعال کردن زبان فارسی برای تاریخ (اختیاری)
+LANGUAGE_CODE = 'fa-ir'
+USE_I18N = True
+USE_L10N = True
+
+# تنظیمات زمانبندی (اختیاری)
+SCHEDULER_TIMEZONE = 'Asia/Tehran'
+
+# لاگ‌های زمانبند
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+        'file': {
+            'class': 'logging.FileHandler',
+            'filename': 'scheduler.log',
+        },
+    },
+    'loggers': {
+        'stockManager.scheduler': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'apscheduler': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
