@@ -3,6 +3,7 @@
 import os
 from random import random
 
+from Constants import SEND_SMS
 from SepidarApp.databaseConnector import db
 from otp_manager.models import OTPVar_Enum, SMS_Recievers, SMS_Template, SMSServiceTemplate_Enum
 from otp_manager.service import send_sms
@@ -134,8 +135,7 @@ def prepare_materials2send_sms():
         
         # ارسال پیامک به همه گیرندگان
         sent_count = 0
-        SEND_SMS = os.getenv('SEND_SMS', '').lower() == 'true'
-        print('SEND_SMS : ',SEND_SMS)
+
         if  SEND_SMS:
             for sms_rec in sms_receivers:
                 phone = sms_rec.persons.phone

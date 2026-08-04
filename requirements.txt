@@ -14,5 +14,4 @@ requests
 pyodbc
 django-apscheduler
 smsir-python
-phonenumber_field
-django-phonenumber-field
+
