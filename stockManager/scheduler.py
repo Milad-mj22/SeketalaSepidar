@@ -65,8 +65,8 @@ def start_scheduler():
         # ============================================
         else:
             # تنظیم زمان به وقت ایران
-            HOUR = 18   # ساعت ۱۸
-            MINUTE = 41  # دقیقه ۰
+            HOUR = 19   # ساعت ۱۸
+            MINUTE = 5  # دقیقه ۰
             
             print(f" Setting daily job at {HOUR:02d}:{MINUTE:02d} (Iran time)")
             logger.info(f" Setting daily job at {HOUR:02d}:{MINUTE:02d} (Iran time)")

@@ -329,7 +329,6 @@ def send_adjustment_sms(user, count):
 
 # stockManager/views.py
 
-@login_required
 def low_stock_report_page(request):
     """
     صفحه گزارش مواد با موجودی کمتر از حداقل
