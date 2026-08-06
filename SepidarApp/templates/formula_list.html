@@ -982,16 +982,12 @@
     {% with product_code=formula.product_code|stringformat:'s' %}
         {% with code_exists=product_code|exists_in_list:needed_material_codes %}
             <!-- لاگ کردن product_code -->
-            {{ product_code|log_debug:'product_code' }}
             <!-- لاگ کردن code_exists -->
-            {{ code_exists|log_debug:'code_exists' }}
             
             {% if code_exists %}
                 {% with quantity=needed_materials|get_quantity:product_code %}
                     <!-- لاگ کردن quantity -->
-                    {{ quantity|log_debug:'quantity' }}
                     {% with formatted_quantity=quantity|floatformat:2 %}
-                        {{ formatted_quantity|log_debug:'formatted_quantity' }}
                         <input type="number" 
                             id="value_{{ formula.id }}" 
                             class="formula-value-input has-value"

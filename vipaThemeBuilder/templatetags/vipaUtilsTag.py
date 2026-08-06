@@ -45,7 +45,7 @@ def get_quantity(list, key):
         for dict in list:
             if dict['code'] ==key:
                 value = dict.get('quantity', {})
-                print(f'code { dict['code']} , value : {value}')
+                # print(f'code { dict['code']} , value : {value}')
                 return value
 
 

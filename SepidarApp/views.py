@@ -1020,8 +1020,13 @@ def submit_materials(request):
         
         for material in materials:
             try:
-                code =  material.get('code', '')
-                if code =='' or code<=0:
+                code =  material.get('code', 0)
+                try:
+                    code = int(code)
+                    if code =='' or code<=0:
+                        continue
+                except Exception as e:
+                    print(f'Error in convert code to int Code : {code} , ',e)
                     continue
 
                 if material.get('adjusted_quantity', 0) > 0 or material.get('has_code_changed', False):
