@@ -1010,7 +1010,7 @@ def submit_materials(request):
         date = data.get('date')
         
         if not materials:
-            return redirect(f"{reverse('formula_list')}?error={urllib.parse.quote('هیچ داده‌ای برای ثبت وجود ندارد')}")
+            return redirect(f"{reverse('sepidarApp:formula_list')}?error={urllib.parse.quote('هیچ داده‌ای برای ثبت وجود ندارد')}")
 
         
 
@@ -1020,6 +1020,10 @@ def submit_materials(request):
         
         for material in materials:
             try:
+                code =  material.get('code', '')
+                if code =='' or code<=0:
+                    continue
+
                 if material.get('adjusted_quantity', 0) > 0 or material.get('has_code_changed', False):
                     item_data = {
                         'code': material.get('code', ''),
@@ -1043,13 +1047,13 @@ def submit_materials(request):
             request.session['materials_count'] = saved_count
             
             # هدایت به صفحه فرمول
-            return redirect('formula_list')
+            return redirect('sepidarApp:formula_list')
         else:
             error_msg = 'هیچ ماده‌ای با مقدار مثبت یا کد تغییر یافته وجود ندارد'
-            return redirect(f"{reverse('formula_list')}?error={urllib.parse.quote(error_msg)}")
+            return redirect(f"{reverse('sepidarApp:formula_list')}?error={urllib.parse.quote(error_msg)}")
             
     except json.JSONDecodeError:
-        return redirect(f"{reverse('formula_list')}?error={urllib.parse.quote('داده‌های ارسالی معتبر نیستند')}")
+        return redirect(f"{reverse('sepidarApp:formula_list')}?error={urllib.parse.quote('داده‌های ارسالی معتبر نیستند')}")
     except Exception as e:
         logger.error(f"Error in submit_materials: {e}")
-        return redirect(f"{reverse('formula_list')}?error={urllib.parse.quote(str(e))}")
+        return redirect(f"{reverse('sepidarApp:formula_list')}?error={urllib.parse.quote(str(e))}")
