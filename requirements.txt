@@ -2,7 +2,6 @@
 channels
 pillow
 django-colorfield
-ultralytics
 fpdf
 python-docx
 jdatetime
@@ -14,4 +13,4 @@ requests
 pyodbc
 django-apscheduler
 smsir-python
-
+pytz

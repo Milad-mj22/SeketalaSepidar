@@ -327,7 +327,7 @@ def submit_all_formula_values(request):
             }, status=400)
 
         georgian_date = None
-        if selected_date is not None:
+        if selected_date is not None and selected_date !='':
             georgian_date = persian_to_gregorian(selected_date)
       
 

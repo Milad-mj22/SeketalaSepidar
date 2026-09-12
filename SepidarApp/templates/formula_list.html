@@ -9,6 +9,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>لیست فرمول‌ها</title>
     <meta name="csrf-token" content="{{ csrf_token }}">
+    <link rel="stylesheet" href="{% static 'css/persian.datepicker.css' %}">
+
     <style>
         /* ===== CSS Variables ===== */
         :root {
@@ -45,6 +47,28 @@
             padding: 20px;
             direction: rtl;
         }
+
+
+        .persian-datepicker-holder {
+            z-index: 99999 !important;
+        }
+        
+        .persian-datepicker-holder .persian-datepicker {
+            border-radius: 12px !important;
+            box-shadow: var(--shadow-xl) !important;
+            border: 1px solid var(--gray-200) !important;
+        }
+        
+        .persian-datepicker-holder .persian-datepicker .datepicker-header {
+            background: var(--primary) !important;
+            border-radius: 12px 12px 0 0 !important;
+        }
+        
+        .persian-datepicker-holder .persian-datepicker .datepicker-header .datepicker-title {
+            color: white !important;
+        }
+
+
         
         .container {
             max-width: 1440px;
@@ -920,7 +944,21 @@
 
 
 
+            <div class="date-section">
+                <label>
+                    <i class="fas fa-calendar-alt" style="color: var(--primary);"></i>
+                    تاریخ :
+                </label>
+                <input type="text" id="datepicker" placeholder="تاریخ را انتخاب کنید">
 
+                <button class="btn btn-info" onclick="setToday()">
+                    <i class="fas fa-calendar-day"></i> امروز
+                </button>
+                <span id="selectedDateInfo" style="font-size: 12px; color: var(--gray-400);">
+                    <i class="fas fa-info-circle"></i>
+                    تاریخ را انتخاب کنید
+                </span>
+            </div>
 
 
 
@@ -1224,6 +1262,7 @@
         // ========================================
         // GET SELECTED DATE FROM BACKEND
         // ========================================
+
 
 
 
@@ -1683,6 +1722,7 @@ function getAllValues() {
 function sendToServer(values) {
     const submitBtn = document.getElementById('submit-all-btn');
     
+
     // ========================================
     // CHECK IF RELATION IS SELECTED
     // ========================================
@@ -1759,12 +1799,35 @@ function sendToServer(values) {
 
 
     const selectedDateFromBackend = "{{ selected_date|default:'' }}";
+
+    const backendDate = "{{ selected_date|default:'' }}";
+    const localStorageDate = localStorage.getItem('selected_date');
+    const userSelectedDate = window.selectedDate;
+
+
     console.log('Selected date from backend:', selectedDateFromBackend);
 
-    const selectedDate = selectedDateFromBackend || localStorage.getItem('selected_date') || '';
+
+    let selectedDate = userSelectedDate || localStorageDate || backendDate || '';
+
+    console.log('📅 تاریخ‌های موجود:');
+    console.log('  - Backend:', backendDate);
+    console.log('  - LocalStorage:', localStorageDate);
+    console.log('  - User Selected:', userSelectedDate);
+    console.log('  - Final Selected:', selectedDate);
 
 
-
+    // اگر هیچ تاریخی انتخاب نشده، خطا بده
+    if (!selectedDate) {
+        Swal.fire({
+            title: '⚠️ خطا',
+            text: 'لطفاً تاریخ را انتخاب کنید',
+            icon: 'warning',
+            confirmButtonText: 'باشه',
+            confirmButtonColor: '#f59e0b'
+        });
+        return;
+    }
 
     const payload = {
         formulas: values.map(item => ({
@@ -1784,7 +1847,7 @@ function sendToServer(values) {
         })),
         relation_id: relationId,
         relation_name: relationName,
-        selectedDate : selectedDate
+        selectedDate : selectedDate  
     };
 
     console.log('Sending payload with relation:', payload);
@@ -2284,8 +2347,11 @@ function showErrorDetails(data) {
                 });
             });
             updateSummary();
+            
+            // پاک کردن تاریخ از localStorage (اختیاری - اگر می‌خواهید تاریخ بماند، این خط را حذف کنید)
+            // localStorage.removeItem('selected_date');
+            // window.selectedDate = null;
         }
-
         function clearAllValues() {
             Swal.fire({
                 title: '⚠️ تایید پاک کردن',
@@ -2524,4 +2590,309 @@ function resetManualWithdrawals(formulaId) {
 
     </script>
 </body>
+{% endblock %}
+
+
+{% block extra_js %}
+
+<!-- Persian Date and Datepicker (Local versions) -->
+<script src="{% static 'js/persian.date.js' %}"></script>
+<script src="{% static 'js/persian.datepicker.js' %}"></script>
+
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+// ========================================
+// PERSIAN DATEPICKER - FIXED VERSION
+// ========================================
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof jQuery === 'undefined') {
+        console.error('❌ jQuery not loaded!');
+        return;
+    }
+    
+    var datepickerElement = document.getElementById('datepicker');
+    if (!datepickerElement) {
+        console.error('❌ Datepicker element not found!');
+        return;
+    }
+    
+    // دریافت تاریخ از بک‌اند
+    const backendDate = "{{ selected_date|default:'' }}";
+    console.log('📅 تاریخ دریافتی از بک‌اند:', backendDate);
+    
+    // ========================================
+    // تابع کمکی برای فرمت کردن تاریخ
+    // ========================================
+    function formatPersianDate(dateObj) {
+        // اگر dateObj از نوع persianDate باشد
+        if (dateObj && typeof dateObj.format === 'function') {
+            try {
+                return dateObj.format('YYYY/MM/DD');
+            } catch(e) {
+                console.warn('format failed, trying alternative');
+            }
+        }
+        
+        // اگر dateObj یک آبجکت با year/month/day باشد
+        if (dateObj && typeof dateObj === 'object') {
+            const y = dateObj.year || dateObj.getFullYear?.() || '';
+            const m = dateObj.month || (dateObj.getMonth?.() + 1) || '';
+            const d = dateObj.date || dateObj.getDate?.() || '';
+            if (y && m && d) {
+                return `${y}/${String(m).padStart(2, '0')}/${String(d).padStart(2, '0')}`;
+            }
+        }
+        
+        // اگر رشته باشد
+        if (typeof dateObj === 'string') {
+            return dateObj;
+        }
+        
+        return '';
+    }
+    
+    // ========================================
+    // تابع کمکی برای تبدیل رشته تاریخ به آبجکت
+    // ========================================
+    function parsePersianDate(dateStr) {
+        if (!dateStr) return null;
+        
+        try {
+            // استفاده از persianDate برای parse
+            if (typeof persianDate !== 'undefined') {
+                // روش 1: استفاده از parse
+                if (persianDate.prototype.parse) {
+                    try {
+                        return new persianDate().parse(dateStr);
+                    } catch(e) {}
+                }
+                
+                // روش 2: استفاده از unix timestamp
+                const parts = dateStr.split('/');
+                if (parts.length === 3) {
+                    const y = parseInt(parts[0]);
+                    const m = parseInt(parts[1]);
+                    const d = parseInt(parts[2]);
+                    
+                    // استفاده از تبدیل تاریخ شمسی به میلادی
+                    const gregorian = jalaliToGregorian(y, m, d);
+                    if (gregorian) {
+                        return new persianDate(new Date(gregorian.year, gregorian.month - 1, gregorian.day));
+                    }
+                }
+            }
+        } catch(e) {
+            console.error('Error parsing date:', e);
+        }
+        
+        return null;
+    }
+    
+    // ========================================
+    // تبدیل تاریخ شمسی به میلادی (برای parse)
+    // ========================================
+    function jalaliToGregorian(jy, jm, jd) {
+        jy += 1595;
+        let days = -355668 + (365 * jy) + (~~(jy / 33) * 8) + ~~(((jy % 33) + 3) / 4) + jd + ((jm < 7) ? (jm - 1) * 31 : ((jm - 7) * 30) + 186);
+        let gy = 400 * ~~(days / 146097);
+        days %= 146097;
+        if (days > 36524) {
+            gy += 100 * ~~(--days / 36524);
+            days %= 36524;
+            if (days >= 365) days++;
+        }
+        gy += 4 * ~~(days / 1461);
+        days %= 1461;
+        if (days > 365) {
+            gy += ~~((days - 1) / 365);
+            days = (days - 1) % 365;
+        }
+        let gd = days + 1;
+        const sal_a = [0, 31, (gy % 4 === 0 && gy % 100 !== 0) || (gy % 400 === 0) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+        let gm;
+        for (gm = 0; gm < 13 && gd > sal_a[gm]; gm++) gd -= sal_a[gm];
+        return { year: gy, month: gm, day: gd };
+    }
+    
+    // ========================================
+    // مقداردهی اولیه تقویم
+    // ========================================
+    try {
+        // اگر تاریخ بک‌اند داریم، آن را به فرمت درست تبدیل کن
+        let initialDate = null;
+        if (backendDate) {
+            const parts = backendDate.split('/');
+            if (parts.length === 3) {
+                // تبدیل به فرمت استاندارد
+                initialDate = {
+                    year: parseInt(parts[0]),
+                    month: parseInt(parts[1]),
+                    day: parseInt(parts[2])
+                };
+            }
+        }
+        
+        // تنظیم مقدار اولیه input
+        if (backendDate) {
+            jQuery('#datepicker').val(backendDate);
+        }
+        
+        // مقداردهی اولیه تقویم
+        jQuery("#datepicker").persianDatepicker({
+            format: 'YYYY/MM/DD',
+            autoClose: true,
+            initialValue: false, // ما خودمان مقدار را set می‌کنیم
+            onSelect: function(unixOrDate) {
+                // این تابع ممکن است unix timestamp یا آبجکت تاریخ برگرداند
+                let formattedDate = '';
+                
+                console.log('📅 onSelect دریافت شد:', unixOrDate, 'نوع:', typeof unixOrDate);
+                
+                // حالت 1: اگر unix timestamp باشد (عدد)
+                if (typeof unixOrDate === 'number') {
+                    try {
+                        const pd = new persianDate(unixOrDate);
+                        formattedDate = pd.format('YYYY/MM/DD');
+                    } catch(e) {
+                        console.error('Error converting unix:', e);
+                    }
+                }
+                // حالت 2: اگر آبجکت persianDate باشد
+                else if (unixOrDate && typeof unixOrDate.format === 'function') {
+                    try {
+                        formattedDate = unixOrDate.format('YYYY/MM/DD');
+                    } catch(e) {
+                        console.error('Error using format:', e);
+                    }
+                }
+                // حالت 3: اگر آبجکت با year/month/day باشد
+                else if (unixOrDate && typeof unixOrDate === 'object') {
+                    const y = unixOrDate.year;
+                    const m = unixOrDate.month;
+                    const d = unixOrDate.day || unixOrDate.date;
+                    if (y && m && d) {
+                        formattedDate = `${y}/${String(m).padStart(2, '0')}/${String(d).padStart(2, '0')}`;
+                    }
+                }
+                // حالت 4: اگر رشته باشد
+                else if (typeof unixOrDate === 'string') {
+                    formattedDate = unixOrDate;
+                }
+                
+                if (!formattedDate) {
+                    console.warn('⚠️ نتوانستم تاریخ را فرمت کنم');
+                    return;
+                }
+                
+                // به‌روزرسانی نمایش
+                document.getElementById('selectedDateInfo').innerHTML = `
+                    <i class="fas fa-check-circle" style="color: var(--success);"></i>
+                    تاریخ انتخاب شده: <strong>${formattedDate}</strong>
+                `;
+                console.log('✅ تاریخ انتخاب شد:', formattedDate);
+                
+                // ذخیره در متغیر global و localStorage
+                window.selectedDate = formattedDate;
+                localStorage.setItem('selected_date', formattedDate);
+            }
+        });
+        
+        // اگر تاریخ بک‌اند داریم، آن را در تقویم set کن
+        if (initialDate) {
+            try {
+                // روش 1: استفاده از setDate با آبجکت
+                jQuery('#datepicker').persianDatepicker('setDate', initialDate);
+                console.log('✅ تاریخ بک‌اند set شد (روش آبجکت):', backendDate);
+            } catch(e) {
+                console.warn('setDate with object failed, trying alternative:', e);
+                // روش 2: فقط input را پر کن
+                jQuery('#datepicker').val(backendDate);
+            }
+            
+            // ذخیره در متغیر global و localStorage
+            window.selectedDate = backendDate;
+            localStorage.setItem('selected_date', backendDate);
+            
+            // به‌روزرسانی نمایش
+            document.getElementById('selectedDateInfo').innerHTML = `
+                <i class="fas fa-check-circle" style="color: var(--success);"></i>
+                تاریخ انتخاب شده: <strong>${backendDate}</strong>
+            `;
+            
+            console.log('✅ تاریخ بک‌اند در تقویم نمایش داده شد:', backendDate);
+        } else {
+            // اگر تاریخ از بک نداریم، از localStorage بخوان
+            const savedDate = localStorage.getItem('selected_date');
+            if (savedDate) {
+                jQuery('#datepicker').val(savedDate);
+                window.selectedDate = savedDate;
+                document.getElementById('selectedDateInfo').innerHTML = `
+                    <i class="fas fa-check-circle" style="color: var(--success);"></i>
+                    تاریخ انتخاب شده: <strong>${savedDate}</strong>
+                `;
+                console.log('✅ تاریخ از localStorage بازیابی شد:', savedDate);
+            }
+        }
+        
+        console.log('✅ Persian Datepicker initialized successfully');
+    } catch (error) {
+        console.error('❌ Error initializing datepicker:', error);
+    }
+});
+
+// ========================================
+// SET TODAY - FIXED
+// ========================================
+function setToday() {
+    try {
+        if (typeof persianDate === 'undefined') {
+            Swal.fire({
+                title: '❌ خطا',
+                text: 'کتابخانه تاریخ شمسی بارگذاری نشده است',
+                icon: 'error',
+                confirmButtonText: 'باشه'
+            });
+            return;
+        }
+        
+        // ایجاد آبجکت تاریخ امروز
+        const today = new persianDate();
+        const formattedDate = today.format('YYYY/MM/DD');
+        
+        console.log('📅 امروز:', formattedDate);
+        
+        // تنظیم مقدار input
+        jQuery('#datepicker').val(formattedDate);
+        
+        // تلاش برای set در تقویم
+        try {
+            jQuery('#datepicker').persianDatepicker('setDate', today);
+        } catch(e) {
+            console.warn('setDate failed, but input value is set:', e);
+        }
+        
+        // ذخیره در متغیر global و localStorage
+        window.selectedDate = formattedDate;
+        localStorage.setItem('selected_date', formattedDate);
+        
+        document.getElementById('selectedDateInfo').innerHTML = `
+            <i class="fas fa-check-circle" style="color: var(--success);"></i>
+            تاریخ انتخاب شده: <strong>${formattedDate}</strong>
+        `;
+        
+        console.log('✅ تاریخ امروز تنظیم شد:', formattedDate);
+    } catch (error) {
+        console.error('❌ Error in setToday:', error);
+        Swal.fire({
+            title: '❌ خطا',
+            text: 'خطا در تنظیم تاریخ امروز: ' + error.message,
+            icon: 'error',
+            confirmButtonText: 'باشه'
+        });
+    }
+}
+</script>
+
 {% endblock %}

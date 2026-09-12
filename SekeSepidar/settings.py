@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 import os
 from pathlib import Path
+import socket
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -198,10 +200,16 @@ PUBLIC_KEY_FILE = 'public.pem'
 # روش اول: استفاده از Connection String کامل
 
 
+pc_name = socket.gethostname()
+print('PC Name : ',pc_name)
 # روش دوم: استفاده از تنظیمات جداگانه (اختیاری)
 SQL_USE_CONNECTION_STRING = False  # اگر True باشد از string بالا استفاده می‌کند
-SQL_SERVER = 'DESKTOP-JKDSDCN\SEPIDAR'
-SQL_SERVER = "DESKTOP-OCIN559"
+if 'DESKTOP' in pc_name:
+    SQL_SERVER = pc_name
+else:
+    SQL_SERVER = 'DESKTOP-JKDSDCN\SEPIDAR'
+    SQL_SERVER = "DESKTOP-OCIN559"
+
 # SQL_SERVER = "DESKTOP-HDSP3L0"
 SQL_DATABASE = 'Sepidar01'
 SQL_DRIVER = '{ODBC Driver 17 for SQL Server}'
