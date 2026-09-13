@@ -848,17 +848,27 @@ def get_materials(request):
     """
     try:
         # Get date from request
-        date = request.GET.get('date')
-        if not date:
+        start_date = request.GET.get('start_date')
+        if not start_date:
             return JsonResponse({
                 'success': False,
-                'error': 'تاریخ الزامی است'
+                'error': 'تاریخ شروع الزامی است'
             })
+
+        end_date = request.GET.get('end_date')
+        if not end_date:
+            return JsonResponse({
+                'success': False,
+                'error': 'تاریخ پایان الزامی است'
+            })
+
         
         # Convert Persian date to Gregorian
         try:
-            gregorian_date = persian_to_gregorian(date)
-            logger.info(f"Converted Persian date '{date}' to Gregorian '{gregorian_date}'")
+            start_gregorian_date = persian_to_gregorian(start_date)
+            logger.info(f"Converted Persian date '{start_date}' to Gregorian '{start_gregorian_date}'")
+            end_gregorian_date = persian_to_gregorian(end_date)
+            logger.info(f"Converted Persian date '{end_date}' to Gregorian '{end_gregorian_date}'")
         except ValueError as e:
             return JsonResponse({
                 'success': False,
@@ -872,7 +882,7 @@ def get_materials(request):
             })
         
         # Call external API with Gregorian date
-        api_url = f"https://seketalamanager.ir/data_analysis/api/get-date-items/?date={gregorian_date}"
+        api_url = f"http://127.0.0.1:8900/data_analysis/api/get-date-items/?start_date={start_gregorian_date}&end_date={end_gregorian_date}"
         logger.info(f"Calling external API: {api_url}")
         
         # Use the alias http_requests instead of requests
@@ -901,8 +911,8 @@ def get_materials(request):
                 return JsonResponse({
                     'success': True,
                     'data': external_items,  # Send as array
-                    'date': date,
-                    'gregorian_date': gregorian_date,
+                    'date': start_date,
+                    'gregorian_date': start_gregorian_date,
                     'total_items': len(materials)
                 })
             else:
@@ -1007,7 +1017,8 @@ def submit_materials(request):
     try:
         data = json.loads(request.body)
         materials = data.get('materials', [])
-        date = data.get('date')
+        date = data.get('start_date')
+        end_date = data.get('end_date')
         
         if not materials:
             return redirect(f"{reverse('sepidarApp:formula_list')}?error={urllib.parse.quote('هیچ داده‌ای برای ثبت وجود ندارد')}")

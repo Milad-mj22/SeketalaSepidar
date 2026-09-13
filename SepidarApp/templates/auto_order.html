@@ -570,23 +570,30 @@
                 </div>
             </div>
             
-            <div class="date-section">
-                <label>
-                    <i class="fas fa-calendar-alt" style="color: var(--primary);"></i>
-                    تاریخ تولید:
-                </label>
-                <input type="text" id="datepicker" placeholder="تاریخ را انتخاب کنید">
-                <button class="btn btn-primary" onclick="fetchMaterials()">
-                    <i class="fas fa-search"></i> دریافت مواد
-                </button>
-                <button class="btn btn-info" onclick="setToday()">
-                    <i class="fas fa-calendar-day"></i> امروز
-                </button>
-                <span id="selectedDateInfo" style="font-size: 12px; color: var(--gray-400);">
-                    <i class="fas fa-info-circle"></i>
-                    تاریخ را انتخاب کنید
-                </span>
-            </div>
+<div class="date-section">
+    <label>
+        <i class="fas fa-calendar-alt" style="color: var(--primary);"></i>
+        از تاریخ:
+    </label>
+    <input type="text" id="datepicker_start" placeholder="تاریخ شروع">
+    
+    <label>
+        <i class="fas fa-calendar-alt" style="color: var(--primary);"></i>
+        تا تاریخ:
+    </label>
+    <input type="text" id="datepicker_end" placeholder="تاریخ پایان">
+    
+    <button class="btn btn-primary" onclick="fetchMaterials()">
+        <i class="fas fa-search"></i> دریافت مواد
+    </button>
+    <button class="btn btn-info" onclick="setToday()">
+        <i class="fas fa-calendar-day"></i> امروز
+    </button>
+    <span id="selectedDateInfo" style="font-size: 12px; color: var(--gray-400);">
+        <i class="fas fa-info-circle"></i>
+        تاریخ شروع و پایان را انتخاب کنید
+    </span>
+</div>
         </div>
 
         <div id="resultsContainer">
@@ -681,46 +688,63 @@
 
 <script>
     // Wait for document to be fully ready
-    document.addEventListener('DOMContentLoaded', function() {
-        // Check if jQuery is available (loaded by base template)
-        if (typeof jQuery === 'undefined') {
-            console.error('❌ jQuery not loaded!');
-            return;
-        }
-        
-        console.log('✅ jQuery loaded:', jQuery.fn.jquery);
-        
-        // Check if datepicker elements exist
-        var datepickerElement = document.getElementById('datepicker');
-        if (!datepickerElement) {
-            console.error('❌ Datepicker element not found!');
-            return;
-        }
-        
-        // Initialize Persian Datepicker using jQuery
-        try {
-            jQuery("#datepicker").persianDatepicker({
-                format: 'YYYY/MM/DD',
-                autoClose: true,
-                initialValue: false,
-                onSelect: function(date) {
-                    var formattedDate = date.format('YYYY/MM/DD');
-                    document.getElementById('selectedDateInfo').innerHTML = `
-                        <i class="fas fa-check-circle" style="color: var(--success);"></i>
-                        تاریخ انتخاب شده: <strong>${formattedDate}</strong>
-                    `;
-                    console.log('✅ تاریخ انتخاب شد:', formattedDate);
-                    
-                    // Store selected date globally
-                    window.selectedDate = date;
-                }
-            });
-            console.log('✅ Persian Datepicker initialized successfully');
-        } catch (error) {
-            console.error('❌ Error initializing datepicker:', error);
-        }
-    });
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof jQuery === 'undefined') {
+        console.error('❌ jQuery not loaded!');
+        return;
+    }
+    
+    console.log('✅ jQuery loaded:', jQuery.fn.jquery);
+    
+    var datepickerStart = document.getElementById('datepicker_start');
+    var datepickerEnd = document.getElementById('datepicker_end');
+    
+    if (!datepickerStart || !datepickerEnd) {
+        console.error('❌ Datepicker elements not found!');
+        return;
+    }
+    
+    // Initialize start datepicker
+    try {
+jQuery("#datepicker_start").persianDatepicker({
+    format: 'YYYY/MM/DD',
+    autoClose: true,
+    initialValue: false,
+    onSelect: function(date) {
+        // دریافت مقدار از input به جای date.format
+        var formattedDate = jQuery('#datepicker_start').val();
+        window.selectedStartDate = formattedDate;
+        updateDateInfo();
+        console.log('✅ تاریخ شروع انتخاب شد:', formattedDate);
+    }
+});
 
+jQuery("#datepicker_end").persianDatepicker({
+    format: 'YYYY/MM/DD',
+    autoClose: true,
+    initialValue: false,
+    onSelect: function(date) {
+        var formattedDate = jQuery('#datepicker_end').val();
+        window.selectedEndDate = formattedDate;
+        updateDateInfo();
+        console.log('✅ تاریخ پایان انتخاب شد:', formattedDate);
+    }
+});
+        console.log('✅ Persian Datepickers initialized successfully');
+    } catch (error) {
+        console.error('❌ Error initializing datepicker:', error);
+    }
+});
+
+// تابع کمکی برای نمایش اطلاعات تاریخ
+function updateDateInfo() {
+    var startVal = jQuery('#datepicker_start').val() || '---';
+    var endVal = jQuery('#datepicker_end').val() || '---';
+    document.getElementById('selectedDateInfo').innerHTML = `
+        <i class="fas fa-check-circle" style="color: var(--success);"></i>
+        از: <strong>${startVal}</strong> تا: <strong>${endVal}</strong>
+    `;
+}
     // ========================================
     // CSRF TOKEN
     // ========================================
@@ -736,127 +760,134 @@
     // ========================================
     // SET TODAY
     // ========================================
-    function setToday() {
-        try {
-            if (typeof persianDate === 'undefined') {
-                console.error('❌ persianDate not available');
-                Swal.fire({
-                    title: '❌ خطا',
-                    text: 'کتابخانه تاریخ شمسی بارگذاری نشده است',
-                    icon: 'error',
-                    confirmButtonText: 'باشه'
-                });
-                return;
-            }
-            
-            const today = new persianDate();
-            const formattedDate = today.format('YYYY/MM/DD');
-            
-            // Set input value using jQuery (loaded from base)
-            jQuery('#datepicker').val(formattedDate);
-            
-            // Set date in datepicker
-            jQuery('#datepicker').persianDatepicker('setDate', today);
-            
-            window.selectedDate = today;
-            
-            document.getElementById('selectedDateInfo').innerHTML = `
-                <i class="fas fa-check-circle" style="color: var(--success);"></i>
-                تاریخ انتخاب شده: <strong>${formattedDate}</strong>
-            `;
-            
-            console.log('✅ تاریخ امروز تنظیم شد:', formattedDate);
-            
-            // Automatically fetch materials
-            fetchMaterials();
-        } catch (error) {
-            console.error('❌ Error in setToday:', error);
+function setToday() {
+    try {
+        if (typeof persianDate === 'undefined') {
             Swal.fire({
                 title: '❌ خطا',
-                text: 'خطا در تنظیم تاریخ امروز: ' + error.message,
+                text: 'کتابخانه تاریخ شمسی بارگذاری نشده است',
                 icon: 'error',
                 confirmButtonText: 'باشه'
             });
+            return;
         }
+        
+        const today = new persianDate();
+        const formattedDate = today.format('YYYY/MM/DD');
+        
+        jQuery('#datepicker_start').val(formattedDate);
+        jQuery('#datepicker_end').val(formattedDate);
+        
+        jQuery('#datepicker_start').persianDatepicker('setDate', today);
+        jQuery('#datepicker_end').persianDatepicker('setDate', today);
+        
+        window.selectedStartDate = today;
+        window.selectedEndDate = today;
+        
+        updateDateInfo();
+        
+        console.log('✅ تاریخ امروز تنظیم شد:', formattedDate);
+        fetchMaterials();
+    } catch (error) {
+        console.error('❌ Error in setToday:', error);
+        Swal.fire({
+            title: '❌ خطا',
+            text: 'خطا در تنظیم تاریخ امروز: ' + error.message,
+            icon: 'error',
+            confirmButtonText: 'باشه'
+        });
     }
-
+}
     // ========================================
     // FETCH MATERIALS
     // ========================================
-    function fetchMaterials() {
-        var dateValue = jQuery('#datepicker').val();
-        if (!dateValue) {
-            Swal.fire({
-                title: '⚠️ خطا',
-                text: 'لطفاً ابتدا یک تاریخ انتخاب کنید',
-                icon: 'warning',
-                confirmButtonText: 'باشه',
-                confirmButtonColor: '#f59e0b'
-            });
-            return;
-        }
+function fetchMaterials() {
+    var startDate = jQuery('#datepicker_start').val();
+    var endDate = jQuery('#datepicker_end').val();
+    
+    if (!startDate || !endDate) {
+        Swal.fire({
+            title: '⚠️ خطا',
+            text: 'لطفاً تاریخ شروع و پایان را انتخاب کنید',
+            icon: 'warning',
+            confirmButtonText: 'باشه',
+            confirmButtonColor: '#f59e0b'
+        });
+        return;
+    }
+    
+    // بررسی اینکه تاریخ شروع از پایان بزرگتر نباشد
+    if (startDate > endDate) {
+        Swal.fire({
+            title: '⚠️ خطا',
+            text: 'تاریخ شروع نمی‌تواند بعد از تاریخ پایان باشد',
+            icon: 'warning',
+            confirmButtonText: 'باشه',
+            confirmButtonColor: '#f59e0b'
+        });
+        return;
+    }
 
-        console.log('📡 دریافت مواد برای تاریخ:', dateValue);
+    console.log('📡 دریافت مواد از تاریخ:', startDate, 'تا:', endDate);
+    
+    document.getElementById('loadingOverlay').classList.add('active');
+    document.getElementById('tableContainer').style.display = 'none';
+    document.getElementById('emptyState').style.display = 'none';
+    document.getElementById('floatingSummary').style.display = 'none';
+    
+    fetch(`/api/get_materials/?start_date=${encodeURIComponent(startDate)}&end_date=${encodeURIComponent(endDate)}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCSRFToken()
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('loadingOverlay').classList.remove('active');
         
-        document.getElementById('loadingOverlay').classList.add('active');
-        document.getElementById('tableContainer').style.display = 'none';
-        document.getElementById('emptyState').style.display = 'none';
-        document.getElementById('floatingSummary').style.display = 'none';
-        
-        fetch(`/api/get_materials/?date=${encodeURIComponent(dateValue)}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': getCSRFToken()
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('loadingOverlay').classList.remove('active');
-            
-            if (data.success) {
-                if (data.data && data.data.length > 0) {
-                    materialsData = data.data;
-                    renderTable(materialsData);
-                    updateSummary(materialsData);
-                    document.getElementById('tableContainer').style.display = 'block';
-                    document.getElementById('floatingSummary').style.display = 'flex';
-                    document.getElementById('emptyState').style.display = 'none';
-                } else {
-                    document.getElementById('emptyState').style.display = 'block';
-                    document.getElementById('emptyState').querySelector('h2').textContent = '📭 داده‌ای یافت نشد';
-                    document.getElementById('emptyState').querySelector('p').textContent = `برای تاریخ ${dateValue} هیچ ماده‌ای یافت نشد.`;
-                    document.getElementById('tableContainer').style.display = 'none';
-                    document.getElementById('floatingSummary').style.display = 'none';
-                }
+        if (data.success) {
+            if (data.data && data.data.length > 0) {
+                materialsData = data.data;
+                renderTable(materialsData);
+                updateSummary(materialsData);
+                document.getElementById('tableContainer').style.display = 'block';
+                document.getElementById('floatingSummary').style.display = 'flex';
+                document.getElementById('emptyState').style.display = 'none';
             } else {
-                Swal.fire({
-                    title: '❌ خطا',
-                    text: data.error || 'خطا در دریافت اطلاعات',
-                    icon: 'error',
-                    confirmButtonText: 'باشه',
-                    confirmButtonColor: '#ef4444'
-                });
                 document.getElementById('emptyState').style.display = 'block';
-                document.getElementById('emptyState').querySelector('h2').textContent = '❌ خطا در دریافت';
-                document.getElementById('emptyState').querySelector('p').textContent = data.error || 'لطفاً دوباره تلاش کنید.';
+                document.getElementById('emptyState').querySelector('h2').textContent = '📭 داده‌ای یافت نشد';
+                document.getElementById('emptyState').querySelector('p').textContent = `برای بازه ${startDate} تا ${endDate} هیچ ماده‌ای یافت نشد.`;
+                document.getElementById('tableContainer').style.display = 'none';
+                document.getElementById('floatingSummary').style.display = 'none';
             }
-        })
-        .catch(error => {
-            document.getElementById('loadingOverlay').classList.remove('active');
+        } else {
             Swal.fire({
                 title: '❌ خطا',
-                text: 'خطا در ارتباط با سرور: ' + error.message,
+                text: data.error || 'خطا در دریافت اطلاعات',
                 icon: 'error',
                 confirmButtonText: 'باشه',
                 confirmButtonColor: '#ef4444'
             });
             document.getElementById('emptyState').style.display = 'block';
-            document.getElementById('emptyState').querySelector('h2').textContent = '❌ خطا';
-            document.getElementById('emptyState').querySelector('p').textContent = 'لطفاً اتصال اینترنت خود را بررسی کنید.';
+            document.getElementById('emptyState').querySelector('h2').textContent = '❌ خطا در دریافت';
+            document.getElementById('emptyState').querySelector('p').textContent = data.error || 'لطفاً دوباره تلاش کنید.';
+        }
+    })
+    .catch(error => {
+        document.getElementById('loadingOverlay').classList.remove('active');
+        Swal.fire({
+            title: '❌ خطا',
+            text: 'خطا در ارتباط با سرور: ' + error.message,
+            icon: 'error',
+            confirmButtonText: 'باشه',
+            confirmButtonColor: '#ef4444'
         });
-    }
-
+        document.getElementById('emptyState').style.display = 'block';
+        document.getElementById('emptyState').querySelector('h2').textContent = '❌ خطا';
+        document.getElementById('emptyState').querySelector('p').textContent = 'لطفاً اتصال اینترنت خود را بررسی کنید.';
+    });
+}
     // ========================================
     // RENDER TABLE - FULL EDITABILITY VERSION
     // ========================================
@@ -1099,7 +1130,8 @@ function submitMaterials() {
                 original_quantity: originalQty,
                 adjusted_quantity: val,
                 available_quantity: parseFloat(material.available_quantity) || 0,
-                date: document.getElementById('datepicker').value,
+                start_date: document.getElementById('datepicker_start').value,
+                end_date: document.getElementById('datepicker_end').value,
                 has_code_changed: newCode !== originalCode,
                 has_quantity_changed: val !== originalQty
             });
@@ -1197,7 +1229,8 @@ function submitMaterials() {
                 ${tableHtml}
                 <div style="margin-top: 12px; padding: 10px; background: var(--gray-50); border-radius: 6px; font-size: 13px;">
                     <i class="fas fa-calendar" style="color: var(--primary);"></i>
-                    تاریخ: <strong>${document.getElementById('datepicker').value}</strong>
+                    از تاریخ: <strong>${document.getElementById('datepicker_start').value}</strong>
+                    تا تاریخ: <strong>${document.getElementById('datepicker_end').value}</strong>
                 </div>
             </div>
         `,
@@ -1225,7 +1258,8 @@ function sendToServer(data) {
     submitBtn.classList.add('btn-loading');
     
     const payload = {
-        date: document.getElementById('datepicker').value,
+        start_date: document.getElementById('datepicker_start').value,
+        end_date: document.getElementById('datepicker_end').value,
         materials: data,
         total_count: data.length,
         code_changes_count: data.filter(item => item.has_code_changed).length,
