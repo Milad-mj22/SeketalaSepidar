@@ -304,7 +304,8 @@ def save_product_order_db(db_connection:DatabaseConnection, formula_id, product_
         TEMP_STOCK_REF = 10
 
         items = [{'item_ref':product_id,'quantity':quantity}]
-        recepi = save_inventory_receipt_db(db_connection=db_connection,product_order_ref=product_order_ref,stock_ref=stock_dest_ref,deliverer_dl_ref=delivere_ref,items=items,number_product_order_ref=new_number,georgian_date=georgian_date)
+        recepi = save_inventory_receipt_db(db_connection=db_connection,product_order_ref=product_order_ref,stock_ref=stock_dest_ref,deliverer_dl_ref=delivere_ref,\
+                                           sl_account_ref=moin_code, items=items,number_product_order_ref=new_number,georgian_date=georgian_date)
         if not recepi['success']:
             logger.warning(f"خطا در ذخیره recepi: {recepi.get('error')}")
             conn.rollback()
