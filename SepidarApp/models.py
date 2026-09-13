@@ -71,7 +71,37 @@ class WarehouseRelation(models.Model):
         null=True,
         verbose_name="توضیحات"
     )
-    
+
+    moin_code = models.IntegerField(
+        null=True,
+        blank=True,
+        verbose_name="کد معین",
+        help_text="کد معین مرتبط با این رابطه"
+    )
+
+    cost_stock = models.IntegerField(
+        null=True,
+        blank=True,
+        verbose_name="کد مرکز هزینه",
+        help_text="کد مرکز هزینه مرتبط با این رابطه"
+    )
+
+    deliverer_ref =  models.IntegerField(
+        null=True,
+        blank=True,
+        verbose_name="کد گیرنده",
+        help_text="کد گیزنده با این رابطه"
+    )
+
+
+    order_registration_notes = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name="توضیحات ثبت سفارش",
+        help_text="توضیحات یا نکات مربوط به ثبت سفارش برای این رابطه"
+    )
+
+
     # تاریخ ایجاد
     created_at = models.DateTimeField(
         auto_now_add=True,

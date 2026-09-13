@@ -12,7 +12,7 @@ def save_inventory_delivery_db(
     stock_ref: int = 10,
     receiver_dl_ref: int = 5,
     destination_stock_ref: int = None,
-    description: str = None,
+    description: str = '',
     creator: int = CREATOR_SEPIDAR,
     type: int = 2,
     is_return: int = 0,
@@ -20,6 +20,7 @@ def save_inventory_delivery_db(
     items:dict=None,
     georgian_date = None
 ):
+    
     """
     ایجاد یک رسید جدید در جدول InventoryDelivery
     
@@ -106,7 +107,7 @@ def save_inventory_delivery_db(
             'LastModifier': creator,
             'LastModificationDate': now,
             'Version': 1,
-            'Description': None
+            'Description': description
         }
         
         # 4. ساخت کوئری INSERT

@@ -350,6 +350,10 @@ def submit_all_formula_values(request):
         relation = relation.first()
         stock_source_ref = relation.source_warehouse.number
         stock_dest_ref = relation.destination_warehouse.number
+        cost_stock = relation.cost_stock
+        moin_code = relation.moin_code
+        deliverer_ref = relation.deliverer_ref
+        order_registration_notes = relation.order_registration_notes
 
         # اعتبارسنجی مقادیر
         for item in formulas:
@@ -486,7 +490,9 @@ def submit_all_formula_values(request):
             pass
 
             # for item in formulas:
-            save_results  = save_multiple_product_orders(db,formulas,stock_source_ref,stock_dest_ref,georgian_date)
+            save_results  = save_multiple_product_orders(db,formulas,stock_source_ref,stock_dest_ref,\
+                                                         georgian_date,moin_code=moin_code,cost_stock=cost_stock,\
+                                                         dl_ref=deliverer_ref,   notes =order_registration_notes )
 
             saved_results = save_results.get('results', [])
             saved_count = save_results.get('saved', 0)

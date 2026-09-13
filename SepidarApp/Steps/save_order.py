@@ -8,11 +8,12 @@ from SepidarApp.Steps.delivery_order import save_inventory_delivery_db
 from SepidarApp.Steps.recepi_order import save_inventory_receipt_db
 from SepidarApp.Steps.update_quantity import update_stock_batch
 from SepidarApp.databaseConnector import DatabaseConnection
+from SepidarApp.models import Warehouse
 
 logger = logging.getLogger(__name__)
 
 def save_product_order_db(db_connection:DatabaseConnection, formula_id, product_id, withdrawal_amount, material_details, quantity=1,
-                          stock_source_ref=None , stock_dest_ref=None,georgian_date=None):
+                          stock_source_ref=None , stock_dest_ref=None,georgian_date=None,moin_code = None,cost_stock=None,dl_ref=None,notes = None):
     """
     ذخیره یک رکورد جدید در جدول ProductOrder
     
@@ -122,10 +123,14 @@ def save_product_order_db(db_connection:DatabaseConnection, formula_id, product_
         # """)
         
         # cost_center =(1,5,'توليدي (آماده سازي)','توليدي (آماده سازي)',1101)
-        cost_center =(7,18,'واحد عمومي توليد (آشپزخانه)','واحد عمومي توليد (آشپزخانه)',1103)
 
 
-        
+
+
+
+
+
+
         # 5. ساخت رکورد جدید
         if georgian_date is None:
             now = datetime.now()
@@ -150,7 +155,7 @@ def save_product_order_db(db_connection:DatabaseConnection, formula_id, product_
             'Date': now,
             'BaseProductOrderRef': None,
             # 'BaseProductOrderNumber': None,
-            'CostCenterRef': cost_center[0] if cost_center else None,
+            'CostCenterRef': cost_stock,
             # 'CostCenterDLRef': cost_center[1] if cost_center else None,
             # 'CostCenterDLTitle': cost_center[2] if cost_center else None,
             # 'CostCenterDLTitle_En': cost_center[3] if cost_center else None,
@@ -272,8 +277,19 @@ def save_product_order_db(db_connection:DatabaseConnection, formula_id, product_
 
 
         ############### STEP2 ############# CREATE INVENTORY DELIVERY RECORD
-        description = f'مربوط به سفارش توليد محصول شماره {product_order_ref}'
-        delivery =  save_inventory_delivery_db(db_connection=db_connection,product_order_ref=product_order_ref, stock_ref=stock_source_ref, receiver_dl_ref=18, total_price=0, is_return=0, type=2, destination_stock_ref=None, creator=15, description=description,items=material_details,georgian_date=georgian_date)
+        if dl_ref is not None:
+            delivere_ref = dl_ref
+        else:
+            delivere_ref = 18
+
+        if notes is not None:
+            temp_note = notes
+        else:
+            temp_note = 'مربوط به سفارش توليد محصول شماره '
+
+
+        description = f'{temp_note} {product_order_ref}'
+        delivery =  save_inventory_delivery_db(db_connection=db_connection,product_order_ref=product_order_ref, stock_ref=stock_source_ref, receiver_dl_ref=delivere_ref, total_price=0, is_return=0, type=2, destination_stock_ref=None, creator=15, description=description,items=material_details,georgian_date=georgian_date)
         if not delivery['success']:
             logger.warning(f"خطا در ذخیره InventoryDelivery: {delivery.get('error')}")
             conn.rollback()
@@ -286,9 +302,9 @@ def save_product_order_db(db_connection:DatabaseConnection, formula_id, product_
         
         ############### STEP3 ########### CREATE RECEPI ORDER
         TEMP_STOCK_REF = 10
-        TEMP_DELIVERER_REF = 18
+
         items = [{'item_ref':product_id,'quantity':quantity}]
-        recepi = save_inventory_receipt_db(db_connection=db_connection,product_order_ref=product_order_ref,stock_ref=stock_dest_ref,deliverer_dl_ref=TEMP_DELIVERER_REF,items=items,number_product_order_ref=new_number,georgian_date=georgian_date)
+        recepi = save_inventory_receipt_db(db_connection=db_connection,product_order_ref=product_order_ref,stock_ref=stock_dest_ref,deliverer_dl_ref=delivere_ref,items=items,number_product_order_ref=new_number,georgian_date=georgian_date)
         if not recepi['success']:
             logger.warning(f"خطا در ذخیره recepi: {recepi.get('error')}")
             conn.rollback()
@@ -341,7 +357,7 @@ def save_product_order_db(db_connection:DatabaseConnection, formula_id, product_
         }
 
 
-def save_multiple_product_orders(conn, orders_data,stock_source_ref,stock_dest_ref,georgian_date=None):
+def save_multiple_product_orders(conn, orders_data,stock_source_ref,stock_dest_ref,georgian_date=None,moin_code=None,cost_stock=None,dl_ref=None,notes = None):
     """
     ذخیره چندین سفارش محصول به صورت همزمان
     
@@ -375,7 +391,11 @@ def save_multiple_product_orders(conn, orders_data,stock_source_ref,stock_dest_r
             quantity=order.get('consumption_value', 0),
             stock_source_ref = stock_source_ref,
             stock_dest_ref = stock_dest_ref,
-            georgian_date = georgian_date
+            georgian_date = georgian_date,
+            moin_code = moin_code,
+            cost_stock=cost_stock,
+            dl_ref = dl_ref,
+            notes=notes
         )
         
         results.append(result)
