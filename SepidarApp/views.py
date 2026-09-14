@@ -888,7 +888,8 @@ def get_materials(request):
             })
         
         # Call external API with Gregorian date
-        api_url = f"http://127.0.0.1:8900/data_analysis/api/get-date-items/?start_date={start_gregorian_date}&end_date={end_gregorian_date}"
+        api_url = f"https://seketalamanager.ir/data_analysis/api/get-date-items/?start_date={start_gregorian_date}&end_date={end_gregorian_date}"
+
         logger.info(f"Calling external API: {api_url}")
         
         # Use the alias http_requests instead of requests

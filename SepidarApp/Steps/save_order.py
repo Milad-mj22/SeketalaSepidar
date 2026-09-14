@@ -289,7 +289,7 @@ def save_product_order_db(db_connection:DatabaseConnection, formula_id, product_
 
 
         description = f'{temp_note} {product_order_ref}'
-        delivery =  save_inventory_delivery_db(db_connection=db_connection,product_order_ref=product_order_ref, stock_ref=stock_source_ref, receiver_dl_ref=delivere_ref, total_price=0, is_return=0, type=2, destination_stock_ref=None, creator=15, description=description,items=material_details,georgian_date=georgian_date)
+        delivery =  save_inventory_delivery_db(db_connection=db_connection,product_order_ref=product_order_ref, stock_ref=stock_source_ref, receiver_dl_ref=delivere_ref, total_price=0, is_return=0, type=2, destination_stock_ref=None, creator=15, description=description,items=material_details,georgian_date=georgian_date,sl_acc_ref=moin_code)
         if not delivery['success']:
             logger.warning(f"خطا در ذخیره InventoryDelivery: {delivery.get('error')}")
             conn.rollback()

@@ -18,7 +18,8 @@ def save_inventory_delivery_db(
     is_return: int = 0,
     total_price: float = 0,
     items:dict=None,
-    georgian_date = None
+    georgian_date = None,
+    sl_acc_ref = None
 ):
     
     """
@@ -126,7 +127,7 @@ def save_inventory_delivery_db(
         logger.info(f"InventoryDelivery جدید با شناسه {new_id} و شماره {new_number} ایجاد شد")
         
 
-        results = save_inventory_delivery_items_batch(db_connection=db_connection,inventory_delivery_ref=inventory_delivery_id,items=items,product_order_ref=product_order_ref,default_description=description)
+        results = save_inventory_delivery_items_batch(db_connection=db_connection,inventory_delivery_ref=inventory_delivery_id,items=items,product_order_ref=product_order_ref,default_description=description,sl_acc_ref=sl_acc_ref)
 
         if not results['success']:
             if hasattr(conn, 'rollback'):
@@ -328,7 +329,8 @@ def save_inventory_delivery_items_batch(
     items: list,
     product_order_ref: int = None,
     default_price: float = 0,
-    default_description: str = None
+    default_description: str = None,
+    sl_acc_ref = None
 ):
     """
     اضافه کردن چندین آیتم به رسید انبار به صورت دسته‌ای
@@ -371,7 +373,7 @@ def save_inventory_delivery_items_batch(
                 tracing_ref=item.get('tracing_ref'),
                 secondary_quantity=item.get('secondary_quantity'),
                 remaining_quantity=item.get('remaining_quantity'),
-                sl_account_ref=item.get('sl_account_ref'),
+                sl_account_ref=sl_acc_ref,
                 fee=item.get('fee'),
                 is_return=item.get('is_return', 0)
             )
