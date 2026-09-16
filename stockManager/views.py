@@ -472,3 +472,5 @@ def low_stock_report_page(request):
         if 'db' in locals():
             db.close()
         return render(request, 'error.html', {'error': str(e)})
+
+

@@ -280,3 +280,11 @@ LOGGING = {
         },
     },
 }
+
+
+
+
+# تنظیمات ارتباط با seketalamanager.ir
+SEKETALAMANAGER_API_URL = 'https://seketalamanager.ir/api/receive-low-stock/'
+SEKETALAMANAGER_API_TOKEN = 'rr97u0qD0BUUNmTOwDu-ECxHxOMe-ptfhtSA01CYYEE'  # توکن API خود را قرار دهید
+SEKETALAMANAGER_API_KEY = 'rr97u0qD0BUUNmTOwDu-ECxHxOMe-ptfhtSA01CYYEE'  # در صورت نیاز
