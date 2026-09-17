@@ -13,6 +13,7 @@ urlpatterns = [
     path('formula/<int:formula_id>/', views.formula_detail, name='formula_detail'),
     path('api/formulas/<int:formula_id>/', views.api_formulas, name='api_formulas'),
     path('api/search-formulas/', views.search_formulas, name='search_formulas'),
+    path('change_sl_acc_ref/', views.change_sl_acc_ref, name='change_sl_acc_ref'),
 
 
     path('auto_order/', views.auto_order, name='auto_order'),

@@ -1,3 +1,4 @@
+from datetime import datetime
 import json
 
 from django.contrib.sites import requests
@@ -31,7 +32,7 @@ from django.db import connection
 import pyodbc
 import logging
 
-from .databaseConnector import db
+from .databaseConnector import DatabaseConnection, db
 
 logger = logging.getLogger(__name__)
 @login_required
@@ -888,8 +889,7 @@ def get_materials(request):
             })
         
         # Call external API with Gregorian date
-        api_url = f"https://seketalamanager.ir/data_analysis/api/get-date-items/?start_date={start_gregorian_date}&end_date={end_gregorian_date}"
-
+        api_url = f"http://127.0.0.1:8900/data_analysis/api/get-date-items/?start_date={start_gregorian_date}&end_date={end_gregorian_date}"
         logger.info(f"Calling external API: {api_url}")
         
         # Use the alias http_requests instead of requests
@@ -1080,3 +1080,112 @@ def submit_materials(request):
     except Exception as e:
         logger.error(f"Error in submit_materials: {e}")
         return redirect(f"{reverse('sepidarApp:formula_list')}?error={urllib.parse.quote(str(e))}")
+
+
+
+
+
+
+def change_sl_acc_ref(request):
+    """
+    Get the last 10 InventoryReceipt records for a given StockRef,
+    and for each one where SLAccountRef == old_sl_account_ref,
+    update it to new_sl_account_ref and save.
+
+    Parameters:
+    - db_connection: Database connection object
+    - stock_ref: Warehouse reference to filter receipts
+    - old_sl_account_ref: The SLAccountRef to find (default 786)
+    - new_sl_account_ref: The SLAccountRef to set (default 825)
+
+    Returns:
+    - dict with success flag, updated records, and errors
+    """
+    conn = None
+    db_connection = db
+    old_sl_account_ref: int = 786,
+    new_sl_account_ref: int = 825
+
+    try:
+        conn = db_connection.get_connection()
+        cursor = conn.cursor()
+
+        # 1. Get last 10 InventoryReceipt records for the given StockRef
+        cursor.execute("""
+            SELECT TOP 10 InventoryReceiptID, Number, SLAccountRef
+            FROM [Sepidar01].[INV].[InventoryReceipt]
+            ORDER BY InventoryReceiptID DESC
+        """, )
+
+        rows = cursor.fetchall()
+
+        if not rows:
+            return {
+                'success': True,
+                'message': 'No inventory receipts found',
+                'updated': [],
+                'skipped': []
+            }
+
+        updated_records = []
+        skipped_records = []
+
+        # 2. Loop through each receipt
+        for row in rows:
+            receipt_id = row[0]
+            number = row[1]
+            sl_account_ref = row[2]
+
+            # 3. Only update if SLAccountRef == 786
+            if sl_account_ref == old_sl_account_ref:
+                skipped_records.append({
+                    'InventoryReceiptID': receipt_id,
+                    'Number': number,
+                    'SLAccountRef': sl_account_ref,
+                    'reason': f'SLAccountRef is not {old_sl_account_ref}'
+                })
+                continue
+
+            # 4. Update SLAccountRef to 825 and save
+            cursor.execute("""
+                UPDATE [Sepidar01].[INV].[InventoryReceipt]
+                SET SLAccountRef = ?,
+                    LastModificationDate = ?
+                WHERE InventoryReceiptID = ?
+            """, (new_sl_account_ref, datetime.now(), receipt_id))
+
+            updated_records.append({
+                'InventoryReceiptID': receipt_id,
+                'Number': number,
+                'old_SLAccountRef': sl_account_ref,
+                'new_SLAccountRef': new_sl_account_ref
+            })
+
+            logger.info(
+                f"Updated InventoryReceipt ID {receipt_id}, Number {number}: "
+                f"SLAccountRef {old_sl_account_ref} -> {new_sl_account_ref}"
+            )
+
+        # 5. Commit all updates
+        conn.commit()
+
+        return {
+            'success': True,
+            'updated': updated_records,
+            'skipped': skipped_records,
+            'total_checked': len(rows),
+            'total_updated': len(updated_records),
+            'total_skipped': len(skipped_records)
+        }
+
+    except Exception as e:
+        logger.error(f"Error updating receipts SLAccountRef: {e}")
+        if conn is not None:
+            try:
+                conn.rollback()
+            except Exception:
+                pass
+        return {
+            'success': False,
+            'error': str(e)
+        }
