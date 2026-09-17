@@ -1189,3 +1189,112 @@ def change_sl_acc_ref(request):
             'success': False,
             'error': str(e)
         }
+
+
+
+
+
+
+
+
+
+def change_sl_acc_ref_for_last_ten_delivery_items(request):
+    """
+    Get the last 10 InventoryDeliveryItem records,
+    and for each one where SLAccountRef == 786,
+    update it to 825 and save.
+
+    Returns:
+    - dict with success flag, updated records, and errors
+    """
+    conn = None
+    db_connection = db
+    old_sl_account_ref = 786
+    new_sl_account_ref = 825
+
+    try:
+        conn = db_connection.get_connection()
+        cursor = conn.cursor()
+
+        # 1. Get last 10 InventoryDeliveryItem records
+        cursor.execute("""
+            SELECT TOP 10 InventoryDeliveryItemID, InventoryDeliveryRef, RowNumber, SLAccountRef
+            FROM [Sepidar01].[INV].[InventoryDeliveryItem]
+            ORDER BY InventoryDeliveryItemID DESC
+        """)
+
+        rows = cursor.fetchall()
+
+        if not rows:
+            return {
+                'success': True,
+                'message': 'No inventory delivery items found',
+                'updated': [],
+                'skipped': []
+            }
+
+        updated_records = []
+        skipped_records = []
+
+        # 2. Loop through each item
+        for row in rows:
+            item_id = row[0]
+            delivery_ref = row[1]
+            row_number = row[2]
+            sl_account_ref = row[3]
+
+            # 3. Skip if SLAccountRef is not 786
+            if sl_account_ref == new_sl_account_ref:
+                skipped_records.append({
+                    'InventoryDeliveryItemID': item_id,
+                    'InventoryDeliveryRef': delivery_ref,
+                    'RowNumber': row_number,
+                    'SLAccountRef': sl_account_ref,
+                    'reason': f'SLAccountRef is {new_sl_account_ref}'
+                })
+                continue
+
+            # 4. Update SLAccountRef to 825 and save
+            cursor.execute("""
+                UPDATE [Sepidar01].[INV].[InventoryDeliveryItem]
+                SET SLAccountRef = ?
+                WHERE InventoryDeliveryItemID = ?
+            """, (new_sl_account_ref, item_id))
+
+            updated_records.append({
+                'InventoryDeliveryItemID': item_id,
+                'InventoryDeliveryRef': delivery_ref,
+                'RowNumber': row_number,
+                'old_SLAccountRef': sl_account_ref,
+                'new_SLAccountRef': new_sl_account_ref
+            })
+
+            logger.info(
+                f"Updated InventoryDeliveryItem ID {item_id}, "
+                f"DeliveryRef {delivery_ref}, Row {row_number}: "
+                f"SLAccountRef {old_sl_account_ref} -> {new_sl_account_ref}"
+            )
+
+        # 5. Commit all updates
+        conn.commit()
+
+        return {
+            'success': True,
+            'updated': updated_records,
+            'skipped': skipped_records,
+            'total_checked': len(rows),
+            'total_updated': len(updated_records),
+            'total_skipped': len(skipped_records)
+        }
+
+    except Exception as e:
+        logger.error(f"Error updating last 10 delivery items SLAccountRef: {e}")
+        if conn is not None:
+            try:
+                conn.rollback()
+            except Exception:
+                pass
+        return {
+            'success': False,
+            'error': str(e)
+        }
