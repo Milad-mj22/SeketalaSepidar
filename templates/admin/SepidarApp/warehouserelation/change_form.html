@@ -1,0 +1,34 @@
+{% extends "admin/change_form.html" %}
+{% load i18n %}
+
+{% block after_field_sets %}
+{{ block.super }}
+
+{% if original %}
+<div style="margin: 24px 0; padding: 20px; background: linear-gradient(135deg, #f0f9ff, #e0f2fe); border: 2px solid #0ea5e9; border-radius: 12px;">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+        <div>
+            <h3 style="margin: 0 0 8px 0; color: #0369a1; font-size: 16px;">
+                📋 مدیریت فرمول‌های این رابطه
+            </h3>
+            <p style="margin: 0; color: #475569; font-size: 13px;">
+                انتخاب کنید چه فرمول‌هایی در این رابطه نمایش داده شوند.
+                <br>
+                تعداد فعلی: <strong>{{ original.formula_relations.count }}</strong> فرمول
+            </p>
+        </div>
+        <a href="{% url 'admin:warehouse-relation-select-formulas' original.pk %}"
+           style="background: #0ea5e9; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s; white-space: nowrap;"
+           onmouseover="this.style.background='#0284c7'"
+           onmouseout="this.style.background='#0ea5e9'">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 11l3 3L22 4"></path>
+                <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path>
+            </svg>
+            انتخاب فرمول‌ها
+        </a>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

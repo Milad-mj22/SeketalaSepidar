@@ -45,9 +45,10 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: var(--gray-50);
             padding: 20px;
+            /* ✅ فاصله از پایین برای نوار ثابت */
+            padding-bottom: 70px !important;
             direction: rtl;
         }
-
 
         .persian-datepicker-holder {
             z-index: 99999 !important;
@@ -68,8 +69,6 @@
             color: white !important;
         }
 
-
-        
         .container {
             max-width: 1440px;
             margin: 0 auto;
@@ -566,105 +565,86 @@
             color: var(--gray-400);
         }
 
-        /* ===== Floating Summary - Enhanced ===== */
+        /* ============================================
+           ✅ FLOATING SUMMARY - SLIM & FIXED AT BOTTOM
+           ============================================ */
         .floating-summary {
             position: fixed;
-            bottom: 30px;
-            left: 30px;
-            right: 30px;
-            background: white;
-            padding: 16px 24px;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-xl);
-            border: 1px solid var(--gray-200);
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #1e293b;
+            padding: 8px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            flex-wrap: wrap;
             gap: 16px;
             z-index: 1000;
-            transition: var(--transition);
-            max-width: 900px;
-            margin: 0 auto;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.15);
+            border-top: 2px solid var(--primary);
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            direction: rtl;
         }
-        
-        .floating-summary:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
-        }
-        
+
         .floating-summary .summary-section {
             display: flex;
             align-items: center;
             gap: 16px;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
+            flex-shrink: 0;
         }
-        
+
         .floating-summary .summary-item {
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 13px;
-            color: var(--gray-600);
+            gap: 6px;
+            font-size: 12px;
+            color: #cbd5e1;
+            white-space: nowrap;
         }
-        
+
         .floating-summary .summary-item .num {
             font-weight: 700;
-            font-size: 18px;
-            color: var(--primary);
+            font-size: 15px;
+            color: #ffffff;
+            background: rgba(79, 70, 229, 0.3);
+            padding: 2px 10px;
+            border-radius: 12px;
+            min-width: 32px;
+            text-align: center;
         }
-        
-        .floating-summary .summary-item .num.success { color: var(--success); }
-        .floating-summary .summary-item .num.danger { color: var(--danger); }
-        .floating-summary .summary-item .num.warning { color: var(--warning); }
-        
+
+        .floating-summary .summary-item .num.success {
+            color: #86efac;
+            background: rgba(34, 197, 94, 0.2);
+        }
+        .floating-summary .summary-item .num.danger {
+            color: #fca5a5;
+            background: rgba(239, 68, 68, 0.2);
+        }
+        .floating-summary .summary-item .num.warning {
+            color: #fcd34d;
+            background: rgba(245, 158, 11, 0.2);
+        }
+
         .floating-summary .divider {
             width: 1px;
-            height: 30px;
-            background: var(--gray-200);
+            height: 20px;
+            background: rgba(255,255,255,0.15);
         }
-        
+
         .floating-summary .summary-actions {
             display: flex;
             gap: 8px;
             align-items: center;
+            flex-shrink: 0;
         }
-        
+
         .floating-summary .summary-actions .btn {
-            padding: 6px 16px;
+            padding: 6px 14px;
             font-size: 12px;
-        }
-        
-        /* Progress bar in summary */
-        .summary-progress {
-            width: 100%;
-            margin-top: 8px;
-            padding-top: 8px;
-            border-top: 1px solid var(--gray-200);
-        }
-        
-        .summary-progress .progress-bar {
-            height: 6px;
-            background: var(--gray-200);
-            border-radius: 4px;
-            overflow: hidden;
-            position: relative;
-        }
-        
-        .summary-progress .progress-bar .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--success), var(--primary));
-            border-radius: 4px;
-            transition: width 0.5s ease;
-            width: 0%;
-        }
-        
-        .summary-progress .progress-label {
-            display: flex;
-            justify-content: space-between;
-            font-size: 12px;
-            color: var(--gray-500);
-            margin-top: 4px;
+            border-radius: 6px;
         }
 
         /* ===== Responsive ===== */
@@ -675,7 +655,10 @@
         }
         
         @media (max-width: 768px) {
-            body { padding: 12px; }
+            body { 
+                padding: 12px; 
+                padding-bottom: 60px !important;
+            }
             
             .header { padding: 16px; }
             .header-top { flex-direction: column; align-items: stretch; }
@@ -707,20 +690,25 @@
             }
             .value-input-inline input { width: 100px; }
             
+            /* ✅ نوار پایین روی موبایل */
             .floating-summary {
-                bottom: 12px;
-                left: 12px;
-                right: 12px;
-                padding: 12px 16px;
-                flex-direction: column;
-                align-items: stretch;
+                padding: 6px 12px;
+                gap: 8px;
             }
-            .floating-summary .summary-section {
-                justify-content: center;
+            .floating-summary .summary-item {
+                font-size: 11px;
+                gap: 4px;
             }
-            .floating-summary .divider { display: none; }
-            .floating-summary .summary-actions {
-                justify-content: center;
+            .floating-summary .summary-item .num {
+                font-size: 13px;
+                padding: 2px 8px;
+            }
+            .floating-summary .divider {
+                display: none;
+            }
+            .floating-summary .summary-actions .btn {
+                padding: 5px 10px;
+                font-size: 11px;
             }
             
             .header-actions {
@@ -742,9 +730,9 @@
                 grid-template-columns: 1fr;
             }
             
-            .floating-summary .summary-section {
-                flex-direction: column;
-                gap: 8px;
+            /* روی موبایل کوچک فقط اعداد و آیکن‌ها */
+            .floating-summary .summary-item span:not(.num) {
+                display: none;
             }
         }
 
@@ -768,171 +756,182 @@
             background: var(--gray-400);
         }
 
-        
+        /* ===== Withdrawal Input ===== */
+        .withdrawal-input {
+            width: 100px;
+            padding: 4px 8px;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            text-align: center;
+            font-weight: 600;
+            color: #94a3b8;
+            transition: var(--transition);
+            background: white;
+            direction: ltr;
+        }
 
+        .withdrawal-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
 
-/* ===== Withdrawal Input ===== */
-.withdrawal-input {
-    width: 100px;
-    padding: 4px 8px;
-    border: 1px solid #cbd5e1;
-    border-radius: 4px;
-    text-align: center;
-    font-weight: 600;
-    color: #94a3b8;
-    transition: var(--transition);
-    background: white;
-    direction: ltr;
-}
+        .withdrawal-input.has-value {
+            border-color: var(--success);
+            color: #16a34a;
+            background: #f0fdf4;
+        }
 
-.withdrawal-input:focus {
-    outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-}
+        .withdrawal-input.is-zero {
+            color: #94a3b8;
+            border-color: #e2e8f0;
+        }
 
-.withdrawal-input.has-value {
-    border-color: var(--success);
-    color: #16a34a;
-    background: #f0fdf4;
-}
+        .withdrawal-input:disabled {
+            background: #f1f5f9;
+            cursor: not-allowed;
+        }
 
-.withdrawal-input.is-zero {
-    color: #94a3b8;
-    border-color: #e2e8f0;
-}
+        /* ===== Relation Select Error ===== */
+        #relationSelect.error {
+            border-color: #ef4444 !important;
+            background-color: #fef2f2 !important;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2) !important;
+            animation: shake 0.5s ease-in-out;
+        }
 
-.withdrawal-input:disabled {
-    background: #f1f5f9;
-    cursor: not-allowed;
-}
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            75% { transform: translateX(8px); }
+        }
 
+        #relationSelect.success {
+            border-color: #22c55e !important;
+            background-color: #f0fdf4 !important;
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2) !important;
+        }
 
+        /* ===== Live Search ===== */
+        .search-box-wrapper {
+            position: relative;
+        }
 
-/* ===== Relation Select Error ===== */
-#relationSelect.error {
-    border-color: #ef4444 !important;
-    background-color: #fef2f2 !important;
-    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2) !important;
-    animation: shake 0.5s ease-in-out;
-}
+        #liveSearchInput::placeholder {
+            color: var(--gray-400);
+            font-size: 13px;
+        }
 
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-8px); }
-    75% { transform: translateX(8px); }
-}
+        #liveSearchInput:focus {
+            outline: none;
+        }
 
-#relationSelect.success {
-    border-color: #22c55e !important;
-    background-color: #f0fdf4 !important;
-    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2) !important;
-}
+        /* ===== Highlight matching text ===== */
+        .highlight-match {
+            background: linear-gradient(180deg, #fde047 0%, #facc15 100%);
+            color: #78350f;
+            padding: 1px 4px;
+            border-radius: 4px;
+            font-weight: 700;
+            box-shadow: 0 1px 3px rgba(250, 204, 21, 0.4);
+            border-bottom: 2px solid #eab308;
+            display: inline-block;
+            line-height: 1.4;
+        }
 
+        .formula-code .highlight-match {
+            background: linear-gradient(180deg, #fef3c7 0%, #fde68a 100%);
+            color: #78350f;
+            border-bottom-color: #f59e0b;
+        }
 
+        .formula-title .highlight-match {
+            background: linear-gradient(180deg, #fde047 0%, #fbbf24 100%);
+            color: #422006;
+            border-bottom-color: #d97706;
+        }
 
+        .formula-card.search-hidden {
+            display: none !important;
+        }
 
-/* ===== Live Search ===== */
-.search-box-wrapper {
-    position: relative;
-}
+        .search-no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-200);
+        }
 
-#liveSearchInput::placeholder {
-    color: var(--gray-400);
-    font-size: 13px;
-}
+        .search-no-results .icon {
+            font-size: 56px;
+            margin-bottom: 16px;
+            opacity: 0.4;
+        }
 
-#liveSearchInput:focus {
-    outline: none;
-}
+        .search-no-results h3 {
+            font-size: 20px;
+            color: var(--gray-700);
+            margin-bottom: 8px;
+        }
 
-/* ===== Highlight matching text ===== */
-.highlight-match {
-    background: linear-gradient(180deg, #fde047 0%, #facc15 100%);
-    color: #78350f;
-    padding: 1px 4px;
-    border-radius: 4px;
-    font-weight: 700;
-    box-shadow: 0 1px 3px rgba(250, 204, 21, 0.4);
-    border-bottom: 2px solid #eab308;
-    display: inline-block;
-    line-height: 1.4;
-}
+        .search-no-results p {
+            color: var(--gray-400);
+            font-size: 14px;
+        }
 
-/* هایلایت داخل کد فرمول (پس‌زمینه روشن‌تر) */
-.formula-code .highlight-match {
-    background: linear-gradient(180deg, #fef3c7 0%, #fde68a 100%);
-    color: #78350f;
-    border-bottom-color: #f59e0b;
-}
+        #searchResultInfo {
+            animation: fadeIn 0.3s ease;
+        }
 
-/* هایلایت داخل عنوان فرمول */
-.formula-title .highlight-match {
-    background: linear-gradient(180deg, #fde047 0%, #fbbf24 100%);
-    color: #422006;
-    border-bottom-color: #d97706;
-}
-/* Hidden formula card */
-.formula-card.search-hidden {
-    display: none !important;
-}
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-/* No results message */
-.search-no-results {
-    text-align: center;
-    padding: 60px 20px;
-    color: var(--gray-500);
-    background: white;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    border: 1px solid var(--gray-200);
-}
+        @media (max-width: 768px) {
+            .search-box-wrapper {
+                max-width: 100% !important;
+                margin: 8px 0 !important;
+                order: 3;
+                width: 100%;
+            }
+        }
 
-.search-no-results .icon {
-    font-size: 56px;
-    margin-bottom: 16px;
-    opacity: 0.4;
-}
-
-.search-no-results h3 {
-    font-size: 20px;
-    color: var(--gray-700);
-    margin-bottom: 8px;
-}
-
-.search-no-results p {
-    color: var(--gray-400);
-    font-size: 14px;
-}
-
-/* Search result count badge */
-#searchResultInfo {
-    animation: fadeIn 0.3s ease;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-4px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .search-box-wrapper {
-        max-width: 100% !important;
-        margin: 8px 0 !important;
-        order: 3;
-        width: 100%;
-    }
-}
-
-
-
-
-
-
-
-
-
+        /* ===== Alert styles (اگر در base نبود) ===== */
+        .alert {
+            padding: 16px 20px;
+            border-radius: var(--radius-sm);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+        .alert-success {
+            background: #dcfce7;
+            border: 1px solid #86efac;
+            color: #166534;
+        }
+        .alert-danger {
+            background: #fee2e2;
+            border: 1px solid #fca5a5;
+            color: #991b1b;
+        }
+        .alert .close-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            color: inherit;
+            opacity: 0.7;
+            padding: 4px;
+        }
+        .alert .close-btn:hover {
+            opacity: 1;
+        }
 
     </style>
 </head>
@@ -972,9 +971,6 @@
 </div>
 
 
-
-
-<!-- بعد از Stats و قبل از header-actions -->
 <!-- ===== ALERT: SHOW DATA FROM SESSION ===== -->
 {% if has_needed_materials %}
 <div class="alert alert-success" id="materialsAlert">
@@ -1012,7 +1008,6 @@
     </button>
 </div>
 {% endif %}
-
 
 
                 <div class="header-actions">
@@ -1059,14 +1054,15 @@
             <label for="relationSelect" style="font-weight: 600; color: var(--gray-700); font-size: 13px; white-space: nowrap;">
                 رابطه:
             </label>
-            <select id="relationSelect" style="padding: 8px 12px; border: none; border-radius: 6px; font-size: 14px; background: white; min-width: 200px; cursor: pointer; font-family: inherit; transition: var(--transition);">
-                <option value="">انتخاب رابطه...</option>
-                {% for relation in relations %}
-                    <option value="{{ relation.id }}" data-source="{{ relation.source_warehouse.id }}" data-destination="{{ relation.destination_warehouse.id }}">
-                        {{ relation.relation_name }} : {{ relation.destination_warehouse.name }}  →  {{ relation.source_warehouse.name }}
-                    </option>
-                {% endfor %}
-            </select>
+                <select id="relationSelect" onchange="onRelationChange(this)" ...>
+                    <option value="">انتخاب رابطه...</option>
+                    {% for relation in relations %}
+                        <option value="{{ relation.id }}" 
+                                {% if selected_relation_id == relation.id %}selected{% endif %}>
+                            {{ relation.relation_name }} : {{ relation.destination_warehouse.name }} → {{ relation.source_warehouse.name }}
+                        </option>
+                    {% endfor %}
+                </select>
             <span id="selectedRelationInfo" style="font-size: 12px; color: var(--gray-400); min-width: 80px;">
                 <i class="fas fa-info-circle"></i>
             </span>
@@ -1090,16 +1086,6 @@
                     تاریخ را انتخاب کنید
                 </span>
             </div>
-
-
-
-            <!-- Search -->
-            <!-- <div class="search-wrapper">
-                <input type="text" id="searchInput" placeholder="🔍 جستجوی فرمول بر اساس کد یا عنوان..." />
-                <button class="btn btn-primary" onclick="searchFormulas()">
-                    <i class="fas fa-search"></i>
-                </button>
-            </div> -->
         </div>
 
         <!-- ===== RESULTS ===== -->
@@ -1140,22 +1126,13 @@
                             {% endif %}
                             
                             <!-- ===== VALUE INPUT IN HEADER ===== -->
-                            <!-- ===== VALUE INPUT IN HEADER ===== -->
-<!-- ===== VALUE INPUT IN HEADER ===== -->
-<!-- ===== VALUE INPUT IN HEADER ===== -->
-<!-- ===== VALUE INPUT IN HEADER ===== -->
-<!-- ===== VALUE INPUT IN HEADER ===== -->
 <div class="value-input-inline" onclick="event.stopPropagation();">
     <i class="fas fa-pen input-icon"></i>
     <label for="value_{{ formula.id }}">مقدار:</label>
     {% with product_code=formula.product_code|stringformat:'s' %}
         {% with code_exists=product_code|exists_in_list:needed_material_codes %}
-            <!-- لاگ کردن product_code -->
-            <!-- لاگ کردن code_exists -->
-            
             {% if code_exists %}
                 {% with quantity=needed_materials|get_quantity:product_code %}
-                    <!-- لاگ کردن quantity -->
                     {% with formatted_quantity=quantity|floatformat:2 %}
                         <input type="number" 
                             id="value_{{ formula.id }}" 
@@ -1271,7 +1248,7 @@
                                             <th>مقدار</th>
                                             <th>مقدار ثانویه</th>
                                             <th>موجودی</th>
-                                            <th>میزان برداشتی</th>  <!-- ستون جدید -->
+                                            <th>میزان برداشتی</th>
                                             <th>ردیابی</th>
                                             <th>توضیحات</th>
                                         </tr>
@@ -1336,48 +1313,33 @@
         </div>
     </div>
 
-    <!-- ===== FLOATING SUMMARY - ENHANCED ===== -->
+    <!-- ============================================
+         ✅ FLOATING SUMMARY - SLIM FIXED BOTTOM
+         (درصد تکمیل و چارت حذف شد)
+         ============================================ -->
     <div class="floating-summary" id="floatingSummary">
         <div class="summary-section">
             <div class="summary-item">
-                <i class="fas fa-pen" style="color: var(--primary);"></i>
+                <i class="fas fa-pen" style="color: #818cf8;"></i>
                 <span>مقادیر وارد شده:</span>
                 <span class="num" id="filledCount">0</span>
-                <span style="font-size: 12px; color: var(--gray-400);">از <span id="totalCount">{{ total_formulas }}</span></span>
+                <span style="font-size: 11px; color: #94a3b8;">از <span id="totalCount">{{ total_formulas }}</span></span>
             </div>
             <div class="divider"></div>
             <div class="summary-item">
-                <i class="fas fa-calculator" style="color: var(--success);"></i>
+                <i class="fas fa-calculator" style="color: #86efac;"></i>
                 <span>جمع کل:</span>
                 <span class="num success" id="totalSum">0</span>
             </div>
-            <div class="divider"></div>
-            <div class="summary-item">
-                <i class="fas fa-check-circle" style="color: var(--success);"></i>
-                <span>تکمیل شده:</span>
-                <span class="num success" id="completedCount">0</span>
-                <span style="font-size: 12px; color: var(--gray-400);">%</span>
-            </div>
         </div>
-        
+
         <div class="summary-actions">
-            <button class="btn btn-success" onclick="submitAllValues()" style="padding: 6px 16px; font-size: 12px;">
+            <button class="btn btn-success" onclick="submitAllValues()">
                 <i class="fas fa-save"></i> ثبت
             </button>
-            <button class="btn btn-danger" onclick="clearAllValues()" style="padding: 6px 16px; font-size: 12px;">
+            <button class="btn btn-danger" onclick="clearAllValues()">
                 <i class="fas fa-eraser"></i>
             </button>
-        </div>
-        
-        <!-- Progress Bar -->
-        <div class="summary-progress">
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill"></div>
-            </div>
-            <div class="progress-label">
-                <span id="progressText">0% تکمیل شده</span>
-                <span id="progressStatus">در انتظار ورود مقادیر</span>
-            </div>
         </div>
     </div>
 
@@ -1389,15 +1351,6 @@
         function getCSRFToken() {
             return document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         }
-
-        // ========================================
-        // GET SELECTED DATE FROM BACKEND
-        // ========================================
-
-
-
-
-
 
         // ========================================
         // TOGGLE FORMULA (Expand/Collapse)
@@ -1441,7 +1394,7 @@
         }
 
         // ========================================
-        // UPDATE FLOATING SUMMARY (Enhanced)
+        // ✅ UPDATE FLOATING SUMMARY (ساده‌شده)
         // ========================================
         function updateSummary() {
             const inputs = document.querySelectorAll('.formula-value-input');
@@ -1457,34 +1410,8 @@
                 }
             });
             
-            const completedPercent = total > 0 ? Math.round((filled / total) * 100) : 0;
-            
             document.getElementById('filledCount').textContent = filled;
             document.getElementById('totalSum').textContent = totalSum.toFixed(2);
-            document.getElementById('completedCount').textContent = completedPercent;
-            
-            // Update progress bar
-            document.getElementById('progressFill').style.width = completedPercent + '%';
-            document.getElementById('progressText').textContent = `${completedPercent}% تکمیل شده`;
-            
-            // Status message
-            const statusEl = document.getElementById('progressStatus');
-            if (completedPercent === 0) {
-                statusEl.textContent = '⏳ در انتظار ورود مقادیر';
-                statusEl.style.color = 'var(--gray-400)';
-            } else if (completedPercent === 100) {
-                statusEl.textContent = '✅ همه مقادیر وارد شده‌اند!';
-                statusEl.style.color = 'var(--success)';
-            } else if (completedPercent > 70) {
-                statusEl.textContent = '🟢 اکثر مقادیر وارد شده‌اند';
-                statusEl.style.color = 'var(--success)';
-            } else if (completedPercent > 40) {
-                statusEl.textContent = '🟡 حدود نیمی از مقادیر وارد شده‌اند';
-                statusEl.style.color = 'var(--warning)';
-            } else {
-                statusEl.textContent = '🔴 تعداد کمی از مقادیر وارد شده‌اند';
-                statusEl.style.color = 'var(--danger)';
-            }
         }
 
         // ========================================
@@ -1504,25 +1431,16 @@
         // DOM READY
         // ========================================
        document.addEventListener('DOMContentLoaded', function() {
-                // ========================================
-                // GET ALL INPUTS
-                // ========================================
                 const inputs = document.querySelectorAll('.formula-value-input');
                 
-                // ========================================
-                // ADD EVENT LISTENERS WITH WITHDRAWAL CALCULATION
-                // ========================================
                 inputs.forEach(input => {
-                    // رویداد input برای محاسبه لحظه‌ای
                     input.addEventListener('input', function() {
                         validateInput(this);
                         
-                        // محاسبه میزان برداشتی برای این فرمول
                         const formulaId = this.dataset.formulaId;
                         calculateWithdrawalAmount(formulaId);
                     });
                     
-                    // رویداد blur برای فرمت‌دهی نهایی
                     input.addEventListener('blur', function() {
                         if (this.value) {
                             const num = parseFloat(this.value);
@@ -1530,14 +1448,12 @@
                                 this.value = num.toFixed(2);
                                 validateInput(this);
                                 
-                                // محاسبه مجدد
                                 const formulaId = this.dataset.formulaId;
                                 calculateWithdrawalAmount(formulaId);
                             }
                         }
                     });
                 });
-                
 
 
                 inputs.forEach(input => {
@@ -1545,11 +1461,7 @@
                         validateInput(this);
                         const formulaId = this.dataset.formulaId;
                         
-                        // وقتی مصرفی تغییر می‌کند، تمام ورودی‌های دستی را ریست کن
-                        // یا می‌توانیم یک پیام نشان دهیم
                         resetManualWithdrawals(formulaId);
-                        
-                        // محاسبه مجدد خودکار
                         calculateWithdrawalAmount(formulaId);
                     });
                     
@@ -1567,10 +1479,6 @@
                 });
 
 
-
-                // ========================================
-                // INITIAL CALCULATION FOR EXISTING VALUES
-                // ========================================
                 inputs.forEach(input => {
                     if (input.value && parseFloat(input.value) > 0) {
                         const formulaId = input.dataset.formulaId;
@@ -1578,17 +1486,11 @@
                     }
                 });
                 
-                // ========================================
-                // SUBMIT BUTTON
-                // ========================================
                 const submitBtn = document.getElementById('submit-all-btn');
                 if (submitBtn) {
                     submitBtn.addEventListener('click', submitAllValues);
                 }
                 
-                // ========================================
-                // RESTORE EXPANDED STATES
-                // ========================================
                 document.querySelectorAll('.formula-card').forEach(card => {
                     const formulaId = card.dataset.formulaId;
                     const isExpanded = localStorage.getItem(`formula_expanded_${formulaId}`) === 'true';
@@ -1601,19 +1503,11 @@
                     }
                 });
                 
-                // ========================================
-                // INITIAL SUMMARY
-                // ========================================
                 updateSummary();
 
 
-
-                // ========================================
-                // INITIAL SEARCH STATE
-                // ========================================
                 const searchInput = document.getElementById('liveSearchInput');
                 if (searchInput) {
-                    // اگر از URL پارامتر search داریم، اعمال کنیم
                     const urlParams = new URLSearchParams(window.location.search);
                     const searchParam = urlParams.get('search');
                     if (searchParam) {
@@ -1623,10 +1517,6 @@
                 }
 
 
-                
-                // ========================================
-                // KEYBOARD SHORTCUT: Ctrl+Enter
-                // ========================================
                 document.addEventListener('keydown', function(e) {
                     if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
                         e.preventDefault();
@@ -1636,67 +1526,10 @@
 
         
         // ========================================
-// RELATION SELECT VALIDATION
-// ========================================
-const relationSelect = document.getElementById('relationSelect');
-if (relationSelect) {
-    // Remove error styling when user changes selection
-    relationSelect.addEventListener('change', function() {
-        if (this.value) {
-            this.style.borderColor = '#22c55e';
-            this.style.backgroundColor = '#f0fdf4';
-            this.style.boxShadow = '0 0 0 3px rgba(34, 197, 94, 0.2)';
-            
-            // Update info span
-            const infoSpan = document.getElementById('selectedRelationInfo');
-            const selectedOption = this.options[this.selectedIndex];
-            if (infoSpan && selectedOption) {
-                infoSpan.innerHTML = `
-                    <i class="fas fa-check-circle" style="color: var(--success);"></i>
-                    <span style="font-size: 12px; color: var(--gray-600);">
-                        ${selectedOption.text}
-                    </span>
-                `;
-            }
-            
-            // Save to localStorage
-            localStorage.setItem('selected_relation_id', this.value);
-        } else {
-            this.style.borderColor = '';
-            this.style.backgroundColor = '';
-            this.style.boxShadow = '';
-            
-            const infoSpan = document.getElementById('selectedRelationInfo');
-            if (infoSpan) {
-                infoSpan.innerHTML = `
-                    <i class="fas fa-info-circle" style="color: var(--gray-400);"></i>
-                    <span style="font-size: 12px; color: var(--gray-400);">هیچ رابطه‌ای انتخاب نشده</span>
-                `;
-            }
-            
-            localStorage.removeItem('selected_relation_id');
-        }
-    });
-    
-    // Restore saved selection
-    const savedRelationId = localStorage.getItem('selected_relation_id');
-    if (savedRelationId) {
-        relationSelect.value = savedRelationId;
-        // Trigger change event
-        const event = new Event('change');
-        relationSelect.dispatchEvent(event);
-    }
-}
-        
-        
-        
-        
-            });
+        // RELATION SELECT VALIDATION
+        // ========================================
 
 
-        // ========================================
-        // GET ALL VALUES
-        // ========================================
         // ========================================
         // GET ALL VALUES WITH WITHDRAWAL AMOUNTS
         // ========================================
@@ -1714,7 +1547,6 @@ function getAllValues() {
             const productId = input.dataset.productId || null;
             const productUnit = input.dataset.productUnit || '';
             
-            // دریافت مقادیر برداشتی (دستی یا خودکار)
             const withdrawalItems = [];
             const withdrawalInputs = document.querySelectorAll(`#body-${formulaId} .withdrawal-input`);
             withdrawalInputs.forEach((wInput, index) => {
@@ -1736,9 +1568,6 @@ function getAllValues() {
                 }
             });
 
-
-
-            
             values.push({
                 formula_id: formulaId,
                 formula_code: input.dataset.formulaCode,
@@ -1754,10 +1583,10 @@ function getAllValues() {
     
     return { values, hasValue };
 }
+
         // ========================================
         // SUBMIT ALL VALUES
         // ========================================
-
         function submitAllValues() {
     const { values, hasValue } = getAllValues();
     
@@ -1772,7 +1601,6 @@ function getAllValues() {
         return;
     }
     
-    // Preview with complete information
     let tableHtml = `
         <div style="direction: rtl; text-align: right; max-height: 400px; overflow-y: auto;">
             <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
@@ -1806,7 +1634,6 @@ function getAllValues() {
     
     tableHtml += `</tbody></table></div>`;
     
-    // Add detailed withdrawal items if needed
     let detailsHtml = '';
     values.forEach((item, index) => {
         if (item.withdrawal_items.length > 0) {
@@ -1863,9 +1690,6 @@ function getAllValues() {
         }
     });
 }
-        // ========================================
-        // SEND TO SERVER
-        // ========================================
 
 
 function sendToServer(values) {
@@ -1880,15 +1704,12 @@ function sendToServer(values) {
     const relationName = relationSelect.options[relationSelect.selectedIndex]?.text || '';
     
     if (!relationId || relationId === '') {
-        // Highlight the select to show error
         relationSelect.style.borderColor = '#ef4444';
         relationSelect.style.backgroundColor = '#fef2f2';
         relationSelect.style.boxShadow = '0 0 0 3px rgba(239, 68, 68, 0.2)';
         
-        // Scroll to the select
         relationSelect.scrollIntoView({ behavior: 'smooth', block: 'center' });
         
-        // Show error with SweetAlert2
         Swal.fire({
             title: '⚠️ خطا',
             html: `
@@ -1923,9 +1744,7 @@ function sendToServer(values) {
             backdrop: `rgba(0,0,0,0.4)`,
             allowOutsideClick: false
         }).then(() => {
-            // Focus on the select after modal closes
             relationSelect.focus();
-            // Remove error styling after 3 seconds
             setTimeout(() => {
                 relationSelect.style.borderColor = '';
                 relationSelect.style.backgroundColor = '';
@@ -1933,15 +1752,13 @@ function sendToServer(values) {
             }, 3000);
         });
         
-        return; // Stop execution
+        return;
     }
     
-    // If relation is selected, remove any error styling
     relationSelect.style.borderColor = '';
     relationSelect.style.backgroundColor = '';
     relationSelect.style.boxShadow = '';
     
-    // Continue with submission
     submitBtn.disabled = true;
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> در حال ارسال...';
     submitBtn.classList.add('btn-loading');
@@ -1966,7 +1783,6 @@ function sendToServer(values) {
     console.log('  - Final Selected:', selectedDate);
 
 
-    // اگر هیچ تاریخی انتخاب نشده، خطا بده
     if (!selectedDate) {
         Swal.fire({
             title: '⚠️ خطا',
@@ -2050,36 +1866,28 @@ function sendToServer(values) {
 function showSuccessModal(data) {
     console.log('Full data received:', data);
     
-    // Try to get results from different possible locations
     let results = [];
     let savedCount = data.saved_count || 0;
     
-    // Check 1: Direct 'results' property (added by backend)
     if (data.results && Array.isArray(data.results)) {
         results = data.results;
         console.log('Found results in data.results');
     }
-    // Check 2: Inside data.data
     else if (data.data) {
-        // If data.data has 'results'
         if (data.data.results && Array.isArray(data.data.results)) {
             results = data.data.results;
             console.log('Found results in data.data.results');
         }
-        // If data.data is an array
         else if (Array.isArray(data.data)) {
-            // Check if it contains items with 'success' property
             if (data.data.length > 0 && data.data.some(item => item.hasOwnProperty('success'))) {
                 results = data.data;
                 console.log('Found results in data.data (array)');
             }
         }
-        // Check for other possible keys in data.data
         else if (typeof data.data === 'object') {
             const possibleKeys = ['formula_details', 'items', 'list', 'saved_items'];
             for (const key of possibleKeys) {
                 if (data.data[key] && Array.isArray(data.data[key])) {
-                    // Check if this array has items with 'success' or 'product_name'
                     if (data.data[key].length > 0 && 
                         (data.data[key].some(item => item.hasOwnProperty('success')) ||
                          data.data[key].some(item => item.hasOwnProperty('product_name')))) {
@@ -2092,9 +1900,7 @@ function showSuccessModal(data) {
         }
     }
     
-    // If still no results, try to construct from data
     if (results.length === 0 && savedCount > 0) {
-        // Try to get from formula_details
         if (data.data && data.data.formula_details && Array.isArray(data.data.formula_details)) {
             const formulaDetails = data.data.formula_details;
             results = formulaDetails.map(f => ({
@@ -2111,7 +1917,6 @@ function showSuccessModal(data) {
     console.log('Extracted results:', results);
     console.log('Results length:', results.length);
     
-    // Filter successful and failed
     const successful = results.filter(r => r.success === true);
     const failed = results.filter(r => r.success === false);
     const successCount = successful.length || savedCount;
@@ -2120,7 +1925,6 @@ function showSuccessModal(data) {
     
     console.log(`Success: ${successCount}, Failed: ${failedCount}, Total: ${totalCount}`);
     
-    // If no results found but we have a saved_count, show simple success
     if (results.length === 0 && savedCount > 0) {
         Swal.fire({
             title: `✅ ${savedCount} فرمول با موفقیت ثبت شد`,
@@ -2163,7 +1967,6 @@ function showSuccessModal(data) {
         return;
     }
     
-    // If still no results at all
     if (results.length === 0) {
         Swal.fire({
             title: 'ℹ️ اطلاعات',
@@ -2183,9 +1986,7 @@ function showSuccessModal(data) {
         return;
     }
     
-    // If all items are successful, show success modal with details
     if (successCount > 0) {
-        // Create HTML for successful items
         let itemsHtml = '';
         if (successful.length > 0) {
             itemsHtml = `
@@ -2228,7 +2029,6 @@ function showSuccessModal(data) {
             `;
         }
         
-        // Create summary statistics
         let statusHtml = `
             <div style="display: flex; gap: 16px; justify-content: center; margin: 16px 0; flex-wrap: wrap;">
                 <div style="background: linear-gradient(135deg, #dcfce7, #bbf7d0); padding: 12px 24px; border-radius: 12px; text-align: center; min-width: 100px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
@@ -2259,7 +2059,6 @@ function showSuccessModal(data) {
             ? `✅ ${successCount} فرمول با موفقیت ثبت شد` 
             : `✅ ${successCount} فرمول با موفقیت ثبت شد ${failedCount > 0 ? `و ${failedCount} فرمول با خطا مواجه شد` : ''}`;
         
-        // Show the modal
         Swal.fire({
             title: titleText,
             html: `
@@ -2321,7 +2120,6 @@ function showSuccessModal(data) {
             }
         });
     } else {
-        // No successful items
         Swal.fire({
             title: '❌ خطا',
             text: 'هیچ فرمولی با موفقیت ثبت نشد',
@@ -2332,7 +2130,6 @@ function showSuccessModal(data) {
     }
 }
 function showErrorDetails(data) {
-    // Try to get results similar to above
     let results = [];
     
     if (Array.isArray(data)) {
@@ -2414,7 +2211,7 @@ function showErrorDetails(data) {
     });
 }
 
-// ========================================
+        // ========================================
         // SHOW UNAVAILABLE MATERIALS
         // ========================================
         function showUnavailableError(data) {
@@ -2486,7 +2283,6 @@ function showErrorDetails(data) {
                 input.value = '';
                 input.classList.remove('has-value');
                 
-                // پاک کردن مقادیر میزان برداشتی
                 const formulaId = input.dataset.formulaId;
                 const withdrawalCells = document.querySelectorAll(`#body-${formulaId} .withdrawal-amount`);
                 withdrawalCells.forEach(cell => {
@@ -2496,10 +2292,6 @@ function showErrorDetails(data) {
                 });
             });
             updateSummary();
-            
-            // پاک کردن تاریخ از localStorage (اختیاری - اگر می‌خواهید تاریخ بماند، این خط را حذف کنید)
-            // localStorage.removeItem('selected_date');
-            // window.selectedDate = null;
         }
         function clearAllValues() {
             Swal.fire({
@@ -2552,20 +2344,14 @@ function showErrorDetails(data) {
                 .catch(console.error);
         }
 
-        document.getElementById('searchInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') searchFormulas();
-        });
-
         // ========================================
         // KEYBOARD SHORTCUTS
         // ========================================
         document.addEventListener('keydown', function(e) {
-            // Ctrl+Shift+E = Expand All
             if (e.ctrlKey && e.shiftKey && e.key === 'E') {
                 e.preventDefault();
                 expandAll();
             }
-            // Ctrl+Shift+C = Collapse All
             if (e.ctrlKey && e.shiftKey && e.key === 'C') {
                 e.preventDefault();
                 collapseAll();
@@ -2573,43 +2359,27 @@ function showErrorDetails(data) {
         });
 
 
-
-
 // ========================================
 // CALCULATE WITHDRAWAL AMOUNT (میزان برداشتی)
 // ========================================
 function calculateWithdrawalAmount(formulaId) {
-    // دریافت مقدار ورودی (میزان مصرفی)
     const valueInput = document.getElementById(`value_${formulaId}`);
     const consumptionRate = parseFloat(valueInput?.value) || 0;
     
-    // دریافت تمام آیتم‌های این فرمول
     const items = document.querySelectorAll(`#body-${formulaId} table tbody tr`);
     
     items.forEach((row, index) => {
-        // دریافت مقدار آیتم (ستون مقدار - ستون چهارم)
         const quantityCell = row.querySelector('td:nth-child(4)');
         const quantity = parseFloat(quantityCell?.textContent) || 0;
         
-        // محاسبه میزان برداشتی خودکار
         const autoWithdrawal = quantity * consumptionRate;
         
-        // دریافت فیلد ورودی میزان برداشتی
         const withdrawalInput = row.querySelector('.withdrawal-input');
         if (withdrawalInput) {
             const currentManualValue = parseFloat(withdrawalInput.value) || 0;
-            
-            // اگر کاربر مقدار دستی وارد نکرده یا مقدار دستی صفر است، مقدار خودکار را اعمال کن
-            // یا اگر کاربر مقدار دستی وارد کرده، اما مصرفی تغییر کرده، می‌توان تصمیم گرفت
-            // در اینجا ما مقدار خودکار را اعمال می‌کنیم اما اگر کاربر مقدار دستی وارد کرده باشد،
-            // می‌توانیم یک نشانه بدهیم
-            
-            // اگر مقدار دستی کاربر صفر است یا مقدار قبلی با مقدار خودکار جدید برابر نیست
-            // و کاربر هنوز مقدار را دستی تغییر نداده
             const isManuallyEdited = withdrawalInput.dataset.manuallyEdited === 'true';
             
             if (!isManuallyEdited || consumptionRate === 0) {
-                // اگر کاربر دستی ویرایش نکرده یا مصرفی صفر است
                 if (consumptionRate > 0 && quantity > 0) {
                     withdrawalInput.value = autoWithdrawal.toFixed(2);
                     withdrawalInput.classList.add('has-value');
@@ -2622,22 +2392,13 @@ function calculateWithdrawalAmount(formulaId) {
                     withdrawalInput.style.color = '#94a3b8';
                 }
             } else {
-                // کاربر مقدار دستی وارد کرده، یک نشانه نمایش بده
                 withdrawalInput.style.borderColor = '#f59e0b';
                 withdrawalInput.style.backgroundColor = '#fffbeb';
-                
-                // اگر مصرفی صفر شد اما کاربر مقدار دستی دارد، هشدار بده
-                if (consumptionRate === 0 && currentManualValue > 0) {
-                    // کاربر باید تصمیم بگیرد
-                }
             }
         }
     });
     
-    // به‌روزرسانی کل فرمول
     updateFormulaWithdrawalTotal(formulaId);
-    
-    // به‌روزرسانی خلاصه کلی
     updateSummary();
 }
 
@@ -2649,7 +2410,6 @@ function updateWithdrawalManually(input) {
     const itemIndex = parseInt(input.dataset.itemIndex);
     const value = parseFloat(input.value) || 0;
     
-    // اعتبارسنجی
     if (value < 0) {
         input.value = '0.00';
         Swal.fire({
@@ -2662,7 +2422,6 @@ function updateWithdrawalManually(input) {
         return;
     }
     
-    // به‌روزرسانی استایل
     if (value > 0) {
         input.classList.add('has-value');
         input.classList.remove('is-zero');
@@ -2673,13 +2432,9 @@ function updateWithdrawalManually(input) {
         input.style.color = '#94a3b8';
     }
     
-    // به‌روزرسانی مقدار با دو رقم اعشار
     input.value = value.toFixed(2);
     
-    // محاسبه مجدد کل برداشتی برای این فرمول
     updateFormulaWithdrawalTotal(formulaId);
-    
-    // به‌روزرسانی خلاصه کلی
     updateSummary();
 }
 
@@ -2695,7 +2450,6 @@ function updateFormulaWithdrawalTotal(formulaId) {
         total += val;
     });
     
-    // به‌روزرسانی نمایش کل در هدر فرمول یا جای دیگر
     const totalDisplay = document.getElementById(`withdrawal-total-${formulaId}`);
     if (totalDisplay) {
         totalDisplay.textContent = total.toFixed(2);
@@ -2711,12 +2465,10 @@ function markAsManuallyEdited(input) {
     input.style.borderColor = '#8b5cf6';
     input.style.backgroundColor = '#f5f3ff';
     
-    // اگر مقدار صفر شد، می‌توانیم دوباره حالت خودکار را فعال کنیم
     if (parseFloat(input.value) === 0) {
         input.dataset.manuallyEdited = 'false';
         input.style.borderColor = '';
         input.style.backgroundColor = '';
-        // دوباره محاسبه خودکار
         const formulaId = input.dataset.formulaId;
         calculateWithdrawalAmount(formulaId);
     }
@@ -2727,7 +2479,6 @@ function markAsManuallyEdited(input) {
 function resetManualWithdrawals(formulaId) {
     const withdrawalInputs = document.querySelectorAll(`#body-${formulaId} .withdrawal-input`);
     withdrawalInputs.forEach(input => {
-        // ریست کردن وضعیت دستی
         input.dataset.manuallyEdited = 'false';
         input.style.borderColor = '';
         input.style.backgroundColor = '';
@@ -2767,15 +2518,10 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
     
-    // دریافت تاریخ از بک‌اند
     const backendDate = "{{ selected_date|default:'' }}";
     console.log('📅 تاریخ دریافتی از بک‌اند:', backendDate);
     
-    // ========================================
-    // تابع کمکی برای فرمت کردن تاریخ
-    // ========================================
     function formatPersianDate(dateObj) {
-        // اگر dateObj از نوع persianDate باشد
         if (dateObj && typeof dateObj.format === 'function') {
             try {
                 return dateObj.format('YYYY/MM/DD');
@@ -2784,7 +2530,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         
-        // اگر dateObj یک آبجکت با year/month/day باشد
         if (dateObj && typeof dateObj === 'object') {
             const y = dateObj.year || dateObj.getFullYear?.() || '';
             const m = dateObj.month || (dateObj.getMonth?.() + 1) || '';
@@ -2794,7 +2539,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         
-        // اگر رشته باشد
         if (typeof dateObj === 'string') {
             return dateObj;
         }
@@ -2802,30 +2546,23 @@ document.addEventListener('DOMContentLoaded', function() {
         return '';
     }
     
-    // ========================================
-    // تابع کمکی برای تبدیل رشته تاریخ به آبجکت
-    // ========================================
     function parsePersianDate(dateStr) {
         if (!dateStr) return null;
         
         try {
-            // استفاده از persianDate برای parse
             if (typeof persianDate !== 'undefined') {
-                // روش 1: استفاده از parse
                 if (persianDate.prototype.parse) {
                     try {
                         return new persianDate().parse(dateStr);
                     } catch(e) {}
                 }
                 
-                // روش 2: استفاده از unix timestamp
                 const parts = dateStr.split('/');
                 if (parts.length === 3) {
                     const y = parseInt(parts[0]);
                     const m = parseInt(parts[1]);
                     const d = parseInt(parts[2]);
                     
-                    // استفاده از تبدیل تاریخ شمسی به میلادی
                     const gregorian = jalaliToGregorian(y, m, d);
                     if (gregorian) {
                         return new persianDate(new Date(gregorian.year, gregorian.month - 1, gregorian.day));
@@ -2839,9 +2576,6 @@ document.addEventListener('DOMContentLoaded', function() {
         return null;
     }
     
-    // ========================================
-    // تبدیل تاریخ شمسی به میلادی (برای parse)
-    // ========================================
     function jalaliToGregorian(jy, jm, jd) {
         jy += 1595;
         let days = -355668 + (365 * jy) + (~~(jy / 33) * 8) + ~~(((jy % 33) + 3) / 4) + jd + ((jm < 7) ? (jm - 1) * 31 : ((jm - 7) * 30) + 186);
@@ -2865,16 +2599,11 @@ document.addEventListener('DOMContentLoaded', function() {
         return { year: gy, month: gm, day: gd };
     }
     
-    // ========================================
-    // مقداردهی اولیه تقویم
-    // ========================================
     try {
-        // اگر تاریخ بک‌اند داریم، آن را به فرمت درست تبدیل کن
         let initialDate = null;
         if (backendDate) {
             const parts = backendDate.split('/');
             if (parts.length === 3) {
-                // تبدیل به فرمت استاندارد
                 initialDate = {
                     year: parseInt(parts[0]),
                     month: parseInt(parts[1]),
@@ -2883,23 +2612,19 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         
-        // تنظیم مقدار اولیه input
         if (backendDate) {
             jQuery('#datepicker').val(backendDate);
         }
         
-        // مقداردهی اولیه تقویم
         jQuery("#datepicker").persianDatepicker({
             format: 'YYYY/MM/DD',
             autoClose: true,
-            initialValue: false, // ما خودمان مقدار را set می‌کنیم
+            initialValue: false,
             onSelect: function(unixOrDate) {
-                // این تابع ممکن است unix timestamp یا آبجکت تاریخ برگرداند
                 let formattedDate = '';
                 
                 console.log('📅 onSelect دریافت شد:', unixOrDate, 'نوع:', typeof unixOrDate);
                 
-                // حالت 1: اگر unix timestamp باشد (عدد)
                 if (typeof unixOrDate === 'number') {
                     try {
                         const pd = new persianDate(unixOrDate);
@@ -2908,7 +2633,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         console.error('Error converting unix:', e);
                     }
                 }
-                // حالت 2: اگر آبجکت persianDate باشد
                 else if (unixOrDate && typeof unixOrDate.format === 'function') {
                     try {
                         formattedDate = unixOrDate.format('YYYY/MM/DD');
@@ -2916,7 +2640,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         console.error('Error using format:', e);
                     }
                 }
-                // حالت 3: اگر آبجکت با year/month/day باشد
                 else if (unixOrDate && typeof unixOrDate === 'object') {
                     const y = unixOrDate.year;
                     const m = unixOrDate.month;
@@ -2925,7 +2648,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         formattedDate = `${y}/${String(m).padStart(2, '0')}/${String(d).padStart(2, '0')}`;
                     }
                 }
-                // حالت 4: اگر رشته باشد
                 else if (typeof unixOrDate === 'string') {
                     formattedDate = unixOrDate;
                 }
@@ -2935,36 +2657,29 @@ document.addEventListener('DOMContentLoaded', function() {
                     return;
                 }
                 
-                // به‌روزرسانی نمایش
                 document.getElementById('selectedDateInfo').innerHTML = `
                     <i class="fas fa-check-circle" style="color: var(--success);"></i>
                     تاریخ انتخاب شده: <strong>${formattedDate}</strong>
                 `;
                 console.log('✅ تاریخ انتخاب شد:', formattedDate);
                 
-                // ذخیره در متغیر global و localStorage
                 window.selectedDate = formattedDate;
                 localStorage.setItem('selected_date', formattedDate);
             }
         });
         
-        // اگر تاریخ بک‌اند داریم، آن را در تقویم set کن
         if (initialDate) {
             try {
-                // روش 1: استفاده از setDate با آبجکت
                 jQuery('#datepicker').persianDatepicker('setDate', initialDate);
                 console.log('✅ تاریخ بک‌اند set شد (روش آبجکت):', backendDate);
             } catch(e) {
                 console.warn('setDate with object failed, trying alternative:', e);
-                // روش 2: فقط input را پر کن
                 jQuery('#datepicker').val(backendDate);
             }
             
-            // ذخیره در متغیر global و localStorage
             window.selectedDate = backendDate;
             localStorage.setItem('selected_date', backendDate);
             
-            // به‌روزرسانی نمایش
             document.getElementById('selectedDateInfo').innerHTML = `
                 <i class="fas fa-check-circle" style="color: var(--success);"></i>
                 تاریخ انتخاب شده: <strong>${backendDate}</strong>
@@ -2972,7 +2687,6 @@ document.addEventListener('DOMContentLoaded', function() {
             
             console.log('✅ تاریخ بک‌اند در تقویم نمایش داده شد:', backendDate);
         } else {
-            // اگر تاریخ از بک نداریم، از localStorage بخوان
             const savedDate = localStorage.getItem('selected_date');
             if (savedDate) {
                 jQuery('#datepicker').val(savedDate);
@@ -3006,23 +2720,19 @@ function setToday() {
             return;
         }
         
-        // ایجاد آبجکت تاریخ امروز
         const today = new persianDate();
         const formattedDate = today.format('YYYY/MM/DD');
         
         console.log('📅 امروز:', formattedDate);
         
-        // تنظیم مقدار input
         jQuery('#datepicker').val(formattedDate);
         
-        // تلاش برای set در تقویم
         try {
             jQuery('#datepicker').persianDatepicker('setDate', today);
         } catch(e) {
             console.warn('setDate failed, but input value is set:', e);
         }
         
-        // ذخیره در متغیر global و localStorage
         window.selectedDate = formattedDate;
         localStorage.setItem('selected_date', formattedDate);
         
@@ -3044,36 +2754,22 @@ function setToday() {
 }
 
 
-
-
-
-
-
-
-
-
-
 // ========================================
 // LIVE SEARCH - جستجوی زنده
 // ========================================
 let searchTimeout = null;
 
 function liveSearch(searchTerm) {
-    // Debounce - تاخیر برای جلوگیری از جستجوی مکرر
     if (searchTimeout) {
         clearTimeout(searchTimeout);
     }
     
     searchTimeout = setTimeout(() => {
         performSearch(searchTerm);
-    }, 200); // 200 میلی‌ثانیه تاخیر
+    }, 200);
 }
 
-// ========================================
-// PERFORM SEARCH - با نرمال‌سازی فارسی
-// ========================================
 function performSearch(searchTerm) {
-    // نرمال‌سازی عبارت جستجو
     const term = normalizePersianText(searchTerm);
     
     const formulaCards = document.querySelectorAll('.formula-card');
@@ -3082,13 +2778,11 @@ function performSearch(searchTerm) {
     const resultInfo = document.getElementById('searchResultInfo');
     const resultText = document.getElementById('searchResultText');
     
-    // حذف پیام "نتیجه‌ای یافت نشد" قبلی
     const existingNoResults = document.querySelector('.search-no-results');
     if (existingNoResults) {
         existingNoResults.remove();
     }
     
-    // نمایش/مخفی کردن دکمه پاک کردن
     if (term) {
         clearBtn.style.display = 'block';
     } else {
@@ -3099,14 +2793,12 @@ function performSearch(searchTerm) {
     let visibleCount = 0;
     let totalCount = formulaCards.length;
     
-    // اگر عبارت خالی است، همه را نمایش بده
     if (!term) {
         formulaCards.forEach(card => {
             card.classList.remove('search-hidden');
             removeHighlights(card);
         });
         
-        // به‌روزرسانی خلاصه
         document.getElementById('totalCount').textContent = totalCount;
         if (typeof updateSummary === 'function') {
             updateSummary();
@@ -3114,11 +2806,9 @@ function performSearch(searchTerm) {
         return;
     }
     
-    // تقسیم عبارت جستجو به کلمات (برای جستجوی چندکلمه‌ای)
     const searchWords = term.split(/\s+/).filter(w => w.length > 0);
     
     formulaCards.forEach(card => {
-        // دریافت اطلاعات قابل جستجو
         const formulaCode = normalizePersianText(
             card.querySelector('.formula-code')?.textContent || ''
         );
@@ -3126,17 +2816,14 @@ function performSearch(searchTerm) {
             card.querySelector('.formula-title')?.textContent || ''
         );
         
-        // دریافت نام محصول
         const productSpan = card.querySelector('.formula-header span[style*="background: rgba(255,255,255,0.1)"]');
         const productName = normalizePersianText(productSpan?.textContent || '');
         
-        // دریافت داده‌های data-*
         const valueInput = card.querySelector('.formula-value-input');
         const dataProductCode = normalizePersianText(valueInput?.dataset?.productCode || '');
         const dataFormulaCode = normalizePersianText(valueInput?.dataset?.formulaCode || '');
         const dataFormulaTitle = normalizePersianText(valueInput?.dataset?.formulaTitle || '');
         
-        // متن کامل قابل جستجو
         const searchableText = [
             formulaCode,
             formulaTitle,
@@ -3146,14 +2833,12 @@ function performSearch(searchTerm) {
             dataFormulaTitle
         ].join(' ');
         
-        // بررسی مطابقت: همه کلمات باید در متن باشند (AND)
         const matches = searchWords.every(word => searchableText.includes(word));
         
         if (matches) {
             card.classList.remove('search-hidden');
             visibleCount++;
             
-            // هایلایت متن مطابق
             highlightSearchTerm(card, searchTerm);
         } else {
             card.classList.add('search-hidden');
@@ -3161,7 +2846,6 @@ function performSearch(searchTerm) {
         }
     });
     
-    // نمایش پیام "نتیجه‌ای یافت نشد"
     if (visibleCount === 0) {
         const noResultsDiv = document.createElement('div');
         noResultsDiv.className = 'search-no-results';
@@ -3176,7 +2860,6 @@ function performSearch(searchTerm) {
         resultsContainer.appendChild(noResultsDiv);
     }
     
-    // به‌روزرسانی اطلاعات نتیجه
     resultInfo.style.display = 'block';
     if (visibleCount > 0) {
         resultText.innerHTML = `
@@ -3190,24 +2873,16 @@ function performSearch(searchTerm) {
         `;
     }
     
-    // به‌روزرسانی خلاصه شناور
     document.getElementById('totalCount').textContent = visibleCount;
     if (typeof updateSummary === 'function') {
         updateSummary();
     }
 }
-// ========================================
-// HIGHLIGHT SEARCH TERM
-// ========================================
-// ========================================
-// HIGHLIGHT SEARCH TERM - با نرمال‌سازی
-// ========================================
+
 function highlightSearchTerm(card, originalTerm) {
-    // نرمال‌سازی عبارت جستجو
     const term = normalizePersianText(originalTerm);
     if (!term) return;
     
-    // هایلایت در المان‌های مشخص
     const elementsToHighlight = [
         card.querySelector('.formula-code'),
         card.querySelector('.formula-title')
@@ -3216,28 +2891,18 @@ function highlightSearchTerm(card, originalTerm) {
     elementsToHighlight.forEach(el => {
         if (!el) return;
         
-        // ذخیره متن اصلی (اگر قبلاً هایلایت شده، از data-original استفاده کن)
         const originalText = el.dataset.originalText || el.textContent;
         el.dataset.originalText = originalText;
         
-        // نرمال‌سازی متن اصلی برای مقایسه
         const normalizedText = normalizePersianText(originalText);
         
-        // پیدا کردن موقعیت کلمات مطابق در متن نرمال‌شده
         const words = term.split(/\s+/).filter(w => w.length > 0);
         let html = originalText;
         let hasMatch = false;
         
-        // برای هر کلمه، در متن اصلی جستجو کن
         words.forEach(word => {
             if (!word) return;
             
-            // ساخت regex با نرمال‌سازی برای مطابقت با متن اصلی
-            // این کار پیچیده است چون متن اصلی ممکن است با متن نرمال‌شده متفاوت باشد
-            // راه ساده: از یک تابع match با نرمال‌سازی در حین مقایسه استفاده کن
-            
-            // روش ساده: اگر کلمه در متن نرمال‌شده وجود دارد،
-            // از یک regex با کاراکترهای معادل استفاده کن
             const regexPattern = buildPersianRegex(word);
             if (!regexPattern) return;
             
@@ -3248,20 +2913,15 @@ function highlightSearchTerm(card, originalTerm) {
             }
         });
         
-        // اگر مطابقی پیدا شد، HTML را set کن
         if (hasMatch) {
             el.innerHTML = html;
         }
     });
 }
 
-// ========================================
-// ساخت Regex برای جستجوی فارسی (با در نظر گرفتن حروف معادل)
-// ========================================
 function buildPersianRegex(word) {
     if (!word) return '';
     
-    // نگاشت حروف معادل
     const charMap = {
         'ی': '[یيﻯﻰﻱﻲ]',
         'ک': '[کكﻙﻚ]',
@@ -3283,13 +2943,11 @@ function buildPersianRegex(word) {
         '9': '[9۹٩]'
     };
     
-    // ساخت pattern
     let pattern = '';
     for (const char of word) {
         if (charMap[char]) {
             pattern += charMap[char];
         } else if (/[.*+?^${}()|[\]\\]/.test(char)) {
-            // escape کاراکترهای خاص regex
             pattern += '\\' + char;
         } else {
             pattern += char;
@@ -3298,9 +2956,7 @@ function buildPersianRegex(word) {
     
     return pattern;
 }
-// ========================================
-// REMOVE HIGHLIGHTS
-// ========================================
+
 function removeHighlights(card) {
     card.querySelectorAll('.highlight-match').forEach(el => {
         const parent = el.parentNode;
@@ -3309,9 +2965,6 @@ function removeHighlights(card) {
     });
 }
 
-// ========================================
-// CLEAR LIVE SEARCH
-// ========================================
 function clearLiveSearch() {
     const input = document.getElementById('liveSearchInput');
     if (input) {
@@ -3321,25 +2974,16 @@ function clearLiveSearch() {
     performSearch('');
 }
 
-// ========================================
-// ESCAPE HTML
-// ========================================
 function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
 }
 
-// ========================================
-// ESCAPE REGEX
-// ========================================
 function escapeRegex(text) {
     return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
-// ========================================
-// KEYBOARD SHORTCUT: Ctrl+K برای جستجو
-// ========================================
 document.addEventListener('keydown', function(e) {
     if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
         e.preventDefault();
@@ -3350,7 +2994,6 @@ document.addEventListener('keydown', function(e) {
         }
     }
     
-    // ESC برای پاک کردن جستجو
     if (e.key === 'Escape') {
         const searchInput = document.getElementById('liveSearchInput');
         if (searchInput && document.activeElement === searchInput) {
@@ -3361,9 +3004,6 @@ document.addEventListener('keydown', function(e) {
 });
 
 
-
-
-
 // ========================================
 // PERSIAN TEXT NORMALIZATION
 // ========================================
@@ -3372,43 +3012,52 @@ function normalizePersianText(text) {
     
     return text
         .toString()
-        // 1. تبدیل اعداد فارسی و عربی به انگلیسی
         .replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d))
         .replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d))
-        
-        // 2. یکسان‌سازی حروف عربی/فارسی
-        .replace(/[يﻯﻰﻱﻲ]/g, 'ی')  // ی عربی → ی فارسی
-        .replace(/[كﻙﻚ]/g, 'ک')     // ک عربی → ک فارسی
-        .replace(/[ةۀ]/g, 'ه')        // ة و ۀ → ه
-        .replace(/[أإآٱ]/g, 'ا')      // أ إ آ → ا
-        .replace(/[ؤئ]/g, 'ی')        // ؤ ئ → ی (اختیاری، بسته به نیاز)
+        .replace(/[يﻯﻰﻱﻲ]/g, 'ی')
+        .replace(/[كﻙﻚ]/g, 'ک')
+        .replace(/[ةۀ]/g, 'ه')
+        .replace(/[أإآٱ]/g, 'ا')
+        .replace(/[ؤئ]/g, 'ی')
         .replace(/[ﻭو]/g, 'و')
         .replace(/[ﻝل]/g, 'ل')
         .replace(/[ﻡم]/g, 'م')
         .replace(/[ﻥن]/g, 'ن')
-        
-        // 3. حذف اعراب (فتحه، کسره، ضمه، تشدید، سکون و ...)
         .replace(/[\u064B-\u065F\u0670\u0640]/g, '')
-        
-        // 4. حذف نیم‌فاصله (ZWNJ) و جایگزینی با فاصله
-        .replace(/\u200C/g, ' ')  // نیم‌فاصله
-        .replace(/\u200F|\u200E/g, '') // RTL/LTR marks
-        
-        // 5. حذف کشیده (ـــ)
+        .replace(/\u200C/g, ' ')
+        .replace(/\u200F|\u200E/g, '')
         .replace(/\u0640/g, '')
-        
-        // 6. حذف فاصله‌های اضافی
         .replace(/\s+/g, ' ')
-        
-        // 7. Trim نهایی
         .trim()
-        
-        // 8. lowercase برای انگلیسی (فارسی تأثیری ندارد)
         .toLowerCase();
 }
 
 
-
+// ========================================
+// تغییر رابطه → reload صفحه با فیلتر
+// ========================================
+function onRelationChange(selectElement) {
+    const relationId = selectElement.value;
+    
+    if (!relationId) {
+        // اگر هیچ رابطه‌ای انتخاب نشده
+        Swal.fire({
+            title: '⚠️ توجه',
+            text: 'برای مشاهده فرمول‌ها، ابتدا یک رابطه انتخاب کنید',
+            icon: 'warning',
+            confirmButtonText: 'باشه'
+        });
+        return;
+    }
+    
+    // ✅ ذخیره در localStorage
+    localStorage.setItem('selected_relation_id', relationId);
+    
+    // ✅ reload صفحه با پارامتر رابطه
+    const url = new URL(window.location.href);
+    url.searchParams.set('relation_id', relationId);
+    window.location.href = url.toString();
+}
 
 </script>
 

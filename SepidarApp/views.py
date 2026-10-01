@@ -36,18 +36,48 @@ from .databaseConnector import DatabaseConnection, db
 
 logger = logging.getLogger(__name__)
 @login_required
+@login_required
 def formula_list(request):
+    """
+    Display all formulas with their boom items
+    - فیلتر شده بر اساس رابطه انتخاب‌شده
+    """
     try:
-        # Connect to database
         db.connect()
         
-        # Get all formulas with items
+        # ============================================
+        # دریافت رابطه انتخاب‌شده
+        # ============================================
+        relation_id = request.GET.get('relation_id')
+        
+        # فرمول‌های مجاز
+        allowed_formula_ids = None  # None = همه
+        selected_relation = None
+        
+        if relation_id:
+            try:
+                selected_relation = WarehouseRelation.objects.get(id=relation_id)
+                allowed_formula_ids = set(
+                    selected_relation.formula_relations
+                        .filter(is_deleted=False)
+                        .values_list('formula_id', flat=True)
+                )
+            except WarehouseRelation.DoesNotExist:
+                pass
+        
+        # ============================================
+        # همه فرمول‌ها از سپیدار
+        # ============================================
         results = db.get_formulas_with_items()
         
-        # Process results into a structured format
         formulas = {}
         for row in results:
             formula_id = row.ProductFormulaID
+            
+            # ✅ فیلتر بر اساس رابطه
+            if allowed_formula_ids is not None and formula_id not in allowed_formula_ids:
+                continue
+            
             if formula_id not in formulas:
                 formulas[formula_id] = {
                     'id': formula_id,
@@ -84,17 +114,19 @@ def formula_list(request):
         
         formula_list = list(formulas.values())
         
-        # Get summary statistics
+        # آمار
         total_formulas = len(formula_list)
         active_formulas = sum(1 for f in formula_list if f['is_active'])
         total_items = sum(len(f['items']) for f in formula_list)
         
-        relations = WarehouseRelation.objects.select_related('source_warehouse', 'destination_warehouse').all()
+        relations = WarehouseRelation.objects.select_related(
+            'source_warehouse', 'destination_warehouse'
+        ).all()
         
         # ============================================
-        # دریافت داده‌های needed_materials از SESSION
+        # Session data
         # ============================================
-        exist=False
+        exist = False
         try:
             needed_materials = request.session['needed_materials']
             selected_date = request.session['materials_date']
@@ -105,10 +137,9 @@ def formula_list(request):
                 needed_materials = []
                 selected_date = []
                 count = []
-        # همچنین از GET برای خطاها استفاده کنید
+        
         error_message = request.GET.get('error', '')
         
-        # پردازش needed_materials
         materials_by_code = {}
         for material in needed_materials:
             code = material.get('code', '')
@@ -122,7 +153,6 @@ def formula_list(request):
             'total_items': total_items,
             'inactive_formulas': total_formulas - active_formulas,
             'relations': relations,
-            # داده‌های جدید از session
             'needed_materials': needed_materials,
             'materials_by_code': materials_by_code,
             'needed_material_codes': list(materials_by_code.keys()),
@@ -130,21 +160,49 @@ def formula_list(request):
             'selected_date': selected_date,
             'count': count,
             'error_message': error_message,
+            'selected_relation_id': int(relation_id) if relation_id and relation_id.isdigit() else None,
+            'selected_relation': selected_relation,
         }
         
         return render(request, 'formula_list.html', context)
         
-    except pyodbc.Error as e:
-        error_message = f"Database error: {str(e)}"
-        logger.error(error_message)
-        return render(request, 'error.html', {'error': error_message})
     except Exception as e:
-        error_message = f"Error: {str(e)}"
-        logger.error(error_message)
-        return render(request, 'error.html', {'error': error_message})
+        logger.error(f"Error in formula_list: {e}")
+        return render(request, 'error.html', {'error': str(e)})
     finally:
         db.close()
 
+
+# ============================================================
+# API: فرمول‌های مجاز یک رابطه
+# ============================================================
+@login_required
+def api_relation_formulas(request, relation_id):
+    """
+    API: دریافت لیست ID فرمول‌های مجاز یک رابطه
+    """
+    try:
+        relation = WarehouseRelation.objects.get(id=relation_id)
+        allowed_ids = list(
+            relation.formula_relations
+                .filter(is_deleted=False)
+                .values_list('formula_id', flat=True)
+        )
+        return JsonResponse({
+            'success': True,
+            'formula_ids': allowed_ids,
+            'count': len(allowed_ids),
+        })
+    except WarehouseRelation.DoesNotExist:
+        return JsonResponse({
+            'success': False,
+            'error': 'رابطه یافت نشد'
+        }, status=404)
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'error': str(e)
+        }, status=500)
 
               
 def formula_detail(request, formula_id):

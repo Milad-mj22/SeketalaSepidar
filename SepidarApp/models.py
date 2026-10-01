@@ -129,3 +129,88 @@ class WarehouseRelation(models.Model):
     def save(self, *args, **kwargs):
         # اجرای اعتبارسنجی قبل از ذخیره
         super().save(*args, **kwargs)
+
+
+
+
+
+
+
+# SepidarApp/models.py
+
+class RelationFormula(models.Model):
+    """
+    فرمول‌های مجاز برای یک رابطه انبار
+    هر رابطه می‌تونه چند فرمول داشته باشه و هر فرمول می‌تونه توی چند رابطه باشه
+    """
+    relation = models.ForeignKey(
+        WarehouseRelation,
+        on_delete=models.CASCADE,
+        related_name='formula_relations',
+        verbose_name="رابطه انبار"
+    )
+    
+    # شناسه فرمول در سپیدار
+    formula_id = models.IntegerField(
+        verbose_name="شناسه فرمول (سپیدار)",
+        db_index=True
+    )
+    
+    # اطلاعات cache شده از سپیدار (برای جلوگیری از کوئری مکرر)
+    formula_code = models.CharField(
+        max_length=50,
+        blank=True,
+        verbose_name="کد فرمول"
+    )
+    formula_title = models.CharField(
+        max_length=255,
+        blank=True,
+        verbose_name="عنوان فرمول"
+    )
+    formula_item_ref = models.IntegerField(
+        null=True, blank=True,
+        verbose_name="مرجع محصول"
+    )
+    formula_product_name = models.CharField(
+        max_length=255, blank=True,
+        verbose_name="نام محصول"
+    )
+    
+    # ✅ علامت حذف (اگه توی سپیدار پاک شد)
+    is_deleted = models.BooleanField(
+        default=False,
+        verbose_name="حذف شده از سپیدار"
+    )
+    deleted_at = models.DateTimeField(
+        null=True, blank=True,
+        verbose_name="تاریخ حذف"
+    )
+    
+    # ✅ یادداشت
+    notes = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name="یادداشت",
+        help_text="یادداشت مخصوص این رابطه-فرمول"
+    )
+    
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="تاریخ ایجاد")
+    
+    class Meta:
+        verbose_name = "فرمول رابطه"
+        verbose_name_plural = "فرمول‌های روابط"
+        ordering = ['formula_code']
+        unique_together = [['relation', 'formula_id']]
+        indexes = [
+            models.Index(fields=['relation', 'formula_id']),
+            models.Index(fields=['is_deleted']),
+        ]
+    
+    def __str__(self):
+        status = "🚫" if self.is_deleted else "✅"
+        return f"{status} {self.formula_code} - {self.formula_title}"
+    
+    @property
+    def is_available(self):
+        """آیا این فرمول هنوز توی سپیدار موجوده؟"""
+        return not self.is_deleted
