@@ -830,6 +830,110 @@
 }
 
 
+
+
+/* ===== Live Search ===== */
+.search-box-wrapper {
+    position: relative;
+}
+
+#liveSearchInput::placeholder {
+    color: var(--gray-400);
+    font-size: 13px;
+}
+
+#liveSearchInput:focus {
+    outline: none;
+}
+
+/* ===== Highlight matching text ===== */
+.highlight-match {
+    background: linear-gradient(180deg, #fde047 0%, #facc15 100%);
+    color: #78350f;
+    padding: 1px 4px;
+    border-radius: 4px;
+    font-weight: 700;
+    box-shadow: 0 1px 3px rgba(250, 204, 21, 0.4);
+    border-bottom: 2px solid #eab308;
+    display: inline-block;
+    line-height: 1.4;
+}
+
+/* هایلایت داخل کد فرمول (پس‌زمینه روشن‌تر) */
+.formula-code .highlight-match {
+    background: linear-gradient(180deg, #fef3c7 0%, #fde68a 100%);
+    color: #78350f;
+    border-bottom-color: #f59e0b;
+}
+
+/* هایلایت داخل عنوان فرمول */
+.formula-title .highlight-match {
+    background: linear-gradient(180deg, #fde047 0%, #fbbf24 100%);
+    color: #422006;
+    border-bottom-color: #d97706;
+}
+/* Hidden formula card */
+.formula-card.search-hidden {
+    display: none !important;
+}
+
+/* No results message */
+.search-no-results {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--gray-500);
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--gray-200);
+}
+
+.search-no-results .icon {
+    font-size: 56px;
+    margin-bottom: 16px;
+    opacity: 0.4;
+}
+
+.search-no-results h3 {
+    font-size: 20px;
+    color: var(--gray-700);
+    margin-bottom: 8px;
+}
+
+.search-no-results p {
+    color: var(--gray-400);
+    font-size: 14px;
+}
+
+/* Search result count badge */
+#searchResultInfo {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .search-box-wrapper {
+        max-width: 100% !important;
+        margin: 8px 0 !important;
+        order: 3;
+        width: 100%;
+    }
+}
+
+
+
+
+
+
+
+
+
+
     </style>
 </head>
 <body>
@@ -841,6 +945,33 @@
                     <span class="icon">📋</span>
                     <h1>فرمول‌های محصولات</h1>
                 </div>
+
+
+<div class="search-box-wrapper" style="flex: 1; max-width: 400px; margin: 0 16px;">
+    <div style="position: relative; display: flex; align-items: center;">
+        <i class="fas fa-search" style="position: absolute; right: 14px; color: var(--gray-400); font-size: 14px; pointer-events: none;"></i>
+        <input type="text" 
+               id="liveSearchInput" 
+               placeholder="جستجو بر اساس کد، عنوان یا نام محصول..." 
+               style="width: 100%; padding: 10px 40px 10px 16px; border: 2px solid var(--gray-200); border-radius: var(--radius-sm); font-size: 14px; transition: var(--transition); background: var(--gray-50); font-family: inherit;"
+               oninput="liveSearch(this.value)"
+               onfocus="this.style.borderColor='var(--primary)'; this.style.boxShadow='0 0 0 3px rgba(79, 70, 229, 0.1)'; this.style.background='white';"
+               onblur="this.style.borderColor='var(--gray-200)'; this.style.boxShadow='none'; this.style.background='var(--gray-50)';">
+        <button id="clearSearchBtn" 
+                onclick="clearLiveSearch()" 
+                style="position: absolute; left: 10px; background: none; border: none; cursor: pointer; color: var(--gray-400); font-size: 16px; display: none; padding: 4px; border-radius: 50%; transition: var(--transition);"
+                onmouseover="this.style.color='var(--danger)'; this.style.background='#fef2f2';"
+                onmouseout="this.style.color='var(--gray-400)'; this.style.background='none';">
+            <i class="fas fa-times-circle"></i>
+        </button>
+    </div>
+    <div id="searchResultInfo" style="font-size: 12px; color: var(--gray-500); margin-top: 4px; display: none; padding-right: 4px;">
+        <i class="fas fa-info-circle"></i>
+        <span id="searchResultText"></span>
+    </div>
+</div>
+
+
 
 
 <!-- بعد از Stats و قبل از header-actions -->
@@ -1474,6 +1605,24 @@
                 // INITIAL SUMMARY
                 // ========================================
                 updateSummary();
+
+
+
+                // ========================================
+                // INITIAL SEARCH STATE
+                // ========================================
+                const searchInput = document.getElementById('liveSearchInput');
+                if (searchInput) {
+                    // اگر از URL پارامتر search داریم، اعمال کنیم
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const searchParam = urlParams.get('search');
+                    if (searchParam) {
+                        searchInput.value = searchParam;
+                        performSearch(searchParam);
+                    }
+                }
+
+
                 
                 // ========================================
                 // KEYBOARD SHORTCUT: Ctrl+Enter
@@ -2893,6 +3042,374 @@ function setToday() {
         });
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+// ========================================
+// LIVE SEARCH - جستجوی زنده
+// ========================================
+let searchTimeout = null;
+
+function liveSearch(searchTerm) {
+    // Debounce - تاخیر برای جلوگیری از جستجوی مکرر
+    if (searchTimeout) {
+        clearTimeout(searchTimeout);
+    }
+    
+    searchTimeout = setTimeout(() => {
+        performSearch(searchTerm);
+    }, 200); // 200 میلی‌ثانیه تاخیر
+}
+
+// ========================================
+// PERFORM SEARCH - با نرمال‌سازی فارسی
+// ========================================
+function performSearch(searchTerm) {
+    // نرمال‌سازی عبارت جستجو
+    const term = normalizePersianText(searchTerm);
+    
+    const formulaCards = document.querySelectorAll('.formula-card');
+    const resultsContainer = document.getElementById('results');
+    const clearBtn = document.getElementById('clearSearchBtn');
+    const resultInfo = document.getElementById('searchResultInfo');
+    const resultText = document.getElementById('searchResultText');
+    
+    // حذف پیام "نتیجه‌ای یافت نشد" قبلی
+    const existingNoResults = document.querySelector('.search-no-results');
+    if (existingNoResults) {
+        existingNoResults.remove();
+    }
+    
+    // نمایش/مخفی کردن دکمه پاک کردن
+    if (term) {
+        clearBtn.style.display = 'block';
+    } else {
+        clearBtn.style.display = 'none';
+        resultInfo.style.display = 'none';
+    }
+    
+    let visibleCount = 0;
+    let totalCount = formulaCards.length;
+    
+    // اگر عبارت خالی است، همه را نمایش بده
+    if (!term) {
+        formulaCards.forEach(card => {
+            card.classList.remove('search-hidden');
+            removeHighlights(card);
+        });
+        
+        // به‌روزرسانی خلاصه
+        document.getElementById('totalCount').textContent = totalCount;
+        if (typeof updateSummary === 'function') {
+            updateSummary();
+        }
+        return;
+    }
+    
+    // تقسیم عبارت جستجو به کلمات (برای جستجوی چندکلمه‌ای)
+    const searchWords = term.split(/\s+/).filter(w => w.length > 0);
+    
+    formulaCards.forEach(card => {
+        // دریافت اطلاعات قابل جستجو
+        const formulaCode = normalizePersianText(
+            card.querySelector('.formula-code')?.textContent || ''
+        );
+        const formulaTitle = normalizePersianText(
+            card.querySelector('.formula-title')?.textContent || ''
+        );
+        
+        // دریافت نام محصول
+        const productSpan = card.querySelector('.formula-header span[style*="background: rgba(255,255,255,0.1)"]');
+        const productName = normalizePersianText(productSpan?.textContent || '');
+        
+        // دریافت داده‌های data-*
+        const valueInput = card.querySelector('.formula-value-input');
+        const dataProductCode = normalizePersianText(valueInput?.dataset?.productCode || '');
+        const dataFormulaCode = normalizePersianText(valueInput?.dataset?.formulaCode || '');
+        const dataFormulaTitle = normalizePersianText(valueInput?.dataset?.formulaTitle || '');
+        
+        // متن کامل قابل جستجو
+        const searchableText = [
+            formulaCode,
+            formulaTitle,
+            productName,
+            dataProductCode,
+            dataFormulaCode,
+            dataFormulaTitle
+        ].join(' ');
+        
+        // بررسی مطابقت: همه کلمات باید در متن باشند (AND)
+        const matches = searchWords.every(word => searchableText.includes(word));
+        
+        if (matches) {
+            card.classList.remove('search-hidden');
+            visibleCount++;
+            
+            // هایلایت متن مطابق
+            highlightSearchTerm(card, searchTerm);
+        } else {
+            card.classList.add('search-hidden');
+            removeHighlights(card);
+        }
+    });
+    
+    // نمایش پیام "نتیجه‌ای یافت نشد"
+    if (visibleCount === 0) {
+        const noResultsDiv = document.createElement('div');
+        noResultsDiv.className = 'search-no-results';
+        noResultsDiv.innerHTML = `
+            <div class="icon">🔍</div>
+            <h3>نتیجه‌ای یافت نشد</h3>
+            <p>هیچ فرمولی با عبارت "<strong>${escapeHtml(searchTerm)}</strong>" مطابقت ندارد.</p>
+            <button onclick="clearLiveSearch()" style="margin-top: 16px; padding: 8px 24px; background: var(--primary); color: white; border: none; border-radius: var(--radius-sm); cursor: pointer; font-family: inherit; font-size: 14px; font-weight: 600; transition: var(--transition);" onmouseover="this.style.background='var(--primary-dark)'" onmouseout="this.style.background='var(--primary)'">
+                <i class="fas fa-times"></i> پاک کردن جستجو
+            </button>
+        `;
+        resultsContainer.appendChild(noResultsDiv);
+    }
+    
+    // به‌روزرسانی اطلاعات نتیجه
+    resultInfo.style.display = 'block';
+    if (visibleCount > 0) {
+        resultText.innerHTML = `
+            <span style="color: var(--success); font-weight: 600;">${visibleCount}</span> 
+            از <span style="font-weight: 600;">${totalCount}</span> فرمول نمایش داده می‌شود
+        `;
+    } else {
+        resultText.innerHTML = `
+            <span style="color: var(--danger); font-weight: 600;">هیچ فرمولی</span> 
+            با این عبارت یافت نشد
+        `;
+    }
+    
+    // به‌روزرسانی خلاصه شناور
+    document.getElementById('totalCount').textContent = visibleCount;
+    if (typeof updateSummary === 'function') {
+        updateSummary();
+    }
+}
+// ========================================
+// HIGHLIGHT SEARCH TERM
+// ========================================
+// ========================================
+// HIGHLIGHT SEARCH TERM - با نرمال‌سازی
+// ========================================
+function highlightSearchTerm(card, originalTerm) {
+    // نرمال‌سازی عبارت جستجو
+    const term = normalizePersianText(originalTerm);
+    if (!term) return;
+    
+    // هایلایت در المان‌های مشخص
+    const elementsToHighlight = [
+        card.querySelector('.formula-code'),
+        card.querySelector('.formula-title')
+    ];
+    
+    elementsToHighlight.forEach(el => {
+        if (!el) return;
+        
+        // ذخیره متن اصلی (اگر قبلاً هایلایت شده، از data-original استفاده کن)
+        const originalText = el.dataset.originalText || el.textContent;
+        el.dataset.originalText = originalText;
+        
+        // نرمال‌سازی متن اصلی برای مقایسه
+        const normalizedText = normalizePersianText(originalText);
+        
+        // پیدا کردن موقعیت کلمات مطابق در متن نرمال‌شده
+        const words = term.split(/\s+/).filter(w => w.length > 0);
+        let html = originalText;
+        let hasMatch = false;
+        
+        // برای هر کلمه، در متن اصلی جستجو کن
+        words.forEach(word => {
+            if (!word) return;
+            
+            // ساخت regex با نرمال‌سازی برای مطابقت با متن اصلی
+            // این کار پیچیده است چون متن اصلی ممکن است با متن نرمال‌شده متفاوت باشد
+            // راه ساده: از یک تابع match با نرمال‌سازی در حین مقایسه استفاده کن
+            
+            // روش ساده: اگر کلمه در متن نرمال‌شده وجود دارد،
+            // از یک regex با کاراکترهای معادل استفاده کن
+            const regexPattern = buildPersianRegex(word);
+            if (!regexPattern) return;
+            
+            const regex = new RegExp(`(${regexPattern})`, 'gi');
+            if (regex.test(html)) {
+                html = html.replace(regex, '<span class="highlight-match">$1</span>');
+                hasMatch = true;
+            }
+        });
+        
+        // اگر مطابقی پیدا شد، HTML را set کن
+        if (hasMatch) {
+            el.innerHTML = html;
+        }
+    });
+}
+
+// ========================================
+// ساخت Regex برای جستجوی فارسی (با در نظر گرفتن حروف معادل)
+// ========================================
+function buildPersianRegex(word) {
+    if (!word) return '';
+    
+    // نگاشت حروف معادل
+    const charMap = {
+        'ی': '[یيﻯﻰﻱﻲ]',
+        'ک': '[کكﻙﻚ]',
+        'ه': '[هةۀ]',
+        'ا': '[اأإآٱ]',
+        'و': '[وﻭؤ]',
+        'ن': '[نﻥ]',
+        'ل': '[لﻝ]',
+        'م': '[مﻡ]',
+        '0': '[0۰٠]',
+        '1': '[1۱١]',
+        '2': '[2۲٢]',
+        '3': '[3۳٣]',
+        '4': '[4۴٤]',
+        '5': '[5۵٥]',
+        '6': '[6۶٦]',
+        '7': '[7۷٧]',
+        '8': '[8۸٨]',
+        '9': '[9۹٩]'
+    };
+    
+    // ساخت pattern
+    let pattern = '';
+    for (const char of word) {
+        if (charMap[char]) {
+            pattern += charMap[char];
+        } else if (/[.*+?^${}()|[\]\\]/.test(char)) {
+            // escape کاراکترهای خاص regex
+            pattern += '\\' + char;
+        } else {
+            pattern += char;
+        }
+    }
+    
+    return pattern;
+}
+// ========================================
+// REMOVE HIGHLIGHTS
+// ========================================
+function removeHighlights(card) {
+    card.querySelectorAll('.highlight-match').forEach(el => {
+        const parent = el.parentNode;
+        parent.replaceChild(document.createTextNode(el.textContent), el);
+        parent.normalize();
+    });
+}
+
+// ========================================
+// CLEAR LIVE SEARCH
+// ========================================
+function clearLiveSearch() {
+    const input = document.getElementById('liveSearchInput');
+    if (input) {
+        input.value = '';
+        input.focus();
+    }
+    performSearch('');
+}
+
+// ========================================
+// ESCAPE HTML
+// ========================================
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// ========================================
+// ESCAPE REGEX
+// ========================================
+function escapeRegex(text) {
+    return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+// ========================================
+// KEYBOARD SHORTCUT: Ctrl+K برای جستجو
+// ========================================
+document.addEventListener('keydown', function(e) {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        const searchInput = document.getElementById('liveSearchInput');
+        if (searchInput) {
+            searchInput.focus();
+            searchInput.select();
+        }
+    }
+    
+    // ESC برای پاک کردن جستجو
+    if (e.key === 'Escape') {
+        const searchInput = document.getElementById('liveSearchInput');
+        if (searchInput && document.activeElement === searchInput) {
+            clearLiveSearch();
+            searchInput.blur();
+        }
+    }
+});
+
+
+
+
+
+// ========================================
+// PERSIAN TEXT NORMALIZATION
+// ========================================
+function normalizePersianText(text) {
+    if (!text) return '';
+    
+    return text
+        .toString()
+        // 1. تبدیل اعداد فارسی و عربی به انگلیسی
+        .replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d))
+        .replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d))
+        
+        // 2. یکسان‌سازی حروف عربی/فارسی
+        .replace(/[يﻯﻰﻱﻲ]/g, 'ی')  // ی عربی → ی فارسی
+        .replace(/[كﻙﻚ]/g, 'ک')     // ک عربی → ک فارسی
+        .replace(/[ةۀ]/g, 'ه')        // ة و ۀ → ه
+        .replace(/[أإآٱ]/g, 'ا')      // أ إ آ → ا
+        .replace(/[ؤئ]/g, 'ی')        // ؤ ئ → ی (اختیاری، بسته به نیاز)
+        .replace(/[ﻭو]/g, 'و')
+        .replace(/[ﻝل]/g, 'ل')
+        .replace(/[ﻡم]/g, 'م')
+        .replace(/[ﻥن]/g, 'ن')
+        
+        // 3. حذف اعراب (فتحه، کسره، ضمه، تشدید، سکون و ...)
+        .replace(/[\u064B-\u065F\u0670\u0640]/g, '')
+        
+        // 4. حذف نیم‌فاصله (ZWNJ) و جایگزینی با فاصله
+        .replace(/\u200C/g, ' ')  // نیم‌فاصله
+        .replace(/\u200F|\u200E/g, '') // RTL/LTR marks
+        
+        // 5. حذف کشیده (ـــ)
+        .replace(/\u0640/g, '')
+        
+        // 6. حذف فاصله‌های اضافی
+        .replace(/\s+/g, ' ')
+        
+        // 7. Trim نهایی
+        .trim()
+        
+        // 8. lowercase برای انگلیسی (فارسی تأثیری ندارد)
+        .toLowerCase();
+}
+
+
+
+
 </script>
 
 {% endblock %}
