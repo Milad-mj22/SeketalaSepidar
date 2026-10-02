@@ -1,6 +1,6 @@
 # SepidarApp/admin.py
 import logging
-
+from django.utils.html import format_html
 from django.contrib import admin
 from .models import Warehouse, WarehouseRelation, RelationFormula
 from .forms import WarehouseRelationAdminForm
@@ -97,3 +97,85 @@ class WarehouseRelationAdmin(admin.ModelAdmin):
         
         if pending_ids is not None:
             form.save_formulas(obj, pending_ids)
+
+
+
+
+
+
+
+
+
+
+# SepidarApp/admin.py
+from .models import ActivityLog
+
+
+@admin.register(ActivityLog)
+class ActivityLogAdmin(admin.ModelAdmin):
+    list_display = [
+        'created_at',
+        'user_display_name',
+        'action_type_badge',
+        'relation_name',
+        'receipt_number',
+        'total_formulas',
+        'total_items',
+        'total_temp_items',
+    ]
+    list_filter = ['action_type', 'created_at', 'user']
+    search_fields = [
+        'user_display_name',
+        'receipt_number',
+        'relation_name',
+        'description',
+    ]
+    ordering = ['-created_at']
+    date_hierarchy = 'created_at'
+    
+    readonly_fields = [
+        'user', 'user_display_name', 'action_type',
+        'relation', 'relation_name', 'receipt_number',
+        'description', 'details',
+        'total_formulas', 'total_items', 'total_temp_items',
+        'ip_address', 'user_agent', 'created_at',
+    ]
+    
+    fieldsets = (
+        ('اطلاعات کاربر', {
+            'fields': ('user', 'user_display_name', 'ip_address', 'user_agent')
+        }),
+        ('اطلاعات فعالیت', {
+            'fields': ('action_type', 'relation', 'relation_name', 'receipt_number', 'created_at')
+        }),
+        ('آمار', {
+            'fields': ('total_formulas', 'total_items', 'total_temp_items')
+        }),
+        ('توضیحات و جزئیات', {
+            'fields': ('description', 'details'),
+            'classes': ('collapse',)
+        }),
+    )
+    
+    def action_type_badge(self, obj):
+        colors = {
+            'formula_submit': '#22c55e',
+            'formula_submit_failed': '#ef4444',
+            'item_add_temp': '#f59e0b',
+        }
+        color = colors.get(obj.action_type, '#64748b')
+        return format_html(
+            '<span style="background: {}; color: white; padding: 3px 10px; '
+            'border-radius: 10px; font-size: 11px; font-weight: 600;">{}</span>',
+            color,
+            obj.get_action_type_display()
+        )
+    action_type_badge.short_description = "نوع فعالیت"
+    
+    def has_add_permission(self, request):
+        # فقط از طریق سیستم ثبت می‌شه
+        return False
+    
+    def has_change_permission(self, request, obj=None):
+        # فقط خواندنی
+        return False

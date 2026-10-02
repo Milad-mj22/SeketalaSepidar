@@ -13,7 +13,7 @@ from SepidarApp.models import Warehouse
 logger = logging.getLogger(__name__)
 
 def save_product_order_db(db_connection:DatabaseConnection, formula_id, product_id, withdrawal_amount, material_details, quantity=1,
-                          stock_source_ref=None , stock_dest_ref=None,georgian_date=None,moin_code = None,cost_stock=None,dl_ref=None,notes = None):
+                          stock_source_ref=None , stock_dest_ref=None,georgian_date=None,moin_code = None,cost_stock=None,dl_ref=None,notes = None,creator:int=CREATOR_SEPIDAR):
     """
     ذخیره یک رکورد جدید در جدول ProductOrder
     
@@ -204,9 +204,9 @@ def save_product_order_db(db_connection:DatabaseConnection, formula_id, product_
             'FiscalYearRef': 1,
             'CanTransferNextPeriod': 0,
             'IsInitial': 0,
-            'Creator': CREATOR_SEPIDAR,  # یا کاربر فعلی
+            'Creator': creator,  # یا کاربر فعلی
             'CreationDate': now,
-            'LastModifier': CREATOR_SEPIDAR,
+            'LastModifier': creator,
             'LastModificationDate': now,
             'Version': 1,
             # 'ProductFormulaEstimatedLabour': estimated_labour,
@@ -289,7 +289,7 @@ def save_product_order_db(db_connection:DatabaseConnection, formula_id, product_
 
 
         description = f'{temp_note} {product_order_ref}'
-        delivery =  save_inventory_delivery_db(db_connection=db_connection,product_order_ref=product_order_ref, stock_ref=stock_source_ref, receiver_dl_ref=delivere_ref, total_price=0, is_return=0, type=2, destination_stock_ref=None, creator=15, description=description,items=material_details,georgian_date=georgian_date,sl_acc_ref=moin_code)
+        delivery =  save_inventory_delivery_db(db_connection=db_connection,product_order_ref=product_order_ref, stock_ref=stock_source_ref, receiver_dl_ref=delivere_ref, total_price=0, is_return=0, type=2, destination_stock_ref=None, creator=creator, description=description,items=material_details,georgian_date=georgian_date,sl_acc_ref=moin_code)
         if not delivery['success']:
             logger.warning(f"خطا در ذخیره InventoryDelivery: {delivery.get('error')}")
             conn.rollback()
@@ -305,7 +305,7 @@ def save_product_order_db(db_connection:DatabaseConnection, formula_id, product_
 
         items = [{'item_ref':product_id,'quantity':quantity}]
         recepi = save_inventory_receipt_db(db_connection=db_connection,product_order_ref=product_order_ref,stock_ref=stock_dest_ref,deliverer_dl_ref=delivere_ref,\
-                                           sl_account_ref=moin_code, items=items,number_product_order_ref=new_number,georgian_date=georgian_date)
+                                           sl_account_ref=moin_code, items=items,number_product_order_ref=new_number,georgian_date=georgian_date,creator=creator)
         if not recepi['success']:
             logger.warning(f"خطا در ذخیره recepi: {recepi.get('error')}")
             conn.rollback()
@@ -358,7 +358,7 @@ def save_product_order_db(db_connection:DatabaseConnection, formula_id, product_
         }
 
 
-def save_multiple_product_orders(conn, orders_data,stock_source_ref,stock_dest_ref,georgian_date=None,moin_code=None,cost_stock=None,dl_ref=None,notes = None):
+def save_multiple_product_orders(conn, orders_data,stock_source_ref,stock_dest_ref,georgian_date=None,moin_code=None,cost_stock=None,dl_ref=None,notes = None,creator=CREATOR_SEPIDAR):
     """
     ذخیره چندین سفارش محصول به صورت همزمان
     
@@ -396,7 +396,8 @@ def save_multiple_product_orders(conn, orders_data,stock_source_ref,stock_dest_r
             moin_code = moin_code,
             cost_stock=cost_stock,
             dl_ref = dl_ref,
-            notes=notes
+            notes=notes,
+            creator=creator
         )
         
         results.append(result)

@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 
 from SepidarApp.Steps.save_order import save_multiple_product_orders
 from SepidarApp.models import WarehouseRelation
-from SepidarApp.utils import persian_to_gregorian
+from SepidarApp.utils import get_creator_sepidar, persian_to_gregorian
 
 @login_required(login_url='authentication:sign-in')
 def first_page(request):
@@ -36,27 +36,25 @@ from .databaseConnector import DatabaseConnection, db
 
 logger = logging.getLogger(__name__)
 @login_required
-@login_required
 def formula_list(request):
-    """
-    Display all formulas with their boom items
-    - فیلتر شده بر اساس رابطه انتخاب‌شده
-    """
     try:
         db.connect()
-        
+
         # ============================================
-        # دریافت رابطه انتخاب‌شده
+        # تشخیص حالت نمایش
         # ============================================
         relation_id = request.GET.get('relation_id')
-        
-        # فرمول‌های مجاز
-        allowed_formula_ids = None  # None = همه
+        show_all = request.GET.get('show_all') == '1'   # ✅ چک‌باکس
+
+        allowed_formula_ids = None
         selected_relation = None
-        
-        if relation_id:
+        selected_relation_id = None
+
+        # ✅ اگه "نمایش همه" فعاله، فیلتر نکن
+        if not show_all and relation_id:
             try:
                 selected_relation = WarehouseRelation.objects.get(id=relation_id)
+                selected_relation_id = selected_relation.id
                 allowed_formula_ids = set(
                     selected_relation.formula_relations
                         .filter(is_deleted=False)
@@ -64,20 +62,20 @@ def formula_list(request):
                 )
             except WarehouseRelation.DoesNotExist:
                 pass
-        
+
         # ============================================
         # همه فرمول‌ها از سپیدار
         # ============================================
         results = db.get_formulas_with_items()
-        
+
         formulas = {}
         for row in results:
             formula_id = row.ProductFormulaID
-            
-            # ✅ فیلتر بر اساس رابطه
+
+            # ✅ فیلتر بر اساس رابطه (اگه show_all نیست)
             if allowed_formula_ids is not None and formula_id not in allowed_formula_ids:
                 continue
-            
+
             if formula_id not in formulas:
                 formulas[formula_id] = {
                     'id': formula_id,
@@ -97,7 +95,7 @@ def formula_list(request):
                     'main_item_stock_unit': row.MainItemStockUnitName if hasattr(row, 'MainItemStockUnitName') else None,
                     'items': []
                 }
-            
+
             if row.FormulaBomItemID:
                 formulas[formula_id]['items'].append({
                     'id': row.FormulaBomItemID,
@@ -111,21 +109,19 @@ def formula_list(request):
                     'stock_quantity': float(row.StockQuantity) if hasattr(row, 'StockQuantity') and row.StockQuantity else 0,
                     'stock_unit': row.StockUnitName if hasattr(row, 'StockUnitName') else None,
                 })
-        
+
         formula_list = list(formulas.values())
-        
+
         # آمار
         total_formulas = len(formula_list)
         active_formulas = sum(1 for f in formula_list if f['is_active'])
         total_items = sum(len(f['items']) for f in formula_list)
-        
+
         relations = WarehouseRelation.objects.select_related(
             'source_warehouse', 'destination_warehouse'
         ).all()
-        
-        # ============================================
+
         # Session data
-        # ============================================
         exist = False
         try:
             needed_materials = request.session['needed_materials']
@@ -137,15 +133,15 @@ def formula_list(request):
                 needed_materials = []
                 selected_date = []
                 count = []
-        
+
         error_message = request.GET.get('error', '')
-        
+
         materials_by_code = {}
         for material in needed_materials:
             code = material.get('code', '')
             if code:
                 materials_by_code[code] = material
-        
+
         context = {
             'formulas': formula_list,
             'total_formulas': total_formulas,
@@ -160,18 +156,18 @@ def formula_list(request):
             'selected_date': selected_date,
             'count': count,
             'error_message': error_message,
-            'selected_relation_id': int(relation_id) if relation_id and relation_id.isdigit() else None,
+            'selected_relation_id': selected_relation_id,
             'selected_relation': selected_relation,
+            'show_all': show_all,  # ✅ اضافه کن
         }
-        
+
         return render(request, 'formula_list.html', context)
-        
+
     except Exception as e:
         logger.error(f"Error in formula_list: {e}")
         return render(request, 'error.html', {'error': str(e)})
     finally:
         db.close()
-
 
 # ============================================================
 # API: فرمول‌های مجاز یک رابطه
@@ -470,15 +466,72 @@ def submit_all_formula_values(request):
             product_unit = item.get('product_unit', '')
             withdrawal_items = item.get('withdrawal_items', [])
             total_withdrawal = item.get('total_withdrawal', 0)
-            
-            # دریافت مواد اولیه فرمول از دیتابیس
+
+            # ============================================
+            # 1️⃣ دریافت مواد اولیه اصلی فرمول از دیتابیس
+            # ============================================
             recipe_items = get_formula_recipe(db, formula_id)
-            
-            if not recipe_items:
-                logger.warning(f"No recipe found for formula {formula_id}")
-                continue
-            
-            # محاسبه مقدار مورد نیاز برای هر ماده
+
+            if recipe_items is None:
+                recipe_items = []
+
+            # ============================================
+            # 2️⃣ ✅ اضافه کردن مواد موقت به recipe_items
+            # (موادی که کاربر توی فرانت اضافه کرده و توی فرمول اصلی نیستن)
+            # ============================================
+            existing_item_refs = {str(r.get('ItemRef')) for r in recipe_items}
+
+            for w_item in withdrawal_items:
+                w_item_ref = str(w_item.get('item_ref', '')).strip()
+
+                # اگه این ماده توی فرمول اصلی نیست، اضافه‌ش کن
+                if w_item_ref and w_item_ref not in existing_item_refs:
+                    w_item_name = w_item.get('item_name', '')
+                    withdrawal_amount = float(w_item.get('withdrawal_amount', 0) or 0)
+
+                    if withdrawal_amount > 0:
+                        # ✅ دریافت unit_ref از دیتابیس
+                        unit_ref = None
+                        unit_name = ''
+                        try:
+                            conn_temp = db.get_connection()
+                            cursor_temp = conn_temp.cursor()
+                            cursor_temp.execute("""
+                                SELECT i.UnitRef, u.Title AS UnitName
+                                FROM [Sepidar01].[INV].[Item] i
+                                LEFT JOIN [Sepidar01].[INV].[Unit] u ON i.UnitRef = u.UnitID
+                                WHERE i.ItemID = ?
+                            """, (w_item_ref,))
+                            row_temp = cursor_temp.fetchone()
+                            if row_temp:
+                                unit_ref = row_temp[0] if row_temp[0] else 1
+                                unit_name = row_temp[1] or ''
+                        except Exception as e:
+                            logger.warning(f"Could not fetch unit for temp item {w_item_ref}: {e}")
+                            unit_ref = 1
+
+                        # ✅ اضافه به recipe_items با فرمت یکسان
+                        recipe_items.append({
+                            'FormulaBomItemID': None,   # ماده موقت BomItem نداره
+                            'ItemRef': int(w_item_ref) if w_item_ref.isdigit() else w_item_ref,
+                            'Quantity': 0,               # مقدار در هر واحد فرمول نداره
+                            'SecondaryQuantity': 0,
+                            'Description': 'ماده موقت اضافه‌شده توسط کاربر',
+                            'ItemTracingRef': None,
+                            'ItemName': w_item_name,
+                            'ItemCode': '',
+                            'UnitRef': unit_ref,
+                            'UnitName': unit_name,
+                            'IsTemp': True,
+                            'WithdrawalAmount': withdrawal_amount,
+                        })
+
+                        existing_item_refs.add(w_item_ref)
+                        logger.info(f"✅ ماده موقت {w_item_ref} ({w_item_name}) به فرمول {formula_id} اضافه شد")
+
+            # ============================================
+            # 3️⃣ محاسبه مقدار مورد نیاز برای هر ماده
+            # ============================================
             formula_materials = []
             for recipe in recipe_items:
                 item_ref = recipe.get('ItemRef')
@@ -486,10 +539,23 @@ def submit_all_formula_values(request):
                 unit_ref = recipe.get('UnitRef')
                 unit_name = recipe.get('UnitName')
                 quantity_per_unit = recipe.get('Quantity', 0)
-                
-                # محاسبه مقدار مورد نیاز = مقدار مصرفی * مقدار در هر واحد
-                required_quantity = consumption_value * quantity_per_unit
-                
+                is_temp = recipe.get('IsTemp', False)
+
+                # ✅ محاسبه مقدار مورد نیاز
+                if is_temp:
+                    # مواد موقت: از withdrawal_amount استفاده کن
+                    required_quantity = recipe.get('WithdrawalAmount', 0)
+                else:
+                    # مواد اصلی: مقدار مصرفی * مقدار در هر واحد
+                    required_quantity = consumption_value * quantity_per_unit
+
+                # مقدار برداشتی کاربر
+                user_withdrawal = next(
+                    (w.get('withdrawal_amount', 0) for w in withdrawal_items
+                     if str(w.get('item_ref')) == str(item_ref)),
+                    0
+                )
+
                 formula_materials.append({
                     'item_ref': item_ref,
                     'item_name': item_name,
@@ -497,21 +563,22 @@ def submit_all_formula_values(request):
                     'unit_name': unit_name,
                     'quantity_per_unit': quantity_per_unit,
                     'required_quantity': required_quantity,
-                    'withdrawal_amount': next(
-                        (w.get('withdrawal_amount', 0) for w in withdrawal_items if w.get('item_ref') == item_ref),
-                        0
-                    )
+                    'withdrawal_amount': user_withdrawal,
+                    'is_temp': is_temp
                 })
-                
-                # جمع‌آوری در دیکشنری اصلی
+
+                # ✅ جمع‌آوری در دیکشنری اصلی
                 key = f"{item_ref}_{unit_ref}"
                 required_materials[key]['total_required'] += required_quantity
                 required_materials[key]['item_name'] = item_name
                 required_materials[key]['unit_name'] = unit_name
                 required_materials[key]['item_ref'] = item_ref
-                required_materials[key]['bom_item_id'] = recipe.get('BOMItemID')
-            
-            # ذخیره جزئیات فرمول
+                required_materials[key]['bom_item_id'] = recipe.get('FormulaBomItemID')
+                required_materials[key]['is_temp'] = is_temp
+
+            # ============================================
+            # 4️⃣ ذخیره جزئیات فرمول
+            # ============================================
             formula_details.append({
                 'formula_id': formula_id,
                 'product_id': product_id,
@@ -521,8 +588,10 @@ def submit_all_formula_values(request):
                 'withdrawal_items': withdrawal_items,
                 'materials': formula_materials
             })
-            
-            # جمع‌آوری جزئیات برداشت
+
+            # ============================================
+            # 5️⃣ جمع‌آوری جزئیات برداشت
+            # ============================================
             if withdrawal_items:
                 for w_item in withdrawal_items:
                     all_withdrawal_details.append({
@@ -539,6 +608,7 @@ def submit_all_formula_values(request):
         # بررسی موجودی مواد اولیه
         all_exist, stock_status = check_materials_stock(db, required_materials)
         
+        creator_id = get_creator_sepidar(request)
 
 
 
@@ -551,7 +621,7 @@ def submit_all_formula_values(request):
             # for item in formulas:
             save_results  = save_multiple_product_orders(db,formulas,stock_source_ref,stock_dest_ref,\
                                                          georgian_date,moin_code=moin_code,cost_stock=cost_stock,\
-                                                         dl_ref=deliverer_ref,   notes =order_registration_notes )
+                                                         dl_ref=deliverer_ref,   notes =order_registration_notes ,creator=creator_id)
 
             saved_results = save_results.get('results', [])
             saved_count = save_results.get('saved', 0)
@@ -575,6 +645,70 @@ def submit_all_formula_values(request):
         
         # بستن اتصال دیتابیس
         db.close()
+
+
+
+        # ============================================
+        # ✅ ثبت تاریخچه فعالیت
+        # ============================================
+        from SepidarApp.utils import log_activity
+        
+        # ✅ جمع‌آوری شماره‌های رسید از نتایج
+        receipt_numbers = []
+        if saved_results:
+            for r in saved_results:
+                if r.get('success'):
+                    num = r.get('number') or r.get('product_order_id')
+                    if num:
+                        receipt_numbers.append(str(num))
+        
+        receipt_number_str = ', '.join(receipt_numbers) if receipt_numbers else None
+        
+        # ✅ شمارش مواد موقت
+        total_temp = sum(
+            1 for f in formulas 
+            for w in f.get('withdrawal_items', []) 
+            if w.get('is_temp')
+        )
+        
+        # ✅ شمارش کل مواد
+        total_items = sum(
+            len(f.get('withdrawal_items', [])) 
+            for f in formulas
+        )
+        
+        if all_exist and saved_count > 0:
+            # ✅ لاگ موفق
+            log_activity(
+                request=request,
+                action_type='formula_submit',
+                relation=relation,
+                receipt_number=receipt_number_str,
+                description=f"{saved_count} فرمول با موفقیت ثبت شد",
+                details={
+                    'formulas': [
+                        {
+                            'formula_id': f.get('formula_id'),
+                            'formula_code': f.get('formula_code'),
+                            'formula_title': f.get('formula_title'),
+                            'consumption_value': f.get('consumption_value'),
+                            'total_withdrawal': f.get('total_withdrawal'),
+                            'items_count': len(f.get('withdrawal_items', [])),
+                            'temp_items_count': sum(1 for w in f.get('withdrawal_items', []) if w.get('is_temp')),
+                        }
+                        for f in formulas
+                    ],
+                    'saved_count': saved_count,
+                    'selected_date': selected_date,
+                },
+                total_formulas=len(formulas),
+                total_items=total_items,
+                total_temp_items=total_temp,
+            )
+
+
+
+
         
         if all_exist:
             return JsonResponse({
@@ -1356,3 +1490,89 @@ def change_sl_acc_ref_for_last_ten_delivery_items(request):
             'success': False,
             'error': str(e)
         }
+    
+
+
+# SepidarApp/views.py
+@login_required
+@require_http_methods(["GET"])
+def api_get_all_items(request):
+    """
+    API: دریافت همه مواد از سپیدار با واحد درست
+    فقط خواندنی — بدون ذخیره‌سازی
+    """
+    try:
+        from SepidarApp.databaseConnector import db
+        db.connect()
+        conn = db.get_connection()
+        cursor = conn.cursor()
+
+        search = request.GET.get('q', '').strip()
+
+        if search:
+            query = """
+                SELECT 
+                    i.ItemID,
+                    i.Code,
+                    i.Title,
+                    i.UnitRef,
+                    u.Title AS UnitTitle,
+                    i.SecondaryUnitRef,
+                    su.Title AS SecondaryUnitTitle,
+                    i.MinimumAmount
+                FROM [Sepidar01].[INV].[Item] i
+                LEFT JOIN [Sepidar01].[INV].[Unit] u ON i.UnitRef = u.UnitID
+                LEFT JOIN [Sepidar01].[INV].[Unit] su ON i.SecondaryUnitRef = su.UnitID
+                WHERE i.IsActive = 1 
+                  AND (i.Code LIKE ? OR i.Title LIKE ?)
+                ORDER BY i.Code
+            """
+            pattern = f"%{search}%"
+            cursor.execute(query, (pattern, pattern))
+        else:
+            # ✅ همه مواد بدون محدودیت
+            query = """
+                SELECT 
+                    i.ItemID,
+                    i.Code,
+                    i.Title,
+                    i.UnitRef,
+                    u.Title AS UnitTitle,
+                    i.SecondaryUnitRef,
+                    su.Title AS SecondaryUnitTitle,
+                    i.MinimumAmount
+                FROM [Sepidar01].[INV].[Item] i
+                LEFT JOIN [Sepidar01].[INV].[Unit] u ON i.UnitRef = u.UnitID
+                LEFT JOIN [Sepidar01].[INV].[Unit] su ON i.SecondaryUnitRef = su.UnitID
+                WHERE i.IsActive = 1
+                ORDER BY i.Code
+            """
+            cursor.execute(query)
+
+        rows = cursor.fetchall()
+
+        items = []
+        for row in rows:
+            items.append({
+                'id': int(row[0]),
+                'code': row[1] or '',
+                'title': row[2] or '',
+                'unit_ref': int(row[3]) if row[3] else None,
+                'unit_title': row[4] or '',
+                'secondary_unit_ref': int(row[5]) if row[5] else None,
+                'secondary_unit_title': row[6] or '',
+                'minimum_amount': float(row[7]) if row[7] else 0,
+            })
+
+        return JsonResponse({
+            'success': True,
+            'items': items,
+            'count': len(items)
+        })
+
+    except Exception as e:
+        logger.error(f"Error in api_get_all_items: {e}", exc_info=True)
+        return JsonResponse({
+            'success': False,
+            'error': str(e)
+        }, status=500)

@@ -24,6 +24,9 @@ urlpatterns = [
         views.api_relation_formulas, 
         name='api_relation_formulas'),
     path('api/submit-all-formula-values/', views.submit_all_formula_values, name='submit_all_formula_values'),
-]
+    path('api/get-all-items/', views.api_get_all_items, name='api_get_all_items'),
 
+
+
+]
 

@@ -214,3 +214,123 @@ class RelationFormula(models.Model):
     def is_available(self):
         """آیا این فرمول هنوز توی سپیدار موجوده؟"""
         return not self.is_deleted
+
+
+
+
+
+# SepidarApp/models.py
+
+class ActivityLog(models.Model):
+    """
+    ثبت تاریخچه فعالیت‌های کاربران
+    هر بار که کاربر یک عملیات ثبت موفق انجام می‌ده، یک رکورد اضافه می‌شود
+    """
+    
+    ACTION_CHOICES = [
+        ('formula_submit', 'ثبت فرمول‌ها'),
+        ('formula_submit_failed', 'ثبت فرمول‌ها (ناموفق)'),
+        ('item_add_temp', 'افزودن ماده موقت'),
+    ]
+    
+    # کاربر
+    user = models.ForeignKey(
+        'auth.User',
+        on_delete=models.SET_NULL,
+        null=True, blank=True,
+        related_name='activity_logs',
+        verbose_name="کاربر"
+    )
+    user_display_name = models.CharField(
+        max_length=200,
+        blank=True,
+        verbose_name="نام نمایشی کاربر",
+        help_text="نام کاربر در زمان ثبت (کش شده)"
+    )
+    
+    # نوع فعالیت
+    action_type = models.CharField(
+        max_length=50,
+        choices=ACTION_CHOICES,
+        default='formula_submit',
+        verbose_name="نوع فعالیت"
+    )
+    
+    # اطلاعات رابطه
+    relation = models.ForeignKey(
+        WarehouseRelation,
+        on_delete=models.SET_NULL,
+        null=True, blank=True,
+        related_name='activity_logs',
+        verbose_name="رابطه انبار"
+    )
+    relation_name = models.CharField(
+        max_length=200,
+        blank=True,
+        verbose_name="نام رابطه (کش شده)"
+    )
+    
+    # ✅ شماره رسید برگشتی
+    receipt_number = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        verbose_name="شماره رسید",
+        help_text="شماره رسید/سفارش تولیدی که ساخته شده"
+    )
+    
+    # اطلاعات تکمیلی
+    description = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name="توضیحات"
+    )
+    details = models.JSONField(
+        null=True, blank=True,
+        verbose_name="جزئیات",
+        help_text="اطلاعات کامل ثبت شده به صورت JSON"
+    )
+    
+    # آمار خلاصه
+    total_formulas = models.IntegerField(
+        default=0,
+        verbose_name="تعداد فرمول‌ها"
+    )
+    total_items = models.IntegerField(
+        default=0,
+        verbose_name="تعداد کل مواد"
+    )
+    total_temp_items = models.IntegerField(
+        default=0,
+        verbose_name="تعداد مواد موقت"
+    )
+    
+    # اطلاعات فنی
+    ip_address = models.GenericIPAddressField(
+        null=True, blank=True,
+        verbose_name="آدرس IP"
+    )
+    user_agent = models.CharField(
+        max_length=500,
+        blank=True,
+        verbose_name="User Agent"
+    )
+    
+    # زمان
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="زمان ثبت",
+        db_index=True
+    )
+    
+    class Meta:
+        verbose_name = "تاریخچه فعالیت"
+        verbose_name_plural = "تاریخچه فعالیت‌ها"
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['user', '-created_at']),
+            models.Index(fields=['action_type', '-created_at']),
+        ]
+    
+    def __str__(self):
+        return f"{self.user_display_name or 'ناشناس'} - {self.get_action_type_display()} - {self.created_at.strftime('%Y/%m/%d %H:%M')}"

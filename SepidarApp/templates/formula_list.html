@@ -2,7 +2,6 @@
 {% load static %}
 {% load vipaUtilsTag %}
 
-
 {% block content %}
 <head>
     <meta charset="UTF-8">
@@ -40,39 +39,30 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: var(--gray-50);
             padding: 20px;
-            /* ✅ فاصله از پایین برای نوار ثابت */
             padding-bottom: 70px !important;
             direction: rtl;
         }
 
-        .persian-datepicker-holder {
-            z-index: 99999 !important;
-        }
-        
+        .persian-datepicker-holder { z-index: 99999 !important; }
         .persian-datepicker-holder .persian-datepicker {
             border-radius: 12px !important;
             box-shadow: var(--shadow-xl) !important;
             border: 1px solid var(--gray-200) !important;
         }
-        
         .persian-datepicker-holder .persian-datepicker .datepicker-header {
             background: var(--primary) !important;
             border-radius: 12px 12px 0 0 !important;
         }
-        
         .persian-datepicker-holder .persian-datepicker .datepicker-header .datepicker-title {
             color: white !important;
         }
 
-        .container {
-            max-width: 1440px;
-            margin: 0 auto;
-        }
+        .container { max-width: 1440px; margin: 0 auto; }
 
         /* ===== Header ===== */
         .header {
@@ -83,7 +73,6 @@
             margin-bottom: 24px;
             border: 1px solid var(--gray-200);
         }
-        
         .header-top {
             display: flex;
             justify-content: space-between;
@@ -92,30 +81,10 @@
             gap: 16px;
             margin-bottom: 20px;
         }
-        
-        .header-title {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        
-        .header-title h1 {
-            font-size: 26px;
-            font-weight: 700;
-            color: var(--gray-900);
-            margin: 0;
-        }
-        
-        .header-title .icon {
-            font-size: 28px;
-        }
-        
-        .header-actions {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
+        .header-title { display: flex; align-items: center; gap: 12px; }
+        .header-title h1 { font-size: 26px; font-weight: 700; color: var(--gray-900); margin: 0; }
+        .header-title .icon { font-size: 28px; }
+        .header-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
 
         /* ===== Stats ===== */
         .stats-grid {
@@ -124,815 +93,277 @@
             gap: 12px;
             margin-bottom: 20px;
         }
-        
         .stat-card {
             background: var(--gray-50);
             padding: 14px 18px;
             border-radius: var(--radius-sm);
             border: 1px solid var(--gray-200);
             transition: var(--transition);
-            cursor: default;
         }
-        
-        .stat-card:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow);
-        }
-        
+        .stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
         .stat-card .label {
-            font-size: 12px;
-            color: var(--gray-500);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            font-size: 12px; color: var(--gray-500);
+            font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
         }
-        
-        .stat-card .value {
-            font-size: 22px;
-            font-weight: 700;
-            color: var(--gray-900);
-            margin-top: 4px;
-        }
-        
+        .stat-card .value { font-size: 22px; font-weight: 700; color: var(--gray-900); margin-top: 4px; }
         .stat-card .value.active { color: var(--success); }
         .stat-card .value.inactive { color: var(--danger); }
         .stat-card .value.primary { color: var(--primary); }
-        .stat-card .value.warning { color: var(--warning); }
 
         /* ===== Buttons ===== */
         .btn {
-            padding: 10px 24px;
-            border: none;
-            border-radius: var(--radius-sm);
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            text-decoration: none;
-            font-family: inherit;
+            padding: 10px 24px; border: none; border-radius: var(--radius-sm);
+            font-weight: 600; font-size: 14px; cursor: pointer;
+            transition: var(--transition); display: inline-flex;
+            align-items: center; gap: 8px; text-decoration: none; font-family: inherit;
         }
-        
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-        }
-        .btn-primary:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
-        }
-        
-        .btn-success {
-            background: var(--success);
-            color: white;
-        }
-        .btn-success:hover {
-            background: #16a34a;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
-        }
-        
-        .btn-danger {
-            background: var(--danger);
-            color: white;
-        }
-        .btn-danger:hover {
-            background: #dc2626;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
-        }
-        
-        .btn-info {
-            background: var(--info);
-            color: white;
-        }
-        .btn-info:hover {
-            background: #2563eb;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
-        }
-        
-        .btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none !important;
-        }
-        
-        .btn-loading {
-            background: var(--warning) !important;
-            pointer-events: none;
-        }
-
-        /* ===== Search ===== */
-        .search-wrapper {
-            display: flex;
-            gap: 12px;
-            flex: 1;
-            min-width: 250px;
-            max-width: 500px;
-        }
-        
-        .search-wrapper input {
-            flex: 1;
-            padding: 10px 16px;
-            border: 2px solid var(--gray-200);
-            border-radius: var(--radius-sm);
-            font-size: 14px;
-            transition: var(--transition);
-            background: var(--gray-50);
-        }
-        
-        .search-wrapper input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-            background: white;
-        }
-        
-        .search-wrapper input::placeholder {
-            color: var(--gray-400);
-        }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); }
+        .btn-success { background: var(--success); color: white; }
+        .btn-success:hover { background: #16a34a; transform: translateY(-2px); }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-danger:hover { background: #dc2626; transform: translateY(-2px); }
+        .btn-info { background: var(--info); color: white; }
+        .btn-info:hover { background: #2563eb; transform: translateY(-2px); }
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important; }
+        .btn-loading { background: var(--warning) !important; pointer-events: none; }
 
         /* ===== Formula Card ===== */
         .formula-card {
-            background: white;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            margin-bottom: 16px;
-            overflow: hidden;
-            border: 1px solid var(--gray-200);
+            background: white; border-radius: var(--radius); box-shadow: var(--shadow);
+            margin-bottom: 16px; overflow: hidden; border: 1px solid var(--gray-200);
             transition: var(--transition);
         }
-        
-        .formula-card:hover {
-            box-shadow: var(--shadow-lg);
-        }
-        
-        .formula-card.expanded {
-            border-color: var(--primary-light);
-            box-shadow: var(--shadow-lg);
-        }
+        .formula-card:hover { box-shadow: var(--shadow-lg); }
+        .formula-card.expanded { border-color: var(--primary-light); box-shadow: var(--shadow-lg); }
 
-        /* ===== Formula Header (Clickable) ===== */
         .formula-header {
             background: linear-gradient(135deg, var(--gray-800), var(--gray-900));
-            padding: 14px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
-            cursor: pointer;
-            transition: var(--transition);
-            user-select: none;
-            position: relative;
+            padding: 14px 20px; display: flex; justify-content: space-between;
+            align-items: center; flex-wrap: wrap; gap: 12px; cursor: pointer;
+            transition: var(--transition); user-select: none; position: relative;
         }
-        
-        .formula-header:hover {
-            background: linear-gradient(135deg, #1e293b, #0f172a);
-        }
-        
+        .formula-header:hover { background: linear-gradient(135deg, #1e293b, #0f172a); }
         .formula-header .toggle-icon {
-            color: rgba(255,255,255,0.5);
-            transition: var(--transition);
-            font-size: 14px;
-            margin-right: 8px;
+            color: rgba(255,255,255,0.5); transition: var(--transition);
+            font-size: 14px; margin-right: 8px;
         }
-        
-        .formula-header .toggle-icon.rotated {
-            transform: rotate(180deg);
-        }
-        
-        .formula-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-            flex: 1;
-        }
-        
+        .formula-header .toggle-icon.rotated { transform: rotate(180deg); }
+        .formula-info { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; flex: 1; }
         .formula-code {
-            background: rgba(255,255,255,0.15);
-            padding: 4px 14px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-            color: white;
-            letter-spacing: 0.5px;
+            background: rgba(255,255,255,0.15); padding: 4px 14px;
+            border-radius: 20px; font-size: 13px; font-weight: 600;
+            color: white; letter-spacing: 0.5px;
         }
-        
-        .formula-title {
-            font-size: 17px;
-            font-weight: 700;
-            color: white;
-        }
-        
+        .formula-title { font-size: 17px; font-weight: 700; color: white; }
+
         /* ===== Value Input in Header ===== */
         .value-input-inline {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(255,255,255,0.1);
-            padding: 4px 12px 4px 8px;
-            border-radius: var(--radius-sm);
-            border: 2px solid transparent;
+            display: flex; align-items: center; gap: 8px;
+            background: rgba(255,255,255,0.1); padding: 4px 12px 4px 8px;
+            border-radius: var(--radius-sm); border: 2px solid transparent;
             transition: var(--transition);
         }
-        
         .value-input-inline:focus-within {
-            border-color: var(--success);
-            background: rgba(255,255,255,0.2);
+            border-color: var(--success); background: rgba(255,255,255,0.2);
         }
-        
         .value-input-inline label {
-            color: rgba(255,255,255,0.8);
-            font-weight: 600;
-            font-size: 12px;
-            white-space: nowrap;
+            color: rgba(255,255,255,0.8); font-weight: 600;
+            font-size: 12px; white-space: nowrap;
         }
-        
         .value-input-inline input {
-            width: 90px;
-            padding: 6px 10px;
-            border: none;
-            border-radius: 4px;
-            font-size: 14px;
-            font-weight: 600;
-            text-align: center;
-            direction: ltr;
-            background: rgba(255,255,255,0.9);
+            width: 90px; padding: 6px 10px; border: none; border-radius: 4px;
+            font-size: 14px; font-weight: 600; text-align: center;
+            direction: ltr; background: rgba(255,255,255,0.9);
             transition: var(--transition);
         }
-        
         .value-input-inline input:focus {
-            outline: none;
-            background: white;
+            outline: none; background: white;
             box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2);
         }
-        
-        .value-input-inline input.has-value {
-            background: #dcfce7;
-            color: #16a34a;
-        }
-        
-        .value-input-inline .input-icon {
-            color: rgba(255,255,255,0.4);
-            font-size: 14px;
-        }
+        .value-input-inline input.has-value { background: #dcfce7; color: #16a34a; }
+        .value-input-inline .input-icon { color: rgba(255,255,255,0.4); font-size: 14px; }
 
         /* ===== Badges ===== */
-        .formula-badges {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        
+        .formula-badges { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
         .badge {
-            padding: 4px 14px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            white-space: nowrap;
+            padding: 4px 14px; border-radius: 20px; font-size: 12px;
+            font-weight: 600; white-space: nowrap;
         }
-        
-        .badge-active {
-            background: var(--success);
-            color: white;
-        }
-        
-        .badge-inactive {
-            background: var(--danger);
-            color: white;
-        }
-        
-        .badge-items {
-            background: rgba(255,255,255,0.15);
-            color: white;
-        }
-        
-        .badge-stock {
-            background: rgba(255,255,255,0.1);
-            color: #a5f3fc;
-        }
-        
-        .badge-stock-low {
-            background: rgba(239, 68, 68, 0.3);
-            color: #fca5a5;
-        }
-        
-        .badge-stock-good {
-            background: rgba(34, 197, 94, 0.3);
-            color: #86efac;
-        }
+        .badge-active { background: var(--success); color: white; }
+        .badge-inactive { background: var(--danger); color: white; }
+        .badge-items { background: rgba(255,255,255,0.15); color: white; }
+        .badge-stock-low { background: rgba(239, 68, 68, 0.3); color: #fca5a5; }
+        .badge-stock-good { background: rgba(34, 197, 94, 0.3); color: #86efac; }
 
-        /* ===== Formula Body (Collapsible) ===== */
-        .formula-body {
-            display: none;
-            animation: slideDown 0.3s ease-out;
-        }
-        
-        .formula-body.expanded {
-            display: block;
-        }
-        
+        /* ===== Formula Body ===== */
+        .formula-body { display: none; animation: slideDown 0.3s ease-out; }
+        .formula-body.expanded { display: block; }
         @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* ===== Formula Details ===== */
         .formula-details {
-            padding: 12px 20px;
-            background: var(--gray-50);
-            border-bottom: 1px solid var(--gray-200);
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-            align-items: center;
+            padding: 12px 20px; background: var(--gray-50);
+            border-bottom: 1px solid var(--gray-200); display: flex;
+            gap: 16px; flex-wrap: wrap; align-items: center;
         }
-        
-        .detail-item {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            font-size: 13px;
-            color: var(--gray-600);
-        }
-        
-        .detail-item .label {
-            font-weight: 500;
-        }
-        
-        .detail-item .value {
-            color: var(--gray-800);
-            font-weight: 600;
-        }
+        .detail-item { display: flex; align-items: center; gap: 4px; font-size: 13px; color: var(--gray-600); }
+        .detail-item .label { font-weight: 500; }
+        .detail-item .value { color: var(--gray-800); font-weight: 600; }
 
         /* ===== Table ===== */
-        .table-container {
-            padding: 16px 20px 20px;
-            overflow-x: auto;
-        }
-        
+        .table-container { padding: 16px 20px 20px; overflow-x: auto; }
         .table-container .table-title {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--gray-500);
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            font-size: 13px; font-weight: 600; color: var(--gray-500);
+            margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
         }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
-        }
-        
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
         th {
-            background: var(--gray-100);
-            padding: 10px 14px;
-            text-align: right;
-            border: 1px solid var(--gray-200);
-            font-weight: 600;
-            color: var(--gray-700);
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
+            background: var(--gray-100); padding: 10px 14px; text-align: right;
+            border: 1px solid var(--gray-200); font-weight: 600;
+            color: var(--gray-700); font-size: 12px;
         }
-        
-        td {
-            padding: 10px 14px;
-            border: 1px solid var(--gray-200);
-            color: var(--gray-700);
-        }
-        
-        tr:nth-child(even) {
-            background: var(--gray-50);
-        }
-        
-        tr:hover {
-            background: #eef2ff;
-        }
-        
-        .stock-positive {
-            color: var(--success);
-            font-weight: 600;
-        }
-        
-        .stock-zero {
-            color: var(--gray-400);
-        }
-        
-        .no-items {
-            text-align: center;
-            color: var(--gray-400);
-            padding: 30px;
-            font-style: italic;
-        }
+        td { padding: 10px 14px; border: 1px solid var(--gray-200); color: var(--gray-700); }
+        tr:nth-child(even) { background: var(--gray-50); }
+        tr:hover { background: #eef2ff; }
+        .stock-positive { color: var(--success); font-weight: 600; }
+        .stock-zero { color: var(--gray-400); }
+        .no-items { text-align: center; color: var(--gray-400); padding: 30px; font-style: italic; }
 
         /* ===== Empty State ===== */
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: var(--gray-500);
-        }
-        
-        .empty-state .icon {
-            font-size: 64px;
-            margin-bottom: 16px;
-            opacity: 0.5;
-        }
-        
-        .empty-state h2 {
-            font-size: 22px;
-            color: var(--gray-700);
-            margin-bottom: 8px;
-        }
-        
-        .empty-state p {
-            color: var(--gray-400);
-        }
+        .empty-state { text-align: center; padding: 60px 20px; color: var(--gray-500); }
+        .empty-state .icon { font-size: 64px; margin-bottom: 16px; opacity: 0.5; }
+        .empty-state h2 { font-size: 22px; color: var(--gray-700); margin-bottom: 8px; }
 
-        /* ============================================
-           ✅ FLOATING SUMMARY - SLIM & FIXED AT BOTTOM
-           ============================================ */
+        /* ===== Floating Summary ===== */
         .floating-summary {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: #1e293b;
-            padding: 8px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-            z-index: 1000;
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: #1e293b; padding: 8px 20px;
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 16px; z-index: 1000;
             box-shadow: 0 -4px 12px rgba(0,0,0,0.15);
             border-top: 2px solid var(--primary);
-            flex-wrap: nowrap;
-            overflow-x: auto;
-            direction: rtl;
+            flex-wrap: nowrap; overflow-x: auto; direction: rtl;
         }
-
         .floating-summary .summary-section {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            flex-wrap: nowrap;
-            flex-shrink: 0;
+            display: flex; align-items: center; gap: 16px; flex-shrink: 0;
         }
-
         .floating-summary .summary-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 12px;
-            color: #cbd5e1;
-            white-space: nowrap;
+            display: flex; align-items: center; gap: 6px;
+            font-size: 12px; color: #cbd5e1; white-space: nowrap;
         }
-
         .floating-summary .summary-item .num {
-            font-weight: 700;
-            font-size: 15px;
-            color: #ffffff;
-            background: rgba(79, 70, 229, 0.3);
-            padding: 2px 10px;
-            border-radius: 12px;
-            min-width: 32px;
-            text-align: center;
+            font-weight: 700; font-size: 15px; color: #ffffff;
+            background: rgba(79, 70, 229, 0.3); padding: 2px 10px;
+            border-radius: 12px; min-width: 32px; text-align: center;
+        }
+        .floating-summary .summary-item .num.success { color: #86efac; background: rgba(34, 197, 94, 0.2); }
+        .floating-summary .divider { width: 1px; height: 20px; background: rgba(255,255,255,0.15); }
+        .floating-summary .summary-actions { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
+        .floating-summary .summary-actions .btn { padding: 6px 14px; font-size: 12px; border-radius: 6px; }
+
+        /* ===== Withdrawal Input ===== */
+        .withdrawal-input {
+            width: 100px; padding: 4px 8px; border: 1px solid #cbd5e1;
+            border-radius: 4px; text-align: center; font-weight: 600;
+            color: #94a3b8; transition: var(--transition);
+            background: white; direction: ltr;
+        }
+        .withdrawal-input:focus {
+            outline: none; border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+        .withdrawal-input.has-value { border-color: var(--success); color: #16a34a; background: #f0fdf4; }
+        .withdrawal-input.is-zero { color: #94a3b8; border-color: #e2e8f0; }
+
+        /* ===== Live Search ===== */
+        .search-box-wrapper { position: relative; }
+        #liveSearchInput::placeholder { color: var(--gray-400); font-size: 13px; }
+        #liveSearchInput:focus { outline: none; }
+
+        .highlight-match {
+            background: linear-gradient(180deg, #fde047 0%, #facc15 100%);
+            color: #78350f; padding: 1px 4px; border-radius: 4px;
+            font-weight: 700; border-bottom: 2px solid #eab308;
+            display: inline-block; line-height: 1.4;
+        }
+        .formula-code .highlight-match {
+            background: linear-gradient(180deg, #fef3c7 0%, #fde68a 100%);
+            color: #78350f; border-bottom-color: #f59e0b;
+        }
+        .formula-title .highlight-match {
+            background: linear-gradient(180deg, #fde047 0%, #fbbf24 100%);
+            color: #422006; border-bottom-color: #d97706;
+        }
+        .formula-card.search-hidden { display: none !important; }
+
+        .search-no-results {
+            text-align: center; padding: 60px 20px;
+            color: var(--gray-500); background: white;
+            border-radius: var(--radius); box-shadow: var(--shadow);
+            border: 1px solid var(--gray-200);
+        }
+        .search-no-results .icon { font-size: 56px; margin-bottom: 16px; opacity: 0.4; }
+
+        /* ===== Alerts ===== */
+        .alert {
+            padding: 16px 20px; border-radius: var(--radius-sm);
+            margin-bottom: 20px; display: flex;
+            justify-content: space-between; align-items: center; gap: 12px;
+        }
+        .alert-success { background: #dcfce7; border: 1px solid #86efac; color: #166534; }
+        .alert-danger { background: #fee2e2; border: 1px solid #fca5a5; color: #991b1b; }
+        .alert .close-btn {
+            background: none; border: none; cursor: pointer;
+            font-size: 18px; color: inherit; opacity: 0.7; padding: 4px;
         }
 
-        .floating-summary .summary-item .num.success {
-            color: #86efac;
-            background: rgba(34, 197, 94, 0.2);
-        }
-        .floating-summary .summary-item .num.danger {
-            color: #fca5a5;
-            background: rgba(239, 68, 68, 0.2);
-        }
-        .floating-summary .summary-item .num.warning {
-            color: #fcd34d;
-            background: rgba(245, 158, 11, 0.2);
-        }
+        /* ===== Scrollbar ===== */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: var(--gray-100); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: var(--gray-300); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--gray-400); }
 
-        .floating-summary .divider {
-            width: 1px;
-            height: 20px;
-            background: rgba(255,255,255,0.15);
+        /* ===== Modal Animations ===== */
+        @keyframes modalFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
-
-        .floating-summary .summary-actions {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            flex-shrink: 0;
-        }
-
-        .floating-summary .summary-actions .btn {
-            padding: 6px 14px;
-            font-size: 12px;
-            border-radius: 6px;
+        @keyframes modalSlideIn {
+            from { transform: translateY(-30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
         /* ===== Responsive ===== */
         @media (max-width: 1024px) {
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
         }
-        
         @media (max-width: 768px) {
-            body { 
-                padding: 12px; 
-                padding-bottom: 60px !important;
-            }
-            
+            body { padding: 12px; padding-bottom: 60px !important; }
             .header { padding: 16px; }
             .header-top { flex-direction: column; align-items: stretch; }
             .header-title h1 { font-size: 20px; }
-            
-            .stats-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 8px;
-            }
+            .stats-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
             .stat-card { padding: 10px 14px; }
             .stat-card .value { font-size: 18px; }
-            
-            .search-wrapper {
-                max-width: 100%;
-                min-width: auto;
-            }
-            
-            .formula-header {
-                flex-direction: column;
-                align-items: stretch;
-                padding: 12px 16px;
-            }
-            .formula-info { flex-wrap: wrap; }
+            .formula-header { flex-direction: column; align-items: stretch; padding: 12px 16px; }
             .formula-title { font-size: 16px; }
-            
-            .value-input-inline {
-                width: 100%;
-                justify-content: center;
-            }
-            .value-input-inline input { width: 100px; }
-            
-            /* ✅ نوار پایین روی موبایل */
-            .floating-summary {
-                padding: 6px 12px;
-                gap: 8px;
-            }
-            .floating-summary .summary-item {
-                font-size: 11px;
-                gap: 4px;
-            }
-            .floating-summary .summary-item .num {
-                font-size: 13px;
-                padding: 2px 8px;
-            }
-            .floating-summary .divider {
-                display: none;
-            }
-            .floating-summary .summary-actions .btn {
-                padding: 5px 10px;
-                font-size: 11px;
-            }
-            
-            .header-actions {
-                flex-direction: column;
-                width: 100%;
-            }
-            .header-actions .btn {
-                width: 100%;
-                justify-content: center;
-            }
-            
-            .formula-badges {
-                justify-content: flex-start;
-            }
+            .value-input-inline { width: 100%; justify-content: center; }
+            .floating-summary { padding: 6px 12px; gap: 8px; }
+            .floating-summary .summary-item { font-size: 11px; gap: 4px; }
+            .floating-summary .divider { display: none; }
+            .floating-summary .summary-actions .btn { padding: 5px 10px; font-size: 11px; }
+            .header-actions { flex-direction: column; width: 100%; }
+            .header-actions .btn { width: 100%; justify-content: center; }
+            .search-box-wrapper { max-width: 100% !important; margin: 8px 0 !important; order: 3; width: 100%; }
         }
-        
         @media (max-width: 480px) {
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            /* روی موبایل کوچک فقط اعداد و آیکن‌ها */
-            .floating-summary .summary-item span:not(.num) {
-                display: none;
-            }
+            .stats-grid { grid-template-columns: 1fr; }
+            .floating-summary .summary-item span:not(.num) { display: none; }
         }
-
-        /* ===== Scrollbar ===== */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: var(--gray-100);
-            border-radius: 4px;
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: var(--gray-300);
-            border-radius: 4px;
-        }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--gray-400);
-        }
-
-        /* ===== Withdrawal Input ===== */
-        .withdrawal-input {
-            width: 100px;
-            padding: 4px 8px;
-            border: 1px solid #cbd5e1;
-            border-radius: 4px;
-            text-align: center;
-            font-weight: 600;
-            color: #94a3b8;
-            transition: var(--transition);
-            background: white;
-            direction: ltr;
-        }
-
-        .withdrawal-input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-        }
-
-        .withdrawal-input.has-value {
-            border-color: var(--success);
-            color: #16a34a;
-            background: #f0fdf4;
-        }
-
-        .withdrawal-input.is-zero {
-            color: #94a3b8;
-            border-color: #e2e8f0;
-        }
-
-        .withdrawal-input:disabled {
-            background: #f1f5f9;
-            cursor: not-allowed;
-        }
-
-        /* ===== Relation Select Error ===== */
-        #relationSelect.error {
-            border-color: #ef4444 !important;
-            background-color: #fef2f2 !important;
-            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2) !important;
-            animation: shake 0.5s ease-in-out;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-8px); }
-            75% { transform: translateX(8px); }
-        }
-
-        #relationSelect.success {
-            border-color: #22c55e !important;
-            background-color: #f0fdf4 !important;
-            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2) !important;
-        }
-
-        /* ===== Live Search ===== */
-        .search-box-wrapper {
-            position: relative;
-        }
-
-        #liveSearchInput::placeholder {
-            color: var(--gray-400);
-            font-size: 13px;
-        }
-
-        #liveSearchInput:focus {
-            outline: none;
-        }
-
-        /* ===== Highlight matching text ===== */
-        .highlight-match {
-            background: linear-gradient(180deg, #fde047 0%, #facc15 100%);
-            color: #78350f;
-            padding: 1px 4px;
-            border-radius: 4px;
-            font-weight: 700;
-            box-shadow: 0 1px 3px rgba(250, 204, 21, 0.4);
-            border-bottom: 2px solid #eab308;
-            display: inline-block;
-            line-height: 1.4;
-        }
-
-        .formula-code .highlight-match {
-            background: linear-gradient(180deg, #fef3c7 0%, #fde68a 100%);
-            color: #78350f;
-            border-bottom-color: #f59e0b;
-        }
-
-        .formula-title .highlight-match {
-            background: linear-gradient(180deg, #fde047 0%, #fbbf24 100%);
-            color: #422006;
-            border-bottom-color: #d97706;
-        }
-
-        .formula-card.search-hidden {
-            display: none !important;
-        }
-
-        .search-no-results {
-            text-align: center;
-            padding: 60px 20px;
-            color: var(--gray-500);
-            background: white;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            border: 1px solid var(--gray-200);
-        }
-
-        .search-no-results .icon {
-            font-size: 56px;
-            margin-bottom: 16px;
-            opacity: 0.4;
-        }
-
-        .search-no-results h3 {
-            font-size: 20px;
-            color: var(--gray-700);
-            margin-bottom: 8px;
-        }
-
-        .search-no-results p {
-            color: var(--gray-400);
-            font-size: 14px;
-        }
-
-        #searchResultInfo {
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-4px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @media (max-width: 768px) {
-            .search-box-wrapper {
-                max-width: 100% !important;
-                margin: 8px 0 !important;
-                order: 3;
-                width: 100%;
-            }
-        }
-
-        /* ===== Alert styles (اگر در base نبود) ===== */
-        .alert {
-            padding: 16px 20px;
-            border-radius: var(--radius-sm);
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 12px;
-        }
-        .alert-success {
-            background: #dcfce7;
-            border: 1px solid #86efac;
-            color: #166534;
-        }
-        .alert-danger {
-            background: #fee2e2;
-            border: 1px solid #fca5a5;
-            color: #991b1b;
-        }
-        .alert .close-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 18px;
-            color: inherit;
-            opacity: 0.7;
-            padding: 4px;
-        }
-        .alert .close-btn:hover {
-            opacity: 1;
-        }
-
     </style>
 </head>
 <body>
@@ -945,70 +376,63 @@
                     <h1>فرمول‌های محصولات</h1>
                 </div>
 
+                <!-- Search -->
+                <div class="search-box-wrapper" style="flex: 1; max-width: 400px; margin: 0 16px;">
+                    <div style="position: relative; display: flex; align-items: center;">
+                        <i class="fas fa-search" style="position: absolute; right: 14px; color: var(--gray-400); font-size: 14px; pointer-events: none;"></i>
+                        <input type="text"
+                               id="liveSearchInput"
+                               placeholder="جستجو بر اساس کد، عنوان یا نام محصول..."
+                               style="width: 100%; padding: 10px 40px 10px 16px; border: 2px solid var(--gray-200); border-radius: var(--radius-sm); font-size: 14px; background: var(--gray-50); font-family: inherit;"
+                               oninput="liveSearch(this.value)"
+                               onfocus="this.style.borderColor='var(--primary)'; this.style.boxShadow='0 0 0 3px rgba(79, 70, 229, 0.1)'; this.style.background='white';"
+                               onblur="this.style.borderColor='var(--gray-200)'; this.style.boxShadow='none'; this.style.background='var(--gray-50)';">
+                        <button id="clearSearchBtn"
+                                onclick="clearLiveSearch()"
+                                style="position: absolute; left: 10px; background: none; border: none; cursor: pointer; color: var(--gray-400); font-size: 16px; display: none; padding: 4px; border-radius: 50%;"
+                                onmouseover="this.style.color='var(--danger)'; this.style.background='#fef2f2';"
+                                onmouseout="this.style.color='var(--gray-400)'; this.style.background='none';">
+                            <i class="fas fa-times-circle"></i>
+                        </button>
+                    </div>
+                    <div id="searchResultInfo" style="font-size: 12px; color: var(--gray-500); margin-top: 4px; display: none; padding-right: 4px;">
+                        <i class="fas fa-info-circle"></i>
+                        <span id="searchResultText"></span>
+                    </div>
+                </div>
 
-<div class="search-box-wrapper" style="flex: 1; max-width: 400px; margin: 0 16px;">
-    <div style="position: relative; display: flex; align-items: center;">
-        <i class="fas fa-search" style="position: absolute; right: 14px; color: var(--gray-400); font-size: 14px; pointer-events: none;"></i>
-        <input type="text" 
-               id="liveSearchInput" 
-               placeholder="جستجو بر اساس کد، عنوان یا نام محصول..." 
-               style="width: 100%; padding: 10px 40px 10px 16px; border: 2px solid var(--gray-200); border-radius: var(--radius-sm); font-size: 14px; transition: var(--transition); background: var(--gray-50); font-family: inherit;"
-               oninput="liveSearch(this.value)"
-               onfocus="this.style.borderColor='var(--primary)'; this.style.boxShadow='0 0 0 3px rgba(79, 70, 229, 0.1)'; this.style.background='white';"
-               onblur="this.style.borderColor='var(--gray-200)'; this.style.boxShadow='none'; this.style.background='var(--gray-50)';">
-        <button id="clearSearchBtn" 
-                onclick="clearLiveSearch()" 
-                style="position: absolute; left: 10px; background: none; border: none; cursor: pointer; color: var(--gray-400); font-size: 16px; display: none; padding: 4px; border-radius: 50%; transition: var(--transition);"
-                onmouseover="this.style.color='var(--danger)'; this.style.background='#fef2f2';"
-                onmouseout="this.style.color='var(--gray-400)'; this.style.background='none';">
-            <i class="fas fa-times-circle"></i>
-        </button>
-    </div>
-    <div id="searchResultInfo" style="font-size: 12px; color: var(--gray-500); margin-top: 4px; display: none; padding-right: 4px;">
-        <i class="fas fa-info-circle"></i>
-        <span id="searchResultText"></span>
-    </div>
-</div>
+                <!-- Alerts -->
+                {% if has_needed_materials %}
+                <div class="alert alert-success" id="materialsAlert">
+                    <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                        <i class="fas fa-check-circle" style="font-size: 24px;"></i>
+                        <div>
+                            <strong style="font-size: 16px;">{{ count }} ماده</strong>
+                            <span style="font-size: 14px;">با موفقیت دریافت شدند.</span>
+                            {% if selected_date %}
+                            <span style="margin-right: 16px; font-size: 13px; color: #6b7280;">
+                                <i class="fas fa-calendar"></i> تاریخ: {{ selected_date }}
+                            </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <button class="close-btn" onclick="this.closest('.alert').style.display='none'">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                {% endif %}
 
-
-<!-- ===== ALERT: SHOW DATA FROM SESSION ===== -->
-{% if has_needed_materials %}
-<div class="alert alert-success" id="materialsAlert">
-    <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
-        <i class="fas fa-check-circle" style="font-size: 24px;"></i>
-        <div>
-            <strong style="font-size: 16px;">{{ count }} ماده</strong>
-            <span style="font-size: 14px;">با موفقیت از صفحه مدیریت مواد دریافت شدند.</span>
-            {% if selected_date %}
-            <span style="margin-right: 16px; font-size: 13px; color: #6b7280;">
-                <i class="fas fa-calendar"></i> تاریخ: {{ selected_date }}
-            </span>
-            {% endif %}
-        </div>
-    </div>
-    <div style="display: flex; gap: 8px; align-items: center;">
-        <span style="background: #22c55e; color: white; padding: 4px 14px; border-radius: 20px; font-size: 12px; font-weight: 600;">
-            <i class="fas fa-arrow-down"></i> اعمال شد
-        </span>
-        <button class="close-btn" onclick="this.closest('.alert').style.display='none'">
-            <i class="fas fa-times"></i>
-        </button>
-    </div>
-</div>
-{% endif %}
-
-{% if error_message %}
-<div class="alert alert-danger" id="errorAlert">
-    <div style="display: flex; align-items: center; gap: 12px;">
-        <i class="fas fa-exclamation-circle" style="font-size: 24px;"></i>
-        <span style="font-size: 14px;">{{ error_message }}</span>
-    </div>
-    <button class="close-btn" onclick="this.closest('.alert').style.display='none'">
-        <i class="fas fa-times"></i>
-    </button>
-</div>
-{% endif %}
-
+                {% if error_message %}
+                <div class="alert alert-danger" id="errorAlert">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <i class="fas fa-exclamation-circle" style="font-size: 24px;"></i>
+                        <span style="font-size: 14px;">{{ error_message }}</span>
+                    </div>
+                    <button class="close-btn" onclick="this.closest('.alert').style.display='none'">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                {% endif %}
 
                 <div class="header-actions">
                     <button class="btn btn-success" id="submit-all-btn">
@@ -1025,7 +449,7 @@
                     </button>
                 </div>
             </div>
-            
+
             <!-- Stats -->
             <div class="stats-grid">
                 <div class="stat-card">
@@ -1045,47 +469,74 @@
                     <div class="value primary">{{ total_items }}</div>
                 </div>
             </div>
-            
 
+            <!-- Relation + Show All + Date -->
+            <div class="header-actions" style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
 
-    <div class="header-actions" style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
-        <div style="display: flex; align-items: center; gap: 8px; background: var(--gray-50); padding: 4px 12px 4px 16px; border-radius: var(--radius-sm); border: 2px solid var(--gray-200); transition: var(--transition);">
-            <i class="fas fa-link" style="color: var(--primary); font-size: 16px;"></i>
-            <label for="relationSelect" style="font-weight: 600; color: var(--gray-700); font-size: 13px; white-space: nowrap;">
-                رابطه:
-            </label>
-                <select id="relationSelect" onchange="onRelationChange(this)" ...>
-                    <option value="">انتخاب رابطه...</option>
-                    {% for relation in relations %}
-                        <option value="{{ relation.id }}" 
-                                {% if selected_relation_id == relation.id %}selected{% endif %}>
-                            {{ relation.relation_name }} : {{ relation.destination_warehouse.name }} → {{ relation.source_warehouse.name }}
-                        </option>
-                    {% endfor %}
-                </select>
-            <span id="selectedRelationInfo" style="font-size: 12px; color: var(--gray-400); min-width: 80px;">
-                <i class="fas fa-info-circle"></i>
-            </span>
-        </div>
+                <!-- Relation Select -->
+                <div style="display: flex; align-items: center; gap: 8px; background: var(--gray-50); padding: 4px 12px 4px 16px; border-radius: var(--radius-sm); border: 2px solid var(--gray-200);">
+                    <i class="fas fa-link" style="color: var(--primary); font-size: 16px;"></i>
+                    <label for="relationSelect" style="font-weight: 600; color: var(--gray-700); font-size: 13px; white-space: nowrap;">
+                        رابطه:
+                    </label>
+                    <select id="relationSelect"
+                            onchange="onRelationChange(this)"
+                            style="padding: 8px 12px; border: none; border-radius: 6px; font-size: 14px; background: white; min-width: 200px; cursor: pointer; font-family: inherit;">
+                        <option value="">انتخاب رابطه...</option>
+                        {% for relation in relations %}
+                            <option value="{{ relation.id }}"
+                                    {% if selected_relation_id == relation.id %}selected{% endif %}>
+                                {{ relation.relation_name }} : {{ relation.destination_warehouse.name }} → {{ relation.source_warehouse.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
 
+                <!-- ✅ چک‌باکس نمایش همه -->
+                <label for="showAllCheckbox"
+                       style="display: flex; align-items: center; gap: 8px; background: {% if show_all %}#dcfce7{% else %}var(--gray-50){% endif %}; padding: 8px 16px; border-radius: var(--radius-sm); border: 2px solid {% if show_all %}#86efac{% else %}var(--gray-200){% endif %}; cursor: pointer; transition: var(--transition); user-select: none; font-family: inherit;"
+                       onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';"
+                       onmouseout="this.style.transform=''; this.style.boxShadow='';">
 
+                    <input type="checkbox"
+                           id="showAllCheckbox"
+                           {% if show_all %}checked{% endif %}
+                           onchange="onShowAllChange(this)"
+                           style="width: 18px; height: 18px; cursor: pointer; accent-color: var(--success);">
 
+                    <i class="fas fa-list-ul" style="color: {% if show_all %}#16a34a{% else %}var(--gray-500){% endif %}; font-size: 14px;"></i>
 
-            <div class="date-section">
-                <label>
-                    <i class="fas fa-calendar-alt" style="color: var(--primary);"></i>
-                    تاریخ :
+                    <span style="font-weight: 600; font-size: 13px; color: {% if show_all %}#166534{% else %}var(--gray-700){% endif %}; white-space: nowrap;">
+                        نمایش همه فرمول‌ها
+                    </span>
                 </label>
-                <input type="text" id="datepicker" placeholder="تاریخ را انتخاب کنید">
 
-                <button class="btn btn-info" onclick="setToday()">
-                    <i class="fas fa-calendar-day"></i> امروز
-                </button>
-                <span id="selectedDateInfo" style="font-size: 12px; color: var(--gray-400);">
-                    <i class="fas fa-info-circle"></i>
-                    تاریخ را انتخاب کنید
-                </span>
+                <!-- Date Section -->
+                <div class="date-section">
+                    <label>
+                        <i class="fas fa-calendar-alt" style="color: var(--primary);"></i>
+                        تاریخ :
+                    </label>
+                    <input type="text" id="datepicker" placeholder="تاریخ را انتخاب کنید">
+                    <button class="btn btn-info" onclick="setToday()">
+                        <i class="fas fa-calendar-day"></i> امروز
+                    </button>
+                    <span id="selectedDateInfo" style="font-size: 12px; color: var(--gray-400);">
+                        <i class="fas fa-info-circle"></i>
+                        تاریخ را انتخاب کنید
+                    </span>
+                </div>
             </div>
+
+            {% if show_all %}
+            <div style="background: linear-gradient(135deg, #dcfce7, #bbf7d0); padding: 12px 20px; border-radius: 10px; margin-top: 16px; border: 2px solid #86efac; display: flex; align-items: center; gap: 12px;">
+                <i class="fas fa-info-circle" style="font-size: 20px; color: #16a34a;"></i>
+                <div style="flex: 1;">
+                    <strong style="color: #166534; font-size: 14px;">📋 نمایش همه فرمول‌ها</strong>
+                    <span style="color: #15803d; font-size: 13px;"> - در حال نمایش تمام {{ total_formulas }} فرمول سیستم</span>
+                </div>
+            </div>
+            {% endif %}
         </div>
 
         <!-- ===== RESULTS ===== -->
@@ -1093,7 +544,6 @@
             {% if formulas %}
                 {% for formula in formulas %}
                 <div class="formula-card" data-formula-id="{{ formula.id }}">
-                    <!-- ===== HEADER (Clickable) ===== -->
                     <div class="formula-header" onclick="toggleFormula(this)">
                         <div class="formula-info">
                             <span class="toggle-icon" id="toggle-icon-{{ formula.id }}">
@@ -1101,7 +551,7 @@
                             </span>
                             <span class="formula-code">{{ formula.code }}</span>
                             <span class="formula-title">{{ formula.title }}</span>
-                            
+
                             {% if formula.product_name %}
                             <span style="background: rgba(255,255,255,0.1); padding: 4px 12px; border-radius: 4px; font-size: 13px; display: inline-flex; align-items: center; gap: 6px; color: #e2e8f0;">
                                 <i class="fas fa-box"></i> {{ formula.product_name }}
@@ -1112,8 +562,7 @@
                                 {% endif %}
                             </span>
                             {% endif %}
-                            
-                            <!-- Stock Badge -->
+
                             {% if formula.main_item_stock > 0 %}
                             <span class="badge badge-stock-good">
                                 <i class="fas fa-warehouse"></i> {{ formula.main_item_stock|floatformat }}
@@ -1124,58 +573,50 @@
                                 <i class="fas fa-exclamation-triangle"></i> بدون موجودی
                             </span>
                             {% endif %}
-                            
-                            <!-- ===== VALUE INPUT IN HEADER ===== -->
-<div class="value-input-inline" onclick="event.stopPropagation();">
-    <i class="fas fa-pen input-icon"></i>
-    <label for="value_{{ formula.id }}">مقدار:</label>
-    {% with product_code=formula.product_code|stringformat:'s' %}
-        {% with code_exists=product_code|exists_in_list:needed_material_codes %}
-            {% if code_exists %}
-                {% with quantity=needed_materials|get_quantity:product_code %}
-                    {% with formatted_quantity=quantity|floatformat:2 %}
-                        <input type="number" 
-                            id="value_{{ formula.id }}" 
-                            class="formula-value-input has-value"
-                            step="0.01" 
-                            min="0" 
-                            max="999999.99"
-                            placeholder="0.00"
-                            data-formula-id="{{ formula.id }}"
-                            data-formula-code="{{ formula.code }}"
-                            data-formula-title="{{ formula.title }}"
-                            data-product-code="{{ product_code }}"
-                            data-product-id="{{ formula.product_id|default:'' }}"
-                            data-product-unit="{{ formula.product_unit|default:'' }}"
-                            value="{{ formatted_quantity }}"
-                            onclick="event.stopPropagation();">
-                    {% endwith %}
-                {% endwith %}
-            {% else %}
-                <input type="number" 
-                    id="value_{{ formula.id }}" 
-                    class="formula-value-input"
-                    step="0.01" 
-                    min="0" 
-                    max="999999.99"
-                    placeholder="0.00"
-                    data-formula-id="{{ formula.id }}"
-                    data-formula-code="{{ formula.code }}"
-                    data-formula-title="{{ formula.title }}"
-                    data-product-code="{{ product_code }}"
-                    data-product-id="{{ formula.product_id|default:'' }}"
-                    data-product-unit="{{ formula.product_unit|default:'' }}"
-                    value=""
-                    onclick="event.stopPropagation();">
-            {% endif %}
-        {% endwith %}
-    {% endwith %}
-</div>
 
-
-
+                            <div class="value-input-inline" onclick="event.stopPropagation();">
+                                <i class="fas fa-pen input-icon"></i>
+                                <label for="value_{{ formula.id }}">مقدار:</label>
+                                {% with product_code=formula.product_code|stringformat:'s' %}
+                                    {% with code_exists=product_code|exists_in_list:needed_material_codes %}
+                                        {% if code_exists %}
+                                            {% with quantity=needed_materials|get_quantity:product_code %}
+                                                {% with formatted_quantity=quantity|floatformat:2 %}
+                                                    <input type="text"
+                                                        inputmode="decimal"
+                                                        id="value_{{ formula.id }}"
+                                                        class="formula-value-input has-value"
+                                                        placeholder="0.00"
+                                                        data-formula-id="{{ formula.id }}"
+                                                        data-formula-code="{{ formula.code }}"
+                                                        data-formula-title="{{ formula.title }}"
+                                                        data-product-code="{{ product_code }}"
+                                                        data-product-id="{{ formula.product_id|default:'' }}"
+                                                        data-product-unit="{{ formula.product_unit|default:'' }}"
+                                                        value="{{ formatted_quantity }}"
+                                                        onclick="event.stopPropagation();">
+                                                {% endwith %}
+                                            {% endwith %}
+                                        {% else %}
+                                            <input type="text"
+                                                inputmode="decimal"
+                                                id="value_{{ formula.id }}"
+                                                class="formula-value-input"
+                                                placeholder="0.00"
+                                                data-formula-id="{{ formula.id }}"
+                                                data-formula-code="{{ formula.code }}"
+                                                data-formula-title="{{ formula.title }}"
+                                                data-product-code="{{ product_code }}"
+                                                data-product-id="{{ formula.product_id|default:'' }}"
+                                                data-product-unit="{{ formula.product_unit|default:'' }}"
+                                                value=""
+                                                onclick="event.stopPropagation();">
+                                        {% endif %}
+                                    {% endwith %}
+                                {% endwith %}
+                            </div>
                         </div>
-                        
+
                         <div class="formula-badges">
                             <span class="badge {% if formula.is_active %}badge-active{% else %}badge-inactive{% endif %}">
                                 {% if formula.is_active %}فعال{% else %}غیرفعال{% endif %}
@@ -1185,10 +626,8 @@
                             </span>
                         </div>
                     </div>
-                    
-                    <!-- ===== BODY (Collapsible) ===== -->
+
                     <div class="formula-body" id="body-{{ formula.id }}">
-                        <!-- Details -->
                         <div class="formula-details">
                             {% if formula.item_ref %}
                             <div class="detail-item">
@@ -1196,28 +635,24 @@
                                 <span class="value">{{ formula.item_ref }}</span>
                             </div>
                             {% endif %}
-                            
                             {% if formula.quantity %}
                             <div class="detail-item">
                                 <span class="label">مقدار:</span>
                                 <span class="value">{{ formula.quantity|floatformat:2 }}</span>
                             </div>
                             {% endif %}
-                            
                             {% if formula.estimated_labour %}
                             <div class="detail-item">
                                 <span class="label">نیروی کار:</span>
                                 <span class="value">{{ formula.estimated_labour|floatformat:2 }}</span>
                             </div>
                             {% endif %}
-                            
                             {% if formula.estimated_overhead %}
                             <div class="detail-item">
                                 <span class="label">سربار:</span>
                                 <span class="value">{{ formula.estimated_overhead|floatformat:2 }}</span>
                             </div>
                             {% endif %}
-                            
                             {% if formula.tracing_title %}
                             <div class="detail-item">
                                 <span class="label">ردیابی:</span>
@@ -1225,8 +660,7 @@
                             </div>
                             {% endif %}
                         </div>
-                        
-                        <!-- Table -->
+
                         <div class="table-container">
                             {% if formula.description %}
                             <div style="margin-bottom: 12px; color: var(--gray-500); font-size: 13px; display: flex; align-items: center; gap: 8px;">
@@ -1234,71 +668,81 @@
                                 <strong>توضیحات:</strong> {{ formula.description }}
                             </div>
                             {% endif %}
-                            
+
                             {% if formula.items %}
                             <div class="table-title">
                                 <i class="fas fa-table"></i> لیست آیتم‌ها
                             </div>
                             <table>
-                                    <thead>
-                                        <tr>
-                                            <th style="width: 50px;">#</th>
-                                            <th>مرجع</th>
-                                            <th>نام آیتم</th>
-                                            <th>مقدار</th>
-                                            <th>مقدار ثانویه</th>
-                                            <th>موجودی</th>
-                                            <th>میزان برداشتی</th>
-                                            <th>ردیابی</th>
-                                            <th>توضیحات</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for item in formula.items %}
-                                        <tr>
-                                            <td style="text-align: center;">{{ forloop.counter }}</td>
-                                            <td><strong>{{ item.item_ref }}</strong></td>
-                                            <td><strong>{{ item.item_name }}</strong></td>
-                                            <td>{{ item.quantity|floatformat:2 }}</td>
-                                            <td>{{ item.secondary_quantity|floatformat:2 }}</td>
-                                            <td>
-                                                {% if item.stock_quantity > 0 %}
-                                                <span class="stock-positive">
-                                                    <i class="fas fa-check-circle"></i>
-                                                    {{ item.stock_quantity|floatformat:2 }}
-                                                    {% if item.stock_unit %}{{ item.stock_unit }}{% endif %}
-                                                </span>
-                                                {% else %}
-                                                <span class="stock-zero">
-                                                    <i class="fas fa-times-circle"></i> بدون موجودی
-                                                </span>
-                                                {% endif %}
-                                            </td>
-                                            <td>
-                                                <input type="number" 
-                                                    class="withdrawal-input" 
-                                                    step="0.01" 
-                                                    min="0" 
-                                                    value="0.00"
-                                                    data-item-index="{{ forloop.counter0 }}"
-                                                    data-formula-id="{{ formula.id }}"
-                                                    data-item-ref="{{ item.item_ref }}"
-                                                    style="width: 100px; padding: 4px 8px; border: 1px solid #cbd5e1; border-radius: 4px; text-align: center; font-weight: 600; color: #94a3b8;"
-                                                    onchange="updateWithdrawalManually(this)">
-                                            </td>
-                                            <td>{{ item.tracing_ref|default:"-" }}</td>
-                                            <td style="max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                                                {{ item.description|default:"-" }}
-                                            </td>
-                                        </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
+                                <thead>
+                                    <tr>
+                                        <th style="width: 50px;">#</th>
+                                        <th>مرجع</th>
+                                        <th>نام آیتم</th>
+                                        <th>مقدار</th>
+                                        <th>مقدار ثانویه</th>
+                                        <th>موجودی</th>
+                                        <th>میزان برداشتی</th>
+                                        <th>ردیابی</th>
+                                        <th>توضیحات</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in formula.items %}
+                                    <tr>
+                                        <td style="text-align: center;">{{ forloop.counter }}</td>
+                                        <td><strong>{{ item.item_ref }}</strong></td>
+                                        <td><strong>{{ item.item_name }}</strong></td>
+                                        <td>{{ item.quantity|floatformat:2 }}</td>
+                                        <td>{{ item.secondary_quantity|floatformat:2 }}</td>
+                                        <td>
+                                            {% if item.stock_quantity > 0 %}
+                                            <span class="stock-positive">
+                                                <i class="fas fa-check-circle"></i>
+                                                {{ item.stock_quantity|floatformat:2 }}
+                                                {% if item.stock_unit %}{{ item.stock_unit }}{% endif %}
+                                            </span>
+                                            {% else %}
+                                            <span class="stock-zero">
+                                                <i class="fas fa-times-circle"></i> بدون موجودی
+                                            </span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <input type="text"
+                                                inputmode="decimal"
+                                                class="withdrawal-input"
+                                                value="0.00"
+                                                data-item-index="{{ forloop.counter0 }}"
+                                                data-formula-id="{{ formula.id }}"
+                                                data-item-ref="{{ item.item_ref }}"
+                                                onchange="updateWithdrawalManually(this)">
+                                        </td>
+                                        <td>{{ item.tracing_ref|default:"-" }}</td>
+                                        <td style="max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                            {{ item.description|default:"-" }}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
                             {% else %}
                             <div class="no-items">
                                 <i class="fas fa-inbox"></i> این فرمول هیچ آیتمی ندارد
                             </div>
                             {% endif %}
+                        </div>
+
+                        <!-- ✅ دکمه افزودن ماده موقت -->
+                        <div style="padding: 12px 20px; background: #f8fafc; border-top: 1px solid var(--gray-200); display: flex; justify-content: flex-start;">
+                            <button type="button"
+                                    onclick="openAddItemModal({{ formula.id }}, '{{ formula.code }}', '{{ formula.title|escapejs }}')"
+                                    style="background: linear-gradient(135deg, #22c55e, #16a34a); color: white; padding: 10px 20px; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-family: inherit; transition: all 0.2s;"
+                                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(34,197,94,0.4)';"
+                                    onmouseout="this.style.transform=''; this.style.boxShadow='';">
+                                <i class="fas fa-plus-circle"></i>
+                                افزودن ماده جدید (موقت)
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -1307,16 +751,19 @@
                 <div class="empty-state">
                     <div class="icon">📭</div>
                     <h2>هیچ فرمولی یافت نشد</h2>
-                    <p>هیچ فرمولی در پایگاه داده وجود ندارد.</p>
+                    <p>
+                        {% if selected_relation_id %}
+                            برای این رابطه هیچ فرمولی انتخاب نشده است.
+                        {% else %}
+                            هیچ فرمولی در پایگاه داده وجود ندارد.
+                        {% endif %}
+                    </p>
                 </div>
             {% endif %}
         </div>
     </div>
 
-    <!-- ============================================
-         ✅ FLOATING SUMMARY - SLIM FIXED BOTTOM
-         (درصد تکمیل و چارت حذف شد)
-         ============================================ -->
+    <!-- ===== FLOATING SUMMARY ===== -->
     <div class="floating-summary" id="floatingSummary">
         <div class="summary-section">
             <div class="summary-item">
@@ -1343,7 +790,70 @@
         </div>
     </div>
 
-    <!-- ===== SCRIPTS ===== -->
+    <!-- ===== MODAL: افزودن ماده موقت ===== -->
+    <div id="addItemModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 9999; align-items: center; justify-content: center; padding: 20px; animation: modalFadeIn 0.2s ease;">
+        <div style="background: white; border-radius: 16px; width: 100%; max-width: 700px; max-height: 90vh; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0,0,0,0.3); overflow: hidden; animation: modalSlideIn 0.3s ease;">
+
+            <!-- Header -->
+            <div style="background: linear-gradient(135deg, #4f46e5, #4338ca); color: white; padding: 20px 24px; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h3 style="margin: 0 0 4px 0; font-size: 18px; font-weight: 700;">
+                        <i class="fas fa-plus-circle"></i> افزودن ماده به فرمول
+                    </h3>
+                    <div id="modalFormulaInfo" style="font-size: 13px; opacity: 0.9;"></div>
+                </div>
+                <button onclick="closeAddItemModal()" style="background: rgba(255,255,255,0.2); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Search -->
+            <div style="padding: 16px 24px; border-bottom: 1px solid #e2e8f0;">
+                <div style="position: relative;">
+                    <i class="fas fa-search" style="position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: #94a3b8;"></i>
+                    <input type="text"
+                           id="itemSearchInput"
+                           placeholder="جستجو بر اساس کد یا نام ماده..."
+                           oninput="searchItems(this.value)"
+                           style="width: 100%; padding: 10px 42px 10px 14px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 14px; font-family: inherit; outline: none;">
+                </div>
+            </div>
+
+            <!-- Items List -->
+            <div style="flex: 1; overflow-y: auto; padding: 8px; min-height: 280px; max-height: 380px;">
+                <div id="itemsListLoading" style="text-align: center; padding: 40px; color: #94a3b8;">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 32px;"></i>
+                    <div style="margin-top: 12px;">در حال بارگذاری...</div>
+                </div>
+                <div id="itemsList" style="display: none;"></div>
+                <div id="itemsListEmpty" style="display: none; text-align: center; padding: 40px; color: #94a3b8;">
+                    <i class="fas fa-inbox" style="font-size: 40px; opacity: 0.5;"></i>
+                    <div style="margin-top: 12px;">موردی یافت نشد</div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div style="padding: 16px 24px; background: #f8fafc; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;">
+                <div id="modalMessage" style="font-size: 13px; color: #64748b; flex: 1; min-width: 200px;">
+                    💡 یک ماده انتخاب کنید و دکمه «افزودن» را بزنید. مقدار مصرفی را بعد از افزودن، در جدول وارد کنید.
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <button onclick="closeAddItemModal()"
+                            style="padding: 10px 20px; background: white; color: #475569; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit;">
+                        <i class="fas fa-times"></i> انصراف
+                    </button>
+                    <button id="confirmAddItemBtn"
+                            onclick="confirmAddItem()"
+                            disabled
+                            style="padding: 10px 20px; background: #22c55e; color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; opacity: 0.5; pointer-events: none;">
+                        <i class="fas fa-plus"></i> افزودن ماده
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MAIN SCRIPT ===== -->
     <script>
         // ========================================
         // CSRF TOKEN
@@ -1353,21 +863,367 @@
         }
 
         // ========================================
+        // SHOW ALL CHECKBOX CHANGE
+        // ========================================
+        function onShowAllChange(checkbox) {
+            const url = new URL(window.location.href);
+
+            if (checkbox.checked) {
+                url.searchParams.set('show_all', '1');
+                url.searchParams.delete('relation_id');
+            } else {
+                url.searchParams.delete('show_all');
+
+                const relationId = document.getElementById('relationSelect').value;
+                if (relationId) {
+                    url.searchParams.set('relation_id', relationId);
+                } else {
+                    url.searchParams.delete('relation_id');
+                }
+            }
+
+            window.location.href = url.toString();
+        }
+
+        // ========================================
+        // ✅ تبدیل اعداد فارسی/عربی به انگلیسی
+        // ========================================
+        function convertPersianToEnglishNumbers(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d))
+                .replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d))
+                .replace(/[،٬,]/g, '')
+                .replace(/[٫]/g, '.');
+        }
+
+        // ========================================
+        // ✅ پاکسازی ورودی عددی
+        // ========================================
+        function sanitizeNumericInput(input) {
+            const converted = convertPersianToEnglishNumbers(input.value);
+            const cleaned = converted.replace(/[^0-9.\-]/g, '');
+            if (cleaned !== input.value) {
+                const cursorPos = input.selectionStart;
+                input.value = cleaned;
+                try { input.setSelectionRange(cursorPos, cursorPos); } catch(e) {}
+            }
+            return cleaned;
+        }
+
+        // ========================================
+        // ADD ITEM MODAL - موقت، بدون ذخیره در سپیدار
+        // ========================================
+        let currentFormulaId = null;
+        let selectedItem = null;
+        let allItems = [];
+
+        function openAddItemModal(formulaId, formulaCode, formulaTitle) {
+            currentFormulaId = formulaId;
+            selectedItem = null;
+
+            const modal = document.getElementById('addItemModal');
+            const info = document.getElementById('modalFormulaInfo');
+            const msg = document.getElementById('modalMessage');
+            const searchInput = document.getElementById('itemSearchInput');
+            const btn = document.getElementById('confirmAddItemBtn');
+
+            if (!modal) {
+                console.error('❌ Modal not found!');
+                return;
+            }
+
+            if (info) info.textContent = 'فرمول ' + formulaCode + ' - ' + formulaTitle;
+            if (msg) {
+                msg.innerHTML = '💡 یک ماده انتخاب کنید و دکمه «افزودن» را بزنید.';
+                msg.style.color = '#64748b';
+            }
+            if (searchInput) searchInput.value = '';
+
+            if (btn) {
+                btn.disabled = true;
+                btn.style.opacity = '0.5';
+                btn.style.pointerEvents = 'none';
+                btn.innerHTML = '<i class="fas fa-plus"></i> افزودن ماده';
+            }
+
+            modal.style.display = 'flex';
+
+            loadItems();
+
+            setTimeout(() => {
+                if (searchInput) searchInput.focus();
+            }, 100);
+        }
+
+        function closeAddItemModal() {
+            const modal = document.getElementById('addItemModal');
+            if (modal) modal.style.display = 'none';
+            currentFormulaId = null;
+            selectedItem = null;
+            allItems = [];
+        }
+
+        let searchTimeout2 = null;
+        function searchItems(term) {
+            if (searchTimeout2) clearTimeout(searchTimeout2);
+            searchTimeout2 = setTimeout(() => loadItems(term), 300);
+        }
+
+        function loadItems(searchTerm) {
+            searchTerm = searchTerm || '';
+
+            const loadingEl = document.getElementById('itemsListLoading');
+            const listEl = document.getElementById('itemsList');
+            const emptyEl = document.getElementById('itemsListEmpty');
+
+            if (loadingEl) loadingEl.style.display = 'block';
+            if (listEl) listEl.style.display = 'none';
+            if (emptyEl) emptyEl.style.display = 'none';
+
+            const url = '/api/get-all-items/' + (searchTerm ? '?q=' + encodeURIComponent(searchTerm) : '');
+
+            fetch(url)
+                .then(r => r.json())
+                .then(data => {
+                    if (loadingEl) loadingEl.style.display = 'none';
+
+                    if (data.success && data.items && data.items.length > 0) {
+                        allItems = data.items;
+                        renderItemsList(data.items);
+                        if (listEl) listEl.style.display = 'block';
+                    } else {
+                        if (emptyEl) emptyEl.style.display = 'block';
+                    }
+                })
+                .catch(function(error) {
+                    if (loadingEl) loadingEl.style.display = 'none';
+                    if (emptyEl) {
+                        emptyEl.style.display = 'block';
+                        emptyEl.innerHTML = '<i class="fas fa-exclamation-triangle" style="font-size: 40px; color: #ef4444;"></i><div style="margin-top: 12px; color: #dc2626;">خطا در بارگذاری</div>';
+                    }
+                    console.error('Error loading items:', error);
+                });
+        }
+
+        function renderItemsList(items) {
+            const listEl = document.getElementById('itemsList');
+            if (!listEl) return;
+
+            let html = '';
+
+            items.forEach(function(item) {
+                const isSelected = selectedItem && selectedItem.id === item.id;
+                const unitDisplay = item.unit_title || '-';
+
+                html += '<div data-item-id="' + item.id + '" ' +
+                        'onclick="selectItem(' + item.id + ')" ' +
+                        'style="padding: 12px 16px; margin: 4px; border-radius: 8px; ' +
+                        'border: 2px solid ' + (isSelected ? '#22c55e' : 'transparent') + '; ' +
+                        'background: ' + (isSelected ? '#f0fdf4' : '#f8fafc') + '; ' +
+                        'cursor: pointer; display: flex; align-items: center; gap: 12px; transition: all 0.15s;">' +
+
+                        '<div style="width: 20px; height: 20px; border-radius: 50%; ' +
+                        'border: 2px solid ' + (isSelected ? '#22c55e' : '#cbd5e1') + '; ' +
+                        'background: ' + (isSelected ? '#22c55e' : 'white') + '; ' +
+                        'flex-shrink: 0; display: flex; align-items: center; justify-content: center;">' +
+                            (isSelected ? '<i class="fas fa-check" style="color: white; font-size: 10px;"></i>' : '') +
+                        '</div>' +
+
+                        '<div style="flex: 1;">' +
+                            '<div style="font-weight: 600; color: #1e293b; font-size: 14px;">' + item.title + '</div>' +
+                            '<div style="font-size: 12px; color: #64748b; margin-top: 2px;">' +
+                                'کد: <strong>' + item.code + '</strong>' +
+                                ' <span style="margin: 0 6px;">|</span> ' +
+                                'واحد: <strong style="color: #7c3aed;">' + unitDisplay + '</strong>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>';
+            });
+
+            listEl.innerHTML = html;
+        }
+
+        function selectItem(itemId) {
+            const item = allItems.find(function(i) { return i.id === itemId; });
+            if (!item) return;
+
+            selectedItem = item;
+
+            const btn = document.getElementById('confirmAddItemBtn');
+            const msg = document.getElementById('modalMessage');
+
+            if (btn) {
+                btn.disabled = false;
+                btn.style.opacity = '1';
+                btn.style.pointerEvents = 'auto';
+            }
+
+            if (msg) {
+                msg.innerHTML = '✅ انتخاب شده: <strong>' + item.title + '</strong> (واحد: ' + (item.unit_title || '-') + ')';
+                msg.style.color = '#16a34a';
+            }
+
+            renderItemsList(allItems);
+        }
+
+        function confirmAddItem() {
+            if (!selectedItem || !currentFormulaId) return;
+
+            const existingRow = document.querySelector('#body-' + currentFormulaId + ' tr[data-item-ref="' + selectedItem.id + '"][data-is-temp="true"]');
+            if (existingRow) {
+                Swal.fire({
+                    title: '⚠️ توجه',
+                    text: 'این ماده قبلاً به این فرمول اضافه شده است',
+                    icon: 'warning',
+                    confirmButtonText: 'باشه',
+                    confirmButtonColor: '#f59e0b'
+                });
+                return;
+            }
+
+            addItemToFormulaTable(currentFormulaId, selectedItem, 0);
+
+            closeAddItemModal();
+
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'success',
+                title: 'ماده اضافه شد',
+                html: '<small>حالا مقدار مصرفی را در جدول وارد کنید</small>',
+                timer: 3000,
+                showConfirmButton: false
+            });
+        }
+
+        function addItemToFormulaTable(formulaId, item, quantity) {
+            const tbody = document.querySelector('#body-' + formulaId + ' table tbody');
+
+            if (!tbody) {
+                Swal.fire({
+                    title: '❌ خطا',
+                    text: 'جدول فرمول پیدا نشد',
+                    icon: 'error'
+                });
+                return;
+            }
+
+            const rowCount = tbody.querySelectorAll('tr').length;
+            const tempRowId = 'temp-row-' + formulaId + '-' + Date.now();
+            const unitDisplay = item.unit_title || '-';
+            const qty = quantity || 0;
+
+            const newRow = document.createElement('tr');
+            newRow.id = tempRowId;
+            newRow.dataset.isTemp = 'true';
+            newRow.dataset.itemRef = item.id;
+            newRow.dataset.formulaId = formulaId;
+            newRow.style.background = '#fffbeb';
+            newRow.style.borderRight = '4px solid #f59e0b';
+
+            newRow.innerHTML =
+                '<td style="text-align: center;">' +
+                    '<span style="background: #f59e0b; color: white; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600;">جدید</span>' +
+                '</td>' +
+                '<td><strong>' + item.id + '</strong></td>' +
+                '<td>' +
+                    '<strong>' + item.title + '</strong>' +
+                '</td>' +
+                '<td>' + qty.toFixed(2) + '</td>' +
+                '<td>' +
+                    '<span style="color: #7c3aed; font-weight: 600;">' +
+                        '<i class="fas fa-balance-scale"></i> ' + unitDisplay +
+                    '</span>' +
+                '</td>' +
+                '<td>' +
+                    '<span style="color: #94a3b8;">' +
+                        '<i class="fas fa-question-circle"></i> نامشخص' +
+                    '</span>' +
+                '</td>' +
+                '<td>' +
+                    '<input type="text" inputmode="decimal" class="withdrawal-input" value="0.00" ' +
+                        'data-item-index="' + rowCount + '" ' +
+                        'data-formula-id="' + formulaId + '" ' +
+                        'data-item-ref="' + item.id + '" ' +
+                        'data-is-temp="true" ' +
+                        'onchange="updateWithdrawalManually(this)" ' +
+                        'style="border-color: #f59e0b; background: #fffef5;">' +
+                '</td>' +
+                '<td>-</td>' +
+                '<td>' +
+                    '<button onclick="removeTempItem(\'' + tempRowId + '\', ' + formulaId + ')" ' +
+                        'title="حذف این ماده" ' +
+                        'style="background: #fee2e2; border: none; color: #dc2626; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 12px; font-family: inherit;">' +
+                        '<i class="fas fa-trash"></i>' +
+                    '</button>' +
+                '</td>';
+
+            tbody.appendChild(newRow);
+
+            const qtyInput = newRow.querySelector('.withdrawal-input');
+            if (qtyInput) {
+                qtyInput.focus();
+                qtyInput.select();
+            }
+
+            calculateWithdrawalAmount(formulaId);
+            updateSummary();
+        }
+
+        function removeTempItem(rowId, formulaId) {
+            const row = document.getElementById(rowId);
+            if (!row) return;
+
+            Swal.fire({
+                title: 'حذف ماده؟',
+                text: 'آیا از حذف این ماده مطمئن هستید؟',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc2626',
+                cancelButtonColor: '#94a3b8',
+                confirmButtonText: 'بله، حذف کن',
+                cancelButtonText: 'انصراف',
+                width: 400
+            }).then(function(result) {
+                if (result.isConfirmed) {
+                    row.remove();
+                    calculateWithdrawalAmount(formulaId);
+                    updateSummary();
+
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'حذف شد',
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                }
+            });
+        }
+
+        // بستن مودال با Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const modal = document.getElementById('addItemModal');
+                if (modal && modal.style.display === 'flex') {
+                    closeAddItemModal();
+                }
+            }
+        });
+
+        // ========================================
         // TOGGLE FORMULA (Expand/Collapse)
         // ========================================
         function toggleFormula(headerElement) {
             const card = headerElement.closest('.formula-card');
             const body = card.querySelector('.formula-body');
             const icon = headerElement.querySelector('.toggle-icon');
-            
+
             body.classList.toggle('expanded');
             card.classList.toggle('expanded');
             icon.classList.toggle('rotated');
-            
-            // Save state
-            const formulaId = card.dataset.formulaId;
-            const isExpanded = body.classList.contains('expanded');
-            localStorage.setItem(`formula_expanded_${formulaId}`, isExpanded);
         }
 
         // ========================================
@@ -1378,47 +1234,48 @@
                 body.classList.add('expanded');
                 const card = body.closest('.formula-card');
                 if (card) card.classList.add('expanded');
-                const icon = card?.querySelector('.toggle-icon');
+                const icon = card ? card.querySelector('.toggle-icon') : null;
                 if (icon) icon.classList.add('rotated');
             });
         }
-        
+
         function collapseAll() {
             document.querySelectorAll('.formula-body').forEach(body => {
                 body.classList.remove('expanded');
                 const card = body.closest('.formula-card');
                 if (card) card.classList.remove('expanded');
-                const icon = card?.querySelector('.toggle-icon');
+                const icon = card ? card.querySelector('.toggle-icon') : null;
                 if (icon) icon.classList.remove('rotated');
             });
         }
 
         // ========================================
-        // ✅ UPDATE FLOATING SUMMARY (ساده‌شده)
+        // UPDATE FLOATING SUMMARY
         // ========================================
         function updateSummary() {
             const inputs = document.querySelectorAll('.formula-value-input');
-            const total = inputs.length;
             let filled = 0;
             let totalSum = 0;
-            
+
             inputs.forEach(input => {
-                const val = parseFloat(input.value);
+                const val = parseFloat(convertPersianToEnglishNumbers(input.value));
                 if (!isNaN(val) && val > 0) {
                     filled++;
                     totalSum += val;
                 }
             });
-            
-            document.getElementById('filledCount').textContent = filled;
-            document.getElementById('totalSum').textContent = totalSum.toFixed(2);
+
+            const filledEl = document.getElementById('filledCount');
+            const sumEl = document.getElementById('totalSum');
+            if (filledEl) filledEl.textContent = filled;
+            if (sumEl) sumEl.textContent = totalSum.toFixed(2);
         }
 
         // ========================================
         // VALIDATE INPUT
         // ========================================
         function validateInput(input) {
-            const val = parseFloat(input.value);
+            const val = parseFloat(convertPersianToEnglishNumbers(input.value));
             if (!isNaN(val) && val > 0) {
                 input.classList.add('has-value');
             } else {
@@ -1428,168 +1285,155 @@
         }
 
         // ========================================
-        // DOM READY
+        // CALCULATE WITHDRAWAL AMOUNT
         // ========================================
-       document.addEventListener('DOMContentLoaded', function() {
-                const inputs = document.querySelectorAll('.formula-value-input');
-                
-                inputs.forEach(input => {
-                    input.addEventListener('input', function() {
-                        validateInput(this);
-                        
-                        const formulaId = this.dataset.formulaId;
-                        calculateWithdrawalAmount(formulaId);
-                    });
-                    
-                    input.addEventListener('blur', function() {
-                        if (this.value) {
-                            const num = parseFloat(this.value);
-                            if (!isNaN(num)) {
-                                this.value = num.toFixed(2);
-                                validateInput(this);
-                                
-                                const formulaId = this.dataset.formulaId;
-                                calculateWithdrawalAmount(formulaId);
-                            }
+        function calculateWithdrawalAmount(formulaId) {
+            const valueInput = document.getElementById('value_' + formulaId);
+            const consumptionRate = parseFloat(convertPersianToEnglishNumbers(valueInput ? valueInput.value : 0)) || 0;
+
+            const items = document.querySelectorAll('#body-' + formulaId + ' table tbody tr');
+
+            items.forEach(row => {
+                const quantityCell = row.querySelector('td:nth-child(4)');
+                const quantity = parseFloat(quantityCell ? quantityCell.textContent : 0) || 0;
+
+                const autoWithdrawal = quantity * consumptionRate;
+                const withdrawalInput = row.querySelector('.withdrawal-input');
+
+                if (withdrawalInput) {
+                    const isManuallyEdited = withdrawalInput.dataset.manuallyEdited === 'true';
+
+                    if (!isManuallyEdited || consumptionRate === 0) {
+                        if (consumptionRate > 0 && quantity > 0) {
+                            withdrawalInput.value = autoWithdrawal.toFixed(2);
+                            withdrawalInput.classList.add('has-value');
+                            withdrawalInput.classList.remove('is-zero');
+                            withdrawalInput.style.color = '#16a34a';
+                        } else {
+                            withdrawalInput.value = '0.00';
+                            withdrawalInput.classList.remove('has-value');
+                            withdrawalInput.classList.add('is-zero');
+                            withdrawalInput.style.color = '#94a3b8';
                         }
-                    });
-                });
-
-
-                inputs.forEach(input => {
-                    input.addEventListener('input', function() {
-                        validateInput(this);
-                        const formulaId = this.dataset.formulaId;
-                        
-                        resetManualWithdrawals(formulaId);
-                        calculateWithdrawalAmount(formulaId);
-                    });
-                    
-                    input.addEventListener('blur', function() {
-                        if (this.value) {
-                            const num = parseFloat(this.value);
-                            if (!isNaN(num)) {
-                                this.value = num.toFixed(2);
-                                validateInput(this);
-                                const formulaId = this.dataset.formulaId;
-                                calculateWithdrawalAmount(formulaId);
-                            }
-                        }
-                    });
-                });
-
-
-                inputs.forEach(input => {
-                    if (input.value && parseFloat(input.value) > 0) {
-                        const formulaId = input.dataset.formulaId;
-                        calculateWithdrawalAmount(formulaId);
+                    } else {
+                        withdrawalInput.style.borderColor = '#f59e0b';
+                        withdrawalInput.style.backgroundColor = '#fffbeb';
                     }
-                });
-                
-                const submitBtn = document.getElementById('submit-all-btn');
-                if (submitBtn) {
-                    submitBtn.addEventListener('click', submitAllValues);
-                }
-                
-                document.querySelectorAll('.formula-card').forEach(card => {
-                    const formulaId = card.dataset.formulaId;
-                    const isExpanded = localStorage.getItem(`formula_expanded_${formulaId}`) === 'true';
-                    if (isExpanded) {
-                        const body = card.querySelector('.formula-body');
-                        const icon = card.querySelector('.toggle-icon');
-                        if (body) body.classList.add('expanded');
-                        if (icon) icon.classList.add('rotated');
-                        card.classList.add('expanded');
-                    }
-                });
-                
-                updateSummary();
-
-
-                const searchInput = document.getElementById('liveSearchInput');
-                if (searchInput) {
-                    const urlParams = new URLSearchParams(window.location.search);
-                    const searchParam = urlParams.get('search');
-                    if (searchParam) {
-                        searchInput.value = searchParam;
-                        performSearch(searchParam);
-                    }
-                }
-
-
-                document.addEventListener('keydown', function(e) {
-                    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-                        e.preventDefault();
-                        submitAllValues();
-                    }
-                });
-
-        
-        // ========================================
-        // RELATION SELECT VALIDATION
-        // ========================================
-
-
-        // ========================================
-        // GET ALL VALUES WITH WITHDRAWAL AMOUNTS
-        // ========================================
-function getAllValues() {
-    const inputs = document.querySelectorAll('.formula-value-input');
-    const values = [];
-    let hasValue = false;
-    
-    inputs.forEach(input => {
-        const val = parseFloat(input.value);
-        if (!isNaN(val) && val > 0) {
-            hasValue = true;
-            
-            const formulaId = parseInt(input.dataset.formulaId);
-            const productId = input.dataset.productId || null;
-            const productUnit = input.dataset.productUnit || '';
-            
-            const withdrawalItems = [];
-            const withdrawalInputs = document.querySelectorAll(`#body-${formulaId} .withdrawal-input`);
-            withdrawalInputs.forEach((wInput, index) => {
-                const amount = parseFloat(wInput.value) || 0;
-                if (amount > 0) {
-                    const row = wInput.closest('tr');
-                    const itemRef = row?.querySelector('td:nth-child(2)')?.textContent || '';
-                    const itemName = row?.querySelector('td:nth-child(3)')?.textContent || '';
-                    const quantity = parseFloat(row?.querySelector('td:nth-child(4)')?.textContent) || 0;
-                    const isManual = wInput.dataset.manuallyEdited === 'true';
-                    
-                    withdrawalItems.push({
-                        item_ref: itemRef.trim(),
-                        item_name: itemName.trim(),
-                        quantity: quantity,
-                        withdrawal_amount: amount,
-                        is_manually_edited: isManual
-                    });
                 }
             });
 
-            values.push({
-                formula_id: formulaId,
-                formula_code: input.dataset.formulaCode,
-                formula_title: input.dataset.formulaTitle,
-                product_id: productId,
-                product_unit: productUnit,
-                consumption_value: parseFloat(val.toFixed(2)),
-                withdrawal_items: withdrawalItems,
-                total_withdrawal: withdrawalItems.reduce((sum, item) => sum + item.withdrawal_amount, 0)
+            updateSummary();
+        }
+
+        // ========================================
+        // UPDATE WITHDRAWAL MANUALLY
+        // ========================================
+        function updateWithdrawalManually(input) {
+            const formulaId = input.dataset.formulaId;
+
+            input.value = convertPersianToEnglishNumbers(input.value);
+            const value = parseFloat(input.value) || 0;
+
+            if (value < 0) {
+                input.value = '0.00';
+                Swal.fire({
+                    title: '⚠️ خطا',
+                    text: 'میزان برداشتی نمی‌تواند منفی باشد',
+                    icon: 'warning',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+                return;
+            }
+
+            if (value > 0) {
+                input.classList.add('has-value');
+                input.classList.remove('is-zero');
+                input.style.color = '#16a34a';
+            } else {
+                input.classList.remove('has-value');
+                input.classList.add('is-zero');
+                input.style.color = '#94a3b8';
+            }
+
+            input.value = value.toFixed(2);
+            updateSummary();
+        }
+
+        // ========================================
+        // RESET MANUAL WITHDRAWALS
+        // ========================================
+        function resetManualWithdrawals(formulaId) {
+            const withdrawalInputs = document.querySelectorAll('#body-' + formulaId + ' .withdrawal-input');
+            withdrawalInputs.forEach(input => {
+                input.dataset.manuallyEdited = 'false';
+                input.style.borderColor = '';
+                input.style.backgroundColor = '';
             });
         }
-    });
-    
-    return { values, hasValue };
-}
+
+        // ========================================
+        // GET ALL VALUES
+        // ========================================
+        function getAllValues() {
+            const inputs = document.querySelectorAll('.formula-value-input');
+            const values = [];
+            let hasValue = false;
+
+            inputs.forEach(input => {
+                const val = parseFloat(convertPersianToEnglishNumbers(input.value));
+                if (!isNaN(val) && val > 0) {
+                    hasValue = true;
+
+                    const formulaId = parseInt(input.dataset.formulaId);
+                    const productId = input.dataset.productId || null;
+                    const productUnit = input.dataset.productUnit || '';
+
+                    const withdrawalItems = [];
+                    const withdrawalInputs = document.querySelectorAll('#body-' + formulaId + ' .withdrawal-input');
+                    withdrawalInputs.forEach(wInput => {
+                        const amount = parseFloat(convertPersianToEnglishNumbers(wInput.value)) || 0;
+                        if (amount > 0) {
+                            const row = wInput.closest('tr');
+                            const itemRef = row ? row.querySelector('td:nth-child(2)').textContent : '';
+                            const itemName = row ? row.querySelector('td:nth-child(3)').textContent : '';
+                            const quantity = parseFloat(row ? row.querySelector('td:nth-child(4)').textContent : 0) || 0;
+                            const isManual = wInput.dataset.manuallyEdited === 'true';
+                            const isTemp = wInput.dataset.isTemp === 'true';
+
+                            withdrawalItems.push({
+                                item_ref: itemRef.trim(),
+                                item_name: itemName.trim(),
+                                quantity: quantity,
+                                withdrawal_amount: amount,
+                                is_manually_edited: isManual,
+                                is_temp: isTemp
+                            });
+                        }
+                    });
+
+                    values.push({
+                        formula_id: formulaId,
+                        formula_code: input.dataset.formulaCode,
+                        formula_title: input.dataset.formulaTitle,
+                        product_id: productId,
+                        product_unit: productUnit,
+                        consumption_value: parseFloat(val.toFixed(2)),
+                        withdrawal_items: withdrawalItems,
+                        total_withdrawal: withdrawalItems.reduce((sum, item) => sum + item.withdrawal_amount, 0)
+                    });
+                }
+            });
+
+            return { values, hasValue };
+        }
 
         // ========================================
         // SUBMIT ALL VALUES
         // ========================================
-        function submitAllValues() {
+function submitAllValues() {
     const { values, hasValue } = getAllValues();
-    
+
     if (!hasValue) {
         Swal.fire({
             title: '⚠️ توجه',
@@ -1600,89 +1444,164 @@ function getAllValues() {
         });
         return;
     }
-    
-    let tableHtml = `
-        <div style="direction: rtl; text-align: right; max-height: 400px; overflow-y: auto;">
-            <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
-                <thead>
-                    <tr style="background: #1e293b; color: white;">
-                        <th style="padding: 8px; border: 1px solid #e2e8f0;">#</th>
-                        <th style="padding: 8px; border: 1px solid #e2e8f0;">کد</th>
-                        <th style="padding: 8px; border: 1px solid #e2e8f0;">عنوان</th>
-                        <th style="padding: 8px; border: 1px solid #e2e8f0;">مقدار مصرفی</th>
-                        <th style="padding: 8px; border: 1px solid #e2e8f0;">واحد</th>
-                        <th style="padding: 8px; border: 1px solid #e2e8f0;">کل برداشتی</th>
-                        <th style="padding: 8px; border: 1px solid #e2e8f0;">تعداد آیتم</th>
-                    </tr>
-                </thead>
-                <tbody>
-    `;
-    
+
+    // ============================================
+    // 1️⃣ جدول خلاصه فرمول‌ها
+    // ============================================
+    let tableHtml = '<div style="direction: rtl; text-align: right;">' +
+        '<h4 style="margin: 0 0 10px 0; color: #1e293b; font-size: 14px;">📋 خلاصه فرمول‌ها</h4>' +
+        '<table style="width: 100%; border-collapse: collapse; font-size: 13px;">' +
+        '<thead><tr style="background: #1e293b; color: white;">' +
+        '<th style="padding: 8px; border: 1px solid #e2e8f0;">#</th>' +
+        '<th style="padding: 8px; border: 1px solid #e2e8f0;">کد</th>' +
+        '<th style="padding: 8px; border: 1px solid #e2e8f0;">عنوان</th>' +
+        '<th style="padding: 8px; border: 1px solid #e2e8f0;">مقدار مصرفی</th>' +
+        '<th style="padding: 8px; border: 1px solid #e2e8f0;">واحد</th>' +
+        '<th style="padding: 8px; border: 1px solid #e2e8f0;">کل برداشتی</th>' +
+        '<th style="padding: 8px; border: 1px solid #e2e8f0;">تعداد آیتم</th>' +
+        '</tr></thead><tbody>';
+
     values.forEach((item, index) => {
-        tableHtml += `
-            <tr>
-                <td style="padding: 8px; border: 1px solid #e2e8f0; text-align: center;">${index + 1}</td>
-                <td style="padding: 8px; border: 1px solid #e2e8f0;">${item.formula_code}</td>
-                <td style="padding: 8px; border: 1px solid #e2e8f0;">${item.formula_title}</td>
-                <td style="padding: 8px; border: 1px solid #e2e8f0; color: #22c55e; font-weight: 700; text-align: center;">${item.consumption_value.toFixed(2)}</td>
-                <td style="padding: 8px; border: 1px solid #e2e8f0; text-align: center;">${item.product_unit || '-'}</td>
-                <td style="padding: 8px; border: 1px solid #e2e8f0; color: #8b5cf6; font-weight: 700; text-align: center;">${item.total_withdrawal.toFixed(2)}</td>
-                <td style="padding: 8px; border: 1px solid #e2e8f0; text-align: center;">${item.withdrawal_items.length}</td>
-            </tr>
-        `;
+        tableHtml += '<tr>' +
+            '<td style="padding: 8px; border: 1px solid #e2e8f0; text-align: center;">' + (index + 1) + '</td>' +
+            '<td style="padding: 8px; border: 1px solid #e2e8f0;">' + item.formula_code + '</td>' +
+            '<td style="padding: 8px; border: 1px solid #e2e8f0;">' + item.formula_title + '</td>' +
+            '<td style="padding: 8px; border: 1px solid #e2e8f0; color: #22c55e; font-weight: 700; text-align: center;">' + item.consumption_value.toFixed(2) + '</td>' +
+            '<td style="padding: 8px; border: 1px solid #e2e8f0; text-align: center;">' + (item.product_unit || '-') + '</td>' +
+            '<td style="padding: 8px; border: 1px solid #e2e8f0; color: #8b5cf6; font-weight: 700; text-align: center;">' + item.total_withdrawal.toFixed(2) + '</td>' +
+            '<td style="padding: 8px; border: 1px solid #e2e8f0; text-align: center;">' + item.withdrawal_items.length + '</td>' +
+            '</tr>';
     });
-    
-    tableHtml += `</tbody></table></div>`;
-    
+
+    tableHtml += '</tbody></table></div>';
+
+    // ============================================
+    // 2️⃣ ✅ جدول جزئیات مواد (شامل مواد موقت)
+    // ============================================
     let detailsHtml = '';
-    values.forEach((item, index) => {
-        if (item.withdrawal_items.length > 0) {
-            detailsHtml += `
-                <div style="margin-top: 12px; padding: 8px; background: #f8fafc; border-radius: 6px;">
-                    <strong style="color: #1e293b;">${item.formula_code} - ${item.formula_title}</strong>
-                    <table style="width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 4px;">
-                        <thead>
-                            <tr style="background: #e2e8f0;">
-                                <th style="padding: 4px 8px; border: 1px solid #cbd5e1;">مرجع</th>
-                                <th style="padding: 4px 8px; border: 1px solid #cbd5e1;">نام</th>
-                                <th style="padding: 4px 8px; border: 1px solid #cbd5e1;">مقدار</th>
-                                <th style="padding: 4px 8px; border: 1px solid #cbd5e1;">میزان برداشتی</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-            `;
-            item.withdrawal_items.forEach(wItem => {
-                detailsHtml += `
-                    <tr>
-                        <td style="padding: 4px 8px; border: 1px solid #cbd5e1;">${wItem.item_ref}</td>
-                        <td style="padding: 4px 8px; border: 1px solid #cbd5e1;">${wItem.item_name}</td>
-                        <td style="padding: 4px 8px; border: 1px solid #cbd5e1; text-align: center;">${wItem.quantity.toFixed(2)}</td>
-                        <td style="padding: 4px 8px; border: 1px solid #cbd5e1; color: #22c55e; font-weight: 600; text-align: center;">${wItem.withdrawal_amount.toFixed(2)}</td>
-                    </tr>
-                `;
-            });
-            detailsHtml += `</tbody></table></div>`;
-        }
+
+    values.forEach((formula, fIndex) => {
+        if (!formula.withdrawal_items || formula.withdrawal_items.length === 0) return;
+
+        const tempCount = formula.withdrawal_items.filter(w => w.is_temp).length;
+        const normalCount = formula.withdrawal_items.length - tempCount;
+
+        detailsHtml += '<div style="margin-top: 16px; padding: 12px; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0;">';
+
+        // عنوان فرمول
+        detailsHtml += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">' +
+            '<div style="font-weight: 700; color: #1e293b; font-size: 14px;">' +
+                '🔧 ' + formula.formula_code + ' - ' + formula.formula_title +
+            '</div>' +
+            '<div style="font-size: 12px;">' +
+                '<span style="background: #dbeafe; color: #1e40af; padding: 3px 10px; border-radius: 10px; margin-left: 4px;">' +
+                    'مواد اصلی: ' + normalCount +
+                '</span>' +
+                (tempCount > 0
+                    ? '<span style="background: #fef3c7; color: #92400e; padding: 3px 10px; border-radius: 10px; font-weight: 700;">' +
+                        '➕ جدید: ' + tempCount +
+                      '</span>'
+                    : '') +
+            '</div>' +
+        '</div>';
+
+        // جدول جزئیات
+        detailsHtml += '<table style="width: 100%; border-collapse: collapse; font-size: 12px;">' +
+            '<thead><tr style="background: #e2e8f0;">' +
+            '<th style="padding: 6px 8px; border: 1px solid #cbd5e1; text-align: center; width: 40px;">#</th>' +
+            '<th style="padding: 6px 8px; border: 1px solid #cbd5e1; text-align: right;">مرجع</th>' +
+            '<th style="padding: 6px 8px; border: 1px solid #cbd5e1; text-align: right;">نام ماده</th>' +
+            '<th style="padding: 6px 8px; border: 1px solid #cbd5e1; text-align: center; width: 90px;">مقدار مصرفی</th>' +
+            '<th style="padding: 6px 8px; border: 1px solid #cbd5e1; text-align: center; width: 100px;">میزان برداشتی</th>' +
+            '<th style="padding: 6px 8px; border: 1px solid #cbd5e1; text-align: center; width: 80px;">وضعیت</th>' +
+            '</tr></thead><tbody>';
+
+        formula.withdrawal_items.forEach((wItem, wIndex) => {
+            const isTemp = wItem.is_temp === true || wItem.is_temp === 'true';
+            const rowBg = isTemp ? '#fef3c7' : '#ffffff';
+
+            detailsHtml += '<tr style="background: ' + rowBg + ';">' +
+                '<td style="padding: 6px 8px; border: 1px solid #cbd5e1; text-align: center; color: #64748b;">' +
+                    (wIndex + 1) +
+                '</td>' +
+                '<td style="padding: 6px 8px; border: 1px solid #cbd5e1; text-align: right; color: #334155;">' +
+                    wItem.item_ref +
+                '</td>' +
+                '<td style="padding: 6px 8px; border: 1px solid #cbd5e1; text-align: right; color: #1e293b; font-weight: 600;">' +
+                    (wItem.item_name || '-') +
+                '</td>' +
+                '<td style="padding: 6px 8px; border: 1px solid #cbd5e1; text-align: center; color: #475569;">' +
+                    (parseFloat(wItem.quantity) || 0).toFixed(2) +
+                '</td>' +
+                '<td style="padding: 6px 8px; border: 1px solid #cbd5e1; text-align: center; color: #16a34a; font-weight: 700;">' +
+                    (parseFloat(wItem.withdrawal_amount) || 0).toFixed(2) +
+                '</td>' +
+                '<td style="padding: 6px 8px; border: 1px solid #cbd5e1; text-align: center;">' +
+                    (isTemp
+                        ? '<span style="background: #f59e0b; color: white; padding: 2px 8px; border-radius: 8px; font-size: 10px; font-weight: 700;">➕ جدید</span>'
+                        : '<span style="color: #94a3b8; font-size: 11px;">اصلی</span>'
+                    ) +
+                '</td>' +
+            '</tr>';
+        });
+
+        detailsHtml += '</tbody></table></div>';
     });
-    
+
+    // ============================================
+    // 3️⃣ شمارش کل مواد جدید
+    // ============================================
+    let totalTempCount = 0;
+    let totalItemsCount = 0;
+    values.forEach(v => {
+        v.withdrawal_items.forEach(w => {
+            totalItemsCount++;
+            if (w.is_temp) totalTempCount++;
+        });
+    });
+
+    let summaryHtml = '<div style="display: flex; gap: 12px; justify-content: center; margin: 12px 0; flex-wrap: wrap;">' +
+        '<div style="background: #eff6ff; padding: 10px 18px; border-radius: 10px; text-align: center; border: 1px solid #bfdbfe;">' +
+            '<div style="font-size: 22px; font-weight: 700; color: #1e40af;">' + values.length + '</div>' +
+            '<div style="font-size: 12px; color: #475569;">📋 فرمول</div>' +
+        '</div>' +
+        '<div style="background: #f0fdf4; padding: 10px 18px; border-radius: 10px; text-align: center; border: 1px solid #bbf7d0;">' +
+            '<div style="font-size: 22px; font-weight: 700; color: #16a34a;">' + totalItemsCount + '</div>' +
+            '<div style="font-size: 12px; color: #475569;">📦 کل مواد</div>' +
+        '</div>';
+
+    if (totalTempCount > 0) {
+        summaryHtml += '<div style="background: #fef3c7; padding: 10px 18px; border-radius: 10px; text-align: center; border: 1px solid #fcd34d;">' +
+            '<div style="font-size: 22px; font-weight: 700; color: #d97706;">' + totalTempCount + '</div>' +
+            '<div style="font-size: 12px; color: #475569;">➕ مواد جدید</div>' +
+        '</div>';
+    }
+
+    summaryHtml += '</div>';
+
+    // ============================================
+    // 4️⃣ نمایش مودال
+    // ============================================
     Swal.fire({
         title: '📋 تایید ثبت',
-        html: `
-            <div style="text-align: right;">
-                <p style="font-size: 15px; margin-bottom: 12px;">
-                    <strong>${values.length}</strong> فرمول با اطلاعات زیر ثبت خواهند شد:
-                </p>
-                ${tableHtml}
-                ${detailsHtml ? `<div style="margin-top: 16px; padding-top: 16px; border-top: 2px solid #e2e8f0;"><strong>📦 جزئیات برداشت:</strong></div>${detailsHtml}` : ''}
-            </div>
-        `,
+        html: '<div style="direction: rtl; text-align: right; max-height: 60vh; overflow-y: auto; padding-left: 8px;">' +
+            summaryHtml +
+            '<div style="margin-top: 16px;">' + tableHtml + '</div>' +
+            (detailsHtml
+                ? '<div style="margin-top: 20px; padding-top: 16px; border-top: 2px dashed #cbd5e1;">' +
+                    '<h4 style="margin: 0 0 10px 0; color: #1e293b; font-size: 14px;">📦 جزئیات مواد اولیه</h4>' +
+                    detailsHtml +
+                  '</div>'
+                : ''
+            ) +
+        '</div>',
         icon: 'question',
         showCancelButton: true,
         confirmButtonColor: '#22c55e',
         cancelButtonColor: '#ef4444',
         confirmButtonText: '✅ تایید و ثبت',
         cancelButtonText: '❌ انصراف',
-        width: 850,
+        width: 900,
         padding: '20px'
     }).then((result) => {
         if (result.isConfirmed) {
@@ -1690,178 +1609,119 @@ function getAllValues() {
         }
     });
 }
+        // ========================================
+        // SEND TO SERVER
+        // ========================================
+        function sendToServer(values) {
+            const submitBtn = document.getElementById('submit-all-btn');
+            const relationSelect = document.getElementById('relationSelect');
+            const relationId = relationSelect.value;
 
+            if (!relationId) {
+                relationSelect.style.borderColor = '#ef4444';
+                relationSelect.style.backgroundColor = '#fef2f2';
+                relationSelect.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-function sendToServer(values) {
-    const submitBtn = document.getElementById('submit-all-btn');
-    
+                Swal.fire({
+                    title: '⚠️ خطا',
+                    text: 'لطفاً یک رابطه انتخاب کنید!',
+                    icon: 'warning',
+                    confirmButtonText: '✅ متوجه شدم',
+                    confirmButtonColor: '#ef4444'
+                }).then(() => {
+                    relationSelect.focus();
+                });
+                return;
+            }
 
-    // ========================================
-    // CHECK IF RELATION IS SELECTED
-    // ========================================
-    const relationSelect = document.getElementById('relationSelect');
-    const relationId = relationSelect.value;
-    const relationName = relationSelect.options[relationSelect.selectedIndex]?.text || '';
-    
-    if (!relationId || relationId === '') {
-        relationSelect.style.borderColor = '#ef4444';
-        relationSelect.style.backgroundColor = '#fef2f2';
-        relationSelect.style.boxShadow = '0 0 0 3px rgba(239, 68, 68, 0.2)';
-        
-        relationSelect.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        
-        Swal.fire({
-            title: '⚠️ خطا',
-            html: `
-                <div style="text-align: right; direction: rtl; padding: 10px;">
-                    <div style="font-size: 48px; text-align: center; margin: 10px 0;">
-                        ⚠️
-                    </div>
-                    <div style="font-size: 18px; font-weight: 600; color: #dc2626; text-align: center; margin: 10px 0;">
-                        لطفاً یک رابطه انتخاب کنید!
-                    </div>
-                    <div style="font-size: 14px; color: #6b7280; text-align: center; margin: 10px 0;">
-                        برای ثبت فرمول‌ها، ابتدا باید یکی از روابط انبار را از منوی کشویی انتخاب کنید.
-                    </div>
-                    <div style="margin-top: 16px; padding: 12px; background: #fef3c7; border-radius: 8px; border: 1px solid #f59e0b; text-align: center;">
-                        <i class="fas fa-arrow-up" style="color: #f59e0b; font-size: 20px;"></i>
-                        <span style="font-weight: 500; color: #92400e; margin-right: 8px;">
-                            لطفاً از قسمت "رابطه" یک گزینه انتخاب کنید
-                        </span>
-                    </div>
-                    <div style="margin-top: 16px; padding: 8px 12px; background: #f8fafc; border-radius: 6px; border: 1px solid #e2e8f0; font-size: 12px; color: #6b7280; display: flex; justify-content: center; align-items: center; gap: 8px;">
-                        <i class="fas fa-info-circle" style="color: #3b82f6;"></i>
-                        <span>رابطه‌ها در بخش ادمین جنگو قابل ایجاد و مدیریت هستند</span>
-                    </div>
-                </div>
-            `,
-            icon: 'warning',
-            confirmButtonText: '✅ متوجه شدم',
-            confirmButtonColor: '#ef4444',
-            width: 550,
-            padding: '20px',
-            showCloseButton: true,
-            backdrop: `rgba(0,0,0,0.4)`,
-            allowOutsideClick: false
-        }).then(() => {
-            relationSelect.focus();
-            setTimeout(() => {
-                relationSelect.style.borderColor = '';
-                relationSelect.style.backgroundColor = '';
-                relationSelect.style.boxShadow = '';
-            }, 3000);
-        });
-        
-        return;
-    }
-    
-    relationSelect.style.borderColor = '';
-    relationSelect.style.backgroundColor = '';
-    relationSelect.style.boxShadow = '';
-    
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> در حال ارسال...';
-    submitBtn.classList.add('btn-loading');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> در حال ارسال...';
+            submitBtn.classList.add('btn-loading');
 
+            const backendDate = "{{ selected_date|default:'' }}";
+            const localStorageDate = localStorage.getItem('selected_date');
+            const userSelectedDate = window.selectedDate;
+            let selectedDate = userSelectedDate || localStorageDate || backendDate || '';
 
-    const selectedDateFromBackend = "{{ selected_date|default:'' }}";
+            if (!selectedDate) {
+                Swal.fire({
+                    title: '⚠️ خطا',
+                    text: 'لطفاً تاریخ را انتخاب کنید',
+                    icon: 'warning',
+                    confirmButtonText: 'باشه',
+                    confirmButtonColor: '#f59e0b'
+                });
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-save"></i> ثبت تمام مقادیر';
+                submitBtn.classList.remove('btn-loading');
+                return;
+            }
 
-    const backendDate = "{{ selected_date|default:'' }}";
-    const localStorageDate = localStorage.getItem('selected_date');
-    const userSelectedDate = window.selectedDate;
+            const payload = {
+                formulas: values.map(item => ({
+                    formula_id: item.formula_id,
+                    formula_code: item.formula_code,
+                    formula_title: item.formula_title,
+                    product_id: item.product_id,
+                    product_unit: item.product_unit,
+                    consumption_value: item.consumption_value,
+                    total_withdrawal: item.total_withdrawal,
+                    withdrawal_items: item.withdrawal_items.map(wItem => ({
+                        item_ref: wItem.item_ref,
+                        item_name: wItem.item_name,
+                        quantity: wItem.quantity,
+                        withdrawal_amount: wItem.withdrawal_amount
+                    }))
+                })),
+                relation_id: relationId,
+                selectedDate: selectedDate
+            };
 
-
-    console.log('Selected date from backend:', selectedDateFromBackend);
-
-
-    let selectedDate = userSelectedDate || localStorageDate || backendDate || '';
-
-    console.log('📅 تاریخ‌های موجود:');
-    console.log('  - Backend:', backendDate);
-    console.log('  - LocalStorage:', localStorageDate);
-    console.log('  - User Selected:', userSelectedDate);
-    console.log('  - Final Selected:', selectedDate);
-
-
-    if (!selectedDate) {
-        Swal.fire({
-            title: '⚠️ خطا',
-            text: 'لطفاً تاریخ را انتخاب کنید',
-            icon: 'warning',
-            confirmButtonText: 'باشه',
-            confirmButtonColor: '#f59e0b'
-        });
-        return;
-    }
-
-    const payload = {
-        formulas: values.map(item => ({
-            formula_id: item.formula_id,
-            formula_code: item.formula_code,
-            formula_title: item.formula_title,
-            product_id: item.product_id,
-            product_unit: item.product_unit,
-            consumption_value: item.consumption_value,
-            total_withdrawal: item.total_withdrawal,
-            withdrawal_items: item.withdrawal_items.map(wItem => ({
-                item_ref: wItem.item_ref,
-                item_name: wItem.item_name,
-                quantity: wItem.quantity,
-                withdrawal_amount: wItem.withdrawal_amount
-            }))
-        })),
-        relation_id: relationId,
-        relation_name: relationName,
-        selectedDate : selectedDate  
-    };
-
-    console.log('Sending payload with relation:', payload);
-
-    fetch('/api/submit-all-formula-values/', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': getCSRFToken()
-        },
-        body: JSON.stringify(payload)
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Full response from server:', data);
-        console.log('Response structure:', Object.keys(data));
-        if (data.success) {
-            showSuccessModal(data);
-        } else {
-            if (data.data?.unavailable_materials?.length > 0) {
-                showUnavailableError(data);
-            } else {
+            fetch('/api/submit-all-formula-values/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken()
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showSuccessModal(data);
+                } else {
+                    if (data.data && data.data.unavailable_materials && data.data.unavailable_materials.length > 0) {
+                        showUnavailableError(data);
+                    } else {
+                        Swal.fire({
+                            title: '❌ خطا',
+                            text: data.error || data.message || 'خطا در ثبت مقادیر',
+                            icon: 'error',
+                            confirmButtonText: 'باشه',
+                            confirmButtonColor: '#ef4444'
+                        });
+                    }
+                }
+            })
+            .catch(error => {
                 Swal.fire({
                     title: '❌ خطا',
-                    text: data.error || data.message || 'خطا در ثبت مقادیر',
+                    text: 'خطا در ارتباط با سرور: ' + error.message,
                     icon: 'error',
                     confirmButtonText: 'باشه',
                     confirmButtonColor: '#ef4444'
                 });
-            }
+            })
+            .finally(() => {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-save"></i> ثبت تمام مقادیر';
+                submitBtn.classList.remove('btn-loading');
+            });
         }
-    })
-    .catch(error => {
-        Swal.fire({
-            title: '❌ خطا',
-            text: 'خطا در ارتباط با سرور: ' + error.message,
-            icon: 'error',
-            confirmButtonText: 'باشه',
-            confirmButtonColor: '#ef4444'
-        });
-    })
-    .finally(() => {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = '<i class="fas fa-save"></i> ثبت تمام مقادیر';
-        submitBtn.classList.remove('btn-loading');
-    });
-}
 
-
+        // ========================================
+        // SHOW SUCCESS MODAL
+        // ========================================
 
 function showSuccessModal(data) {
     console.log('Full data received:', data);
@@ -2212,66 +2072,39 @@ function showErrorDetails(data) {
 }
 
         // ========================================
-        // SHOW UNAVAILABLE MATERIALS
+        // SHOW UNAVAILABLE ERROR
         // ========================================
         function showUnavailableError(data) {
             const items = data.data.unavailable_materials || [];
-            const summary = data.data.summary || {};
-            
-            let html = `
-                <div style="direction: rtl; text-align: right; max-height: 400px; overflow-y: auto;">
-                    <div style="margin-bottom: 12px; padding: 10px; background: #fef3c7; border-radius: 6px; border: 1px solid #f59e0b;">
-                        <strong>⚠️ هشدار:</strong> مواد زیر در انبار موجود نیستند
-                    </div>
-                    <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
-                        <thead style="background: #dc2626; color: white; position: sticky; top: 0;">
-                            <tr>
-                                <th style="padding: 6px 10px; border: 1px solid #e2e8f0;">#</th>
-                                <th style="padding: 6px 10px; border: 1px solid #e2e8f0;">نام</th>
-                                <th style="padding: 6px 10px; border: 1px solid #e2e8f0;">نیاز</th>
-                                <th style="padding: 6px 10px; border: 1px solid #e2e8f0;">موجودی</th>
-                                <th style="padding: 6px 10px; border: 1px solid #e2e8f0;">کمبود</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-            `;
-            
-            let totalShortage = 0;
+
+            let html = '<div style="direction: rtl; text-align: right; max-height: 400px; overflow-y: auto;">' +
+                '<div style="margin-bottom: 12px; padding: 10px; background: #fef3c7; border-radius: 6px;">' +
+                '<strong>⚠️ هشدار:</strong> مواد زیر در انبار موجود نیستند</div>' +
+                '<table style="width: 100%; border-collapse: collapse; font-size: 13px;">' +
+                '<thead style="background: #dc2626; color: white;">' +
+                '<tr><th style="padding: 6px 10px;">#</th><th style="padding: 6px 10px;">نام</th>' +
+                '<th style="padding: 6px 10px;">نیاز</th><th style="padding: 6px 10px;">موجودی</th>' +
+                '<th style="padding: 6px 10px;">کمبود</th></tr></thead><tbody>';
+
             items.forEach((item, i) => {
-                totalShortage += (item.shortage || 0);
-                html += `
-                    <tr style="background: #fef2f2;">
-                        <td style="padding: 6px 10px; border: 1px solid #e2e8f0; text-align: center;">${i + 1}</td>
-                        <td style="padding: 6px 10px; border: 1px solid #e2e8f0;">${item.material_name || 'نامشخص'}</td>
-                        <td style="padding: 6px 10px; border: 1px solid #e2e8f0; color: #dc2626; font-weight: 700;">${item.required_quantity || 0}</td>
-                        <td style="padding: 6px 10px; border: 1px solid #e2e8f0; color: #2563eb;">${item.available_quantity || 0}</td>
-                        <td style="padding: 6px 10px; border: 1px solid #e2e8f0; color: #dc2626; font-weight: 700;">${item.shortage || 0}</td>
-                    </tr>
-                `;
+                html += '<tr style="background: #fef2f2;">' +
+                    '<td style="padding: 6px 10px; text-align: center;">' + (i + 1) + '</td>' +
+                    '<td style="padding: 6px 10px;">' + (item.material_name || 'نامشخص') + '</td>' +
+                    '<td style="padding: 6px 10px; color: #dc2626;">' + (item.required_quantity || 0) + '</td>' +
+                    '<td style="padding: 6px 10px; color: #2563eb;">' + (item.available_quantity || 0) + '</td>' +
+                    '<td style="padding: 6px 10px; color: #dc2626;">' + (item.shortage || 0) + '</td>' +
+                    '</tr>';
             });
-            
-            html += `
-                        </tbody>
-                    </table>
-                    <div style="margin-top: 12px; padding: 10px; background: #dbeafe; border-radius: 6px;">
-                        <strong>📊 خلاصه:</strong>
-                        <span style="margin-left: 12px;">کل: ${summary.total_materials || 0}</span>
-                        <span style="margin-left: 12px; color: #22c55e;">موجود: ${summary.available_materials || 0}</span>
-                        <span style="margin-left: 12px; color: #dc2626;">ناموجود: ${summary.unavailable_materials || 0}</span>
-                        <span style="margin-left: 12px; color: #dc2626; font-weight: 700;">کمبود: ${totalShortage}</span>
-                    </div>
-                </div>
-            `;
-            
+
+            html += '</tbody></table></div>';
+
             Swal.fire({
                 title: '❌ کمبود کالا',
                 html: html,
                 icon: 'error',
                 confirmButtonText: 'باشه',
                 confirmButtonColor: '#ef4444',
-                width: 750,
-                showCancelButton: true,
-                cancelButtonText: 'بستن'
+                width: 750
             });
         }
 
@@ -2282,17 +2115,23 @@ function showErrorDetails(data) {
             document.querySelectorAll('.formula-value-input').forEach(input => {
                 input.value = '';
                 input.classList.remove('has-value');
-                
-                const formulaId = input.dataset.formulaId;
-                const withdrawalCells = document.querySelectorAll(`#body-${formulaId} .withdrawal-amount`);
-                withdrawalCells.forEach(cell => {
-                    cell.textContent = '0.00';
-                    cell.style.color = '#94a3b8';
-                    cell.style.fontWeight = '400';
-                });
             });
+
+            document.querySelectorAll('.withdrawal-input').forEach(input => {
+                input.value = '0.00';
+                input.classList.remove('has-value');
+                input.classList.add('is-zero');
+                input.dataset.manuallyEdited = 'false';
+            });
+
+            // حذف ردیف‌های موقت
+            document.querySelectorAll('tr[data-is-temp="true"]').forEach(row => {
+                row.remove();
+            });
+
             updateSummary();
         }
+
         function clearAllValues() {
             Swal.fire({
                 title: '⚠️ تایید پاک کردن',
@@ -2318,264 +2157,311 @@ function showErrorDetails(data) {
         }
 
         // ========================================
-        // SEARCH
+        // LIVE SEARCH
         // ========================================
-        function searchFormulas() {
-            const term = document.getElementById('searchInput').value.trim();
-            if (!term) { location.reload(); return; }
-            
-            fetch(`/api/search-formulas/?q=${encodeURIComponent(term)}`)
-                .then(r => r.json())
-                .then(data => {
-                    if (data.success) {
-                        if (data.data.length === 0) {
-                            document.getElementById('results').innerHTML = `
-                                <div class="empty-state">
-                                    <div class="icon">🔍</div>
-                                    <h2>نتیجه‌ای یافت نشد</h2>
-                                    <p>هیچ فرمولی با عبارت "${term}" پیدا نشد.</p>
-                                </div>
-                            `;
+        let searchTimeout = null;
+
+        function liveSearch(searchTerm) {
+            if (searchTimeout) clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => performSearch(searchTerm), 200);
+        }
+
+        function performSearch(searchTerm) {
+            const term = normalizePersianText(searchTerm);
+            const formulaCards = document.querySelectorAll('.formula-card');
+            const resultsContainer = document.getElementById('results');
+            const clearBtn = document.getElementById('clearSearchBtn');
+            const resultInfo = document.getElementById('searchResultInfo');
+            const resultText = document.getElementById('searchResultText');
+
+            const existingNoResults = document.querySelector('.search-no-results');
+            if (existingNoResults) existingNoResults.remove();
+
+            if (term) {
+                clearBtn.style.display = 'block';
+            } else {
+                clearBtn.style.display = 'none';
+                resultInfo.style.display = 'none';
+            }
+
+            let visibleCount = 0;
+            const totalCount = formulaCards.length;
+
+            if (!term) {
+                formulaCards.forEach(card => {
+                    card.classList.remove('search-hidden');
+                    removeHighlights(card);
+                });
+                document.getElementById('totalCount').textContent = totalCount;
+                updateSummary();
+                return;
+            }
+
+            const searchWords = term.split(/\s+/).filter(w => w.length > 0);
+
+            formulaCards.forEach(card => {
+                const formulaCode = normalizePersianText(card.querySelector('.formula-code') ? card.querySelector('.formula-code').textContent : '');
+                const formulaTitle = normalizePersianText(card.querySelector('.formula-title') ? card.querySelector('.formula-title').textContent : '');
+                const valueInput = card.querySelector('.formula-value-input');
+                const dataProductCode = normalizePersianText(valueInput ? valueInput.dataset.productCode || '' : '');
+                const dataFormulaCode = normalizePersianText(valueInput ? valueInput.dataset.formulaCode || '' : '');
+                const dataFormulaTitle = normalizePersianText(valueInput ? valueInput.dataset.formulaTitle || '' : '');
+
+                const searchableText = [formulaCode, formulaTitle, dataProductCode, dataFormulaCode, dataFormulaTitle].join(' ');
+                const matches = searchWords.every(word => searchableText.includes(word));
+
+                if (matches) {
+                    card.classList.remove('search-hidden');
+                    visibleCount++;
+                    highlightSearchTerm(card, searchTerm);
+                } else {
+                    card.classList.add('search-hidden');
+                    removeHighlights(card);
+                }
+            });
+
+            if (visibleCount === 0) {
+                const noResultsDiv = document.createElement('div');
+                noResultsDiv.className = 'search-no-results';
+                noResultsDiv.innerHTML = '<div class="icon">🔍</div>' +
+                    '<h3>نتیجه‌ای یافت نشد</h3>' +
+                    '<p>هیچ فرمولی با عبارت "<strong>' + escapeHtml(searchTerm) + '</strong>" مطابقت ندارد.</p>';
+                resultsContainer.appendChild(noResultsDiv);
+            }
+
+            resultInfo.style.display = 'block';
+            if (visibleCount > 0) {
+                resultText.innerHTML = '<span style="color: var(--success); font-weight: 600;">' + visibleCount + '</span> از <span style="font-weight: 600;">' + totalCount + '</span> فرمول نمایش داده می‌شود';
+            } else {
+                resultText.innerHTML = '<span style="color: var(--danger); font-weight: 600;">هیچ فرمولی</span> با این عبارت یافت نشد';
+            }
+
+            document.getElementById('totalCount').textContent = visibleCount;
+            updateSummary();
+        }
+
+        function highlightSearchTerm(card, originalTerm) {
+            const term = normalizePersianText(originalTerm);
+            if (!term) return;
+
+            [card.querySelector('.formula-code'), card.querySelector('.formula-title')].forEach(el => {
+                if (!el) return;
+                const originalText = el.dataset.originalText || el.textContent;
+                el.dataset.originalText = originalText;
+
+                let html = originalText;
+                let hasMatch = false;
+
+                term.split(/\s+/).filter(w => w.length > 0).forEach(word => {
+                    const regexPattern = buildPersianRegex(word);
+                    if (!regexPattern) return;
+                    const regex = new RegExp('(' + regexPattern + ')', 'gi');
+                    if (regex.test(html)) {
+                        html = html.replace(regex, '<span class="highlight-match">$1</span>');
+                        hasMatch = true;
+                    }
+                });
+
+                if (hasMatch) el.innerHTML = html;
+            });
+        }
+
+        function buildPersianRegex(word) {
+            if (!word) return '';
+            const charMap = {
+                'ی': '[یيﻯﻰﻱﻲ]', 'ک': '[کكﻙﻚ]', 'ه': '[هةۀ]', 'ا': '[اأإآٱ]',
+                'و': '[وﻭؤ]', 'ن': '[نﻥ]', 'ل': '[لﻝ]', 'م': '[مﻡ]',
+                '0': '[0۰٠]', '1': '[1۱١]', '2': '[2۲٢]', '3': '[3۳٣]',
+                '4': '[4۴٤]', '5': '[5۵٥]', '6': '[6۶٦]', '7': '[7۷٧]',
+                '8': '[8۸٨]', '9': '[9۹٩]'
+            };
+            let pattern = '';
+            for (const char of word) {
+                if (charMap[char]) {
+                    pattern += charMap[char];
+                } else if (/[.*+?^${}()|[\]\\]/.test(char)) {
+                    pattern += '\\' + char;
+                } else {
+                    pattern += char;
+                }
+            }
+            return pattern;
+        }
+
+        function removeHighlights(card) {
+            card.querySelectorAll('.highlight-match').forEach(el => {
+                const parent = el.parentNode;
+                parent.replaceChild(document.createTextNode(el.textContent), el);
+                parent.normalize();
+            });
+        }
+
+        function clearLiveSearch() {
+            const input = document.getElementById('liveSearchInput');
+            if (input) { input.value = ''; input.focus(); }
+            performSearch('');
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function normalizePersianText(text) {
+            if (!text) return '';
+            return text.toString()
+                .replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d))
+                .replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d))
+                .replace(/[يﻯﻰﻱﻲ]/g, 'ی')
+                .replace(/[كﻙﻚ]/g, 'ک')
+                .replace(/[ةۀ]/g, 'ه')
+                .replace(/[أإآٱ]/g, 'ا')
+                .replace(/[\u064B-\u065F\u0670\u0640]/g, '')
+                .replace(/\u200C/g, ' ')
+                .replace(/\u200F|\u200E/g, '')
+                .replace(/\s+/g, ' ')
+                .trim()
+                .toLowerCase();
+        }
+
+        // ========================================
+        // RELATION CHANGE
+        // ========================================
+        function onRelationChange(selectElement) {
+            const relationId = selectElement.value;
+            const url = new URL(window.location.href);
+
+            if (!relationId) {
+                url.searchParams.delete('relation_id');
+                if (!document.getElementById('showAllCheckbox').checked) {
+                    url.searchParams.delete('show_all');
+                }
+                window.location.href = url.toString();
+                return;
+            }
+
+            url.searchParams.set('relation_id', relationId);
+
+            if (!document.getElementById('showAllCheckbox').checked) {
+                url.searchParams.delete('show_all');
+            }
+
+            window.location.href = url.toString();
+        }
+
+        // ========================================
+        // DOM READY
+        // ========================================
+        document.addEventListener('DOMContentLoaded', function() {
+            // همه فرمول‌ها بسته شروع بشن
+            document.querySelectorAll('.formula-card').forEach(card => {
+                const formulaId = card.dataset.formulaId;
+                localStorage.removeItem('formula_expanded_' + formulaId);
+            });
+
+            // Bind events برای formula-value-input
+            document.querySelectorAll('.formula-value-input').forEach(input => {
+                input.addEventListener('input', function() {
+                    sanitizeNumericInput(this);
+                    validateInput(this);
+                    const formulaId = this.dataset.formulaId;
+                    resetManualWithdrawals(formulaId);
+                    calculateWithdrawalAmount(formulaId);
+                });
+
+                input.addEventListener('blur', function() {
+                    if (this.value) {
+                        const num = parseFloat(convertPersianToEnglishNumbers(this.value));
+                        if (!isNaN(num)) {
+                            this.value = num.toFixed(2);
+                            validateInput(this);
+                            calculateWithdrawalAmount(this.dataset.formulaId);
                         } else {
-                            window.location.href = `?search=${term}`;
+                            this.value = '';
+                            validateInput(this);
                         }
                     }
-                })
-                .catch(console.error);
-        }
+                });
+            });
 
-        // ========================================
-        // KEYBOARD SHORTCUTS
-        // ========================================
-        document.addEventListener('keydown', function(e) {
-            if (e.ctrlKey && e.shiftKey && e.key === 'E') {
-                e.preventDefault();
-                expandAll();
-            }
-            if (e.ctrlKey && e.shiftKey && e.key === 'C') {
-                e.preventDefault();
-                collapseAll();
-            }
-        });
+            // Bind events برای withdrawal-input
+            document.querySelectorAll('.withdrawal-input').forEach(input => {
+                input.addEventListener('input', function() {
+                    sanitizeNumericInput(this);
+                });
+            });
 
-
-// ========================================
-// CALCULATE WITHDRAWAL AMOUNT (میزان برداشتی)
-// ========================================
-function calculateWithdrawalAmount(formulaId) {
-    const valueInput = document.getElementById(`value_${formulaId}`);
-    const consumptionRate = parseFloat(valueInput?.value) || 0;
-    
-    const items = document.querySelectorAll(`#body-${formulaId} table tbody tr`);
-    
-    items.forEach((row, index) => {
-        const quantityCell = row.querySelector('td:nth-child(4)');
-        const quantity = parseFloat(quantityCell?.textContent) || 0;
-        
-        const autoWithdrawal = quantity * consumptionRate;
-        
-        const withdrawalInput = row.querySelector('.withdrawal-input');
-        if (withdrawalInput) {
-            const currentManualValue = parseFloat(withdrawalInput.value) || 0;
-            const isManuallyEdited = withdrawalInput.dataset.manuallyEdited === 'true';
-            
-            if (!isManuallyEdited || consumptionRate === 0) {
-                if (consumptionRate > 0 && quantity > 0) {
-                    withdrawalInput.value = autoWithdrawal.toFixed(2);
-                    withdrawalInput.classList.add('has-value');
-                    withdrawalInput.classList.remove('is-zero');
-                    withdrawalInput.style.color = '#16a34a';
-                } else {
-                    withdrawalInput.value = '0.00';
-                    withdrawalInput.classList.remove('has-value');
-                    withdrawalInput.classList.add('is-zero');
-                    withdrawalInput.style.color = '#94a3b8';
+            // Initial calculation
+            document.querySelectorAll('.formula-value-input').forEach(input => {
+                if (input.value && parseFloat(convertPersianToEnglishNumbers(input.value)) > 0) {
+                    calculateWithdrawalAmount(input.dataset.formulaId);
                 }
-            } else {
-                withdrawalInput.style.borderColor = '#f59e0b';
-                withdrawalInput.style.backgroundColor = '#fffbeb';
+            });
+
+            // Submit button
+            const submitBtn = document.getElementById('submit-all-btn');
+            if (submitBtn) {
+                submitBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    submitAllValues();
+                });
             }
-        }
-    });
-    
-    updateFormulaWithdrawalTotal(formulaId);
-    updateSummary();
-}
 
+            updateSummary();
 
-
-
-function updateWithdrawalManually(input) {
-    const formulaId = input.dataset.formulaId;
-    const itemIndex = parseInt(input.dataset.itemIndex);
-    const value = parseFloat(input.value) || 0;
-    
-    if (value < 0) {
-        input.value = '0.00';
-        Swal.fire({
-            title: '⚠️ خطا',
-            text: 'میزان برداشتی نمی‌تواند منفی باشد',
-            icon: 'warning',
-            timer: 1500,
-            showConfirmButton: false
+            // Keyboard shortcuts
+            document.addEventListener('keydown', function(e) {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                    e.preventDefault();
+                    submitAllValues();
+                }
+                if (e.ctrlKey && e.shiftKey && e.key === 'E') {
+                    e.preventDefault();
+                    expandAll();
+                }
+                if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+                    e.preventDefault();
+                    collapseAll();
+                }
+                if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                    e.preventDefault();
+                    const searchInput = document.getElementById('liveSearchInput');
+                    if (searchInput) { searchInput.focus(); searchInput.select(); }
+                }
+                if (e.key === 'Escape') {
+                    const searchInput = document.getElementById('liveSearchInput');
+                    if (searchInput && document.activeElement === searchInput) {
+                        clearLiveSearch();
+                        searchInput.blur();
+                    }
+                }
+            });
         });
-        return;
-    }
-    
-    if (value > 0) {
-        input.classList.add('has-value');
-        input.classList.remove('is-zero');
-        input.style.color = '#16a34a';
-    } else {
-        input.classList.remove('has-value');
-        input.classList.add('is-zero');
-        input.style.color = '#94a3b8';
-    }
-    
-    input.value = value.toFixed(2);
-    
-    updateFormulaWithdrawalTotal(formulaId);
-    updateSummary();
-}
-
-// ========================================
-// UPDATE FORMULA WITHDRAWAL TOTAL
-// ========================================
-function updateFormulaWithdrawalTotal(formulaId) {
-    const withdrawalInputs = document.querySelectorAll(`#body-${formulaId} .withdrawal-input`);
-    let total = 0;
-    
-    withdrawalInputs.forEach(input => {
-        const val = parseFloat(input.value) || 0;
-        total += val;
-    });
-    
-    const totalDisplay = document.getElementById(`withdrawal-total-${formulaId}`);
-    if (totalDisplay) {
-        totalDisplay.textContent = total.toFixed(2);
-        totalDisplay.style.color = total > 0 ? '#22c55e' : '#94a3b8';
-    }
-    
-    return total;
-}
-
-
-function markAsManuallyEdited(input) {
-    input.dataset.manuallyEdited = 'true';
-    input.style.borderColor = '#8b5cf6';
-    input.style.backgroundColor = '#f5f3ff';
-    
-    if (parseFloat(input.value) === 0) {
-        input.dataset.manuallyEdited = 'false';
-        input.style.borderColor = '';
-        input.style.backgroundColor = '';
-        const formulaId = input.dataset.formulaId;
-        calculateWithdrawalAmount(formulaId);
-    }
-}
-
-
-
-function resetManualWithdrawals(formulaId) {
-    const withdrawalInputs = document.querySelectorAll(`#body-${formulaId} .withdrawal-input`);
-    withdrawalInputs.forEach(input => {
-        input.dataset.manuallyEdited = 'false';
-        input.style.borderColor = '';
-        input.style.backgroundColor = '';
-    });
-}
-
-
-
-
     </script>
 </body>
 {% endblock %}
 
-
 {% block extra_js %}
-
-<!-- Persian Date and Datepicker (Local versions) -->
 <script src="{% static 'js/persian.date.js' %}"></script>
 <script src="{% static 'js/persian.datepicker.js' %}"></script>
-
-<!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
 // ========================================
-// PERSIAN DATEPICKER - FIXED VERSION
+// PERSIAN DATEPICKER
 // ========================================
 document.addEventListener('DOMContentLoaded', function() {
     if (typeof jQuery === 'undefined') {
         console.error('❌ jQuery not loaded!');
         return;
     }
-    
+
     var datepickerElement = document.getElementById('datepicker');
-    if (!datepickerElement) {
-        console.error('❌ Datepicker element not found!');
-        return;
-    }
-    
+    if (!datepickerElement) return;
+
     const backendDate = "{{ selected_date|default:'' }}";
-    console.log('📅 تاریخ دریافتی از بک‌اند:', backendDate);
-    
-    function formatPersianDate(dateObj) {
-        if (dateObj && typeof dateObj.format === 'function') {
-            try {
-                return dateObj.format('YYYY/MM/DD');
-            } catch(e) {
-                console.warn('format failed, trying alternative');
-            }
-        }
-        
-        if (dateObj && typeof dateObj === 'object') {
-            const y = dateObj.year || dateObj.getFullYear?.() || '';
-            const m = dateObj.month || (dateObj.getMonth?.() + 1) || '';
-            const d = dateObj.date || dateObj.getDate?.() || '';
-            if (y && m && d) {
-                return `${y}/${String(m).padStart(2, '0')}/${String(d).padStart(2, '0')}`;
-            }
-        }
-        
-        if (typeof dateObj === 'string') {
-            return dateObj;
-        }
-        
-        return '';
-    }
-    
-    function parsePersianDate(dateStr) {
-        if (!dateStr) return null;
-        
-        try {
-            if (typeof persianDate !== 'undefined') {
-                if (persianDate.prototype.parse) {
-                    try {
-                        return new persianDate().parse(dateStr);
-                    } catch(e) {}
-                }
-                
-                const parts = dateStr.split('/');
-                if (parts.length === 3) {
-                    const y = parseInt(parts[0]);
-                    const m = parseInt(parts[1]);
-                    const d = parseInt(parts[2]);
-                    
-                    const gregorian = jalaliToGregorian(y, m, d);
-                    if (gregorian) {
-                        return new persianDate(new Date(gregorian.year, gregorian.month - 1, gregorian.day));
-                    }
-                }
-            }
-        } catch(e) {
-            console.error('Error parsing date:', e);
-        }
-        
-        return null;
-    }
-    
+
     function jalaliToGregorian(jy, jm, jd) {
         jy += 1595;
         let days = -355668 + (365 * jy) + (~~(jy / 33) * 8) + ~~(((jy % 33) + 3) / 4) + jd + ((jm < 7) ? (jm - 1) * 31 : ((jm - 7) * 30) + 186);
@@ -2598,7 +2484,7 @@ document.addEventListener('DOMContentLoaded', function() {
         for (gm = 0; gm < 13 && gd > sal_a[gm]; gm++) gd -= sal_a[gm];
         return { year: gy, month: gm, day: gd };
     }
-    
+
     try {
         let initialDate = null;
         if (backendDate) {
@@ -2610,455 +2496,104 @@ document.addEventListener('DOMContentLoaded', function() {
                     day: parseInt(parts[2])
                 };
             }
-        }
-        
-        if (backendDate) {
             jQuery('#datepicker').val(backendDate);
         }
-        
+
         jQuery("#datepicker").persianDatepicker({
             format: 'YYYY/MM/DD',
             autoClose: true,
             initialValue: false,
             onSelect: function(unixOrDate) {
                 let formattedDate = '';
-                
-                console.log('📅 onSelect دریافت شد:', unixOrDate, 'نوع:', typeof unixOrDate);
-                
+
                 if (typeof unixOrDate === 'number') {
                     try {
                         const pd = new persianDate(unixOrDate);
                         formattedDate = pd.format('YYYY/MM/DD');
-                    } catch(e) {
-                        console.error('Error converting unix:', e);
-                    }
+                    } catch(e) {}
                 }
                 else if (unixOrDate && typeof unixOrDate.format === 'function') {
-                    try {
-                        formattedDate = unixOrDate.format('YYYY/MM/DD');
-                    } catch(e) {
-                        console.error('Error using format:', e);
-                    }
+                    try { formattedDate = unixOrDate.format('YYYY/MM/DD'); } catch(e) {}
                 }
                 else if (unixOrDate && typeof unixOrDate === 'object') {
                     const y = unixOrDate.year;
                     const m = unixOrDate.month;
                     const d = unixOrDate.day || unixOrDate.date;
                     if (y && m && d) {
-                        formattedDate = `${y}/${String(m).padStart(2, '0')}/${String(d).padStart(2, '0')}`;
+                        formattedDate = y + '/' + String(m).padStart(2, '0') + '/' + String(d).padStart(2, '0');
                     }
                 }
                 else if (typeof unixOrDate === 'string') {
                     formattedDate = unixOrDate;
                 }
-                
-                if (!formattedDate) {
-                    console.warn('⚠️ نتوانستم تاریخ را فرمت کنم');
-                    return;
+
+                if (!formattedDate) return;
+
+                const infoEl = document.getElementById('selectedDateInfo');
+                if (infoEl) {
+                    infoEl.innerHTML = '<i class="fas fa-check-circle" style="color: var(--success);"></i> تاریخ انتخاب شده: <strong>' + formattedDate + '</strong>';
                 }
-                
-                document.getElementById('selectedDateInfo').innerHTML = `
-                    <i class="fas fa-check-circle" style="color: var(--success);"></i>
-                    تاریخ انتخاب شده: <strong>${formattedDate}</strong>
-                `;
-                console.log('✅ تاریخ انتخاب شد:', formattedDate);
-                
+
                 window.selectedDate = formattedDate;
                 localStorage.setItem('selected_date', formattedDate);
             }
         });
-        
+
         if (initialDate) {
             try {
                 jQuery('#datepicker').persianDatepicker('setDate', initialDate);
-                console.log('✅ تاریخ بک‌اند set شد (روش آبجکت):', backendDate);
             } catch(e) {
-                console.warn('setDate with object failed, trying alternative:', e);
                 jQuery('#datepicker').val(backendDate);
             }
-            
             window.selectedDate = backendDate;
             localStorage.setItem('selected_date', backendDate);
-            
-            document.getElementById('selectedDateInfo').innerHTML = `
-                <i class="fas fa-check-circle" style="color: var(--success);"></i>
-                تاریخ انتخاب شده: <strong>${backendDate}</strong>
-            `;
-            
-            console.log('✅ تاریخ بک‌اند در تقویم نمایش داده شد:', backendDate);
+            const infoEl = document.getElementById('selectedDateInfo');
+            if (infoEl) {
+                infoEl.innerHTML = '<i class="fas fa-check-circle" style="color: var(--success);"></i> تاریخ انتخاب شده: <strong>' + backendDate + '</strong>';
+            }
         } else {
             const savedDate = localStorage.getItem('selected_date');
             if (savedDate) {
                 jQuery('#datepicker').val(savedDate);
                 window.selectedDate = savedDate;
-                document.getElementById('selectedDateInfo').innerHTML = `
-                    <i class="fas fa-check-circle" style="color: var(--success);"></i>
-                    تاریخ انتخاب شده: <strong>${savedDate}</strong>
-                `;
-                console.log('✅ تاریخ از localStorage بازیابی شد:', savedDate);
+                const infoEl = document.getElementById('selectedDateInfo');
+                if (infoEl) {
+                    infoEl.innerHTML = '<i class="fas fa-check-circle" style="color: var(--success);"></i> تاریخ انتخاب شده: <strong>' + savedDate + '</strong>';
+                }
             }
         }
-        
-        console.log('✅ Persian Datepicker initialized successfully');
     } catch (error) {
         console.error('❌ Error initializing datepicker:', error);
     }
 });
 
 // ========================================
-// SET TODAY - FIXED
+// SET TODAY
 // ========================================
 function setToday() {
     try {
         if (typeof persianDate === 'undefined') {
-            Swal.fire({
-                title: '❌ خطا',
-                text: 'کتابخانه تاریخ شمسی بارگذاری نشده است',
-                icon: 'error',
-                confirmButtonText: 'باشه'
-            });
+            Swal.fire({ title: '❌ خطا', text: 'کتابخانه تاریخ شمسی بارگذاری نشده', icon: 'error' });
             return;
         }
-        
+
         const today = new persianDate();
         const formattedDate = today.format('YYYY/MM/DD');
-        
-        console.log('📅 امروز:', formattedDate);
-        
+
         jQuery('#datepicker').val(formattedDate);
-        
-        try {
-            jQuery('#datepicker').persianDatepicker('setDate', today);
-        } catch(e) {
-            console.warn('setDate failed, but input value is set:', e);
-        }
-        
+
+        try { jQuery('#datepicker').persianDatepicker('setDate', today); } catch(e) {}
+
         window.selectedDate = formattedDate;
         localStorage.setItem('selected_date', formattedDate);
-        
-        document.getElementById('selectedDateInfo').innerHTML = `
-            <i class="fas fa-check-circle" style="color: var(--success);"></i>
-            تاریخ انتخاب شده: <strong>${formattedDate}</strong>
-        `;
-        
-        console.log('✅ تاریخ امروز تنظیم شد:', formattedDate);
+
+        const infoEl = document.getElementById('selectedDateInfo');
+        if (infoEl) {
+            infoEl.innerHTML = '<i class="fas fa-check-circle" style="color: var(--success);"></i> تاریخ انتخاب شده: <strong>' + formattedDate + '</strong>';
+        }
     } catch (error) {
         console.error('❌ Error in setToday:', error);
-        Swal.fire({
-            title: '❌ خطا',
-            text: 'خطا در تنظیم تاریخ امروز: ' + error.message,
-            icon: 'error',
-            confirmButtonText: 'باشه'
-        });
     }
 }
-
-
-// ========================================
-// LIVE SEARCH - جستجوی زنده
-// ========================================
-let searchTimeout = null;
-
-function liveSearch(searchTerm) {
-    if (searchTimeout) {
-        clearTimeout(searchTimeout);
-    }
-    
-    searchTimeout = setTimeout(() => {
-        performSearch(searchTerm);
-    }, 200);
-}
-
-function performSearch(searchTerm) {
-    const term = normalizePersianText(searchTerm);
-    
-    const formulaCards = document.querySelectorAll('.formula-card');
-    const resultsContainer = document.getElementById('results');
-    const clearBtn = document.getElementById('clearSearchBtn');
-    const resultInfo = document.getElementById('searchResultInfo');
-    const resultText = document.getElementById('searchResultText');
-    
-    const existingNoResults = document.querySelector('.search-no-results');
-    if (existingNoResults) {
-        existingNoResults.remove();
-    }
-    
-    if (term) {
-        clearBtn.style.display = 'block';
-    } else {
-        clearBtn.style.display = 'none';
-        resultInfo.style.display = 'none';
-    }
-    
-    let visibleCount = 0;
-    let totalCount = formulaCards.length;
-    
-    if (!term) {
-        formulaCards.forEach(card => {
-            card.classList.remove('search-hidden');
-            removeHighlights(card);
-        });
-        
-        document.getElementById('totalCount').textContent = totalCount;
-        if (typeof updateSummary === 'function') {
-            updateSummary();
-        }
-        return;
-    }
-    
-    const searchWords = term.split(/\s+/).filter(w => w.length > 0);
-    
-    formulaCards.forEach(card => {
-        const formulaCode = normalizePersianText(
-            card.querySelector('.formula-code')?.textContent || ''
-        );
-        const formulaTitle = normalizePersianText(
-            card.querySelector('.formula-title')?.textContent || ''
-        );
-        
-        const productSpan = card.querySelector('.formula-header span[style*="background: rgba(255,255,255,0.1)"]');
-        const productName = normalizePersianText(productSpan?.textContent || '');
-        
-        const valueInput = card.querySelector('.formula-value-input');
-        const dataProductCode = normalizePersianText(valueInput?.dataset?.productCode || '');
-        const dataFormulaCode = normalizePersianText(valueInput?.dataset?.formulaCode || '');
-        const dataFormulaTitle = normalizePersianText(valueInput?.dataset?.formulaTitle || '');
-        
-        const searchableText = [
-            formulaCode,
-            formulaTitle,
-            productName,
-            dataProductCode,
-            dataFormulaCode,
-            dataFormulaTitle
-        ].join(' ');
-        
-        const matches = searchWords.every(word => searchableText.includes(word));
-        
-        if (matches) {
-            card.classList.remove('search-hidden');
-            visibleCount++;
-            
-            highlightSearchTerm(card, searchTerm);
-        } else {
-            card.classList.add('search-hidden');
-            removeHighlights(card);
-        }
-    });
-    
-    if (visibleCount === 0) {
-        const noResultsDiv = document.createElement('div');
-        noResultsDiv.className = 'search-no-results';
-        noResultsDiv.innerHTML = `
-            <div class="icon">🔍</div>
-            <h3>نتیجه‌ای یافت نشد</h3>
-            <p>هیچ فرمولی با عبارت "<strong>${escapeHtml(searchTerm)}</strong>" مطابقت ندارد.</p>
-            <button onclick="clearLiveSearch()" style="margin-top: 16px; padding: 8px 24px; background: var(--primary); color: white; border: none; border-radius: var(--radius-sm); cursor: pointer; font-family: inherit; font-size: 14px; font-weight: 600; transition: var(--transition);" onmouseover="this.style.background='var(--primary-dark)'" onmouseout="this.style.background='var(--primary)'">
-                <i class="fas fa-times"></i> پاک کردن جستجو
-            </button>
-        `;
-        resultsContainer.appendChild(noResultsDiv);
-    }
-    
-    resultInfo.style.display = 'block';
-    if (visibleCount > 0) {
-        resultText.innerHTML = `
-            <span style="color: var(--success); font-weight: 600;">${visibleCount}</span> 
-            از <span style="font-weight: 600;">${totalCount}</span> فرمول نمایش داده می‌شود
-        `;
-    } else {
-        resultText.innerHTML = `
-            <span style="color: var(--danger); font-weight: 600;">هیچ فرمولی</span> 
-            با این عبارت یافت نشد
-        `;
-    }
-    
-    document.getElementById('totalCount').textContent = visibleCount;
-    if (typeof updateSummary === 'function') {
-        updateSummary();
-    }
-}
-
-function highlightSearchTerm(card, originalTerm) {
-    const term = normalizePersianText(originalTerm);
-    if (!term) return;
-    
-    const elementsToHighlight = [
-        card.querySelector('.formula-code'),
-        card.querySelector('.formula-title')
-    ];
-    
-    elementsToHighlight.forEach(el => {
-        if (!el) return;
-        
-        const originalText = el.dataset.originalText || el.textContent;
-        el.dataset.originalText = originalText;
-        
-        const normalizedText = normalizePersianText(originalText);
-        
-        const words = term.split(/\s+/).filter(w => w.length > 0);
-        let html = originalText;
-        let hasMatch = false;
-        
-        words.forEach(word => {
-            if (!word) return;
-            
-            const regexPattern = buildPersianRegex(word);
-            if (!regexPattern) return;
-            
-            const regex = new RegExp(`(${regexPattern})`, 'gi');
-            if (regex.test(html)) {
-                html = html.replace(regex, '<span class="highlight-match">$1</span>');
-                hasMatch = true;
-            }
-        });
-        
-        if (hasMatch) {
-            el.innerHTML = html;
-        }
-    });
-}
-
-function buildPersianRegex(word) {
-    if (!word) return '';
-    
-    const charMap = {
-        'ی': '[یيﻯﻰﻱﻲ]',
-        'ک': '[کكﻙﻚ]',
-        'ه': '[هةۀ]',
-        'ا': '[اأإآٱ]',
-        'و': '[وﻭؤ]',
-        'ن': '[نﻥ]',
-        'ل': '[لﻝ]',
-        'م': '[مﻡ]',
-        '0': '[0۰٠]',
-        '1': '[1۱١]',
-        '2': '[2۲٢]',
-        '3': '[3۳٣]',
-        '4': '[4۴٤]',
-        '5': '[5۵٥]',
-        '6': '[6۶٦]',
-        '7': '[7۷٧]',
-        '8': '[8۸٨]',
-        '9': '[9۹٩]'
-    };
-    
-    let pattern = '';
-    for (const char of word) {
-        if (charMap[char]) {
-            pattern += charMap[char];
-        } else if (/[.*+?^${}()|[\]\\]/.test(char)) {
-            pattern += '\\' + char;
-        } else {
-            pattern += char;
-        }
-    }
-    
-    return pattern;
-}
-
-function removeHighlights(card) {
-    card.querySelectorAll('.highlight-match').forEach(el => {
-        const parent = el.parentNode;
-        parent.replaceChild(document.createTextNode(el.textContent), el);
-        parent.normalize();
-    });
-}
-
-function clearLiveSearch() {
-    const input = document.getElementById('liveSearchInput');
-    if (input) {
-        input.value = '';
-        input.focus();
-    }
-    performSearch('');
-}
-
-function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-}
-
-function escapeRegex(text) {
-    return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
-
-document.addEventListener('keydown', function(e) {
-    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-        e.preventDefault();
-        const searchInput = document.getElementById('liveSearchInput');
-        if (searchInput) {
-            searchInput.focus();
-            searchInput.select();
-        }
-    }
-    
-    if (e.key === 'Escape') {
-        const searchInput = document.getElementById('liveSearchInput');
-        if (searchInput && document.activeElement === searchInput) {
-            clearLiveSearch();
-            searchInput.blur();
-        }
-    }
-});
-
-
-// ========================================
-// PERSIAN TEXT NORMALIZATION
-// ========================================
-function normalizePersianText(text) {
-    if (!text) return '';
-    
-    return text
-        .toString()
-        .replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d))
-        .replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d))
-        .replace(/[يﻯﻰﻱﻲ]/g, 'ی')
-        .replace(/[كﻙﻚ]/g, 'ک')
-        .replace(/[ةۀ]/g, 'ه')
-        .replace(/[أإآٱ]/g, 'ا')
-        .replace(/[ؤئ]/g, 'ی')
-        .replace(/[ﻭو]/g, 'و')
-        .replace(/[ﻝل]/g, 'ل')
-        .replace(/[ﻡم]/g, 'م')
-        .replace(/[ﻥن]/g, 'ن')
-        .replace(/[\u064B-\u065F\u0670\u0640]/g, '')
-        .replace(/\u200C/g, ' ')
-        .replace(/\u200F|\u200E/g, '')
-        .replace(/\u0640/g, '')
-        .replace(/\s+/g, ' ')
-        .trim()
-        .toLowerCase();
-}
-
-
-// ========================================
-// تغییر رابطه → reload صفحه با فیلتر
-// ========================================
-function onRelationChange(selectElement) {
-    const relationId = selectElement.value;
-    
-    if (!relationId) {
-        // اگر هیچ رابطه‌ای انتخاب نشده
-        Swal.fire({
-            title: '⚠️ توجه',
-            text: 'برای مشاهده فرمول‌ها، ابتدا یک رابطه انتخاب کنید',
-            icon: 'warning',
-            confirmButtonText: 'باشه'
-        });
-        return;
-    }
-    
-    // ✅ ذخیره در localStorage
-    localStorage.setItem('selected_relation_id', relationId);
-    
-    // ✅ reload صفحه با پارامتر رابطه
-    const url = new URL(window.location.href);
-    url.searchParams.set('relation_id', relationId);
-    window.location.href = url.toString();
-}
-
 </script>
-
 {% endblock %}

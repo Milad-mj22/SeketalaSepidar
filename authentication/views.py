@@ -94,6 +94,8 @@ def check_login(request):
 
             user = user.first()
             login(request, user)
+
+
             
             # پاسخ موفق
             return JsonResponse({
@@ -107,7 +109,7 @@ def check_login(request):
             return JsonResponse({
                 'status': 'error',
                 'message': 'کاربر یافت نشد'
-            }, status=404)
+            }, status=401)
             
         except Exception as e:
             return JsonResponse({

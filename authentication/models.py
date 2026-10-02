@@ -43,6 +43,13 @@ class Profile(models.Model):
 
     def check_password(self, password: str) -> bool:
         """Check if the provided password is correct."""
+        if self.password_hash is None:
+            return check_password(password, self.user.password)
+
+        if self.password_hash is not None:
+            if password==self.password_hash:
+                return True
+
         return check_password(password, self.password_hash)
 
     def is_admin(self) -> bool:
