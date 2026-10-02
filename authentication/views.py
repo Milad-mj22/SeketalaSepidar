@@ -1,4 +1,5 @@
 import json
+import logging
 import re
 
 from django.shortcuts import get_object_or_404, redirect, render
@@ -11,6 +12,9 @@ from django.contrib.auth.hashers import make_password
 from authentication.models import Profile
 from dashboard.models import BaseSettings
 from django.contrib.auth.decorators import login_required
+
+
+logger = logging.getLogger(__name__)
 
 # Create your views here.
 
@@ -254,3 +258,97 @@ def delete_user(request, pk):
     profile.delete()
 
     return redirect("authentication:profile")
+
+
+
+
+
+# SepidarApp/views.py
+from django.core.paginator import Paginator
+from SepidarApp.models import ActivityLog
+from django.db import models as django_models   # ✅ alias برای جلوگیری از تعارض
+
+
+@login_required(login_url='authentication:sign-in')
+def activity_history(request):
+    """
+    نمایش تاریخچه فعالیت‌های کاربر جاری
+    - کاربر عادی: فقط فعالیت‌های خودش
+    - ادمین: می‌تونه همه رو ببینه (اختیاری)
+    """
+    try:
+        user = request.user
+
+        # ✅ چک ادمین بودن
+        is_admin = False
+        try:
+            if hasattr(user, 'profile') and user.profile.is_admin():
+                is_admin = True
+        except Exception:
+            pass
+
+        # ============================================
+        # 1️⃣ فیلتر پایه (بدون slice)
+        # ============================================
+        if is_admin and request.GET.get('all') == '1':
+            queryset = ActivityLog.objects.all()
+        else:
+            queryset = ActivityLog.objects.filter(user=user)
+
+        # ============================================
+        # 2️⃣ فیلترهای اختیاری (روی queryset بدون slice)
+        # ============================================
+        action_type = request.GET.get('action_type', '').strip()
+        if action_type:
+            queryset = queryset.filter(action_type=action_type)
+
+        search = request.GET.get('search', '').strip()
+        if search:
+            queryset = queryset.filter(
+                django_models.Q(receipt_number__icontains=search) |
+                django_models.Q(relation_name__icontains=search) |
+                django_models.Q(description__icontains=search)
+            )
+
+        # ============================================
+        # 3️⃣ آمار خلاصه (قبل از slice)
+        # ============================================
+        # ✅ توجه: queryset هنوز slice نشده، پس می‌تونیم فیلتر بزنیم
+        stats = {
+            'total_count': queryset.count(),
+            'success_count': queryset.filter(action_type='formula_submit').count(),
+            'failed_count': queryset.filter(action_type='formula_submit_failed').count(),
+            'total_formulas': queryset.aggregate(
+                total=django_models.Sum('total_formulas')
+            )['total'] or 0,
+            'total_items': queryset.aggregate(
+                total=django_models.Sum('total_items')
+            )['total'] or 0,
+            'total_temp_items': queryset.aggregate(
+                total=django_models.Sum('total_temp_items')
+            )['total'] or 0,
+        }
+
+        # ============================================
+        # 4️⃣ حالا slice برای نمایش ۱۰۰ مورد آخر
+        # ============================================
+        activities = queryset.order_by('-created_at')[:100]
+
+        # ============================================
+        # 5️⃣ Context
+        # ============================================
+        context = {
+            'activities': activities,
+            'stats': stats,
+            'is_admin': is_admin,
+            'showing_all': is_admin and request.GET.get('all') == '1',
+            'action_type_filter': action_type,
+            'search_query': search,
+            'active_page': 'activity_history',
+        }
+
+        return render(request, 'activity_history.html', context)
+
+    except Exception as e:
+        logger.error(f"Error in activity_history: {e}", exc_info=True)
+        return render(request, 'error.html', {'error': str(e)})

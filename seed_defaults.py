@@ -48,7 +48,11 @@ def get_or_create_superuser():
         print(f"   Password: {password}")
         return user , profile
     else:
-        profile = user_obj.first().profile
+        try:
+            profile = user_obj.first().profile
+        except:
+            profile = None
+            pass
         print("ℹ️ کاربری از قبل وجود دارد")
         return User.objects.first(),profile
 
@@ -178,23 +182,37 @@ pages_data = [
     },
 
 
+    # {
+    #     "name": "about",
+    #     "label": "درباره نرم افزار",
+    #     "icon": """<i class="ki-duotone ki-ranking fs-2">
+    #                     <span class="path1"></span>
+    #                     <span class="path2"></span>
+    #                     <span class="path3"></span>
+    #                     <span class="path4"></span>
+    #                     <span class="path5"></span>
+    #                     <span class="path6"></span>
+    #                     <span class="path7"></span>
+    #                     <span class="path8"></span>
+    #                 </i>""",
+    #     "type": "item",
+    #     "link": "/about/about",
+    #     "order" : 4,
+    # },
+
     {
-        "name": "about",
-        "label": "درباره نرم افزار",
-        "icon": """<i class="ki-duotone ki-ranking fs-2">
-                        <span class="path1"></span>
-                        <span class="path2"></span>
-                        <span class="path3"></span>
-                        <span class="path4"></span>
-                        <span class="path5"></span>
-                        <span class="path6"></span>
-                        <span class="path7"></span>
-                        <span class="path8"></span>
-                    </i>""",
+        "name": "activity_history",
+        "label": "تاریخچه فعالیت‌ها",
+        "icon": """<i class="ki-duotone ki-time fs-2">
+                    <span class="path1"></span>
+                    <span class="path2"></span>
+                </i>""",
         "type": "item",
-        "link": "/about/about",
-        "order" : 4,
-    },
+        "link": "/authentication/activity-history/",
+        "order": 5,
+    }
+
+
     
 ]
 

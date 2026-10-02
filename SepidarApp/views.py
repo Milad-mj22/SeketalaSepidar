@@ -1576,3 +1576,11 @@ def api_get_all_items(request):
             'success': False,
             'error': str(e)
         }, status=500)
+
+
+
+
+
+
+
+

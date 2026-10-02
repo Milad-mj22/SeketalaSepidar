@@ -16,6 +16,7 @@ urlpatterns = [
     
     path("admin/change-password/<int:pk>/", views.admin_change_password, name="admin_change_password"),
     path("admin/delete-user/<int:pk>/", views.delete_user, name="delete_user"),
+    path('activity-history/', views.activity_history, name='activity_history'),
     
 ]
 
