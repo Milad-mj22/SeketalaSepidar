@@ -1,0 +1,1307 @@
+{% extends "base_dashboard.html" %}
+{% load static %}
+
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <title>گزارش فعالیت از سپیدار</title>
+    <link rel="stylesheet" href="{% static 'css/persian.datepicker.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --success: #22c55e;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            --shadow: 0 1px 3px rgba(0,0,0,0.12);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
+            --radius: 12px;
+            --radius-sm: 8px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: var(--gray-50);
+            padding: 20px;
+            direction: rtl;
+        }
+
+        .container { max-width: 1440px; margin: 0 auto; }
+
+        .page-header {
+            background: linear-gradient(135deg, #4f46e5, #4338ca);
+            color: white;
+            padding: 28px 32px;
+            border-radius: var(--radius);
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+
+        .page-header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .page-header .subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 16px 20px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--gray-200);
+            box-shadow: var(--shadow);
+        }
+
+        .stat-card .label {
+            font-size: 12px;
+            color: var(--gray-500);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .stat-card .value {
+            font-size: 26px;
+            font-weight: 700;
+            margin-top: 6px;
+        }
+
+        .stat-card.primary .value { color: var(--primary); }
+        .stat-card.success .value { color: var(--success); }
+        .stat-card.info .value { color: var(--info); }
+        .stat-card.warning .value { color: var(--warning); }
+
+        .filter-card {
+            background: white;
+            padding: 20px;
+            border-radius: var(--radius);
+            border: 1px solid var(--gray-200);
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+
+        .filter-card h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--gray-800);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--gray-600);
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 10px 12px;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            font-family: inherit;
+            background: white;
+            transition: all 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: inherit;
+            text-decoration: none;
+            color: white;
+        }
+
+        .btn-primary { background: var(--primary); }
+        .btn-primary:hover { background: var(--primary-dark); }
+
+        .btn-secondary { background: var(--gray-500); }
+        .btn-secondary:hover { background: var(--gray-700); }
+
+        .btn-info { background: var(--info); }
+        .btn-info:hover { background: #2563eb; }
+
+        .report-card {
+            background: white;
+            border-radius: var(--radius);
+            border: 1px solid var(--gray-200);
+            box-shadow: var(--shadow);
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+
+        .report-header {
+            background: linear-gradient(135deg, var(--gray-800), var(--gray-900));
+            color: white;
+            padding: 14px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .report-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #818cf8, #4f46e5);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .user-info .name {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .user-info .date {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: 2px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .report-summary {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .summary-badge {
+            background: rgba(255,255,255,0.15);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+        }
+
+        .summary-badge.success { background: rgba(34, 197, 94, 0.3); color: #86efac; }
+        .summary-badge.danger { background: rgba(239, 68, 68, 0.3); color: #fca5a5; }
+        .summary-badge.warning { background: rgba(245, 158, 11, 0.3); color: #fcd34d; }
+        .summary-badge.info { background: rgba(59, 130, 246, 0.3); color: #93c5fd; }
+
+        /* ===== Tabs ===== */
+        .tabs {
+            display: flex;
+            background: var(--gray-100);
+            border-bottom: 2px solid var(--gray-200);
+            padding: 0 12px;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 12px 20px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--gray-500);
+            font-family: inherit;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: -2px;
+        }
+
+        .tab-btn:hover {
+            color: var(--primary);
+            background: rgba(79, 70, 229, 0.05);
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            background: white;
+        }
+
+        .tab-badge {
+            background: var(--gray-200);
+            color: var(--gray-600);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .tab-btn.active .tab-badge {
+            background: var(--primary);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 12px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* ===== Table ===== */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .data-table thead {
+            background: var(--gray-100);
+        }
+
+        .data-table th {
+            padding: 10px 12px;
+            text-align: right;
+            font-weight: 700;
+            color: var(--gray-700);
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .data-table th.center { text-align: center; }
+
+        .data-table td {
+            padding: 10px 12px;
+            border-top: 1px solid var(--gray-100);
+            color: var(--gray-700);
+            vertical-align: middle;
+        }
+
+        .data-table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .time-badge {
+            background: var(--gray-100);
+            color: var(--gray-700);
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 600;
+            font-family: 'Courier New', monospace;
+        }
+
+        .number-badge {
+            font-family: 'Courier New', monospace;
+            background: #f0f9ff;
+            color: #0369a1;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            border: 1px dashed #7dd3fc;
+        }
+
+        .counter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 13px;
+            padding: 0 8px;
+        }
+
+        .counter.primary { background: #e0e7ff; color: #4338ca; }
+        .counter.success { background: #dcfce7; color: #166534; }
+        .counter.warning { background: #fef3c7; color: #92400e; }
+
+        .empty-tab {
+            text-align: center;
+            padding: 40px;
+            color: var(--gray-400);
+            font-style: italic;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: var(--radius);
+            border: 1px solid var(--gray-200);
+        }
+
+        .empty-state .icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+            opacity: 0.4;
+        }
+
+        .persian-datepicker-holder { z-index: 99999 !important; }
+
+        @media (max-width: 768px) {
+            body { padding: 12px; }
+            .page-header { padding: 20px; }
+            .page-header h1 { font-size: 18px; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .filter-grid { grid-template-columns: 1fr; }
+            .report-body { overflow-x: auto; }
+            .data-table { min-width: 700px; }
+            .tabs { padding: 0 4px; }
+            .tab-btn { padding: 10px 12px; font-size: 12px; }
+        }
+
+
+
+
+
+
+/* ===== Chart Section ===== */
+.chart-section {
+    background: white;
+    border-radius: var(--radius);
+    border: 1px solid var(--gray-200);
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.chart-section-header {
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #1e293b, #0f172a);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.2s;
+}
+
+.chart-section-header:hover {
+    background: linear-gradient(135deg, #334155, #1e293b);
+}
+
+.chart-section-header .title {
+    font-size: 16px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.chart-section-header .toggle-icon {
+    transition: transform 0.3s;
+    font-size: 14px;
+}
+
+.chart-section-header .toggle-icon.rotated {
+    transform: rotate(180deg);
+}
+
+.chart-section-body {
+    padding: 20px;
+    display: none;
+}
+
+.chart-section-body.expanded {
+    display: block;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.chart-card {
+    background: #f8fafc;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--gray-200);
+    padding: 16px;
+}
+
+.chart-card-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--gray-800);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--gray-200);
+}
+
+.chart-wrapper {
+    min-height: 350px;
+}
+
+@media (max-width: 768px) {
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <div class="page-header">
+            <h1>
+                <span>📊</span>
+                گزارش فعالیت کاربران — سپیدار
+            </h1>
+            <div class="subtitle">
+                مشاهده فعالیت‌ها مستقیم از نرم‌افزار سپیدار
+            </div>
+        </div>
+
+        <!-- ===== STATS ===== -->
+        <div class="stats-grid">
+            <div class="stat-card primary">
+                <div class="label"><i class="fas fa-calendar-day"></i> روزها</div>
+                <div class="value">{{ stats.total_reports }}</div>
+            </div>
+            <div class="stat-card primary">
+                <div class="label"><i class="fas fa-users"></i> کاربران فعال</div>
+                <div class="value">{{ stats.total_users }}</div>
+            </div>
+            <div class="stat-card success">
+                <div class="label"><i class="fas fa-industry"></i> سفارشات تولید</div>
+                <div class="value">{{ stats.total_orders }}</div>
+            </div>
+            <div class="stat-card info">
+                <div class="label"><i class="fas fa-sign-out-alt"></i> رسید خروج</div>
+                <div class="value">{{ stats.total_deliveries }}</div>
+            </div>
+            <div class="stat-card warning">
+                <div class="label"><i class="fas fa-sign-in-alt"></i> رسید ورود</div>
+                <div class="value">{{ stats.total_receipts }}</div>
+            </div>
+            <div class="stat-card danger">
+    <div class="label"><i class="fas fa-file-invoice-dollar"></i> اسناد حسابداری</div>
+    <div class="value">{{ stats.total_vouchers }}</div>
+</div>
+        </div>
+
+
+
+<!-- ===== CHART SECTION ===== -->
+<div class="chart-section" id="chartSection">
+    <div class="chart-section-header" onclick="toggleChartSection()">
+        <div class="title">
+            <i class="fas fa-chart-bar"></i>
+            📊 نمودار مقایسه فعالیت کاربران
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <span style="font-size: 12px; opacity: 0.8;">برای مشاهده کلیک کنید</span>
+            <i class="fas fa-chevron-down toggle-icon rotated" id="chartToggleIcon"></i>
+        </div>
+    </div>
+    <div class="chart-section-body expanded" id="chartSectionBody">
+
+        <!-- نمودارهای اصلی -->
+        <div class="charts-grid">
+            <!-- Stacked Bar: مقایسه کاربران -->
+            <div class="chart-card">
+                <div class="chart-card-title">
+                    <i class="fas fa-users" style="color: #4f46e5;"></i>
+                    مقایسه فعالیت کاربران
+                </div>
+                <div class="chart-wrapper" id="chartUsers"></div>
+            </div>
+
+            <!-- Donut: سهم بخش‌ها -->
+            <div class="chart-card">
+                <div class="chart-card-title">
+                    <i class="fas fa-chart-pie" style="color: #ef4444;"></i>
+                    سهم هر بخش از کل
+                </div>
+                <div class="chart-wrapper" id="chartPie"></div>
+            </div>
+        </div>
+
+        <!-- نمودارهای دوم -->
+        <div class="charts-grid">
+            <!-- Line: روند روزانه -->
+            <div class="chart-card">
+                <div class="chart-card-title">
+                    <i class="fas fa-chart-line" style="color: #22c55e;"></i>
+                    روند فعالیت روزانه
+                </div>
+                <div class="chart-wrapper" id="chartDaily"></div>
+            </div>
+
+            <!-- Ranking -->
+            <div class="chart-card">
+                <div class="chart-card-title">
+                    <i class="fas fa-trophy" style="color: #f59e0b;"></i>
+                    رتبه‌بندی کاربران
+                </div>
+                <div class="chart-wrapper" id="chartRanking"></div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+        <!-- ===== FILTERS ===== -->
+        <div class="filter-card">
+            <h3>
+                <i class="fas fa-filter" style="color: var(--primary);"></i>
+                فیلترها
+            </h3>
+            <form method="GET" id="filterForm">
+                <div class="filter-grid">
+                    <div class="form-group">
+                        <label>👤 کاربر</label>
+                        <select name="creator">
+                            <option value="">همه کاربران</option>
+                            {% for u in users_list %}
+                            <option value="{{ u.id }}" {% if creator_filter == u.id|stringformat:'s' %}selected{% endif %}>
+                                {{ u.name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>📅 از تاریخ</label>
+                        <input type="text" id="date_from" name="date_from"
+                               value="{{ date_from_shamsi }}" placeholder="1405/07/01">
+                    </div>
+
+                    <div class="form-group">
+                        <label>📅 تا تاریخ</label>
+                        <input type="text" id="date_to" name="date_to"
+                               value="{{ date_to_shamsi }}" placeholder="1405/07/11">
+                    </div>
+
+                    <div class="form-group">
+                        <label>🎯 نوع فعالیت</label>
+                        <select name="activity_type">
+                            <option value="">همه</option>
+                            <option value="product_order" {% if activity_type == 'product_order' %}selected{% endif %}>🏭 سفارش تولید</option>
+                            <option value="inventory_delivery" {% if activity_type == 'inventory_delivery' %}selected{% endif %}>📤 رسید خروج</option>
+                            <option value="inventory_receipt" {% if activity_type == 'inventory_receipt' %}selected{% endif %}>📥 رسید ورود</option>
+                            <option value="accounting_voucher" {% if activity_type == 'accounting_voucher' %}selected{% endif %}>
+                                📑 سند حسابداری
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="filter-buttons">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-search"></i> اعمال فیلتر
+                    </button>
+                    <a href="{% url 'sepidarApp:sepidar_activity_report' %}" class="btn btn-secondary">
+                        <i class="fas fa-times"></i> پاک کردن
+                    </a>
+                    <button type="button" class="btn btn-info" onclick="setQuickRange(1)">
+                        <i class="fas fa-calendar-day"></i> امروز
+                    </button>
+                    <button type="button" class="btn btn-info" onclick="setQuickRange(7)">
+                        <i class="fas fa-calendar-week"></i> ۷ روز
+                    </button>
+                    <button type="button" class="btn btn-info" onclick="setQuickRange(30)">
+                        <i class="fas fa-calendar-alt"></i> ۳۰ روز
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- ===== REPORTS ===== -->
+        {% if daily_reports %}
+            {% for report in daily_reports %}
+            <div class="report-card" data-report-id="{{ forloop.counter }}">
+                <!-- Header -->
+                <div class="report-header">
+                    <div class="report-user">
+                        <div class="user-avatar">{{ report.user_name|slice:":1" }}</div>
+                        <div class="user-info">
+                            <div class="name">{{ report.user_name }}</div>
+                            <div class="date">
+                                <i class="fas fa-calendar"></i>
+                                <span>{{ report.date_shamsi }}</span>
+                                <span style="opacity: 0.6;">|</span>
+                                <i class="fas fa-clock"></i>
+                                <span>{{ report.first_time }} → {{ report.last_time }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="report-summary">
+                        {% if report.total_orders > 0 %}
+                        <span class="summary-badge success">
+                            <i class="fas fa-industry"></i> {{ report.total_orders }} سفارش
+                        </span>
+                        {% endif %}
+                        {% if report.total_deliveries > 0 %}
+                        <span class="summary-badge info">
+                            <i class="fas fa-sign-out-alt"></i> {{ report.total_deliveries }} خروج
+                        </span>
+                        {% endif %}
+                        {% if report.total_receipts > 0 %}
+                        <span class="summary-badge warning">
+                            <i class="fas fa-sign-in-alt"></i> {{ report.total_receipts }} ورود
+                        </span>
+                        {% endif %}
+                        {% if report.total_vouchers > 0 %}
+                        <span class="summary-badge danger">
+                            <i class="fas fa-file-invoice-dollar"></i> {{ report.total_vouchers }} سند
+                        </span>
+                        {% endif %}
+
+                        <span class="summary-badge">
+                            <i class="fas fa-list"></i> {{ report.total_activities }} کل
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Tabs -->
+                <div class="tabs">
+                    {% if report.total_orders > 0 %}
+                    <button class="tab-btn active" onclick="switchTab(this, 'orders-{{ forloop.counter }}')">
+                        <i class="fas fa-industry"></i> سفارشات تولید
+                        <span class="tab-badge">{{ report.total_orders }}</span>
+                    </button>
+                    {% endif %}
+                    {% if report.total_deliveries > 0 %}
+                    <button class="tab-btn {% if report.total_orders == 0 %}active{% endif %}" onclick="switchTab(this, 'deliveries-{{ forloop.counter }}')">
+                        <i class="fas fa-sign-out-alt"></i> رسید خروج
+                        <span class="tab-badge">{{ report.total_deliveries }}</span>
+                    </button>
+                    {% endif %}
+                    {% if report.total_receipts > 0 %}
+                    <button class="tab-btn {% if report.total_orders == 0 and report.total_deliveries == 0 %}active{% endif %}" onclick="switchTab(this, 'receipts-{{ forloop.counter }}')">
+                        <i class="fas fa-sign-in-alt"></i> رسید ورود
+                        <span class="tab-badge">{{ report.total_receipts }}</span>
+                    </button>
+                    {% endif %}
+
+                    {% if report.total_vouchers > 0 %}
+                    <button class="tab-btn {% if report.total_orders == 0 and report.total_deliveries == 0 and report.total_receipts == 0 %}active{% endif %}" 
+                            onclick="switchTab(this, 'vouchers-{{ forloop.counter }}')">
+                        <i class="fas fa-file-invoice-dollar"></i> اسناد حسابداری
+                        <span class="tab-badge">{{ report.total_vouchers }}</span>
+                    </button>
+                    {% endif %}
+
+                </div>
+
+                <!-- Tab: Orders -->
+                {% if report.total_orders > 0 %}
+                <div class="tab-content active" id="orders-{{ forloop.counter }}">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;" class="center">#</th>
+                                <th style="width: 90px;" class="center">ساعت</th>
+                                <th style="width: 120px;">شماره سفارش</th>
+                                <th>فرمول</th>
+                                <th>محصول</th>
+                                <th style="width: 100px;" class="center">مقدار</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for po in report.product_orders %}
+                            <tr>
+                                <td class="center" style="color: #94a3b8;">{{ forloop.counter }}</td>
+                                <td class="center">
+                                    <span class="time-badge">{{ po.date|time:"H:i" }}</span>
+                                </td>
+                                <td>
+                                    <span class="number-badge">{{ po.number }}</span>
+                                </td>
+                                <td>
+                                    <strong style="color: #4338ca;">{{ po.formula_code }}</strong>
+                                    <span style="color: #94a3b8;">|</span>
+                                    {{ po.formula_title }}
+                                </td>
+                                <td style="font-size: 12px; color: #475569;">
+                                    {{ po.product_title|default:"-" }}
+                                </td>
+                                <td class="center">
+                                    <span class="counter primary">{{ po.quantity|floatformat:2 }}</span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% endif %}
+
+                <!-- Tab: Deliveries -->
+                {% if report.total_deliveries > 0 %}
+                <div class="tab-content {% if report.total_orders == 0 %}active{% endif %}" id="deliveries-{{ forloop.counter }}">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;" class="center">#</th>
+                                <th style="width: 90px;" class="center">ساعت</th>
+                                <th style="width: 120px;">شماره رسید</th>
+                                <th>انبار</th>
+                                <th style="width: 100px;" class="center">تعداد آیتم</th>
+                                <th style="width: 120px;" class="center">مبلغ کل</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for d in report.deliveries %}
+                            <tr>
+                                <td class="center" style="color: #94a3b8;">{{ forloop.counter }}</td>
+                                <td class="center">
+                                    <span class="time-badge">{{ d.date|time:"H:i" }}</span>
+                                </td>
+                                <td>
+                                    <span class="number-badge">{{ d.number }}</span>
+                                </td>
+                                <td style="font-size: 12px;">
+                                    <i class="fas fa-warehouse" style="color: #3b82f6;"></i>
+                                    {{ d.stock_name|default:"-" }}
+                                </td>
+                                <td class="center">
+                                    <span class="counter success">{{ d.items_count }}</span>
+                                </td>
+                                <td class="center" style="font-size: 12px; color: #64748b;">
+                                    {{ d.total_price|floatformat:0 }}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% endif %}
+
+                <!-- Tab: Receipts -->
+                {% if report.total_receipts > 0 %}
+                <div class="tab-content {% if report.total_orders == 0 and report.total_deliveries == 0 %}active{% endif %}" id="receipts-{{ forloop.counter }}">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;" class="center">#</th>
+                                <th style="width: 90px;" class="center">ساعت</th>
+                                <th style="width: 120px;">شماره رسید</th>
+                                <th>انبار</th>
+                                <th style="width: 100px;" class="center">تعداد آیتم</th>
+                                <th style="width: 120px;" class="center">مبلغ کل</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for r in report.receipts %}
+                            <tr>
+                                <td class="center" style="color: #94a3b8;">{{ forloop.counter }}</td>
+                                <td class="center">
+                                    <span class="time-badge">{{ r.date|time:"H:i" }}</span>
+                                </td>
+                                <td>
+                                    <span class="number-badge">{{ r.number }}</span>
+                                </td>
+                                <td style="font-size: 12px;">
+                                    <i class="fas fa-warehouse" style="color: #f59e0b;"></i>
+                                    {{ r.stock_name|default:"-" }}
+                                </td>
+                                <td class="center">
+                                    <span class="counter warning">{{ r.items_count }}</span>
+                                </td>
+                                <td class="center" style="font-size: 12px; color: #64748b;">
+                                    {{ r.total_price|floatformat:0 }}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% endif %}
+{% if report.total_vouchers > 0 %}
+<div class="tab-content {% if report.total_orders == 0 and report.total_deliveries == 0 and report.total_receipts == 0 %}active{% endif %}" 
+     id="vouchers-{{ forloop.counter }}">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th style="width: 50px;" class="center">#</th>
+                <th style="width: 90px;" class="center">ساعت</th>
+                <th style="width: 120px;">شماره سند</th>
+                <th>شرح</th>
+                <th style="width: 100px;" class="center">تعداد آیتم</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for v in report.vouchers %}
+            <tr>
+                <td class="center" style="color: #94a3b8;">{{ forloop.counter }}</td>
+                <td class="center">
+                    <span class="time-badge">{{ v.date|time:"H:i" }}</span>
+                </td>
+                <td>
+                    <span class="number-badge">{{ v.number }}</span>
+                </td>
+                <td style="font-size: 12px;">
+                    {{ v.description|default:"-"|truncatechars:80 }}
+                </td>
+                <td class="center">
+                    <span class="counter primary">{{ v.items_count }}</span>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+                
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <div class="icon">📭</div>
+                <h3 style="font-size: 20px; color: #334155; margin-bottom: 8px;">هیچ فعالیتی یافت نشد</h3>
+                <p>در بازه انتخاب‌شده فعالیتی ثبت نشده است.</p>
+            </div>
+        {% endif %}
+
+    </div>
+
+    <script src="{% static 'js/persian.date.js' %}"></script>
+    <script src="{% static 'js/persian.datepicker.js' %}"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof jQuery !== 'undefined') {
+                jQuery('#date_from').persianDatepicker({
+                    format: 'YYYY/MM/DD',
+                    autoClose: true,
+                    initialValue: false,
+                });
+                jQuery('#date_to').persianDatepicker({
+                    format: 'YYYY/MM/DD',
+                    autoClose: true,
+                    initialValue: false,
+                });
+            }
+        });
+
+        function switchTab(btn, tabId) {
+            const card = btn.closest('.report-card');
+            // داکتیو کردن بقیه
+            card.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            card.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            // فعال کردن جدید
+            btn.classList.add('active');
+            const content = document.getElementById(tabId);
+            if (content) content.classList.add('active');
+        }
+
+        function setQuickRange(days) {
+            if (typeof persianDate === 'undefined') {
+                alert('کتابخانه تاریخ بارگذاری نشده');
+                return;
+            }
+            const today = new persianDate();
+            const from = new persianDate();
+            from.add('days', -days + 1);
+
+            document.getElementById('date_from').value = from.format('YYYY/MM/DD');
+            document.getElementById('date_to').value = today.format('YYYY/MM/DD');
+            document.getElementById('filterForm').submit();
+        }
+    </script>
+
+
+
+
+
+
+<script>
+    // ============================================
+    // Chart Data from Backend
+    // ============================================
+    const CHART_DATA = {{ chart_data_json|safe }};
+
+    const chartColors = {
+        orders: '#22c55e',
+        deliveries: '#3b82f6',
+        receipts: '#f59e0b',
+        vouchers: '#ef4444',
+    };
+
+    let chartUsersInstance = null;
+    let chartPieInstance = null;
+    let chartDailyInstance = null;
+    let chartRankingInstance = null;
+
+    // ============================================
+    // Toggle Chart Section
+    // ============================================
+    function toggleChartSection() {
+        const body = document.getElementById('chartSectionBody');
+        const icon = document.getElementById('chartToggleIcon');
+
+        body.classList.toggle('expanded');
+        icon.classList.toggle('rotated');
+
+        // اگه باز شد و نمودارها هنوز ساخته نشدن، بساز
+        if (body.classList.contains('expanded') && !chartUsersInstance) {
+            renderAllCharts();
+        }
+    }
+
+    // ============================================
+    // Render All Charts
+    // ============================================
+    function renderAllCharts() {
+        if (!CHART_DATA || !CHART_DATA.users) return;
+
+        renderUsersChart(CHART_DATA.users);
+        renderPieChart(CHART_DATA.totals);
+        renderDailyChart(CHART_DATA.daily);
+        renderRankingChart(CHART_DATA.users);
+    }
+
+    // ============================================
+    // Chart 1: Stacked Bar (مقایسه کاربران)
+    // ============================================
+    function renderUsersChart(users) {
+        const el = document.querySelector("#chartUsers");
+        if (!el) return;
+
+        if (!users || users.length === 0) {
+            el.innerHTML = '<div style="text-align:center; padding:60px; color:#94a3b8;"><div style="font-size:48px; margin-bottom:12px;">📭</div><div>داده‌ای موجود نیست</div></div>';
+            return;
+        }
+
+        const options = {
+            chart: {
+                type: 'bar',
+                height: Math.max(300, users.length * 55),
+                stacked: true,
+                fontFamily: 'Segoe UI, Tahoma, sans-serif',
+                toolbar: { show: false },
+            },
+            series: [
+                { name: '🏭 سفارش تولید', data: users.map(u => u.orders) },
+                { name: '📤 رسید خروج', data: users.map(u => u.deliveries) },
+                { name: '📥 رسید ورود', data: users.map(u => u.receipts) },
+                { name: '📑 سند حسابداری', data: users.map(u => u.vouchers) },
+            ],
+            plotOptions: {
+                bar: {
+                    horizontal: true,
+                    borderRadius: 4,
+                    columnWidth: '65%',
+                }
+            },
+            colors: [chartColors.orders, chartColors.deliveries, chartColors.receipts, chartColors.vouchers],
+            xaxis: {
+                categories: users.map(u => u.user_name),
+                labels: { style: { fontSize: '12px' } }
+            },
+            legend: {
+                position: 'top',
+                horizontalAlign: 'right',
+                fontSize: '13px',
+            },
+            dataLabels: {
+                enabled: true,
+                style: { fontSize: '11px', fontWeight: 600 },
+            },
+            tooltip: {
+                y: { formatter: (val) => val + ' مورد' }
+            },
+            grid: { borderColor: '#e2e8f0' }
+        };
+
+        if (chartUsersInstance) chartUsersInstance.destroy();
+        chartUsersInstance = new ApexCharts(el, options);
+        chartUsersInstance.render();
+    }
+
+    // ============================================
+    // Chart 2: Donut (سهم بخش‌ها)
+    // ============================================
+    function renderPieChart(totals) {
+        const el = document.querySelector("#chartPie");
+        if (!el) return;
+
+        const total = totals.orders + totals.deliveries + totals.receipts + totals.vouchers;
+
+        if (total === 0) {
+            el.innerHTML = '<div style="text-align:center; padding:60px; color:#94a3b8;"><div style="font-size:48px; margin-bottom:12px;">📭</div><div>داده‌ای موجود نیست</div></div>';
+            return;
+        }
+
+        const options = {
+            chart: {
+                type: 'donut',
+                height: 380,
+                fontFamily: 'Segoe UI, Tahoma, sans-serif',
+            },
+            series: [totals.orders, totals.deliveries, totals.receipts, totals.vouchers],
+            labels: ['🏭 سفارش تولید', '📤 رسید خروج', '📥 رسید ورود', '📑 سند حسابداری'],
+            colors: [chartColors.orders, chartColors.deliveries, chartColors.receipts, chartColors.vouchers],
+            legend: {
+                position: 'bottom',
+                fontSize: '13px',
+            },
+            dataLabels: {
+                enabled: true,
+                formatter: (val) => val.toFixed(1) + '%',
+                style: { fontSize: '12px', fontWeight: 700 },
+            },
+            plotOptions: {
+                pie: {
+                    donut: {
+                        size: '65%',
+                        labels: {
+                            show: true,
+                            total: {
+                                show: true,
+                                label: 'کل',
+                                fontSize: '14px',
+                                fontWeight: 700,
+                                formatter: () => total.toLocaleString('fa-IR'),
+                            }
+                        }
+                    }
+                }
+            },
+            tooltip: {
+                y: { formatter: (val) => val + ' مورد' }
+            }
+        };
+
+        if (chartPieInstance) chartPieInstance.destroy();
+        chartPieInstance = new ApexCharts(el, options);
+        chartPieInstance.render();
+    }
+
+    // ============================================
+    // Chart 3: Line (روند روزانه)
+    // ============================================
+    function renderDailyChart(daily) {
+        const el = document.querySelector("#chartDaily");
+        if (!el) return;
+
+        if (!daily || daily.length === 0) {
+            el.innerHTML = '<div style="text-align:center; padding:60px; color:#94a3b8;"><div style="font-size:48px; margin-bottom:12px;">📭</div><div>داده‌ای موجود نیست</div></div>';
+            return;
+        }
+
+        const options = {
+            chart: {
+                type: 'area',
+                height: 380,
+                fontFamily: 'Segoe UI, Tahoma, sans-serif',
+                toolbar: { show: false },
+            },
+            series: [
+                { name: 'سفارش تولید', data: daily.map(d => d.orders) },
+                { name: 'رسید خروج', data: daily.map(d => d.deliveries) },
+                { name: 'رسید ورود', data: daily.map(d => d.receipts) },
+                { name: 'سند حسابداری', data: daily.map(d => d.vouchers) },
+            ],
+            colors: [chartColors.orders, chartColors.deliveries, chartColors.receipts, chartColors.vouchers],
+            stroke: {
+                curve: 'smooth',
+                width: 2,
+            },
+            fill: {
+                type: 'gradient',
+                gradient: { opacityFrom: 0.4, opacityTo: 0.1 }
+            },
+            xaxis: {
+                categories: daily.map(d => d.date),
+                labels: { style: { fontSize: '11px' }, rotate: -45 },
+            },
+            legend: {
+                position: 'top',
+                horizontalAlign: 'right',
+                fontSize: '13px',
+            },
+            tooltip: {
+                shared: true,
+                intersect: false,
+                y: { formatter: (val) => val + ' مورد' }
+            },
+            grid: { borderColor: '#e2e8f0' }
+        };
+
+        if (chartDailyInstance) chartDailyInstance.destroy();
+        chartDailyInstance = new ApexCharts(el, options);
+        chartDailyInstance.render();
+    }
+
+    // ============================================
+    // Chart 4: Ranking
+    // ============================================
+    function renderRankingChart(users) {
+        const el = document.querySelector("#chartRanking");
+        if (!el) return;
+
+        if (!users || users.length === 0) {
+            el.innerHTML = '<div style="text-align:center; padding:60px; color:#94a3b8;"><div style="font-size:48px; margin-bottom:12px;">📭</div><div>داده‌ای موجود نیست</div></div>';
+            return;
+        }
+
+        const sorted = [...users].sort((a, b) => b.total - a.total);
+
+        const options = {
+            chart: {
+                type: 'bar',
+                height: Math.max(300, sorted.length * 50),
+                fontFamily: 'Segoe UI, Tahoma, sans-serif',
+                toolbar: { show: false },
+            },
+            series: [{
+                name: 'کل فعالیت',
+                data: sorted.map(u => u.total)
+            }],
+            plotOptions: {
+                bar: {
+                    horizontal: true,
+                    borderRadius: 6,
+                    distributed: true,
+                    columnWidth: '65%',
+                }
+            },
+            colors: ['#4f46e5', '#7c3aed', '#a855f7', '#d946ef', '#ec4899', '#f43f5e', '#ef4444', '#f59e0b', '#22c55e', '#14b8a6', '#06b6d4', '#0ea5e9'],
+            xaxis: {
+                categories: sorted.map(u => u.user_name),
+            },
+            dataLabels: {
+                enabled: true,
+                style: { fontSize: '12px', fontWeight: 700 },
+                formatter: (val) => val + ' فعالیت',
+            },
+            legend: { show: false },
+            tooltip: {
+                y: {
+                    formatter: (val, opts) => {
+                        const u = sorted[opts.dataPointIndex];
+                        return '<div style="direction:rtl; text-align:right;">' +
+                            '<div><b>🏭 سفارش:</b> ' + u.orders + '</div>' +
+                            '<div><b>📤 خروج:</b> ' + u.deliveries + '</div>' +
+                            '<div><b>📥 ورود:</b> ' + u.receipts + '</div>' +
+                            '<div><b>📑 سند:</b> ' + u.vouchers + '</div>' +
+                            '<hr style="margin:4px 0;">' +
+                            '<div><b>جمع:</b> ' + u.total + '</div>' +
+                            '</div>';
+                    }
+                }
+            },
+        };
+
+        if (chartRankingInstance) chartRankingInstance.destroy();
+        chartRankingInstance = new ApexCharts(el, options);
+        chartRankingInstance.render();
+    }
+
+    // ============================================
+    // Auto-render on load
+    // ============================================
+    document.addEventListener('DOMContentLoaded', function() {
+        // نمودارها رو بعد از یه تأخیر کوچیک رندر کن
+        setTimeout(renderAllCharts, 300);
+    });
+</script>
+
+
+
+
+
+
+
+</body>
+{% endblock %}

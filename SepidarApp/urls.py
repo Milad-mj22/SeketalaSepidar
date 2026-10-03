@@ -26,7 +26,7 @@ urlpatterns = [
     path('api/submit-all-formula-values/', views.submit_all_formula_values, name='submit_all_formula_values'),
     path('api/get-all-items/', views.api_get_all_items, name='api_get_all_items'),
 
-
-
+    path('sepidar-activity-report/', views.sepidar_activity_report, name='sepidar_activity_report'),
+    path('test-daiy-report/', views.test_daily_report, name='test_daily_report'),
 ]
 

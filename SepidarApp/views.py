@@ -1584,3 +1584,337 @@ def api_get_all_items(request):
 
 
 
+# SepidarApp/views.py
+from SepidarApp.activity_helper import (
+    get_accounting_vouchers, get_users_map, get_all_activities,
+    get_product_orders, get_inventory_deliveries, get_inventory_receipts,
+)
+import jdatetime
+from collections import defaultdict
+
+
+@login_required(login_url='authentication:sign-in')
+def sepidar_activity_report(request):
+    """
+    گزارش فعالیت کاربران — مستقیم از سپیدار
+    """
+    try:
+        # ============================================
+        # 1️⃣ فیلترها
+        # ============================================
+        creator_filter = request.GET.get('creator', '').strip()
+        date_from_shamsi = request.GET.get('date_from', '').strip()
+        date_to_shamsi = request.GET.get('date_to', '').strip()
+        activity_type = request.GET.get('activity_type', '').strip()
+
+        # تبدیل تاریخ شمسی به میلادی
+        date_from_gregorian = None
+        date_to_gregorian = None
+
+        if date_from_shamsi:
+            try:
+                date_from_gregorian = persian_to_gregorian(date_from_shamsi)
+            except Exception:
+                pass
+
+        if date_to_shamsi:
+            try:
+                date_to_gregorian = persian_to_gregorian(date_to_shamsi)
+            except Exception:
+                pass
+
+        # پیش‌فرض: ۷ روز اخیر
+        if not date_from_gregorian and not date_to_gregorian:
+            today = jdatetime.date.today()
+            week_ago = today - jdatetime.timedelta(days=7)
+            date_from_shamsi = week_ago.strftime('%Y/%m/%d')
+            date_to_shamsi = today.strftime('%Y/%m/%d')
+            try:
+                date_from_gregorian = persian_to_gregorian(date_from_shamsi)
+                date_to_gregorian = persian_to_gregorian(date_to_shamsi)
+            except Exception:
+                pass
+
+        # ============================================
+        # 2️⃣ خواندن از سپیدار
+        # ============================================
+        db.connect()
+
+        users_map = get_users_map()
+
+        # فیلتر کاربر
+        creator_id = None
+        if creator_filter:
+            try:
+                creator_id = int(creator_filter)
+            except ValueError:
+                pass
+
+        # خواندن همه فعالیت‌ها
+        if activity_type == 'product_order':
+            activities = get_product_orders(date_from_gregorian, date_to_gregorian, creator_id)
+        elif activity_type == 'inventory_delivery':
+            activities = get_inventory_deliveries(date_from_gregorian, date_to_gregorian, creator_id)
+        elif activity_type == 'inventory_receipt':
+            activities = get_inventory_receipts(date_from_gregorian, date_to_gregorian, creator_id)
+        elif activity_type == 'accounting_voucher':
+            activities = get_accounting_vouchers(date_from_gregorian, date_to_gregorian, creator_id)
+        else:
+            activities = get_all_activities(date_from_gregorian, date_to_gregorian, creator_id)
+        # ============================================
+        # 3️⃣ گروه‌بندی بر اساس کاربر + روز
+        # ============================================
+        grouped = defaultdict(lambda: {
+            'user_id': None,
+            'user_name': '',
+            'date_gregorian': None,
+            'date_shamsi': '',
+            'product_orders': [],
+            'deliveries': [],
+            'receipts': [],
+            'vouchers': [],   # ✅ این
+        })
+
+        for act in activities:
+            # کاربر
+            uid = act.get('creator')
+            user_info = users_map.get(uid, {})
+            user_name = user_info.get('full_name', f'کاربر {uid}') if uid else 'نامشخص'
+
+            # تاریخ
+            act_date = act.get('date')
+            if act_date:
+                # میلادی
+                if hasattr(act_date, 'date'):
+                    date_only = act_date.date()
+                else:
+                    date_only = act_date
+
+                # شمسی
+                try:
+                    shamsi = jdatetime.date.fromgregorian(date=date_only)
+                    shamsi_str = f"{shamsi.year}/{shamsi.month:02d}/{shamsi.day:02d}"
+                except Exception:
+                    shamsi_str = str(date_only)
+            else:
+                date_only = None
+                shamsi_str = '-'
+
+            key = (uid, str(date_only))
+
+            grouped[key]['user_id'] = uid
+            grouped[key]['user_name'] = user_name
+            grouped[key]['date_gregorian'] = date_only
+            grouped[key]['date_shamsi'] = shamsi_str
+
+            if act['activity_type'] == 'product_order':
+                grouped[key]['product_orders'].append(act)
+            elif act['activity_type'] == 'inventory_delivery':
+                grouped[key]['deliveries'].append(act)
+            elif act['activity_type'] == 'inventory_receipt':
+                grouped[key]['receipts'].append(act)
+            elif act['activity_type'] == 'accounting_voucher':
+                grouped[key]['vouchers'].append(act)
+        # ============================================
+        # 4️⃣ تبدیل به لیست مرتب‌شده
+        # ============================================
+        daily_reports = []
+        for key, data in grouped.items():
+            # زمان شروع/پایان
+            all_dates = []
+            for po in data['product_orders']:
+                if po['date']:
+                    all_dates.append(po['date'])
+            for d in data['deliveries']:
+                if d['date']:
+                    all_dates.append(d['date'])
+            for r in data['receipts']:
+                if r['date']:
+                    all_dates.append(r['date'])
+
+            first_time = min(all_dates).strftime('%H:%M') if all_dates else '-'
+            last_time = max(all_dates).strftime('%H:%M') if all_dates else '-'
+
+            total_activities = len(data['product_orders']) + len(data['deliveries']) + len(data['receipts'])
+
+            daily_reports.append({
+                'user_id': data['user_id'],
+                'user_name': data['user_name'],
+                'date_shamsi': data['date_shamsi'],
+                'date_gregorian': data['date_gregorian'],
+                'first_time': first_time,
+                'last_time': last_time,
+                'product_orders': data['product_orders'],
+                'deliveries': data['deliveries'],
+                'receipts': data['receipts'],
+                'total_orders': len(data['product_orders']),
+                'total_deliveries': len(data['deliveries']),
+                'total_receipts': len(data['receipts']),
+                'vouchers': data['vouchers'],
+                'total_vouchers': len(data['vouchers']),
+
+                'total_activities': total_activities,
+            })
+
+        # مرتب‌سازی: جدیدترین روز اول
+        daily_reports.sort(
+            key=lambda x: (x['date_gregorian'] or datetime.min.date(), x['user_name']),
+            reverse=True
+        )
+
+        # ============================================
+        # 5️⃣ آمار خلاصه
+        # ============================================
+        stats = {
+            'total_reports': len(daily_reports),
+            'total_orders': sum(r['total_orders'] for r in daily_reports),
+            'total_deliveries': sum(r['total_deliveries'] for r in daily_reports),
+            'total_receipts': sum(r['total_receipts'] for r in daily_reports),
+            'total_users': len(set(r['user_id'] for r in daily_reports if r['user_id'])),
+            'total_vouchers': sum(r['total_vouchers'] for r in daily_reports),
+        }
+
+        db.close()
+
+        # ============================================
+        # 6️⃣ لیست کاربران برای فیلتر
+        # ============================================
+        users_list = [
+            {'id': uid, 'name': info['full_name']}
+            for uid, info in sorted(users_map.items(), key=lambda x: x[1]['full_name'])
+        ]
+
+
+
+
+
+        # ============================================
+        # ✅ داده‌های نمودار — به ازای هر کاربر
+        # ============================================
+
+        chart_users = defaultdict(lambda: {
+            'user_id': None,
+            'user_name': '',
+            'orders': 0,
+            'deliveries': 0,
+            'receipts': 0,
+            'vouchers': 0,
+            'total': 0,
+        })
+
+        chart_daily = defaultdict(lambda: {
+            'orders': 0,
+            'deliveries': 0,
+            'receipts': 0,
+            'vouchers': 0,
+        })
+
+        # از daily_reports استفاده کن
+        for report in daily_reports:
+            uid = report['user_id']
+            uname = report['user_name']
+
+            # کاربر
+            chart_users[uid]['user_id'] = uid
+            chart_users[uid]['user_name'] = uname
+            chart_users[uid]['orders'] += report['total_orders']
+            chart_users[uid]['deliveries'] += report['total_deliveries']
+            chart_users[uid]['receipts'] += report['total_receipts']
+            chart_users[uid]['vouchers'] += report.get('total_vouchers', 0)
+            chart_users[uid]['total'] += report['total_activities']
+
+            # روزانه
+            day = report['date_shamsi']
+            chart_daily[day]['orders'] += report['total_orders']
+            chart_daily[day]['deliveries'] += report['total_deliveries']
+            chart_daily[day]['receipts'] += report['total_receipts']
+            chart_daily[day]['vouchers'] += report.get('total_vouchers', 0)
+
+        # تبدیل به لیست
+        chart_users_list = sorted(chart_users.values(), key=lambda x: x['total'], reverse=True)
+        chart_daily_list = []
+        for date_str in sorted(chart_daily.keys()):
+            chart_daily_list.append({
+                'date': date_str,
+                'orders': chart_daily[date_str]['orders'],
+                'deliveries': chart_daily[date_str]['deliveries'],
+                'receipts': chart_daily[date_str]['receipts'],
+                'vouchers': chart_daily[date_str]['vouchers'],
+            })
+
+        # تبدیل به JSON برای جاوااسکریپت
+        chart_data_json = json.dumps({
+            'users': chart_users_list,
+            'daily': chart_daily_list,
+            'totals': {
+                'orders': stats['total_orders'],
+                'deliveries': stats['total_deliveries'],
+                'receipts': stats['total_receipts'],
+                'vouchers': stats.get('total_vouchers', 0),
+            }
+        }, ensure_ascii=False)
+
+
+
+
+
+
+
+
+        context = {
+            'daily_reports': daily_reports,
+            'stats': stats,
+            'users_list': users_list,
+            'creator_filter': creator_filter,
+            'date_from_shamsi': date_from_shamsi,
+            'date_to_shamsi': date_to_shamsi,
+            'activity_type': activity_type,
+            'active_page': 'sepidar_activity_report',
+            'chart_data_json': chart_data_json,   # ✅ اضافه کن
+        }
+
+        return render(request, 'sepidar_activity_report.html', context)
+
+    except Exception as e:
+        logger.error(f"Error in sepidar_activity_report: {e}", exc_info=True)
+        try:
+            db.close()
+        except Exception:
+            pass
+        return render(request, 'error.html', {'error': str(e)})
+
+
+
+
+
+
+
+@login_required
+def test_daily_report(request):
+    """
+    تست دستی: فقط متن گزارش رو نشون بده
+    """
+    from SepidarApp.reports import build_daily_report_text, send_daily_report_sms
+    
+    # تاریخ دلخواه
+    date_str = request.GET.get('date', '')
+    for_date = None
+    
+    if date_str:
+        try:
+            for_date = persian_to_gregorian(date_str)
+        except Exception:
+            pass
+    
+    # حالت‌ها:
+    # 1. فقط متن: ?date=1405/07/11
+    # 2. با پیامک: ?date=1405/07/11&send_sms=1
+    
+    if request.GET.get('send_sms') == '1':
+        # ساخت + ارسال
+        result = send_daily_report_sms(for_date)
+        return JsonResponse(result)
+    else:
+        # فقط ساخت متن
+        result = build_daily_report_text(for_date)
+        return JsonResponse(result)

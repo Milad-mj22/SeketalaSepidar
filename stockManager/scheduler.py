@@ -168,3 +168,35 @@ def process_daily_material_adjustment_job():
             status='failed',
             message=str(e)
         )
+
+
+
+
+
+
+
+
+def send_daily_report_job():
+    """
+    تابعی که هر روز ساعت ۱۹ اجرا می‌شه
+    - متن گزارش رو می‌سازه
+    - پیامک می‌فرسته
+    - هیچی ذخیره نمی‌کنه
+    """
+    from SepidarApp.reports import send_daily_report_sms
+    
+    logger.info(f"⏰ Running daily report job at {timezone.now()}")
+    
+    try:
+        result = send_daily_report_sms()
+        
+        if result.get('success'):
+            logger.info(
+                f"✅ Daily report sent to {result.get('sent_count')} receivers | "
+                f"Activities: {result.get('total_activities')}"
+            )
+        else:
+            logger.error(f"❌ Daily report failed: {result.get('error')}")
+        
+    except Exception as e:
+        logger.error(f"❌ Daily report job failed: {e}", exc_info=True)

@@ -8,6 +8,7 @@ class SMSServiceTemplate_Enum(models.TextChoices):
     LOGIN = "login", "ورود"
     PERSONEL_NIGHT_ORDER = 'personel_night_order','سفارش به نام پرسنل'
     BUY_NOTIFICATION = 'Buy Notification' , 'ارسال خرید'
+    ACTIVITY = 'Activity' , 'فعالیت حسابداران'
 
 
 class SMSServiceName_Enum(models.TextChoices):
