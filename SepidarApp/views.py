@@ -1385,19 +1385,13 @@ def change_sl_acc_ref(request):
 
 
 
-
-
-
-
-
 def change_sl_acc_ref_for_last_ten_delivery_items(request):
     """
-    Get the last 10 InventoryDeliveryItem records,
-    and for each one where SLAccountRef == 786,
-    update it to 825 and save.
+    Get ALL InventoryDeliveryItem records where SLAccountRef == 786,
+    and update them to 825.
 
     Returns:
-    - dict with success flag, updated records, and errors
+    - JsonResponse with success flag, updated records, and errors
     """
     conn = None
     db_connection = db
@@ -1408,45 +1402,35 @@ def change_sl_acc_ref_for_last_ten_delivery_items(request):
         conn = db_connection.get_connection()
         cursor = conn.cursor()
 
-        # 1. Get last 10 InventoryDeliveryItem records
+        # ✅ 1. Get ALL items WHERE SLAccountRef == 786
         cursor.execute("""
-            SELECT TOP 10 InventoryDeliveryItemID, InventoryDeliveryRef, RowNumber, SLAccountRef
+            SELECT InventoryDeliveryItemID, InventoryDeliveryRef, RowNumber, SLAccountRef
             FROM [Sepidar01].[INV].[InventoryDeliveryItem]
+            WHERE SLAccountRef = ?
             ORDER BY InventoryDeliveryItemID DESC
-        """)
+        """, (old_sl_account_ref,))
 
         rows = cursor.fetchall()
 
         if not rows:
-            return {
+            return JsonResponse({
                 'success': True,
-                'message': 'No inventory delivery items found',
+                'message': f'No inventory delivery items found with SLAccountRef = {old_sl_account_ref}',
                 'updated': [],
-                'skipped': []
-            }
+                'total_checked': 0,
+                'total_updated': 0,
+            }, json_dumps_params={'ensure_ascii': False})
 
         updated_records = []
-        skipped_records = []
 
-        # 2. Loop through each item
+        # ✅ 2. Loop and update each item
         for row in rows:
             item_id = row[0]
             delivery_ref = row[1]
             row_number = row[2]
             sl_account_ref = row[3]
 
-            # 3. Skip if SLAccountRef is not 786
-            if sl_account_ref == new_sl_account_ref:
-                skipped_records.append({
-                    'InventoryDeliveryItemID': item_id,
-                    'InventoryDeliveryRef': delivery_ref,
-                    'RowNumber': row_number,
-                    'SLAccountRef': sl_account_ref,
-                    'reason': f'SLAccountRef is {new_sl_account_ref}'
-                })
-                continue
-
-            # 4. Update SLAccountRef to 825 and save
+            # 3. Update SLAccountRef to 825
             cursor.execute("""
                 UPDATE [Sepidar01].[INV].[InventoryDeliveryItem]
                 SET SLAccountRef = ?
@@ -1458,41 +1442,38 @@ def change_sl_acc_ref_for_last_ten_delivery_items(request):
                 'InventoryDeliveryRef': delivery_ref,
                 'RowNumber': row_number,
                 'old_SLAccountRef': sl_account_ref,
-                'new_SLAccountRef': new_sl_account_ref
+                'new_SLAccountRef': new_sl_account_ref,
             })
 
-            logger.info(
-                f"Updated InventoryDeliveryItem ID {item_id}, "
-                f"DeliveryRef {delivery_ref}, Row {row_number}: "
-                f"SLAccountRef {old_sl_account_ref} -> {new_sl_account_ref}"
-            )
-
-        # 5. Commit all updates
+        # 4. Commit
         conn.commit()
 
-        return {
+        logger.info(
+            f"Updated {len(updated_records)} InventoryDeliveryItem records: "
+            f"SLAccountRef {old_sl_account_ref} -> {new_sl_account_ref}"
+        )
+
+        return JsonResponse({
             'success': True,
             'updated': updated_records,
-            'skipped': skipped_records,
             'total_checked': len(rows),
             'total_updated': len(updated_records),
-            'total_skipped': len(skipped_records)
-        }
+        }, json_dumps_params={'ensure_ascii': False})
 
     except Exception as e:
-        logger.error(f"Error updating last 10 delivery items SLAccountRef: {e}")
+        logger.error(f"Error updating delivery items SLAccountRef: {e}", exc_info=True)
         if conn is not None:
             try:
                 conn.rollback()
             except Exception:
                 pass
-        return {
+        return JsonResponse({
             'success': False,
-            'error': str(e)
-        }
+            'error': str(e),
+        }, status=500, json_dumps_params={'ensure_ascii': False})
+
+
     
-
-
 # SepidarApp/views.py
 @login_required
 @require_http_methods(["GET"])
