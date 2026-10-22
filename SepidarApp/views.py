@@ -1295,7 +1295,7 @@ def change_sl_acc_ref(request):
     """
     conn = None
     db_connection = db
-    old_sl_account_ref: int = 786,
+    old_sl_account_ref: int = 786
     new_sl_account_ref: int = 825
 
     try:
@@ -1304,20 +1304,21 @@ def change_sl_acc_ref(request):
 
         # 1. Get last 10 InventoryReceipt records for the given StockRef
         cursor.execute("""
-            SELECT TOP 10 InventoryReceiptID, Number, SLAccountRef
+            SELECT InventoryReceiptID, Number, SLAccountRef
             FROM [Sepidar01].[INV].[InventoryReceipt]
+            WHERE SLAccountRef = ?
             ORDER BY InventoryReceiptID DESC
-        """, )
+        """,(old_sl_account_ref,) )
 
         rows = cursor.fetchall()
 
         if not rows:
-            return {
+            return JsonResponse({
                 'success': True,
                 'message': 'No inventory receipts found',
                 'updated': [],
                 'skipped': []
-            }
+            }, json_dumps_params={'ensure_ascii': False})
 
         updated_records = []
         skipped_records = []
@@ -1361,14 +1362,14 @@ def change_sl_acc_ref(request):
         # 5. Commit all updates
         conn.commit()
 
-        return {
+        return JsonResponse({
             'success': True,
             'updated': updated_records,
             'skipped': skipped_records,
             'total_checked': len(rows),
             'total_updated': len(updated_records),
             'total_skipped': len(skipped_records)
-        }
+        }, json_dumps_params={'ensure_ascii': False})
 
     except Exception as e:
         logger.error(f"Error updating receipts SLAccountRef: {e}")
@@ -1377,10 +1378,11 @@ def change_sl_acc_ref(request):
                 conn.rollback()
             except Exception:
                 pass
-        return {
-            'success': False,
-            'error': str(e)
-        }
+        return JsonResponse({
+                    'success': False,
+                    'error': str(e),
+                }, status=500, json_dumps_params={'ensure_ascii': False})
+
 
 
 
