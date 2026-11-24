@@ -1398,6 +1398,8 @@
                             const itemRef = row ? row.querySelector('td:nth-child(2)').textContent : '';
                             const itemName = row ? row.querySelector('td:nth-child(3)').textContent : '';
                             const quantity = parseFloat(row ? row.querySelector('td:nth-child(4)').textContent : 0) || 0;
+                            // ✅ اضافه کنید:
+                            const secondaryQuantity = parseFloat(row ? row.querySelector('td:nth-child(5)').textContent : 0) || 0;
                             const isManual = wInput.dataset.manuallyEdited === 'true';
                             const isTemp = wInput.dataset.isTemp === 'true';
 
@@ -1405,6 +1407,7 @@
                                 item_ref: itemRef.trim(),
                                 item_name: itemName.trim(),
                                 quantity: quantity,
+                                secondary_quantity: secondaryQuantity,  // ✅ اضافه کنید
                                 withdrawal_amount: amount,
                                 is_manually_edited: isManual,
                                 is_temp: isTemp
@@ -1678,6 +1681,7 @@ function submitAllValues() {
                         item_ref: wItem.item_ref,
                         item_name: wItem.item_name,
                         quantity: wItem.quantity,
+                        secondary_quantity: wItem.secondary_quantity,
                         withdrawal_amount: wItem.withdrawal_amount
                     }))
                 })),

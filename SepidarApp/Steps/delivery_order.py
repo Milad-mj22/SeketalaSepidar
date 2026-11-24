@@ -362,6 +362,13 @@ def save_inventory_delivery_items_batch(
         all_success = True
         
         for item in items:
+            second_quantity = 0
+            try:
+                sec = item.get('secondary_quantity',0)
+                second_quantity = sec*item.get('withdrawal_amount', 0)
+            except :
+                pass
+
             result = save_inventory_delivery_item_db(
                 db_connection=db_connection,
                 inventory_delivery_ref=inventory_delivery_ref,
@@ -371,7 +378,7 @@ def save_inventory_delivery_items_batch(
                 description=item.get('description', default_description),
                 product_order_ref=item.get('product_order_ref', product_order_ref),
                 tracing_ref=item.get('tracing_ref'),
-                secondary_quantity=item.get('secondary_quantity'),
+                secondary_quantity=second_quantity,
                 remaining_quantity=item.get('remaining_quantity'),
                 sl_account_ref=sl_acc_ref,
                 fee=item.get('fee'),

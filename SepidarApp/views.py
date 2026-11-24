@@ -539,6 +539,7 @@ def submit_all_formula_values(request):
                 unit_ref = recipe.get('UnitRef')
                 unit_name = recipe.get('UnitName')
                 quantity_per_unit = recipe.get('Quantity', 0)
+                secondary_quantity_per_unit = recipe.get('SecondaryQuantity', 0)
                 is_temp = recipe.get('IsTemp', False)
 
                 # ✅ محاسبه مقدار مورد نیاز
@@ -548,6 +549,7 @@ def submit_all_formula_values(request):
                 else:
                     # مواد اصلی: مقدار مصرفی * مقدار در هر واحد
                     required_quantity = consumption_value * quantity_per_unit
+                    secondary_required_quantity = consumption_value*secondary_quantity_per_unit
 
                 # مقدار برداشتی کاربر
                 user_withdrawal = next(
@@ -562,7 +564,9 @@ def submit_all_formula_values(request):
                     'unit_ref': unit_ref,
                     'unit_name': unit_name,
                     'quantity_per_unit': quantity_per_unit,
+                    'secondary_quantity_per_unit': secondary_quantity_per_unit,
                     'required_quantity': required_quantity,
+                    'secondary_required_quantity': secondary_required_quantity,
                     'withdrawal_amount': user_withdrawal,
                     'is_temp': is_temp
                 })
@@ -601,6 +605,7 @@ def submit_all_formula_values(request):
                         'item_ref': w_item.get('item_ref'),
                         'item_name': w_item.get('item_name'),
                         'quantity': w_item.get('quantity', 0),
+                        'quantity': w_item.get('quantity', 0),
                         'withdrawal_amount': w_item.get('withdrawal_amount', 0),
                         'is_manually_edited': w_item.get('is_manually_edited', False)
                     })
@@ -610,7 +615,7 @@ def submit_all_formula_values(request):
         
         creator_id = get_creator_sepidar(request)
 
-
+        all_exist = True
 
         if not all_exist:
             # استخراج مواد ناموجود با جزئیات کامل
