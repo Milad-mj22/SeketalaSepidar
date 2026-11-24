@@ -1638,11 +1638,19 @@ function submitAllValues() {
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> در حال ارسال...';
             submitBtn.classList.add('btn-loading');
 
-            const backendDate = "{{ selected_date|default:'' }}";
+            const backendDate = "{{ selected_date|default:''|escapejs }}";
             const localStorageDate = localStorage.getItem('selected_date');
-            const userSelectedDate = window.selectedDate;
-            let selectedDate = userSelectedDate || localStorageDate || backendDate || '';
+            const userSelectedDate = document.getElementById('datepicker')?.value?.trim();
 
+            const selectedDate = convertPersianToEnglishNumbers(
+                window.selectedDate ||
+                userSelectedDate ||
+                localStorageDate ||
+                backendDate ||
+                ''
+            ).trim();
+
+            
             if (!selectedDate) {
                 Swal.fire({
                     title: '⚠️ خطا',

@@ -886,9 +886,15 @@ def check_materials_stock(db, required_materials):
                 'status': 'موجود' if available_stock >= required_qty['total_required'] else 'کمبود',
                 'item_name' :  required_qty['item_name']
             }
+
+            if available_stock<0:
+                available_stock = 0
         
             if available_stock < required_qty['total_required'] :
                 all_exist = False
+
+            if available_stock ==0 and required_qty['total_required'] == 0 :
+                stock_status[key]['available']=True
 
 
         return all_exist , stock_status
