@@ -22,7 +22,14 @@ class Profile(models.Model):
     is_active = models.BooleanField(default=True, verbose_name="آیا اکانت فعال است")
     created_at = models.DateTimeField(default=timezone.now, verbose_name="تاریخ ثبت نام")
     avatar = models.ImageField(default='assets/profile_images/vipa_default.jpg', upload_to='assets/profile_images/')
-
+    
+    sepidar_username = models.CharField(max_length=120, null=True, blank=True, verbose_name="نام کاربری سپیدار")
+    
+    sepidar_code = models.IntegerField(
+        default=17,
+        verbose_name="کد سپیدار",
+        help_text="کد کاربر در نرم‌افزار سپیدار (پیش‌فرض: 17)"
+    )
     role = models.CharField(max_length=10, choices=RoleEnum.choices, default=RoleEnum.USER, verbose_name="نقش کاربر")
 
 
@@ -36,6 +43,13 @@ class Profile(models.Model):
 
     def check_password(self, password: str) -> bool:
         """Check if the provided password is correct."""
+        if self.password_hash is None:
+            return check_password(password, self.user.password)
+
+        if self.password_hash is not None:
+            if password==self.password_hash:
+                return True
+
         return check_password(password, self.password_hash)
 
     def is_admin(self) -> bool:
@@ -61,4 +75,5 @@ class Profile(models.Model):
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
     
-    
+
+

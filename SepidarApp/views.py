@@ -1,3 +1,4 @@
+from datetime import datetime
 import json
 
 from django.contrib.sites import requests
@@ -8,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 
 from SepidarApp.Steps.save_order import save_multiple_product_orders
 from SepidarApp.models import WarehouseRelation
-from SepidarApp.utils import persian_to_gregorian
+from SepidarApp.utils import get_creator_sepidar, persian_to_gregorian
 
 @login_required(login_url='authentication:sign-in')
 def first_page(request):
@@ -31,22 +32,50 @@ from django.db import connection
 import pyodbc
 import logging
 
-from .databaseConnector import db
+from .databaseConnector import DatabaseConnection, db
 
 logger = logging.getLogger(__name__)
 @login_required
 def formula_list(request):
     try:
-        # Connect to database
         db.connect()
-        
-        # Get all formulas with items
+
+        # ============================================
+        # تشخیص حالت نمایش
+        # ============================================
+        relation_id = request.GET.get('relation_id')
+        show_all = request.GET.get('show_all') == '1'   # ✅ چک‌باکس
+
+        allowed_formula_ids = None
+        selected_relation = None
+        selected_relation_id = None
+
+        # ✅ اگه "نمایش همه" فعاله، فیلتر نکن
+        if not show_all and relation_id:
+            try:
+                selected_relation = WarehouseRelation.objects.get(id=relation_id)
+                selected_relation_id = selected_relation.id
+                allowed_formula_ids = set(
+                    selected_relation.formula_relations
+                        .filter(is_deleted=False)
+                        .values_list('formula_id', flat=True)
+                )
+            except WarehouseRelation.DoesNotExist:
+                pass
+
+        # ============================================
+        # همه فرمول‌ها از سپیدار
+        # ============================================
         results = db.get_formulas_with_items()
-        
-        # Process results into a structured format
+
         formulas = {}
         for row in results:
             formula_id = row.ProductFormulaID
+
+            # ✅ فیلتر بر اساس رابطه (اگه show_all نیست)
+            if allowed_formula_ids is not None and formula_id not in allowed_formula_ids:
+                continue
+
             if formula_id not in formulas:
                 formulas[formula_id] = {
                     'id': formula_id,
@@ -66,7 +95,7 @@ def formula_list(request):
                     'main_item_stock_unit': row.MainItemStockUnitName if hasattr(row, 'MainItemStockUnitName') else None,
                     'items': []
                 }
-            
+
             if row.FormulaBomItemID:
                 formulas[formula_id]['items'].append({
                     'id': row.FormulaBomItemID,
@@ -80,20 +109,20 @@ def formula_list(request):
                     'stock_quantity': float(row.StockQuantity) if hasattr(row, 'StockQuantity') and row.StockQuantity else 0,
                     'stock_unit': row.StockUnitName if hasattr(row, 'StockUnitName') else None,
                 })
-        
+
         formula_list = list(formulas.values())
-        
-        # Get summary statistics
+
+        # آمار
         total_formulas = len(formula_list)
         active_formulas = sum(1 for f in formula_list if f['is_active'])
         total_items = sum(len(f['items']) for f in formula_list)
-        
-        relations = WarehouseRelation.objects.select_related('source_warehouse', 'destination_warehouse').all()
-        
-        # ============================================
-        # دریافت داده‌های needed_materials از SESSION
-        # ============================================
-        exist=False
+
+        relations = WarehouseRelation.objects.select_related(
+            'source_warehouse', 'destination_warehouse'
+        ).all()
+
+        # Session data
+        exist = False
         try:
             needed_materials = request.session['needed_materials']
             selected_date = request.session['materials_date']
@@ -104,16 +133,15 @@ def formula_list(request):
                 needed_materials = []
                 selected_date = []
                 count = []
-        # همچنین از GET برای خطاها استفاده کنید
+
         error_message = request.GET.get('error', '')
-        
-        # پردازش needed_materials
+
         materials_by_code = {}
         for material in needed_materials:
             code = material.get('code', '')
             if code:
                 materials_by_code[code] = material
-        
+
         context = {
             'formulas': formula_list,
             'total_formulas': total_formulas,
@@ -121,7 +149,6 @@ def formula_list(request):
             'total_items': total_items,
             'inactive_formulas': total_formulas - active_formulas,
             'relations': relations,
-            # داده‌های جدید از session
             'needed_materials': needed_materials,
             'materials_by_code': materials_by_code,
             'needed_material_codes': list(materials_by_code.keys()),
@@ -129,21 +156,49 @@ def formula_list(request):
             'selected_date': selected_date,
             'count': count,
             'error_message': error_message,
+            'selected_relation_id': selected_relation_id,
+            'selected_relation': selected_relation,
+            'show_all': show_all,  # ✅ اضافه کن
         }
-        
+
         return render(request, 'formula_list.html', context)
-        
-    except pyodbc.Error as e:
-        error_message = f"Database error: {str(e)}"
-        logger.error(error_message)
-        return render(request, 'error.html', {'error': error_message})
+
     except Exception as e:
-        error_message = f"Error: {str(e)}"
-        logger.error(error_message)
-        return render(request, 'error.html', {'error': error_message})
+        logger.error(f"Error in formula_list: {e}")
+        return render(request, 'error.html', {'error': str(e)})
     finally:
         db.close()
 
+# ============================================================
+# API: فرمول‌های مجاز یک رابطه
+# ============================================================
+@login_required
+def api_relation_formulas(request, relation_id):
+    """
+    API: دریافت لیست ID فرمول‌های مجاز یک رابطه
+    """
+    try:
+        relation = WarehouseRelation.objects.get(id=relation_id)
+        allowed_ids = list(
+            relation.formula_relations
+                .filter(is_deleted=False)
+                .values_list('formula_id', flat=True)
+        )
+        return JsonResponse({
+            'success': True,
+            'formula_ids': allowed_ids,
+            'count': len(allowed_ids),
+        })
+    except WarehouseRelation.DoesNotExist:
+        return JsonResponse({
+            'success': False,
+            'error': 'رابطه یافت نشد'
+        }, status=404)
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'error': str(e)
+        }, status=500)
 
               
 def formula_detail(request, formula_id):
@@ -411,15 +466,72 @@ def submit_all_formula_values(request):
             product_unit = item.get('product_unit', '')
             withdrawal_items = item.get('withdrawal_items', [])
             total_withdrawal = item.get('total_withdrawal', 0)
-            
-            # دریافت مواد اولیه فرمول از دیتابیس
+
+            # ============================================
+            # 1️⃣ دریافت مواد اولیه اصلی فرمول از دیتابیس
+            # ============================================
             recipe_items = get_formula_recipe(db, formula_id)
-            
-            if not recipe_items:
-                logger.warning(f"No recipe found for formula {formula_id}")
-                continue
-            
-            # محاسبه مقدار مورد نیاز برای هر ماده
+
+            if recipe_items is None:
+                recipe_items = []
+
+            # ============================================
+            # 2️⃣ ✅ اضافه کردن مواد موقت به recipe_items
+            # (موادی که کاربر توی فرانت اضافه کرده و توی فرمول اصلی نیستن)
+            # ============================================
+            existing_item_refs = {str(r.get('ItemRef')) for r in recipe_items}
+
+            for w_item in withdrawal_items:
+                w_item_ref = str(w_item.get('item_ref', '')).strip()
+
+                # اگه این ماده توی فرمول اصلی نیست، اضافه‌ش کن
+                if w_item_ref and w_item_ref not in existing_item_refs:
+                    w_item_name = w_item.get('item_name', '')
+                    withdrawal_amount = float(w_item.get('withdrawal_amount', 0) or 0)
+
+                    if withdrawal_amount > 0:
+                        # ✅ دریافت unit_ref از دیتابیس
+                        unit_ref = None
+                        unit_name = ''
+                        try:
+                            conn_temp = db.get_connection()
+                            cursor_temp = conn_temp.cursor()
+                            cursor_temp.execute("""
+                                SELECT i.UnitRef, u.Title AS UnitName
+                                FROM [Sepidar01].[INV].[Item] i
+                                LEFT JOIN [Sepidar01].[INV].[Unit] u ON i.UnitRef = u.UnitID
+                                WHERE i.ItemID = ?
+                            """, (w_item_ref,))
+                            row_temp = cursor_temp.fetchone()
+                            if row_temp:
+                                unit_ref = row_temp[0] if row_temp[0] else 1
+                                unit_name = row_temp[1] or ''
+                        except Exception as e:
+                            logger.warning(f"Could not fetch unit for temp item {w_item_ref}: {e}")
+                            unit_ref = 1
+
+                        # ✅ اضافه به recipe_items با فرمت یکسان
+                        recipe_items.append({
+                            'FormulaBomItemID': None,   # ماده موقت BomItem نداره
+                            'ItemRef': int(w_item_ref) if w_item_ref.isdigit() else w_item_ref,
+                            'Quantity': 0,               # مقدار در هر واحد فرمول نداره
+                            'SecondaryQuantity': 0,
+                            'Description': 'ماده موقت اضافه‌شده توسط کاربر',
+                            'ItemTracingRef': None,
+                            'ItemName': w_item_name,
+                            'ItemCode': '',
+                            'UnitRef': unit_ref,
+                            'UnitName': unit_name,
+                            'IsTemp': True,
+                            'WithdrawalAmount': withdrawal_amount,
+                        })
+
+                        existing_item_refs.add(w_item_ref)
+                        logger.info(f"✅ ماده موقت {w_item_ref} ({w_item_name}) به فرمول {formula_id} اضافه شد")
+
+            # ============================================
+            # 3️⃣ محاسبه مقدار مورد نیاز برای هر ماده
+            # ============================================
             formula_materials = []
             for recipe in recipe_items:
                 item_ref = recipe.get('ItemRef')
@@ -427,10 +539,23 @@ def submit_all_formula_values(request):
                 unit_ref = recipe.get('UnitRef')
                 unit_name = recipe.get('UnitName')
                 quantity_per_unit = recipe.get('Quantity', 0)
-                
-                # محاسبه مقدار مورد نیاز = مقدار مصرفی * مقدار در هر واحد
-                required_quantity = consumption_value * quantity_per_unit
-                
+                is_temp = recipe.get('IsTemp', False)
+
+                # ✅ محاسبه مقدار مورد نیاز
+                if is_temp:
+                    # مواد موقت: از withdrawal_amount استفاده کن
+                    required_quantity = recipe.get('WithdrawalAmount', 0)
+                else:
+                    # مواد اصلی: مقدار مصرفی * مقدار در هر واحد
+                    required_quantity = consumption_value * quantity_per_unit
+
+                # مقدار برداشتی کاربر
+                user_withdrawal = next(
+                    (w.get('withdrawal_amount', 0) for w in withdrawal_items
+                     if str(w.get('item_ref')) == str(item_ref)),
+                    0
+                )
+
                 formula_materials.append({
                     'item_ref': item_ref,
                     'item_name': item_name,
@@ -438,21 +563,22 @@ def submit_all_formula_values(request):
                     'unit_name': unit_name,
                     'quantity_per_unit': quantity_per_unit,
                     'required_quantity': required_quantity,
-                    'withdrawal_amount': next(
-                        (w.get('withdrawal_amount', 0) for w in withdrawal_items if w.get('item_ref') == item_ref),
-                        0
-                    )
+                    'withdrawal_amount': user_withdrawal,
+                    'is_temp': is_temp
                 })
-                
-                # جمع‌آوری در دیکشنری اصلی
+
+                # ✅ جمع‌آوری در دیکشنری اصلی
                 key = f"{item_ref}_{unit_ref}"
                 required_materials[key]['total_required'] += required_quantity
                 required_materials[key]['item_name'] = item_name
                 required_materials[key]['unit_name'] = unit_name
                 required_materials[key]['item_ref'] = item_ref
-                required_materials[key]['bom_item_id'] = recipe.get('BOMItemID')
-            
-            # ذخیره جزئیات فرمول
+                required_materials[key]['bom_item_id'] = recipe.get('FormulaBomItemID')
+                required_materials[key]['is_temp'] = is_temp
+
+            # ============================================
+            # 4️⃣ ذخیره جزئیات فرمول
+            # ============================================
             formula_details.append({
                 'formula_id': formula_id,
                 'product_id': product_id,
@@ -462,8 +588,10 @@ def submit_all_formula_values(request):
                 'withdrawal_items': withdrawal_items,
                 'materials': formula_materials
             })
-            
-            # جمع‌آوری جزئیات برداشت
+
+            # ============================================
+            # 5️⃣ جمع‌آوری جزئیات برداشت
+            # ============================================
             if withdrawal_items:
                 for w_item in withdrawal_items:
                     all_withdrawal_details.append({
@@ -480,6 +608,7 @@ def submit_all_formula_values(request):
         # بررسی موجودی مواد اولیه
         all_exist, stock_status = check_materials_stock(db, required_materials)
         
+        creator_id = get_creator_sepidar(request)
 
 
 
@@ -492,7 +621,7 @@ def submit_all_formula_values(request):
             # for item in formulas:
             save_results  = save_multiple_product_orders(db,formulas,stock_source_ref,stock_dest_ref,\
                                                          georgian_date,moin_code=moin_code,cost_stock=cost_stock,\
-                                                         dl_ref=deliverer_ref,   notes =order_registration_notes )
+                                                         dl_ref=deliverer_ref,   notes =order_registration_notes ,creator=creator_id)
 
             saved_results = save_results.get('results', [])
             saved_count = save_results.get('saved', 0)
@@ -516,6 +645,70 @@ def submit_all_formula_values(request):
         
         # بستن اتصال دیتابیس
         db.close()
+
+
+
+        # ============================================
+        # ✅ ثبت تاریخچه فعالیت
+        # ============================================
+        from SepidarApp.utils import log_activity
+        
+        # ✅ جمع‌آوری شماره‌های رسید از نتایج
+        receipt_numbers = []
+        if saved_results:
+            for r in saved_results:
+                if r.get('success'):
+                    num = r.get('number') or r.get('product_order_id')
+                    if num:
+                        receipt_numbers.append(str(num))
+        
+        receipt_number_str = ', '.join(receipt_numbers) if receipt_numbers else None
+        
+        # ✅ شمارش مواد موقت
+        total_temp = sum(
+            1 for f in formulas 
+            for w in f.get('withdrawal_items', []) 
+            if w.get('is_temp')
+        )
+        
+        # ✅ شمارش کل مواد
+        total_items = sum(
+            len(f.get('withdrawal_items', [])) 
+            for f in formulas
+        )
+        
+        if all_exist and saved_count > 0:
+            # ✅ لاگ موفق
+            log_activity(
+                request=request,
+                action_type='formula_submit',
+                relation=relation,
+                receipt_number=receipt_number_str,
+                description=f"{saved_count} فرمول با موفقیت ثبت شد",
+                details={
+                    'formulas': [
+                        {
+                            'formula_id': f.get('formula_id'),
+                            'formula_code': f.get('formula_code'),
+                            'formula_title': f.get('formula_title'),
+                            'consumption_value': f.get('consumption_value'),
+                            'total_withdrawal': f.get('total_withdrawal'),
+                            'items_count': len(f.get('withdrawal_items', [])),
+                            'temp_items_count': sum(1 for w in f.get('withdrawal_items', []) if w.get('is_temp')),
+                        }
+                        for f in formulas
+                    ],
+                    'saved_count': saved_count,
+                    'selected_date': selected_date,
+                },
+                total_formulas=len(formulas),
+                total_items=total_items,
+                total_temp_items=total_temp,
+            )
+
+
+
+
         
         if all_exist:
             return JsonResponse({
@@ -888,8 +1081,7 @@ def get_materials(request):
             })
         
         # Call external API with Gregorian date
-        api_url = f"https://seketalamanager.ir/data_analysis/api/get-date-items/?start_date={start_gregorian_date}&end_date={end_gregorian_date}"
-
+        api_url = f"http://127.0.0.1:8900/data_analysis/api/get-date-items/?start_date={start_gregorian_date}&end_date={end_gregorian_date}"
         logger.info(f"Calling external API: {api_url}")
         
         # Use the alias http_requests instead of requests
@@ -1080,3 +1272,632 @@ def submit_materials(request):
     except Exception as e:
         logger.error(f"Error in submit_materials: {e}")
         return redirect(f"{reverse('sepidarApp:formula_list')}?error={urllib.parse.quote(str(e))}")
+
+
+
+
+
+
+def change_sl_acc_ref(request):
+    """
+    Get the last 10 InventoryReceipt records for a given StockRef,
+    and for each one where SLAccountRef == old_sl_account_ref,
+    update it to new_sl_account_ref and save.
+
+    Parameters:
+    - db_connection: Database connection object
+    - stock_ref: Warehouse reference to filter receipts
+    - old_sl_account_ref: The SLAccountRef to find (default 786)
+    - new_sl_account_ref: The SLAccountRef to set (default 825)
+
+    Returns:
+    - dict with success flag, updated records, and errors
+    """
+    conn = None
+    db_connection = db
+    old_sl_account_ref: int = 786
+    new_sl_account_ref: int = 825
+
+    try:
+        conn = db_connection.get_connection()
+        cursor = conn.cursor()
+
+        # 1. Get last 10 InventoryReceipt records for the given StockRef
+        cursor.execute("""
+            SELECT InventoryReceiptID, Number, SLAccountRef
+            FROM [Sepidar01].[INV].[InventoryReceipt]
+            WHERE SLAccountRef = ?
+            ORDER BY InventoryReceiptID DESC
+        """,(old_sl_account_ref,) )
+
+        rows = cursor.fetchall()
+
+        if not rows:
+            return JsonResponse({
+                'success': True,
+                'message': 'No inventory receipts found',
+                'updated': [],
+                'skipped': []
+            }, json_dumps_params={'ensure_ascii': False})
+
+        updated_records = []
+        skipped_records = []
+
+        # 2. Loop through each receipt
+        for row in rows:
+            receipt_id = row[0]
+            number = row[1]
+            sl_account_ref = row[2]
+
+            # 3. Only update if SLAccountRef == 786
+            if sl_account_ref == old_sl_account_ref:
+                skipped_records.append({
+                    'InventoryReceiptID': receipt_id,
+                    'Number': number,
+                    'SLAccountRef': sl_account_ref,
+                    'reason': f'SLAccountRef is not {old_sl_account_ref}'
+                })
+                continue
+
+            # 4. Update SLAccountRef to 825 and save
+            cursor.execute("""
+                UPDATE [Sepidar01].[INV].[InventoryReceipt]
+                SET SLAccountRef = ?,
+                    LastModificationDate = ?
+                WHERE InventoryReceiptID = ?
+            """, (new_sl_account_ref, datetime.now(), receipt_id))
+
+            updated_records.append({
+                'InventoryReceiptID': receipt_id,
+                'Number': number,
+                'old_SLAccountRef': sl_account_ref,
+                'new_SLAccountRef': new_sl_account_ref
+            })
+
+            logger.info(
+                f"Updated InventoryReceipt ID {receipt_id}, Number {number}: "
+                f"SLAccountRef {old_sl_account_ref} -> {new_sl_account_ref}"
+            )
+
+        # 5. Commit all updates
+        conn.commit()
+
+        return JsonResponse({
+            'success': True,
+            'updated': updated_records,
+            'skipped': skipped_records,
+            'total_checked': len(rows),
+            'total_updated': len(updated_records),
+            'total_skipped': len(skipped_records)
+        }, json_dumps_params={'ensure_ascii': False})
+
+    except Exception as e:
+        logger.error(f"Error updating receipts SLAccountRef: {e}")
+        if conn is not None:
+            try:
+                conn.rollback()
+            except Exception:
+                pass
+        return JsonResponse({
+                    'success': False,
+                    'error': str(e),
+                }, status=500, json_dumps_params={'ensure_ascii': False})
+
+
+
+
+
+def change_sl_acc_ref_for_last_ten_delivery_items(request):
+    """
+    Get ALL InventoryDeliveryItem records where SLAccountRef == 786,
+    and update them to 825.
+
+    Returns:
+    - JsonResponse with success flag, updated records, and errors
+    """
+    conn = None
+    db_connection = db
+    old_sl_account_ref = 786
+    new_sl_account_ref = 825
+
+    try:
+        conn = db_connection.get_connection()
+        cursor = conn.cursor()
+
+        # ✅ 1. Get ALL items WHERE SLAccountRef == 786
+        cursor.execute("""
+            SELECT InventoryDeliveryItemID, InventoryDeliveryRef, RowNumber, SLAccountRef
+            FROM [Sepidar01].[INV].[InventoryDeliveryItem]
+            WHERE SLAccountRef = ?
+            ORDER BY InventoryDeliveryItemID DESC
+        """, (old_sl_account_ref,))
+
+        rows = cursor.fetchall()
+
+        if not rows:
+            return JsonResponse({
+                'success': True,
+                'message': f'No inventory delivery items found with SLAccountRef = {old_sl_account_ref}',
+                'updated': [],
+                'total_checked': 0,
+                'total_updated': 0,
+            }, json_dumps_params={'ensure_ascii': False})
+
+        updated_records = []
+
+        # ✅ 2. Loop and update each item
+        for row in rows:
+            item_id = row[0]
+            delivery_ref = row[1]
+            row_number = row[2]
+            sl_account_ref = row[3]
+
+            # 3. Update SLAccountRef to 825
+            cursor.execute("""
+                UPDATE [Sepidar01].[INV].[InventoryDeliveryItem]
+                SET SLAccountRef = ?
+                WHERE InventoryDeliveryItemID = ?
+            """, (new_sl_account_ref, item_id))
+
+            updated_records.append({
+                'InventoryDeliveryItemID': item_id,
+                'InventoryDeliveryRef': delivery_ref,
+                'RowNumber': row_number,
+                'old_SLAccountRef': sl_account_ref,
+                'new_SLAccountRef': new_sl_account_ref,
+            })
+
+        # 4. Commit
+        conn.commit()
+
+        logger.info(
+            f"Updated {len(updated_records)} InventoryDeliveryItem records: "
+            f"SLAccountRef {old_sl_account_ref} -> {new_sl_account_ref}"
+        )
+
+        return JsonResponse({
+            'success': True,
+            'updated': updated_records,
+            'total_checked': len(rows),
+            'total_updated': len(updated_records),
+        }, json_dumps_params={'ensure_ascii': False})
+
+    except Exception as e:
+        logger.error(f"Error updating delivery items SLAccountRef: {e}", exc_info=True)
+        if conn is not None:
+            try:
+                conn.rollback()
+            except Exception:
+                pass
+        return JsonResponse({
+            'success': False,
+            'error': str(e),
+        }, status=500, json_dumps_params={'ensure_ascii': False})
+
+
+    
+# SepidarApp/views.py
+@login_required
+@require_http_methods(["GET"])
+def api_get_all_items(request):
+    """
+    API: دریافت همه مواد از سپیدار با واحد درست
+    فقط خواندنی — بدون ذخیره‌سازی
+    """
+    try:
+        from SepidarApp.databaseConnector import db
+        db.connect()
+        conn = db.get_connection()
+        cursor = conn.cursor()
+
+        search = request.GET.get('q', '').strip()
+
+        if search:
+            query = """
+                SELECT 
+                    i.ItemID,
+                    i.Code,
+                    i.Title,
+                    i.UnitRef,
+                    u.Title AS UnitTitle,
+                    i.SecondaryUnitRef,
+                    su.Title AS SecondaryUnitTitle,
+                    i.MinimumAmount
+                FROM [Sepidar01].[INV].[Item] i
+                LEFT JOIN [Sepidar01].[INV].[Unit] u ON i.UnitRef = u.UnitID
+                LEFT JOIN [Sepidar01].[INV].[Unit] su ON i.SecondaryUnitRef = su.UnitID
+                WHERE i.IsActive = 1 
+                  AND (i.Code LIKE ? OR i.Title LIKE ?)
+                ORDER BY i.Code
+            """
+            pattern = f"%{search}%"
+            cursor.execute(query, (pattern, pattern))
+        else:
+            # ✅ همه مواد بدون محدودیت
+            query = """
+                SELECT 
+                    i.ItemID,
+                    i.Code,
+                    i.Title,
+                    i.UnitRef,
+                    u.Title AS UnitTitle,
+                    i.SecondaryUnitRef,
+                    su.Title AS SecondaryUnitTitle,
+                    i.MinimumAmount
+                FROM [Sepidar01].[INV].[Item] i
+                LEFT JOIN [Sepidar01].[INV].[Unit] u ON i.UnitRef = u.UnitID
+                LEFT JOIN [Sepidar01].[INV].[Unit] su ON i.SecondaryUnitRef = su.UnitID
+                WHERE i.IsActive = 1
+                ORDER BY i.Code
+            """
+            cursor.execute(query)
+
+        rows = cursor.fetchall()
+
+        items = []
+        for row in rows:
+            items.append({
+                'id': int(row[0]),
+                'code': row[1] or '',
+                'title': row[2] or '',
+                'unit_ref': int(row[3]) if row[3] else None,
+                'unit_title': row[4] or '',
+                'secondary_unit_ref': int(row[5]) if row[5] else None,
+                'secondary_unit_title': row[6] or '',
+                'minimum_amount': float(row[7]) if row[7] else 0,
+            })
+
+        return JsonResponse({
+            'success': True,
+            'items': items,
+            'count': len(items)
+        })
+
+    except Exception as e:
+        logger.error(f"Error in api_get_all_items: {e}", exc_info=True)
+        return JsonResponse({
+            'success': False,
+            'error': str(e)
+        }, status=500)
+
+
+
+
+
+
+
+
+# SepidarApp/views.py
+from SepidarApp.activity_helper import (
+    get_accounting_vouchers, get_users_map, get_all_activities,
+    get_product_orders, get_inventory_deliveries, get_inventory_receipts,
+)
+import jdatetime
+from collections import defaultdict
+
+
+@login_required(login_url='authentication:sign-in')
+def sepidar_activity_report(request):
+    """
+    گزارش فعالیت کاربران — مستقیم از سپیدار
+    """
+    try:
+        # ============================================
+        # 1️⃣ فیلترها
+        # ============================================
+        creator_filter = request.GET.get('creator', '').strip()
+        date_from_shamsi = request.GET.get('date_from', '').strip()
+        date_to_shamsi = request.GET.get('date_to', '').strip()
+        activity_type = request.GET.get('activity_type', '').strip()
+
+        # تبدیل تاریخ شمسی به میلادی
+        date_from_gregorian = None
+        date_to_gregorian = None
+
+        if date_from_shamsi:
+            try:
+                date_from_gregorian = persian_to_gregorian(date_from_shamsi)
+            except Exception:
+                pass
+
+        if date_to_shamsi:
+            try:
+                date_to_gregorian = persian_to_gregorian(date_to_shamsi)
+            except Exception:
+                pass
+
+        # پیش‌فرض: ۷ روز اخیر
+        if not date_from_gregorian and not date_to_gregorian:
+            today = jdatetime.date.today()
+            week_ago = today - jdatetime.timedelta(days=7)
+            date_from_shamsi = week_ago.strftime('%Y/%m/%d')
+            date_to_shamsi = today.strftime('%Y/%m/%d')
+            try:
+                date_from_gregorian = persian_to_gregorian(date_from_shamsi)
+                date_to_gregorian = persian_to_gregorian(date_to_shamsi)
+            except Exception:
+                pass
+
+        # ============================================
+        # 2️⃣ خواندن از سپیدار
+        # ============================================
+        db.connect()
+
+        users_map = get_users_map()
+
+        # فیلتر کاربر
+        creator_id = None
+        if creator_filter:
+            try:
+                creator_id = int(creator_filter)
+            except ValueError:
+                pass
+
+        # خواندن همه فعالیت‌ها
+        if activity_type == 'product_order':
+            activities = get_product_orders(date_from_gregorian, date_to_gregorian, creator_id)
+        elif activity_type == 'inventory_delivery':
+            activities = get_inventory_deliveries(date_from_gregorian, date_to_gregorian, creator_id)
+        elif activity_type == 'inventory_receipt':
+            activities = get_inventory_receipts(date_from_gregorian, date_to_gregorian, creator_id)
+        elif activity_type == 'accounting_voucher':
+            activities = get_accounting_vouchers(date_from_gregorian, date_to_gregorian, creator_id)
+        else:
+            activities = get_all_activities(date_from_gregorian, date_to_gregorian, creator_id)
+        # ============================================
+        # 3️⃣ گروه‌بندی بر اساس کاربر + روز
+        # ============================================
+        grouped = defaultdict(lambda: {
+            'user_id': None,
+            'user_name': '',
+            'date_gregorian': None,
+            'date_shamsi': '',
+            'product_orders': [],
+            'deliveries': [],
+            'receipts': [],
+            'vouchers': [],   # ✅ این
+        })
+
+        for act in activities:
+            # کاربر
+            uid = act.get('creator')
+            user_info = users_map.get(uid, {})
+            user_name = user_info.get('full_name', f'کاربر {uid}') if uid else 'نامشخص'
+
+            # تاریخ
+            act_date = act.get('date')
+            if act_date:
+                # میلادی
+                if hasattr(act_date, 'date'):
+                    date_only = act_date.date()
+                else:
+                    date_only = act_date
+
+                # شمسی
+                try:
+                    shamsi = jdatetime.date.fromgregorian(date=date_only)
+                    shamsi_str = f"{shamsi.year}/{shamsi.month:02d}/{shamsi.day:02d}"
+                except Exception:
+                    shamsi_str = str(date_only)
+            else:
+                date_only = None
+                shamsi_str = '-'
+
+            key = (uid, str(date_only))
+
+            grouped[key]['user_id'] = uid
+            grouped[key]['user_name'] = user_name
+            grouped[key]['date_gregorian'] = date_only
+            grouped[key]['date_shamsi'] = shamsi_str
+
+            if act['activity_type'] == 'product_order':
+                grouped[key]['product_orders'].append(act)
+            elif act['activity_type'] == 'inventory_delivery':
+                grouped[key]['deliveries'].append(act)
+            elif act['activity_type'] == 'inventory_receipt':
+                grouped[key]['receipts'].append(act)
+            elif act['activity_type'] == 'accounting_voucher':
+                grouped[key]['vouchers'].append(act)
+        # ============================================
+        # 4️⃣ تبدیل به لیست مرتب‌شده
+        # ============================================
+        daily_reports = []
+        for key, data in grouped.items():
+            # زمان شروع/پایان
+            all_dates = []
+            for po in data['product_orders']:
+                if po['date']:
+                    all_dates.append(po['date'])
+            for d in data['deliveries']:
+                if d['date']:
+                    all_dates.append(d['date'])
+            for r in data['receipts']:
+                if r['date']:
+                    all_dates.append(r['date'])
+
+            first_time = min(all_dates).strftime('%H:%M') if all_dates else '-'
+            last_time = max(all_dates).strftime('%H:%M') if all_dates else '-'
+
+            total_activities = len(data['product_orders']) + len(data['deliveries']) + len(data['receipts'])
+
+            daily_reports.append({
+                'user_id': data['user_id'],
+                'user_name': data['user_name'],
+                'date_shamsi': data['date_shamsi'],
+                'date_gregorian': data['date_gregorian'],
+                'first_time': first_time,
+                'last_time': last_time,
+                'product_orders': data['product_orders'],
+                'deliveries': data['deliveries'],
+                'receipts': data['receipts'],
+                'total_orders': len(data['product_orders']),
+                'total_deliveries': len(data['deliveries']),
+                'total_receipts': len(data['receipts']),
+                'vouchers': data['vouchers'],
+                'total_vouchers': len(data['vouchers']),
+
+                'total_activities': total_activities,
+            })
+
+        # مرتب‌سازی: جدیدترین روز اول
+        daily_reports.sort(
+            key=lambda x: (x['date_gregorian'] or datetime.min.date(), x['user_name']),
+            reverse=True
+        )
+
+        # ============================================
+        # 5️⃣ آمار خلاصه
+        # ============================================
+        stats = {
+            'total_reports': len(daily_reports),
+            'total_orders': sum(r['total_orders'] for r in daily_reports),
+            'total_deliveries': sum(r['total_deliveries'] for r in daily_reports),
+            'total_receipts': sum(r['total_receipts'] for r in daily_reports),
+            'total_users': len(set(r['user_id'] for r in daily_reports if r['user_id'])),
+            'total_vouchers': sum(r['total_vouchers'] for r in daily_reports),
+        }
+
+        db.close()
+
+        # ============================================
+        # 6️⃣ لیست کاربران برای فیلتر
+        # ============================================
+        users_list = [
+            {'id': uid, 'name': info['full_name']}
+            for uid, info in sorted(users_map.items(), key=lambda x: x[1]['full_name'])
+        ]
+
+
+
+
+
+        # ============================================
+        # ✅ داده‌های نمودار — به ازای هر کاربر
+        # ============================================
+
+        chart_users = defaultdict(lambda: {
+            'user_id': None,
+            'user_name': '',
+            'orders': 0,
+            'deliveries': 0,
+            'receipts': 0,
+            'vouchers': 0,
+            'total': 0,
+        })
+
+        chart_daily = defaultdict(lambda: {
+            'orders': 0,
+            'deliveries': 0,
+            'receipts': 0,
+            'vouchers': 0,
+        })
+
+        # از daily_reports استفاده کن
+        for report in daily_reports:
+            uid = report['user_id']
+            uname = report['user_name']
+
+            # کاربر
+            chart_users[uid]['user_id'] = uid
+            chart_users[uid]['user_name'] = uname
+            chart_users[uid]['orders'] += report['total_orders']
+            chart_users[uid]['deliveries'] += report['total_deliveries']
+            chart_users[uid]['receipts'] += report['total_receipts']
+            chart_users[uid]['vouchers'] += report.get('total_vouchers', 0)
+            chart_users[uid]['total'] += report['total_activities']
+
+            # روزانه
+            day = report['date_shamsi']
+            chart_daily[day]['orders'] += report['total_orders']
+            chart_daily[day]['deliveries'] += report['total_deliveries']
+            chart_daily[day]['receipts'] += report['total_receipts']
+            chart_daily[day]['vouchers'] += report.get('total_vouchers', 0)
+
+        # تبدیل به لیست
+        chart_users_list = sorted(chart_users.values(), key=lambda x: x['total'], reverse=True)
+        chart_daily_list = []
+        for date_str in sorted(chart_daily.keys()):
+            chart_daily_list.append({
+                'date': date_str,
+                'orders': chart_daily[date_str]['orders'],
+                'deliveries': chart_daily[date_str]['deliveries'],
+                'receipts': chart_daily[date_str]['receipts'],
+                'vouchers': chart_daily[date_str]['vouchers'],
+            })
+
+        # تبدیل به JSON برای جاوااسکریپت
+        chart_data_json = json.dumps({
+            'users': chart_users_list,
+            'daily': chart_daily_list,
+            'totals': {
+                'orders': stats['total_orders'],
+                'deliveries': stats['total_deliveries'],
+                'receipts': stats['total_receipts'],
+                'vouchers': stats.get('total_vouchers', 0),
+            }
+        }, ensure_ascii=False)
+
+
+
+
+
+
+
+
+        context = {
+            'daily_reports': daily_reports,
+            'stats': stats,
+            'users_list': users_list,
+            'creator_filter': creator_filter,
+            'date_from_shamsi': date_from_shamsi,
+            'date_to_shamsi': date_to_shamsi,
+            'activity_type': activity_type,
+            'active_page': 'sepidar_activity_report',
+            'chart_data_json': chart_data_json,   # ✅ اضافه کن
+        }
+
+        return render(request, 'sepidar_activity_report.html', context)
+
+    except Exception as e:
+        logger.error(f"Error in sepidar_activity_report: {e}", exc_info=True)
+        try:
+            db.close()
+        except Exception:
+            pass
+        return render(request, 'error.html', {'error': str(e)})
+
+
+
+
+
+
+
+@login_required
+def test_daily_report(request):
+    """
+    تست دستی: فقط متن گزارش رو نشون بده
+    """
+    from SepidarApp.reports import build_daily_report_text, send_daily_report_sms
+    
+    # تاریخ دلخواه
+    date_str = request.GET.get('date', '')
+    for_date = None
+    
+    if date_str:
+        try:
+            for_date = persian_to_gregorian(date_str)
+        except Exception:
+            pass
+    
+    # حالت‌ها:
+    # 1. فقط متن: ?date=1405/07/11
+    # 2. با پیامک: ?date=1405/07/11&send_sms=1
+    
+    if request.GET.get('send_sms') == '1':
+        # ساخت + ارسال
+        result = send_daily_report_sms(for_date)
+        return JsonResponse(result)
+    else:
+        # فقط ساخت متن
+        result = build_daily_report_text(for_date)
+        return JsonResponse(result)

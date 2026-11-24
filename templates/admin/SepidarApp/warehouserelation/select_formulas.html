@@ -1,0 +1,654 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+    .formula-selector {
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 0 20px;
+    }
+    
+    .header-card {
+        background: linear-gradient(135deg, #4f46e5, #4338ca);
+        color: white;
+        padding: 24px 30px;
+        border-radius: 12px;
+        margin-bottom: 24px;
+        box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+    }
+    
+    .header-card h1 {
+        margin: 0 0 8px 0;
+        font-size: 24px;
+        color: white;
+    }
+    
+    .header-card .subtitle {
+        opacity: 0.9;
+        font-size: 14px;
+    }
+    
+    .stats-row {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-top: 16px;
+    }
+    
+    .stat-badge {
+        background: rgba(255,255,255,0.15);
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+    
+    .toolbar {
+        background: white;
+        padding: 16px 20px;
+        border-radius: 10px;
+        margin-bottom: 16px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+    
+    .search-input {
+        flex: 1;
+        min-width: 250px;
+        padding: 10px 16px;
+        border: 2px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 14px;
+        font-family: inherit;
+        transition: all 0.2s;
+    }
+    
+    .search-input:focus {
+        outline: none;
+        border-color: #4f46e5;
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+    
+    .btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 13px;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-family: inherit;
+        text-decoration: none;
+    }
+    
+    .btn-primary { background: #4f46e5; color: white; }
+    .btn-primary:hover { background: #4338ca; }
+    
+    .btn-success { background: #22c55e; color: white; }
+    .btn-success:hover { background: #16a34a; }
+    
+    .btn-secondary { background: #64748b; color: white; }
+    .btn-secondary:hover { background: #475569; }
+    
+    .btn-warning { background: #f59e0b; color: white; }
+    .btn-warning:hover { background: #d97706; }
+    
+    .table-wrapper {
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        max-height: 600px;
+        overflow-y: auto;
+    }
+    
+    .formula-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+        direction: rtl;
+    }
+    
+    .formula-table thead {
+        background: #1e293b;
+        color: white;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+    
+    .formula-table th {
+        padding: 12px 14px;
+        text-align: right;
+        font-weight: 600;
+        font-size: 12px;
+    }
+    
+    .formula-table th.center {
+        text-align: center;
+    }
+    
+    .formula-table td {
+        padding: 10px 14px;
+        border-bottom: 1px solid #f1f5f9;
+    }
+    
+    .formula-table tbody tr {
+        transition: background 0.15s;
+    }
+    
+    .formula-table tbody tr:hover {
+        background: #f8fafc;
+    }
+    
+    .formula-table tbody tr.selected {
+        background: #f0fdf4;
+    }
+    
+    .formula-table tbody tr.deleted {
+        background: #fef2f2;
+        opacity: 0.7;
+    }
+    
+    .checkbox-cell {
+        text-align: center;
+        width: 50px;
+    }
+    
+    .checkbox-cell input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+        accent-color: #4f46e5;
+    }
+    
+    .formula-code {
+        font-weight: 700;
+        color: #1e293b;
+        background: #e0e7ff;
+        padding: 3px 10px;
+        border-radius: 12px;
+        font-size: 12px;
+        display: inline-block;
+    }
+    
+    .formula-title {
+        color: #334155;
+        font-weight: 500;
+    }
+    
+    .product-name {
+        color: #64748b;
+        font-size: 12px;
+    }
+    
+    .badge-deleted {
+        background: #fee2e2;
+        color: #991b1b;
+        padding: 3px 10px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 600;
+    }
+    
+    .badge-active {
+        background: #dcfce7;
+        color: #166534;
+        padding: 3px 10px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 600;
+    }
+    
+    .badge-inactive {
+        background: #f3f4f6;
+        color: #6b7280;
+        padding: 3px 10px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 600;
+    }
+    
+    .notes-input {
+        width: 100%;
+        padding: 6px 10px;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        font-size: 12px;
+        font-family: inherit;
+    }
+    
+    .notes-input:focus {
+        outline: none;
+        border-color: #4f46e5;
+    }
+    
+    .footer-actions {
+        background: white;
+        padding: 16px 20px;
+        border-radius: 10px;
+        margin-top: 16px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        position: sticky;
+        bottom: 20px;
+        z-index: 20;
+    }
+    
+    .selected-counter {
+        font-size: 14px;
+        color: #334155;
+        font-weight: 600;
+    }
+    
+    .selected-counter .num {
+        background: #4f46e5;
+        color: white;
+        padding: 4px 12px;
+        border-radius: 12px;
+        margin: 0 4px;
+    }
+    
+    .no-results {
+        text-align: center;
+        padding: 60px 20px;
+        color: #94a3b8;
+    }
+    
+    .toast {
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #1e293b;
+        color: white;
+        padding: 14px 24px;
+        border-radius: 10px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        z-index: 9999;
+        display: none;
+        font-size: 14px;
+        font-weight: 500;
+    }
+    
+    .toast.success { background: #16a34a; }
+    .toast.error { background: #dc2626; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="formula-selector">
+    
+    <!-- Header -->
+    <div class="header-card">
+        <h1>📋 انتخاب فرمول‌ها</h1>
+        <div class="subtitle">
+            رابطه: <strong>{{ relation.relation_name }}</strong> 
+            | {{ relation.source_warehouse.name }} → {{ relation.destination_warehouse.name }}
+        </div>
+        <div class="stats-row">
+            <div class="stat-badge">
+                <i class="fas fa-list"></i>
+                کل: <strong>{{ total_count }}</strong>
+            </div>
+            <div class="stat-badge">
+                <i class="fas fa-check-circle"></i>
+                فعال: <strong>{{ active_count }}</strong>
+            </div>
+            <div class="stat-badge">
+                <i class="fas fa-check-double"></i>
+                انتخاب‌شده: <strong id="headerSelectedCount">{{ selected_count }}</strong>
+            </div>
+            {% if deleted_count %}
+            <div class="stat-badge" style="background: rgba(239,68,68,0.3);">
+                <i class="fas fa-exclamation-triangle"></i>
+                حذف‌شده: <strong>{{ deleted_count }}</strong>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Toolbar -->
+    <div class="toolbar">
+        <input 
+            type="text" 
+            class="search-input" 
+            id="searchInput"
+            placeholder="🔍 جستجو بر اساس کد، عنوان یا نام محصول..."
+        >
+        <button class="btn btn-primary" onclick="selectAll()">
+            <i class="fas fa-check-double"></i> انتخاب همه
+        </button>
+        <button class="btn btn-warning" onclick="selectActiveOnly()">
+            <i class="fas fa-check"></i> فقط فعال‌ها
+        </button>
+        <button class="btn btn-secondary" onclick="deselectAll()">
+            <i class="fas fa-times"></i> حذف انتخاب
+        </button>
+    </div>
+    
+    <!-- Table -->
+    <div class="table-wrapper">
+        <table class="formula-table" id="formulaTable">
+            <thead>
+                <tr>
+                    <th class="center" style="width: 50px;">
+                        <input type="checkbox" id="selectAllCheckbox" onclick="toggleSelectAll(this)">
+                    </th>
+                    <th style="width: 60px;">ID</th>
+                    <th style="width: 120px;">کد</th>
+                    <th>عنوان فرمول</th>
+                    <th style="width: 200px;">نام محصول</th>
+                    <th style="width: 100px;" class="center">وضعیت</th>
+                    <th style="width: 220px;">یادداشت</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for f in formulas %}
+                <tr 
+                    class="formula-row {% if f.is_selected %}selected{% endif %} {% if f.is_deleted %}deleted{% endif %}"
+                    data-formula-id="{{ f.id }}"
+                    data-formula-code="{{ f.code }}"
+                    data-formula-title="{{ f.title }}"
+                    data-is-active="{{ f.is_active|yesno:'true,false' }}"
+                    data-is-deleted="{{ f.is_deleted|yesno:'true,false' }}"
+                    data-search="{{ f.code|lower }} {{ f.title|lower }} {{ f.product_name|lower }}"
+                >
+                    <td class="checkbox-cell">
+                        <input 
+                            type="checkbox" 
+                            class="formula-checkbox"
+                            data-formula-id="{{ f.id }}"
+                            {% if f.is_selected %}checked{% endif %}
+                            onchange="onCheckboxChange(this)"
+                        >
+                    </td>
+                    <td><strong>{{ f.id }}</strong></td>
+                    <td><span class="formula-code">{{ f.code }}</span></td>
+                    <td>
+                        <div class="formula-title">{{ f.title }}</div>
+                    </td>
+                    <td>
+                        <div class="product-name">
+                            {% if f.product_name %}{{ f.product_name }}{% else %}-{% endif %}
+                        </div>
+                    </td>
+                    <td class="center">
+                        {% if f.is_deleted %}
+                            <span class="badge-deleted">🚫 حذف شده</span>
+                        {% elif f.is_active %}
+                            <span class="badge-active">✅ فعال</span>
+                        {% else %}
+                            <span class="badge-inactive">⏸ غیرفعال</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <input 
+                            type="text" 
+                            class="notes-input"
+                            data-formula-id="{{ f.id }}"
+                            placeholder="یادداشت..."
+                            value="{{ f.notes|default:'' }}"
+                        >
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="no-results" id="noResults" style="display: none;">
+            <div style="font-size: 48px; margin-bottom: 12px;">🔍</div>
+            <div style="font-size: 16px; font-weight: 600;">نتیجه‌ای یافت نشد</div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <div class="footer-actions">
+        <div class="selected-counter">
+            انتخاب شده: 
+            <span class="num" id="footerSelectedCount">{{ selected_count }}</span>
+            از <strong>{{ total_count }}</strong> فرمول
+        </div>
+        <div style="display: flex; gap: 8px;">
+            <a href="{% url 'admin:SepidarApp_warehouserelation_change' relation.pk %}" class="btn btn-secondary">
+                <i class="fas fa-times"></i> انصراف
+            </a>
+            <button class="btn btn-success" onclick="saveSelection()" id="saveBtn">
+                <i class="fas fa-save"></i> ذخیره انتخاب‌ها
+            </button>
+        </div>
+    </div>
+    
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+    const RELATION_ID = {{ relation.pk }};
+    const SAVE_URL = "{% url 'admin:warehouse-relation-save-formulas' relation.pk %}";
+    const CSRF_TOKEN = "{{ csrf_token }}";
+    
+    // ============================================
+    // جستجو
+    // ============================================
+    document.getElementById('searchInput').addEventListener('input', function(e) {
+        const term = e.target.value.toLowerCase().trim();
+        const rows = document.querySelectorAll('.formula-row');
+        let visibleCount = 0;
+        
+        rows.forEach(row => {
+            const searchText = row.dataset.search;
+            const matches = !term || searchText.includes(term);
+            
+            if (matches) {
+                row.style.display = '';
+                visibleCount++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+        
+        document.getElementById('noResults').style.display = visibleCount === 0 ? 'block' : 'none';
+    });
+    
+    // ============================================
+    // Toggle یک چک‌باکس
+    // ============================================
+    function onCheckboxChange(checkbox) {
+        const row = checkbox.closest('.formula-row');
+        row.classList.toggle('selected', checkbox.checked);
+        updateCounters();
+    }
+    
+    // ============================================
+    // Toggle همه
+    // ============================================
+    function toggleSelectAll(checkbox) {
+        const rows = document.querySelectorAll('.formula-row');
+        rows.forEach(row => {
+            if (row.style.display === 'none') return; // فقط visible ها
+            
+            const cb = row.querySelector('.formula-checkbox');
+            cb.checked = checkbox.checked;
+            row.classList.toggle('selected', checkbox.checked);
+        });
+        updateCounters();
+    }
+    
+    // ============================================
+    // انتخاب همه
+    // ============================================
+    function selectAll() {
+        document.querySelectorAll('.formula-row').forEach(row => {
+            if (row.style.display === 'none') return;
+            const cb = row.querySelector('.formula-checkbox');
+            cb.checked = true;
+            row.classList.add('selected');
+        });
+        updateCounters();
+    }
+    
+    // ============================================
+    // فقط فعال‌ها
+    // ============================================
+    function selectActiveOnly() {
+        document.querySelectorAll('.formula-row').forEach(row => {
+            if (row.style.display === 'none') return;
+            
+            const isActive = row.dataset.isActive === 'true';
+            const isDeleted = row.dataset.isDeleted === 'true';
+            const cb = row.querySelector('.formula-checkbox');
+            
+            // فقط فرمول‌های فعال و غیرحذف‌شده
+            if (isActive && !isDeleted) {
+                cb.checked = true;
+                row.classList.add('selected');
+            } else {
+                cb.checked = false;
+                row.classList.remove('selected');
+            }
+        });
+        updateCounters();
+    }
+    
+    // ============================================
+    // حذف انتخاب همه
+    // ============================================
+    function deselectAll() {
+        document.querySelectorAll('.formula-row').forEach(row => {
+            const cb = row.querySelector('.formula-checkbox');
+            cb.checked = false;
+            row.classList.remove('selected');
+        });
+        document.getElementById('selectAllCheckbox').checked = false;
+        updateCounters();
+    }
+    
+    // ============================================
+    // بروزرسانی شمارنده‌ها
+    // ============================================
+    function updateCounters() {
+        const selectedCount = document.querySelectorAll('.formula-checkbox:checked').length;
+        document.getElementById('footerSelectedCount').textContent = selectedCount;
+        document.getElementById('headerSelectedCount').textContent = selectedCount;
+        
+        // بروزرسانی selectAll checkbox
+        const visibleCheckboxes = Array.from(document.querySelectorAll('.formula-row'))
+            .filter(r => r.style.display !== 'none')
+            .map(r => r.querySelector('.formula-checkbox'));
+        
+        const allChecked = visibleCheckboxes.length > 0 && visibleCheckboxes.every(cb => cb.checked);
+        const someChecked = visibleCheckboxes.some(cb => cb.checked);
+        
+        const selectAllCb = document.getElementById('selectAllCheckbox');
+        selectAllCb.checked = allChecked;
+        selectAllCb.indeterminate = someChecked && !allChecked;
+    }
+    
+    // ============================================
+    // ذخیره
+    // ============================================
+    async function saveSelection() {
+        const saveBtn = document.getElementById('saveBtn');
+        saveBtn.disabled = true;
+        saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> در حال ذخیره...';
+        
+        // جمع‌آوری داده‌ها
+        const selectedIds = [];
+        const notesMap = {};
+        
+        document.querySelectorAll('.formula-row').forEach(row => {
+            const cb = row.querySelector('.formula-checkbox');
+            const fid = parseInt(row.dataset.formulaId);
+            const notesInput = row.querySelector('.notes-input');
+            
+            if (cb.checked) {
+                selectedIds.push(fid);
+            }
+            
+            if (notesInput.value.trim()) {
+                notesMap[fid] = notesInput.value.trim();
+            }
+        });
+        
+        try {
+            const response = await fetch(SAVE_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': CSRF_TOKEN,
+                },
+                body: JSON.stringify({
+                    selected_ids: selectedIds,
+                    notes: notesMap,
+                }),
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                showToast(`✅ ${data.message}`, 'success');
+                setTimeout(() => {
+                    window.location.href = "{% url 'admin:SepidarApp_warehouserelation_change' relation.pk %}";
+                }, 1500);
+            } else {
+                showToast(`❌ ${data.error || 'خطا در ذخیره'}`, 'error');
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = '<i class="fas fa-save"></i> ذخیره انتخاب‌ها';
+            }
+        } catch (error) {
+            showToast(`❌ خطای شبکه: ${error.message}`, 'error');
+            saveBtn.disabled = false;
+            saveBtn.innerHTML = '<i class="fas fa-save"></i> ذخیره انتخاب‌ها';
+        }
+    }
+    
+    // ============================================
+    // Toast
+    // ============================================
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = `toast ${type}`;
+        toast.style.display = 'block';
+        
+        setTimeout(() => {
+            toast.style.display = 'none';
+        }, 3000);
+    }
+    
+    // ============================================
+    // Keyboard shortcuts
+    // ============================================
+    document.addEventListener('keydown', function(e) {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+            e.preventDefault();
+            document.getElementById('searchInput').focus();
+        }
+        if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+            e.preventDefault();
+            saveSelection();
+        }
+    });
+    
+    // ============================================
+    // Init
+    // ============================================
+    updateCounters();
+</script>
+
+{% endblock %}
