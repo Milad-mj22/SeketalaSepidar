@@ -569,7 +569,7 @@ def submit_all_formula_values(request):
 
                 # ✅ جمع‌آوری در دیکشنری اصلی
                 key = f"{item_ref}_{unit_ref}"
-                required_materials[key]['total_required'] += required_quantity
+                required_materials[key]['total_required'] += user_withdrawal
                 required_materials[key]['item_name'] = item_name
                 required_materials[key]['unit_name'] = unit_name
                 required_materials[key]['item_ref'] = item_ref
@@ -612,9 +612,58 @@ def submit_all_formula_values(request):
 
 
 
+        if not all_exist:
+            # استخراج مواد ناموجود با جزئیات کامل
+            unavailable_materials = []
+            for key, status in stock_status.items():
+                if not status.get('available', False):
+                    unavailable_materials.append({
+                        'material_name': status.get('item_name', key),
+                        'material_code': status.get('material_code', ''),
+                        'required_quantity': status.get('required_quantity', 0),
+                        'available_quantity': status.get('available_quantity', 0),
+                        'shortage': status.get('required_quantity', 0) - status.get('available_quantity', 0),
+                        'unit': status.get('unit', ''),
+                        'bom_item_id': status.get('bom_item_id'),
+                        'item_ref': status.get('item_ref')
+                    })
+            
+            # ساخت پیام خطای دقیق
+            error_message = 'کمبود کالا در انبار:\n'
+            for item in unavailable_materials[:5]:  # فقط ۵ مورد اول
+                error_message += f"• {item['material_name']}: نیاز {item['required_quantity']:.2f} {item['unit']} - موجودی {item['available_quantity']:.2f} {item['unit']} (کمبود: {item['shortage']:.2f} {item['unit']})\n"
+            
+            if len(unavailable_materials) > 5:
+                error_message += f"\nو {len(unavailable_materials) - 5} مورد دیگر..."
+            
+            return JsonResponse({
+                'success': False,
+                'message': 'کمبود کالا در انبار',
+                'error': error_message,
+                'data': {
+                    'formula_details': formula_details,
+                    'required_materials': dict(required_materials),
+                    'stock_status': stock_status,
+                    'unavailable_materials': unavailable_materials,
+                    # 'withdrawal_records': withdrawal_records,
+                    'summary': {
+                        'total_formulas': len(formulas),
+                        'total_materials': len(required_materials),
+                        'available_materials': sum(1 for s in stock_status.values() if s['available']),
+                        'unavailable_materials': sum(1 for s in stock_status.values() if not s['available']),
+                        'total_shortage': sum(
+                            status.get('required_quantity', 0) - status.get('available_quantity', 0)
+                            for status in stock_status.values()
+                            if not status.get('available', False)
+                        )
+                    }
+                }
+            })
+
+
+
         # ذخیره مقادیر در دیتابیس
         saved_formulas = []
-        all_exist = True
         if all_exist:
             pass
 
@@ -731,53 +780,7 @@ def submit_all_formula_values(request):
                     }
                 }
             })
-        else:
-            # استخراج مواد ناموجود با جزئیات کامل
-            unavailable_materials = []
-            for key, status in stock_status.items():
-                if not status.get('available', False):
-                    unavailable_materials.append({
-                        'material_name': status.get('material_name', key),
-                        'material_code': status.get('material_code', ''),
-                        'required_quantity': status.get('required_quantity', 0),
-                        'available_quantity': status.get('available_quantity', 0),
-                        'shortage': status.get('required_quantity', 0) - status.get('available_quantity', 0),
-                        'unit': status.get('unit', ''),
-                        'bom_item_id': status.get('bom_item_id'),
-                        'item_ref': status.get('item_ref')
-                    })
-            
-            # ساخت پیام خطای دقیق
-            error_message = 'کمبود کالا در انبار:\n'
-            for item in unavailable_materials[:5]:  # فقط ۵ مورد اول
-                error_message += f"• {item['material_name']}: نیاز {item['required_quantity']:.2f} {item['unit']} - موجودی {item['available_quantity']:.2f} {item['unit']} (کمبود: {item['shortage']:.2f} {item['unit']})\n"
-            
-            if len(unavailable_materials) > 5:
-                error_message += f"\nو {len(unavailable_materials) - 5} مورد دیگر..."
-            
-            return JsonResponse({
-                'success': False,
-                'message': 'کمبود کالا در انبار',
-                'error': error_message,
-                'data': {
-                    'formula_details': formula_details,
-                    'required_materials': dict(required_materials),
-                    'stock_status': stock_status,
-                    'unavailable_materials': unavailable_materials,
-                    'withdrawal_records': withdrawal_records,
-                    'summary': {
-                        'total_formulas': len(formulas),
-                        'total_materials': len(required_materials),
-                        'available_materials': sum(1 for s in stock_status.values() if s['available']),
-                        'unavailable_materials': sum(1 for s in stock_status.values() if not s['available']),
-                        'total_shortage': sum(
-                            status.get('required_quantity', 0) - status.get('available_quantity', 0)
-                            for status in stock_status.values()
-                            if not status.get('available', False)
-                        )
-                    }
-                }
-            })
+
         
     except json.JSONDecodeError:
         return JsonResponse({
@@ -880,7 +883,8 @@ def check_materials_stock(db, required_materials):
                 'available_stock': available_stock,
                 'available': available_stock >= required_qty['total_required'],
                 'shortage': max(0, required_qty['total_required'] - available_stock),
-                'status': 'موجود' if available_stock >= required_qty['total_required'] else 'کمبود'
+                'status': 'موجود' if available_stock >= required_qty['total_required'] else 'کمبود',
+                'item_name' :  required_qty['item_name']
             }
         
             if available_stock < required_qty['total_required'] :

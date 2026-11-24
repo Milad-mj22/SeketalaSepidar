@@ -17,6 +17,7 @@ def _scheduler_worker(interval_seconds=3600):
     """
     Worker که هر interval_seconds یکبار تابع را اجرا می‌کند
     """
+    return
     from .scheduler import collect_and_send_low_stock_data
     
     logger.info(f"Scheduler thread started - interval: {interval_seconds}s")
